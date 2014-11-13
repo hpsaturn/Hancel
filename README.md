@@ -44,10 +44,14 @@ Google Play Services y PageView se encuentran dentro de la carpeta **hancel-proj
 <master.jpg>
 
 * Descargue el proyecto en la ruta `/home/<user>/git/Hancel`
-* Hacer clic derecho en la sección de `package explorer` y seleccionar `Import`->`Android`->`Existing Android Code Into Workspace`
-* Buscar la carpeda en la que realizó la descarga y seleccionar la carpeta `Hancel`
-* Seleccione todos los proyectos excepto `HoloEverywhere/addons/slider` y `HoloEverywhere/demo`
+* Hacer clic derecho en la sección de `package explorer` y seleccionar `Import`->`Git`->`Projects from Git`.
+* Seleccione `Local`.
+* Seleccione el repositorio local (carpeda en la que realizó la descarga).
+* Seleccione la opción `Import Existing Projects`.
+* Seleccione todos los proyectos excepto `slider` y `demoActivity`.
+* Haga clic en `finalizar`
 * Los proyectos deben visualizarse de la siguiente forma:
+
 <proyectos.jpg>
 
 Hancel utiliza ACRA como sistema de log. Como actualmente estamos importando el JAR en lugar de compilar como biblioteca, debes verificar que el proyecto **Holo Everywhere Library** incluya la ruta correcta al archivo `acra-4.5.0.jar` localizado en la carpeta `libs` de Holo Everywhere Library
