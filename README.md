@@ -3,15 +3,18 @@ hancel-factual
 
 Hancel vincula a periodistas con colegas y organizaciones dedicadas a proteger la libertad de expresión a través de su teléfono celular.
 
-América Latina es una de las regiones más peligrosas del mundo para ejercer el periodismo. Hancel es una aplicación para teléfonos móviles que permite a periodistas crear redes integradas por colegas y organizaciones y planear con antelación coberturas en zonas de riesgo. Además cuenta con un botón de pánico para reportar agresiones en tiempo real y puede utilizarse para programar una alerta automática en caso de algún incidente.
+Hancel es una aplicación para teléfonos móviles que permite crear redes de contactos (colegas, organizaciones, familiares, amigos, etc) para el envío de notificaciones al encontrarse en situacion de peligro (botón de pánico), realizar llamadas utilizando VoIP, enviar SMS encriptados y programar el envio de coordenadas GPS (reastreo de ruta).  
 
 # Características de Hancel
 
-* Hancel crea un puente entre periodistas y organizaciones dedicadas a proteger la libertad de expresión.
-* Es posible programar Hancel para que acompañe al usuario durante coberturas de riesgo y envíe alertas automáticas si el periodista no atiende notificaciones.
-* Hancel lanza una alerta de emergencia a contactos de confianza con la ubicación exacta del GPS del teléfono.
-* Hancel crea una comunidad de organizaciones e individuos de confianza de manera instantánea al emitir una alerta.
-* Hancel le da herramientas a los periodistas para que tengan mayor control de su propia seguridad.
+* Puede utilizarse por diferentes profesionales como herramienta de protección personal al realizar trabajos de campo en zonas de peligro. En el caso de los periodistas, puede utilizarse para proteger la libertad de expresión al presentarse un caso de ataque. 
+* Anillos de seguridad: Permite configurar grupos de contactos(anillos de seguridad) para enviar notificaciones y alertas de peligro. 
+* Rastreo: Permite programar el posicionamiento GPS por intervalo de tiempo y notificarlas al anillo de seguridado
+* ¿Todo bien?: Notificaciónes automaticas enviadas al usuario en intervalos de tiempo programables que deben ser atendidas. Se envía una alerta al anillo de seguridad en caso de que el usuario no reaccione ante estas notificaciones.
+* Cuenta con una alerta de emergencia a los contactos de confianza con la ubicación exacta del GPS del teléfono.
+* SMS encriptados:
+* VoIp:
+
 
 #Screenshots
 
