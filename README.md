@@ -30,25 +30,32 @@ El proyecto se encuentra en la carpeta **hancel-project** el cual depende de las
 
 Google Play Services y PageView se encuentran dentro de la carpeta **hancel-project**.  Las demás bibliotecas las agregamos por conveniencia para construir la aplicación de forma más sencilla.
 
-### Importar en eclipse
+### Importar el proyecto a eclipse
 
-Clona éste repositorio o desde Eclipse en `Archivo`, `Importar`, `Importar desde Git` y clona la URL del proyecto. 
+**Clonar el repositorio desde eclipse **
+* Haciendo clic en `Archivo`-> `Importar`->`Importar desde Git` La URL del proyecto la puedes encontrar al lado derecho (HTTPS clone URL).   
 
-Después da click en `Importar proyectos existentes` e importa todos con excepto de HoloEeveryWhere "Slider", "Demo", "Application". La estructura del proyecto debe quedar similar a la siguiente:
+<import.jpg>
 
-![Importar](http://i.imgur.com/PG8ir28.png)
+* Seleccionar `Master`
 
-Tanto **Login** como **HoloEverywhere** requieren como dependencia a **Actionbarsherlock** por lo tanto, verifica en las propiedades de cada proyecto que se encuentren referenciadas. De **Login** verifica que las siguientes bibliotecas también se encuentren referenciadas correctamente: 
+<master.jpg>
 
-![Referencias](http://i.imgur.com/yoWKBan.png)
+* Descargue el proyecto en la ruta `/home/<user>/git/Hancel`
+* Hacer clic derecho en la sección de `package explorer` y seleccionar `Import`->`Android`->`Existing Android Code Into Workspace`
+* Buscar la carpeda en la que realizó la descarga y seleccionar la carpeta `Hancel`
+* Seleccione todos los proyectos excepto `HoloEverywhere/addons/slider` y `HoloEverywhere/demo`
+* Los proyectos deben visualizarse de la siguiente forma:
+<proyectos.jpg>
 
 Hancel utiliza ACRA como sistema de log. Como actualmente estamos importando el JAR en lugar de compilar como biblioteca, debes verificar que el proyecto **Holo Everywhere Library** incluya la ruta correcta al archivo `acra-4.5.0.jar` localizado en la carpeta `libs` de Holo Everywhere Library
 
 ![Imgur](http://i.imgur.com/Xeh2JSc.png)
 
+
 # ¿Cómo puedo contribuir?
 
-El proyecto Hancel ha sido desarrollado como software libre. Por tanto, la aplicación puede ser modificada siempre y cuando se haga bajo los términos y condiciones de la Licencia Pública General GNU publicada por la Free Software Foundation, ya sea en su versión 2.0 o cualquier otra posterior.
+El proyecto Hancel ha sido desarrollado como software libre. Por tanto, la aplicación puede ser modificada siempre y cuando se haga bajo los términos y condiciones de la Licencia Pública General GNU publicada por la Free Software Foundation, ya sea en su versión 2.0 u otra posterior.
 
 Puedes reportar problemas reportandolos como issues en [Github Issue Tracker](https://github.com/juanjcsr/hancel-factual/issues) o poniendote en contacto con nostros en [@Hancel_App](https://twitter.com/Hancel_App)
 
