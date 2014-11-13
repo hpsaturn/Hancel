@@ -1,19 +1,18 @@
 hancel-factual
 ==============
 
-Hancel vincula a periodistas con colegas y organizaciones dedicadas a proteger la libertad de expresión a través de su teléfono celular.
-
-Hancel es una aplicación para teléfonos móviles que permite crear redes de contactos (colegas, organizaciones, familiares, amigos, etc) para el envío de notificaciones al encontrarse en situacion de peligro (botón de pánico), realizar llamadas utilizando VoIP, enviar SMS encriptados y programar el envio de coordenadas GPS (reastreo de ruta).  
+Hancel es una aplicación para teléfonos móviles para protección personal. Permite enviar notificaciones a redes de contactos (colegas, organizaciones, familiares, amigos, etc) en caso de peligro, realizar llamadas utilizando VoIP y enviar SMS encriptados. 
 
 # Características de Hancel
 
-* Puede utilizarse por diferentes profesionales como herramienta de protección personal al realizar trabajos de campo en zonas de peligro. En el caso de los periodistas, puede utilizarse para proteger la libertad de expresión al presentarse un caso de ataque. 
-* Anillos de seguridad: Permite configurar grupos de contactos(anillos de seguridad) para enviar notificaciones y alertas de peligro. 
-* Rastreo: Permite programar el posicionamiento GPS por intervalo de tiempo y notificarlas al anillo de seguridado
-* ¿Todo bien?: Notificaciónes automaticas enviadas al usuario en intervalos de tiempo programables que deben ser atendidas. Se envía una alerta al anillo de seguridad en caso de que el usuario no reaccione ante estas notificaciones.
-* Cuenta con una alerta de emergencia a los contactos de confianza con la ubicación exacta del GPS del teléfono.
-* SMS encriptados:
-* VoIp:
+Puede utilizarse por diferentes profesionales o activistas como herramienta de protección personal al realizar trabajos de campo en zonas de peligro. En el caso de los periodistas, puede utilizarse para proteger la libertad de expresión al presentarse un caso de ataque. Hancel cuenta con las siguientes carácterísticas y tipos de alerta:
+
+* **Anillos de seguridad:** Permite configurar grupos de contactos(anillos de seguridad) para enviar notificaciones y alertas de peligro. 
+* **SMS cifrados:** Personas con alta probabilidad de ataque y bajo vigilancia, pueden enviar mensajes SMS cifrados a otros clientes Hancel. 
+* **VoIp:** Realizar llamadas a otros clientes Hancel utilizando la red de datos.
+* **Rastreo:** Permite programar el posicionamiento GPS por intervalo de tiempo y notificarlas al anillo de seguridad.
+* **¿Todo bien?:** Notificación automática generada en un intervalo de tiempo (configurable) y debe ser atendida por el usuario o se envía una alerta al anillo de seguridad en caso de que el usuario no reaccione ante estas notificaciones después de un tiempo (configurable).
+* **Pánico:** Cuenta con una alerta de emergencia (botón de pánico) que notifica al anillo de seguridad que algo esta definitivamente mal (situación de peligro extrema).
 
 
 #Screenshots
