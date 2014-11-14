@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="fill_vertical"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#F5F5F5">
 
     <TextView
         android:id="@+id/textView2"
@@ -20,7 +21,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="-10dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/icono1" />
+        android:src="@drawable/icono5" />
 
     <TextView
         android:id="@+id/textView1"

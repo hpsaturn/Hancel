@@ -90,8 +90,8 @@ public class Login extends org.holoeverywhere.app.Activity {
 		default:
 			break;
 		}
-		if(PreferenciasHancel.getLoginOk(getApplicationContext()))
-		{
+		
+		if(PreferenciasHancel.getLoginOk(getApplicationContext())){
 			Intent i = new Intent(getApplicationContext(),MainActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK 
 					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -244,7 +244,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 				String id_device = String.valueOf(Calendar.getInstance().getTimeInMillis());
 				String PassMd5= SimpleCrypto.md5(mPasswd);
 				id_device = SimpleCrypto.md5(id_device);
-				//obtenemos Json para login válido
+				//obtenemos Json para login vï¿½lido
 				JSONObject result =  HttpUtils.Login(mUser, PassMd5, id_device);
 				 try {
 					 if(result.optString("resultado").equals("ok"))
@@ -296,7 +296,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 			catch(Exception ex)
 			{
 				
-				mErrores = "Error al procear la información";
+				mErrores = "Error al procear la informaciï¿½n";
 				Log.v("Error login: "+ex.getMessage());
 			}
 			
@@ -307,7 +307,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 			mAuthTask = null;
 			showProgress(false);
 			if (success) {
-				//mostramos pantalla principal en caso de éxito
+				//mostramos pantalla principal en caso de ï¿½xito
 				Intent i = new Intent(getApplicationContext(),MainActivity.class);
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK 
 						| Intent.FLAG_ACTIVITY_CLEAR_TOP);

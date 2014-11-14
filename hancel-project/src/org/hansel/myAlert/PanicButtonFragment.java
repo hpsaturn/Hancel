@@ -41,16 +41,18 @@ public class PanicButtonFragment extends Fragment
 	private TextView txtLastPanic;
 	private Button btnTracking;
 	private static final String STOP_TRACK = "Detener";
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		//habilitamos wifi para tratar de tener una mejor localización
-	
+		
+		//habilitamos wifi para tratar de tener una mejor localizaciï¿½n	
 		View v = inflater.inflate(R.layout.fragment_panic, container,false);
 		Button btnPanico = (Button)v.findViewById(R.id.btnPanico);
 		txtLastPanic =(TextView)v.findViewById(R.id.txtUltimaAlerta);
 		btnTracking = (Button)v.findViewById(R.id.IniciaTrackId);
 		btnPanico.setOnClickListener(new View.OnClickListener() {
+	
 			@Override
 			public void onClick(View v) {
 				getActivity().startService(new Intent(getActivity(),SendPanicService.class));
@@ -149,7 +151,7 @@ public class PanicButtonFragment extends Fragment
 		protected void onPostExecute(Void result) {
 					super.onPostExecute(result);
 					//iniciamos rastreo
-					//mostramos el fragmento de programación de rastreo como "detener"
+					//mostramos el fragmento de programaciï¿½n de rastreo como "detener"
 					Rastreo rastreo = (Rastreo) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragmentRastreo);
 					if(rastreo!=null)
 					{
@@ -161,7 +163,7 @@ public class PanicButtonFragment extends Fragment
 						Util.inicarServicio(getActivity());
 						
 					}
-					//mostramos la fecha de la ultima vez que se corrio el pánico y guardamos la nueva fecha
+					//mostramos la fecha de la ultima vez que se corrio el pï¿½nico y guardamos la nueva fecha
 					String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar.getInstance());
 					txtLastPanic.setText(currentDateandTime);
 					PreferenciasHancel.setLastPanicAlert(getActivity().getApplicationContext(), currentDateandTime);

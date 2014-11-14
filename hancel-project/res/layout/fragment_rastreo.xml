@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     android:orientation="vertical" >
 
     <Button
@@ -12,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
-        android:text="Programar Rastreo..."
+        android:text="Programar Rastreo"
         android:visibility="gone" />
 
     
@@ -30,9 +31,10 @@
         android:orientation="vertical" >
 
         <TextView
-            style="@style/TextoInstruccion"
+            style="@style/TextoCabecera"
             android:layout_marginTop="7dp"
             android:text="@string/current_track_info"
+            android:textColor="#FF7B1E"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
@@ -44,10 +46,11 @@
 
             <TextView
                 android:id="@+id/txtUltimaAlerta"
-                style="@style/TextoCabecera"
+                style="@style/TextoInstruccion"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="15 - Abril - 08:30"
+                android:textColor="#FFFFFF"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
     </LinearLayout>

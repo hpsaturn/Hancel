@@ -20,7 +20,7 @@
     <string name="ingreseContactos">Agregue contactos a los que se enviarán alertas</string>
     <string name="finRegistro">Felicidades, ha concluido su registro en Hancel pulse finalizar para empezar a utilizar hancel</string>
     <string name="bienvenido">Bienvenido a Hancel</string>
-    <string name="ultima">Fecha y hora de la última alerta</string>
+    <string name="ultima">Última alerta</string>
     <string name="programarrastreo">Programar rastreo</string>
     <string name="current_track_info">Rastreo programado para:</string>
 

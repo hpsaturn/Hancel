@@ -14,6 +14,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Created by Javier Mejia @zenyagami
 zenyagami@gmail.com
 	*/
+
 import java.util.ArrayList;
 
 import org.hansel.myAlert.Log.Log;
@@ -35,50 +36,54 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.viewpagerindicator.TabPageIndicator;
 
+
 public class MainActivity extends org.holoeverywhere.app.Activity{
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onResume()
 	 */
-	   ViewPager mViewPager;
+	ViewPager mViewPager;	
+	
+	/* flag for panic button pressing */
+	boolean panicPressed;
+	
 	@Override
 	protected void onResume() {
-		super.onResume();
-		
-		
+		super.onResume();	
 	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 	}
-	boolean presionaPanico;
-	//private Rastreo mFragmentTwo;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		ServicioLeeBotonEncendido.login = MainActivity.this;
 		startService(new Intent(MainActivity.this,ServicioLeeBotonEncendido.class));
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		presionaPanico = getIntent().getBooleanExtra("panico",false);
+		panicPressed = getIntent().getBooleanExtra("panico",false);
 		Bundle data=null;
-		if(presionaPanico)
-		{
+		if(panicPressed){
 			data = new Bundle();
-			data.putBoolean("panico", presionaPanico);
+			data.putBoolean("panico", panicPressed);
 		}
+		//setContentView(R.layout.fragment_panic);
 		setContentView(R.layout.tabs);
 		PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-		if(ConnectionResult.SUCCESS ==GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext()))
-		{
+
+		if(ConnectionResult.SUCCESS == GooglePlayServicesUtil
+				.isGooglePlayServicesAvailable(getApplicationContext())){
+			
 			PanicButtonFragment mFragmentOne = new PanicButtonFragment();
 			mFragmentOne.setArguments(data);
-			 mPagerAdapter.addFragment(mFragmentOne,"Bot—n de P‡nico");
-		}else
-		{
+			mPagerAdapter.addFragment(mFragmentOne,null);
+		}
+		else{
 			mPagerAdapter.addFragment(new NoPlayServicesFragment(), "Error");
 		}
 
-	     mViewPager = (ViewPager) super.findViewById(R.id.pager);
+	    mViewPager = (ViewPager) super.findViewById(R.id.pager);
 	    mViewPager.setAdapter(mPagerAdapter);
 	    TabPageIndicator  indicator = (TabPageIndicator)findViewById(R.id.indicator);
 	    indicator.setViewPager(mViewPager);

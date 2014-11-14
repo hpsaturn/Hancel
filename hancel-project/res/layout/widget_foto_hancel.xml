@@ -4,14 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_margin="5sp"
-    android:background="@android:color/black">
+    android:background="#FF7B1E">
+    
     <ImageView
         android:id="@+id/widget_image"
         android:layout_width="110sp"
         android:layout_height="110sp"
         android:layout_gravity="center"
         android:src="@drawable/ic_launcher" />
-    
-
-
 </LinearLayout>
