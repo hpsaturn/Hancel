@@ -34,7 +34,6 @@ Google Play Services y PageView se encuentran dentro de la carpeta **hancel-proj
 
 ### Importar el proyecto en eclipse
 
-**Clonar el repositorio desde eclipse **
 * Haciendo clic en `Archivo`-> `Importar`->`Importar desde Git` La URL del proyecto la puedes encontrar al lado derecho (HTTPS clone URL).   
 
 <import.jpg>
