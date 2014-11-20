@@ -17,9 +17,13 @@ zenyagami@gmail.com
 
 import java.util.ArrayList;
 
+import org.hancel.actionbar.model.ActionNavigationAdapter;
+import org.hancel.actionbar.model.ActionNavigationItem;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.Util;
 
+import android.app.ActionBar.OnNavigationListener;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -34,17 +38,25 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.viewpagerindicator.TabPageIndicator;
 
 
-public class MainActivity extends org.holoeverywhere.app.Activity{
+public class MainActivity extends org.holoeverywhere.app.Activity implements OnNavigationListener{
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onResume()
 	 */
 	ViewPager mViewPager;	
 	
-	/* flag for panic button pressing */
+	//flag for panic button pressing
 	boolean panicPressed;
+	
+    private ActionBar actionBar;
+ 
+    //Title navigation Spinner data
+    private ArrayList<ActionNavigationItem> navSpinner;
+     
+    //Navigation adapter
+    private ActionNavigationAdapter adapter;
+	
 	
 	@Override
 	protected void onResume() {
@@ -60,17 +72,24 @@ public class MainActivity extends org.holoeverywhere.app.Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		ServicioLeeBotonEncendido.login = MainActivity.this;
 		startService(new Intent(MainActivity.this,ServicioLeeBotonEncendido.class));
-		// TODO Auto-generated method stub
+		
 		super.onCreate(savedInstanceState);
+				
 		panicPressed = getIntent().getBooleanExtra("panico",false);
 		Bundle data=null;
+
 		if(panicPressed){
 			data = new Bundle();
 			data.putBoolean("panico", panicPressed);
 		}
-		//setContentView(R.layout.fragment_panic);
+		
 		setContentView(R.layout.tabs);
-		PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+		
+		actionBar = getActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		
+        PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
 		if(ConnectionResult.SUCCESS == GooglePlayServicesUtil
 				.isGooglePlayServicesAvailable(getApplicationContext())){
@@ -79,17 +98,16 @@ public class MainActivity extends org.holoeverywhere.app.Activity{
 			mFragmentOne.setArguments(data);
 			mPagerAdapter.addFragment(mFragmentOne,null);
 		}
+		
 		else{
 			mPagerAdapter.addFragment(new NoPlayServicesFragment(), "Error");
 		}
 
 	    mViewPager = (ViewPager) super.findViewById(R.id.pager);
 	    mViewPager.setAdapter(mPagerAdapter);
-	    TabPageIndicator  indicator = (TabPageIndicator)findViewById(R.id.indicator);
-	    indicator.setViewPager(mViewPager);
-	    mViewPager.setOffscreenPageLimit(2);
-	   // mViewPager.setCurrentItem(0);
+	    mViewPager.setOffscreenPageLimit(2);	   
 	}
+	
 	@Override
     public void onConfigurationChanged(Configuration newConfig) 
     {
@@ -164,8 +182,9 @@ public class MainActivity extends org.holoeverywhere.app.Activity{
 	        case R.id.CMD_PREFERENCES:
 	        	if(!Util.isMyServiceRunning(getApplicationContext()))
 	        	{
-	        		startActivity(new Intent(this , Preferencias.class ));
-	        	}else
+	        		startActivity(new Intent(this, Preferencias.class ));
+	        	}
+	        	else
 	        	{
 	        		Toast.makeText(getApplicationContext(), "No se peude modificar en este momento...", 
 	        				Toast.LENGTH_SHORT).show();
@@ -174,5 +193,12 @@ public class MainActivity extends org.holoeverywhere.app.Activity{
 	        default:
 	            return false;
 	        }
+	        //http://www.androidhive.info/2013/11/android-working-with-action-bar/
 	    }
+
+	@Override
+	public boolean onNavigationItemSelected(int arg0, long arg1) {
+		
+		return false;
+	}
 }

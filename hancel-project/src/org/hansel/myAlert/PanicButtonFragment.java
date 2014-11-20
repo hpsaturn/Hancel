@@ -74,6 +74,7 @@ public class PanicButtonFragment extends Fragment
 		super.onResume();
 		txtLastPanic.setText(PreferenciasHancel.getLastPanicAlert(getActivity().getApplicationContext()));
 	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,6 +95,7 @@ public class PanicButtonFragment extends Fragment
 			}
 		}
 	}
+	
 	private void ActivaRadios()
 	{
 		Log.v("Intentamos activar Datos");
@@ -117,6 +119,7 @@ public class PanicButtonFragment extends Fragment
 		//wifiManager.setWifiEnabled(true);
 		
 	}
+	
 	@SuppressWarnings("rawtypes")
 	private void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException {
 		   final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);

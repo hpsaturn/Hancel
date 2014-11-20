@@ -5,5 +5,9 @@
     <color name="blue_light">#ff33b5e5</color>
     <color name="BlueICS">#33B5E5</color>
     <color name="rojo_logo">#EF4147</color>
-    <color name="white">#FFffffff</color>   
+    <color name="white">#FFffffff</color>       
+    <color name="blue_hancel">#FF008186</color>   
+    <color name="orange_hancel">#FFff7B1E</color>
+    <color name="background_app">#FFf5f5f5</color>
+  	<color name="background_header">#FF454d4d</color>
 </resources>

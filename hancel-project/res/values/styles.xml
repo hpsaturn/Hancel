@@ -110,12 +110,12 @@
     </style>
 
     <style name="inputText">
-        <item name="android:textColor">#ededed</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/blue_hancel</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:background">@drawable/input</item>
+        <item name="android:paddingRight">10dp</item>        
+        <item name="android:textCursorDrawable">@color/blue_hancel</item>
+        <item name="android:background">@drawable/input</item>       
         <item name="android:height">48dp</item>
     </style>
 
@@ -166,4 +166,7 @@
         <item name="android:gravity">center</item>
     </style>
     
+    <style name="myCirclePageIndicator">
+    	<item name="fillColor">@color/orange_hancel</item>
+	</style>
 </resources>
