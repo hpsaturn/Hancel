@@ -17,13 +17,9 @@ zenyagami@gmail.com
 
 import java.util.ArrayList;
 
-import org.hancel.actionbar.model.ActionNavigationAdapter;
-import org.hancel.actionbar.model.ActionNavigationItem;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.Util;
 
-import android.app.ActionBar.OnNavigationListener;
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -40,7 +36,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 
-public class MainActivity extends org.holoeverywhere.app.Activity implements OnNavigationListener{
+public class MainActivity extends org.holoeverywhere.app.Activity{//ments OnNavigationListener{
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onResume()
 	 */
@@ -49,13 +45,13 @@ public class MainActivity extends org.holoeverywhere.app.Activity implements OnN
 	//flag for panic button pressing
 	boolean panicPressed;
 	
-    private ActionBar actionBar;
+    //private ActionBar actionBar;
  
     //Title navigation Spinner data
-    private ArrayList<ActionNavigationItem> navSpinner;
+    //private ArrayList<ActionNavigationItem> navSpinner;
      
     //Navigation adapter
-    private ActionNavigationAdapter adapter;
+   //private ActionNavigationAdapter adapter;
 	
 	
 	@Override
@@ -85,10 +81,10 @@ public class MainActivity extends org.holoeverywhere.app.Activity implements OnN
 		
 		setContentView(R.layout.tabs);
 		
-		actionBar = getActionBar();
+		/*actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		
+		*/
         PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
 		if(ConnectionResult.SUCCESS == GooglePlayServicesUtil
@@ -196,9 +192,5 @@ public class MainActivity extends org.holoeverywhere.app.Activity implements OnN
 	        //http://www.androidhive.info/2013/11/android-working-with-action-bar/
 	    }
 
-	@Override
-	public boolean onNavigationItemSelected(int arg0, long arg1) {
-		
-		return false;
-	}
+	
 }
