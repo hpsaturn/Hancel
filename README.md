@@ -38,20 +38,27 @@ Google Play Services y PageView se encuentran dentro de la carpeta **hancel-proj
 
 ![master](https://github.com/Izel/Hancel/blob/master/doc/img/master.png)
 
-El proyecto iniciará la descarga en la ruta especificada.  Una vez finalizada la descarga, eclipse inicia con la operación `import`
+El proyecto iniciará la descarga en la ruta especificada.  Una vez finalizada la descarga, eclipse inicia con la operación import y muestra la siguiente ventana.
 
+![importProjects](https://github.com/Izel/Hancel/blob/master/doc/img/importProjects.png)
+
+* Seleccione la opción `import existing projects` y haga clic en `next`
 * Seleccione todos los proyectos excepto `slider` y `demoActivity` y haga clic en `finalizar`
+* Los proyectos quedan importados y deberían visualizarse de la siguiente forma:
+
+![proyectosOK](https://github.com/Izel/Hancel/blob/master/doc/img/proyectosOk.png)
+
 
 ### Errores de classpath
+
 Es posible que después de realizar el import deba modificar las características de los proyectos puesto que el archivo .classpath no esta en el repositorio y no se descarga. Si los proyectos presentan error haga lo siguiente:
 
-* Haga clic derecho en cada uno de los proyectos `Properties`-> `Build Path`, seleccione la pestaña `source` y haca clic en el boton `Add source`
+* Haga clic derecho en cada uno de los proyectos `Properties`-> `Build Path`, seleccione la pestaña `source` y haga clic en el boton `Add source`
 * Seleccione `gen` y `src` y haga clic en `ok`
+
+![gen](https://github.com/Izel/Hancel/blob/master/doc/img/gen.png)
+
 * Aparecerá un cuadro de dialogo. Seleccione `yes`
 * Repita la operación para cada uno de los proyectos.
 
-
-Hancel utiliza ACRA como sistema de log. Como actualmente estamos importando el JAR en lugar de compilar como biblioteca, debes verificar que el proyecto **Holo Everywhere Library** incluya la ruta correcta al archivo `acra-4.5.0.jar` localizado en la carpeta `libs` de Holo Everywhere Library
-
-![Imgur](http://i.imgur.com/Xeh2JSc.png)
 
