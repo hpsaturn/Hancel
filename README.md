@@ -28,13 +28,15 @@ Google Play Services y PageView se encuentran dentro de la carpeta **hancel-proj
 
 * Haciendo clic en `File`-> `Import`-> `Git`-> `Projects from Git` La URL del proyecto la puedes encontrar al lado derecho (HTTPS clone URL).
 
-(https://github.com/Izel/Hancel/blob/master/doc/img/import.png)
+!(https://github.com/Izel/Hancel/blob/master/doc/img/import.png)
 
 * Ingresar los datos para clonar el proyecto
-(https://github.com/Izel/Hancel/blob/master/doc/img/clone.png)
+
+!(https://github.com/Izel/Hancel/blob/master/doc/img/clone.png)
 
 * Seleccionar la rama `Master`
-(https://github.com/Izel/Hancel/blob/master/doc/img/master.png)
+
+!(https://github.com/Izel/Hancel/blob/master/doc/img/master.png)
 
 El proyecto iniciará la descarga en la ruta especificada.  Una vez finalizada la descarga, se inicia con la operacion import
 
