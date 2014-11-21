@@ -28,29 +28,28 @@ Google Play Services y PageView se encuentran dentro de la carpeta **hancel-proj
 
 * Haciendo clic en `File`-> `Import`-> `Git`-> `Projects from Git` La URL del proyecto la puedes encontrar al lado derecho (HTTPS clone URL).
 
-!(https://github.com/Izel/Hancel/blob/master/doc/img/import.png)
+![import](https://github.com/Izel/Hancel/blob/master/doc/img/import.png)
 
 * Ingresar los datos para clonar el proyecto
 
-!(https://github.com/Izel/Hancel/blob/master/doc/img/clone.png)
+![clone](https://github.com/Izel/Hancel/blob/master/doc/img/clone.png)
 
 * Seleccionar la rama `Master`
 
-!(https://github.com/Izel/Hancel/blob/master/doc/img/master.png)
+![master](https://github.com/Izel/Hancel/blob/master/doc/img/master.png)
 
-El proyecto iniciará la descarga en la ruta especificada.  Una vez finalizada la descarga, se inicia con la operacion import
+El proyecto iniciará la descarga en la ruta especificada.  Una vez finalizada la descarga, eclipse inicia con la operación `import`
 
+* Seleccione todos los proyectos excepto `slider` y `demoActivity` y haga clic en `finalizar`
 
-* Descargue el proyecto en la ruta `/home/<user>/git/Hancel`
-* Hacer clic derecho en la sección de `package explorer` y seleccionar `Import`->`Git`->`Projects from Git`.
-* Seleccione `Local`.
-* Seleccione el repositorio local (carpeda en la que realizó la descarga).
-* Seleccione la opción `Import Existing Projects`.
-* Seleccione todos los proyectos excepto `slider` y `demoActivity`.
-* Haga clic en `finalizar`
-* Los proyectos deben visualizarse de la siguiente forma:
+### Errores de classpath
+Es posible que después de realizar el import deba modificar las características de los proyectos puesto que el archivo .classpath no esta en el repositorio y no se descarga. Si los proyectos presentan error haga lo siguiente:
 
-<proyectos.jpg>
+* Haga clic derecho en cada uno de los proyectos `Properties`-> `Build Path`, seleccione la pestaña `source` y haca clic en el boton `Add source`
+* Seleccione `gen` y `src` y haga clic en `ok`
+* Aparecerá un cuadro de dialogo. Seleccione `yes`
+* Repita la operación para cada uno de los proyectos.
+
 
 Hancel utiliza ACRA como sistema de log. Como actualmente estamos importando el JAR en lugar de compilar como biblioteca, debes verificar que el proyecto **Holo Everywhere Library** incluya la ruta correcta al archivo `acra-4.5.0.jar` localizado en la carpeta `libs` de Holo Everywhere Library
 
