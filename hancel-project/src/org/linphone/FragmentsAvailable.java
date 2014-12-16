@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * @author Sylvain Berfini
  */
 public enum FragmentsAvailable {
-	UNKNOW,
+	UNKNOW,	
 	DIALER,
 	HISTORY,
 	HISTORY_DETAIL,
@@ -34,7 +34,8 @@ public enum FragmentsAvailable {
 	ACCOUNT_SETTINGS,
 	SETTINGS,
 	CHATLIST,
-	CHAT;
+	CHAT,
+	RING;
 	
 	public boolean shouldAddToBackStack() {
 		return true;
