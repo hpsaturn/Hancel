@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneCall;
 import org.linphone.core.LinphoneCallParams;
 import org.linphone.core.LinphoneCallStats;

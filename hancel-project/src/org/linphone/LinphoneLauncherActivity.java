@@ -20,6 +20,7 @@ package org.linphone;
 
 import static android.content.Intent.ACTION_MAIN;
 
+import org.hansel.myAlert.R;
 import org.linphone.mediastream.Log;
 import org.linphone.setup.RemoteProvisioningActivity;
 import org.linphone.tutorials.TutorialLauncherActivity;

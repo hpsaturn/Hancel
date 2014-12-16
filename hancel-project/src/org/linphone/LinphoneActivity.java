@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import org.hansel.myAlert.R;
 import org.linphone.LinphoneManager.AddressType;
 import org.linphone.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnMessageReceivedListener;

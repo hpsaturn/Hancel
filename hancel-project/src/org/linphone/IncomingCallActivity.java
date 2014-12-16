@@ -20,6 +20,7 @@ package org.linphone;
 
 import java.util.List;
 
+import org.hansel.myAlert.R;
 import org.linphone.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneCall;

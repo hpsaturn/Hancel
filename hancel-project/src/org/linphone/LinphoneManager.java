@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.hansel.myAlert.R;
 import org.linphone.LinphoneSimpleListener.ConnectivityChangedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnAudioChangedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnAudioChangedListener.AudioState;
