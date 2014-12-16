@@ -23,7 +23,9 @@ import java.util.regex.Pattern;
 
 import org.linphone.LinphoneManager;
 import org.linphone.LinphoneService;
-import org.linphone.R;
+import org.hansel.myAlert.R;
+
+
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

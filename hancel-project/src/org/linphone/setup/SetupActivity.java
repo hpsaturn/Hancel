@@ -21,7 +21,7 @@ import org.linphone.LinphoneManager;
 import org.linphone.LinphonePreferences;
 import org.linphone.LinphonePreferences.AccountBuilder;
 import org.linphone.LinphoneSimpleListener.LinphoneOnRegistrationStateChangedListener;
-import org.linphone.R;
+import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneAddress.TransportType;
 import org.linphone.core.LinphoneCore.RegistrationState;
 import org.linphone.core.LinphoneCoreException;
