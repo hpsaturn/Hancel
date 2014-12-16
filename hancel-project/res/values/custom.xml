@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="history_date_format">d MMM</string>
+	<string name="history_detail_date_format">EEEE MMM d HH:mm</string>
+	<string name="messages_date_format">HH:mm d MMM</string>
+	<string name="today_date_format">HH:mm</string>
+	<string name="picture_name_format">linphone-mms-%s.jpg</string>
+    
+	<string name="app_name">Hancel</string>
+	<string name="service_name">Hancel Service</string>
+	<string name="addressbook_label">Hancel</string>
+	<string name="notification_title">Hancel</string>
+	<string name="wait_dialog_text">Iniciando</string>
+	<string name="notification_registered">Registered to %s </string> 
+	<string name="notification_register_failure">Error al registrar %s</string>
+	<string name="about_text">Hancel %s SIP (rfc 3261) compatible phone under GNU Public License V2</string>
+	<string name="about_link">http://www.linphone.org\n\nInstructions\nhttp://www.linphone.org/m/help\n\n© 2011 Belledonne Communications</string>
+	
+	<string name="setup_welcome">This assistant will help you to use a SIP account for your calls.</string>
+	<string name="setup_create_account">Cree una cuenta en linphone.org</string>
+	<string name="setup_login_linphone">Ya tengo una cuenta en linphone.org account</string>
+	<string name="setup_login_generic">Tengo una cuenta con un SIP </string>
+	<string name="setup_linphone_account_hint">Ingrese su usuario y contraseña linphone.org</string>
+	<string name="setup_general_account_hint">Ingrese su usuario, contraseña y el dominio SIP</string>
+	
+        <string name="setup_username_hint">usuario</string>
+
+    <string name="tunnel_host"></string>
+</resources>
+ 
