@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneChatMessage;
 import org.linphone.core.LinphoneChatRoom;
