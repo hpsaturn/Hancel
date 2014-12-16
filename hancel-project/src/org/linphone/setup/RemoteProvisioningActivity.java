@@ -26,7 +26,16 @@ import org.linphone.LinphoneManager;
 import org.linphone.LinphonePreferences;
 import org.linphone.LinphoneService;
 import org.linphone.LinphoneSimpleListener.LinphoneOnRemoteProvisioningListener;
-import org.linphone.R;
+import org.hansel.myAlert.R;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
 import org.linphone.core.LinphoneCore.RemoteProvisioningState;
 import org.linphone.mediastream.Log;
 

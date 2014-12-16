@@ -522,6 +522,5 @@
 	<string name="remote_provisioning_failure">Failed to download or apply remote provisioning profile...</string>
 	<string name="remote_provisioning_again_title">Remote provisioning</string>
 	<string name="remote_provisioning_again_message">Do you want to change the provisioning URI ?</string>
-    
-    
+        <string name="setup_title_assistant">Account setup assistant</string> 
 </resources>
