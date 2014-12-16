@@ -1,5 +1,5 @@
 package org.linphone.compatibility;
-
+/*
 import org.linphone.LinphonePreferences;
 import org.linphone.R;
 import org.linphone.mediastream.Log;
@@ -9,7 +9,7 @@ import android.content.Context;
 import android.media.AudioManager;
 
 import com.google.android.gcm.GCMRegistrar;
-
+*/
 /*
 ApiEightPlus.java
 Copyright (C) 2012  Belledonne Communications, Grenoble, France
@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 /**
  * @author Sylvain Berfini
  */
+/*
 @TargetApi(8)
 public class ApiEightPlus {
 
@@ -65,3 +66,4 @@ public class ApiEightPlus {
 		return AudioManager.ACTION_SCO_AUDIO_STATE_CHANGED;
 	}
 }
+*/

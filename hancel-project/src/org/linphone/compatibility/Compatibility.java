@@ -217,9 +217,11 @@ public class Compatibility {
 	}
 	
 	public static void initPushNotificationService(Context context) {
+		/*
 		if (Version.sdkAboveOrEqual(Version.API08_FROYO_22)) {
 			ApiEightPlus.initPushNotificationService(context);
 		}
+		*/
 	}
 
 	public static void copyTextToClipboard(Context context, String msg) {
@@ -293,11 +295,13 @@ public class Compatibility {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static String getAudioManagerEventForBluetoothConnectionStateChangedEvent() {
 		if (Version.sdkAboveOrEqual(Version.API14_ICE_CREAM_SANDWICH_40)) {
 			return ApiFourteenPlus.getAudioManagerEventForBluetoothConnectionStateChangedEvent();
 		} else {
-			return ApiEightPlus.getAudioManagerEventForBluetoothConnectionStateChangedEvent();
+			return AudioManager.ACTION_SCO_AUDIO_STATE_CHANGED;
+			//return ApiEightPlus.getAudioManagerEventForBluetoothConnectionStateChangedEvent();
 		}
 	}
 }
