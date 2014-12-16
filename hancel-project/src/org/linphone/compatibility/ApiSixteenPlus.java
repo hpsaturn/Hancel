@@ -1,6 +1,6 @@
 package org.linphone.compatibility;
 
-import org.linphone.R;
+import org.hansel.myAlert.R;
 
 import android.annotation.TargetApi;
 import android.app.Notification;

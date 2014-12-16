@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.linphone.Contact;
-import org.linphone.R;
+import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneAddress;
 
 import android.annotation.TargetApi;

@@ -2,7 +2,7 @@ package org.linphone.compatibility;
 
 import java.util.ArrayList;
 
-import org.linphone.R;
+import org.hansel.myAlert.R;
 import org.linphone.mediastream.Log;
 
 import android.annotation.TargetApi;
