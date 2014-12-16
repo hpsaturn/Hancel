@@ -3,194 +3,323 @@ package org.hansel.myAlert;
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program. If not, see <http://www.gnu.org/licenses/>.
 Created by Javier Mejia @zenyagami
 zenyagami@gmail.com
-	*/
+ */
+import static android.content.Intent.ACTION_MAIN;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.Util;
+import org.holoeverywhere.app.Activity;
+import org.linphone.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
+import org.linphone.core.LinphoneAddress;
+import org.linphone.core.LinphoneCall;
+import org.linphone.core.LinphoneCall.State;
+import org.linphone.core.LinphoneChatMessage;
+import org.linphone.core.LinphoneCore.RegistrationState;
+import org.linphone.core.LinphoneCoreException;
+import org.linphone.core.LinphoneCoreFactory;
+import org.linphone.core.LinphoneProxyConfig;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import org.linphone.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
+import org.linphone.LinphoneSimpleListener.LinphoneOnMessageReceivedListener;
+import org.linphone.LinphoneSimpleListener.LinphoneOnRegistrationStateChangedListener;
 
 
-public class MainActivity extends org.holoeverywhere.app.Activity{//ments OnNavigationListener{
-	/* (non-Javadoc)
-	 * @see android.support.v4.app.FragmentActivity#onResume()
-	 */
-	ViewPager mViewPager;	
+public class MainActivity extends Activity implements 
+OnClickListener, ContactPicked, LinphoneOnCallStateChangedListener,
+LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	
-	//flag for panic button pressing
-	boolean panicPressed;
+	ViewPager mViewPager;
+	/** flag for panic button pressing**/
+	private boolean panicPressed;
 	
-    //private ActionBar actionBar;
- 
-    //Title navigation Spinner data
-    //private ArrayList<ActionNavigationItem> navSpinner;
-     
-    //Navigation adapter
-   //private ActionNavigationAdapter adapter;
+	/** Opened or started app frames **/
+	private List<HancelFragments> hancelFragmentsAvailable;
+	private HancelFragments currentFragment, nextFragment;
+	private Fragment chatMessageFragment;
+	
+	/** Chat room variables **/
+	private RelativeLayout chat;
+	
+	/** For singleton **/
+	private static MainActivity instance;
+	
+	/** Recovering code after crashing Google Play services **/
+	private static final int RECOVER_CODE_PLAY_SERVICES = 1001;
+	
 	
 	
 	@Override
 	protected void onResume() {
-		super.onResume();	
+		// a guarantee for never incorrectly assume that Google Play Services 
+		// is properly configured
+		if(isGooglePlayServicesAvailable()){
+			//TODO
+		}
+		super.onResume();
 	}
-
+	
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
+		
+		Bundle extras = intent.getExtras();		
+		if (extras != null && extras.getBoolean("StartChat", false)) {
+			//TODO: LinphoneService.instance().removeMessageNotification();
+			String sipUri = extras.getString("ChatContactSipUri");
+			displayChat(sipUri);
+		}
 	}
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {		
 		ServicioLeeBotonEncendido.login = MainActivity.this;
 		startService(new Intent(MainActivity.this,ServicioLeeBotonEncendido.class));
-		
 		super.onCreate(savedInstanceState);
+		
+		if(!isGooglePlayServicesAvailable()){
+			finish();
+		}
+		
+		//Setting the main content view and default frame 
+		setContentView(R.layout.tabs);
 				
 		panicPressed = getIntent().getBooleanExtra("panico",false);
-		Bundle data=null;
-
+		Bundle data = null;
+		
 		if(panicPressed){
 			data = new Bundle();
-			data.putBoolean("panico", panicPressed);
+			data.putBoolean("panico", true);
 		}
+				
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		PanicButtonFragment panicFragment = new PanicButtonFragment();
 		
-		setContentView(R.layout.tabs);
+		panicFragment.setArguments(data);
+		fragmentTransaction.replace(R.id.status, panicFragment);
+		fragmentTransaction.commit();
+		initButtons();
 		
-		/*actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		*/
-        PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-
-		if(ConnectionResult.SUCCESS == GooglePlayServicesUtil
-				.isGooglePlayServicesAvailable(getApplicationContext())){
-			
-			PanicButtonFragment mFragmentOne = new PanicButtonFragment();
-			mFragmentOne.setArguments(data);
-			mPagerAdapter.addFragment(mFragmentOne,null);
-		}
-		
-		else{
-			mPagerAdapter.addFragment(new NoPlayServicesFragment(), "Error");
-		}
-
-	    mViewPager = (ViewPager) super.findViewById(R.id.pager);
-	    mViewPager.setAdapter(mPagerAdapter);
-	    mViewPager.setOffscreenPageLimit(2);	   
+		instance = this;
+		hancelFragmentsAvailable = new ArrayList <HancelFragments>();
+		currentFragment = nextFragment = HancelFragments.PANIC;
+		hancelFragmentsAvailable.add(currentFragment);	
 	}
 	
+	
 	@Override
-    public void onConfigurationChanged(Configuration newConfig) 
-    {
-        super.onConfigurationChanged(newConfig);
-        Log.v("onConfigurationChangedMain");
-    }
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		Log.v("onConfigurationChangedMain");
+	}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if(outState!=null)
-		{
-			//outState.putBoolean("panico", presionaPanico);
-		}
+		super.onSaveInstanceState(outState);		
 	}
+	
 	@Override
 	public void onBackPressed() {
-		//super.onBackPressed();
-		this.moveTaskToBack(true);
-		/*if(mFragmentTwo!=null && mFragmentTwo.isTracking())
-		{
-			Toast.makeText(getApplicationContext(), "No se puede salir durante el rastreo", 
-					Toast.LENGTH_SHORT).show();
-		}else
-		{
-			super.onBackPressed();
-		} */
+		this.moveTaskToBack(true);	
+		super.onBackPressed();
+	}
+	
+	static final boolean isInstanciated() {
+		return instance != null;
 	}
 
-	public class PagerAdapter extends FragmentPagerAdapter   {
+	public static final MainActivity instance() {
+		if (instance != null)
+			return instance;
+		throw new RuntimeException("HancelMainActivity not instantiated yet");
+	}
+	
+	
+	private boolean isGooglePlayServicesAvailable(){
+		int status = GooglePlayServicesUtil
+				.isGooglePlayServicesAvailable(getApplicationContext());
 
-	    @Override
-		public CharSequence getPageTitle(int position) {
-		return titulos.get(position);
+		if(status != ConnectionResult.SUCCESS){
+			if (GooglePlayServicesUtil.isUserRecoverableError(status)) {
+				GooglePlayServicesUtil.getErrorDialog(status, this, 
+						RECOVER_CODE_PLAY_SERVICES).show();				
+			}
+			else{
+				Toast.makeText(this, "Device not supprted", 
+						Toast.LENGTH_LONG).show();
+				finish();
+			}
+			return false;
+		}
+		return true;
+	}
+			
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater infla = getSupportMenuInflater();
+		infla.inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.CMD_PREFERENCES:
+			if(!Util.isMyServiceRunning(getApplicationContext())){
+				startActivity(new Intent(this, Preferencias.class ));
+			}
+			else{
+				Toast.makeText(getApplicationContext(), 
+						"No se puede modificar en este momento...",
+					Toast.LENGTH_SHORT).show();
+			}
+			return true;
+		case R.id.CMD_ACTIONS:
+			
+		default:
+			return false;
+		}
+	}
+	
+	/*
+	 * Initialization of menu buttons
+	 */
+	private void initButtons() {
+		chat = (RelativeLayout) findViewById(R.id.chat);
+		chat.setOnClickListener(this);
+	}
+
+	
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		resetSelection();
+		if (id == R.id.chat) {
+			//changeCurrentFragment()
+			FragmentManager fm = getSupportFragmentManager();
+			FragmentTransaction ft = fm.beginTransaction();
+			ft.replace(R.id.status, new ChatFragment());
+			ft.commit();
+			chat.setSelected(true);
+		}
+	}
+	
+	private void resetSelection() {
+		chat.setSelected(false);		
+	}
+	
+	
+	public void displayChat(String sipUri) {
+		if (getResources().getBoolean(R.bool.disable_chat)) {
+			return;
 		}
 
-		private final ArrayList<Fragment> mFragments = new ArrayList<Fragment>();
-	    private final ArrayList<String> titulos = new ArrayList<String>();
-	    
+		LinphoneAddress lAddress;
+		try {
+			lAddress = LinphoneCoreFactory.instance().createLinphoneAddress(sipUri);
+		} 
+		catch (LinphoneCoreException e) {
+			//TODO LOG("Cannot display chat",e);
+			return;
+		}
+		
+		//Uri uri = LinphoneUtils.findUriPictureOfContactAndSetDisplayName(lAddress, getContentResolver());
+		String displayName = lAddress.getDisplayName();
+		//String pictureUri = uri == null ? null : uri.toString();
 
-	    public PagerAdapter(FragmentManager manager) {
-	        super(manager);
-	    }
+		if (currentFragment == HancelFragments.CHAT || currentFragment == HancelFragments.CHATLIST) {
+			Fragment fragment2 = getSupportFragmentManager().findFragmentById(R.id.status);
+			if (fragment2 != null && fragment2.isVisible() && currentFragment == HancelFragments.CHAT) {
+				ChatFragment chatFragment = (ChatFragment) fragment2;
+				chatFragment.changeDisplayedChat(sipUri, displayName, null);
+			} 
+			else {
+				Bundle extras = new Bundle();
+				extras.putString("SipUri", sipUri);
+				if (lAddress.getDisplayName() != null) {
+					extras.putString("DisplayName", displayName);
+					extras.putString("PictureUri", null);
+				}
+				changeCurrentFragment(HancelFragments.CHAT, extras);
+			}
+		} 
+		else {
+			changeCurrentFragment(HancelFragments.CHATLIST, null);
+			displayChat(sipUri);
+		}
+		LinphoneService.instance().resetMessageNotifCount();
+		LinphoneService.instance().removeMessageNotification();
+		displayMissedChats(getChatStorage().getUnreadMessageCount());
+	}
+	
+	
+	private void changeCurrentFragment(HancelFragments newHancelFragment, Bundle extras){
+		if (newHancelFragment == currentFragment && newHancelFragment != HancelFragments.CHAT) {
+			return;
+		}
+		nextFragment = newHancelFragment;
+		Fragment newFragment = null;
+		
+		switch(newHancelFragment){
+		case CHAT:
+			newFragment = new ChatFragment();
+			chatMessageFragment = newFragment;
+			break;
+		case CHATLIST:
+			newFragment = new ChatListFragment();
+			messageListFragment = new Fragment();
+			break;
+		default:
+		}		
+	}
 
-	    public void addFragment(Fragment fragment,String title) {
-	        mFragments.add(fragment);
-	        titulos.add(title);
-	        notifyDataSetChanged();
-	    }
-
-	    @Override
-	    public int getCount() {
-	        return mFragments.size();
-	    }
-
-	    @Override
-	    public Fragment getItem(int position) {
-	        return mFragments.get(position);
-	    }
-
+	@Override
+	public void onCallStateChanged(LinphoneCall call, State state,
+			String message) {
+		// TODO Auto-generated method stub
 		
 	}
-	  @Override
-	    public boolean onCreateOptionsMenu(Menu menu) {
-	 	MenuInflater infla = getSupportMenuInflater();
-			infla.inflate(R.menu.main, menu);
-	     return true;
-	    }
-	  @Override
-	    public boolean onOptionsItemSelected(MenuItem item) {
-	        switch (item.getItemId()) {
-	        case R.id.CMD_PREFERENCES:
-	        	if(!Util.isMyServiceRunning(getApplicationContext()))
-	        	{
-	        		startActivity(new Intent(this, Preferencias.class ));
-	        	}
-	        	else
-	        	{
-	        		Toast.makeText(getApplicationContext(), "No se peude modificar en este momento...", 
-	        				Toast.LENGTH_SHORT).show();
-	        	}
-	            return true;
-	        default:
-	            return false;
-	        }
-	        //http://www.androidhive.info/2013/11/android-working-with-action-bar/
-	    }
 
+	@Override
+	public void onRegistrationStateChanged(LinphoneProxyConfig proxy,
+			RegistrationState state, String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMessageReceived(LinphoneAddress from,
+			LinphoneChatMessage message, int id) {
+		// TODO Auto-generated method stub
+		
+	}	
 	
 }
