@@ -21,7 +21,7 @@ package org.linphone.ui;
 import org.linphone.InCallActivity;
 import org.linphone.LinphoneManager;
 import org.linphone.LinphoneService;
-import org.linphone.R;
+import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneCore;
 import org.linphone.mediastream.Log;
 

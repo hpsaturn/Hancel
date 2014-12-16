@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.linphone.R;
+import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneChatMessage;
 import org.linphone.core.LinphoneChatMessage.State;
 
