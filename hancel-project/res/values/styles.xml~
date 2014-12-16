@@ -169,12 +169,4 @@
     <style name="myCirclePageIndicator">
     	<item name="fillColor">@color/orange_hancel</item>
 	</style>
-
-	<!--Linphone styles -->
-
-    <style name="Default" parent="android:Theme" />
-    <style name="NoTitle" parent="android:Theme.NoTitleBar" />
-    <style name="FullScreen" parent="android:Theme.NoTitleBar.Fullscreen" />
-
-	<!--End Linphone styles -->
 </resources>
