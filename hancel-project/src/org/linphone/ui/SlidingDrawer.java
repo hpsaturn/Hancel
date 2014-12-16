@@ -18,7 +18,7 @@ package org.linphone.ui;
  * Modifications by: Sylvain Berfini
  */
 
-import org.linphone.R;
+import org.hansel.myAlert.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;

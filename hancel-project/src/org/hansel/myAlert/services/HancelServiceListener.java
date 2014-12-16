@@ -3,6 +3,7 @@ import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneChatMessage;
 import org.linphone.core.LinphoneChatRoom;
 import org.linphone.core.LinphoneCore.GlobalState;
+
 import org.linphone.core.LinphoneCore.RegistrationState;
 import org.linphone.core.LinphoneProxyConfig;
 

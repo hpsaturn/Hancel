@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 import java.util.List;
 
+import org.hansel.myAlert.R;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.core.LinphoneFriend;
 import org.linphone.core.PresenceActivityType;

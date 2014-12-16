@@ -1,6 +1,7 @@
 package org.linphone.ui;
 
-import org.linphone.R;
+
+import org.hansel.myAlert.R;
 
 import android.content.Context;
 import android.graphics.Canvas;

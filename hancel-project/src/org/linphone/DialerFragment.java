@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneCore;
 import org.linphone.mediastream.Log;
 import org.linphone.ui.AddressAware;
@@ -65,10 +66,12 @@ public class DialerFragment extends Fragment {
 		if (LinphoneActivity.isInstanciated() && LinphoneManager.getLc().getCallsNb() > 0) {
 			if (isCallTransferOngoing) {
 				mCall.setImageResource(R.drawable.transfer_call);
-			} else {
+			} 
+			else {
 				mCall.setImageResource(R.drawable.add_call);
 			}
-		} else {
+		} 
+		else {
 			mCall.setImageResource(R.drawable.call);
 		}
 		

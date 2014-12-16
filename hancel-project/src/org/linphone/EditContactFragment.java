@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hansel.myAlert.R;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.mediastream.Log;
 import org.linphone.mediastream.Version;

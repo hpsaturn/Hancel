@@ -21,7 +21,8 @@ package org.linphone.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.linphone.R;
+import org.hansel.myAlert.R;
+
 
 import android.content.Context;
 import android.content.res.TypedArray;

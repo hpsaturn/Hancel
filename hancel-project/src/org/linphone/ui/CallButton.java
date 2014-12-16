@@ -18,8 +18,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package org.linphone.ui;
 
+import org.hansel.myAlert.R;
 import org.linphone.LinphoneManager;
-import org.linphone.R;
 import org.linphone.core.CallDirection;
 import org.linphone.core.LinphoneCallLog;
 import org.linphone.core.LinphoneCoreException;

@@ -31,6 +31,7 @@ import org.linphone.core.LinphoneCoreFactory;
 import org.linphone.core.LinphoneProxyConfig;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,6 +47,10 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import org.linphone.ChatFragment;
+import org.linphone.ChatListFragment;
+import org.linphone.LinphoneService;
 import org.linphone.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnMessageReceivedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnRegistrationStateChangedListener;
@@ -56,6 +61,7 @@ OnClickListener, ContactPicked, LinphoneOnCallStateChangedListener,
 LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	
 	ViewPager mViewPager;
+	
 	/** flag for panic button pressing**/
 	private boolean panicPressed;
 	
@@ -73,29 +79,6 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	/** Recovering code after crashing Google Play services **/
 	private static final int RECOVER_CODE_PLAY_SERVICES = 1001;
 	
-	
-	
-	@Override
-	protected void onResume() {
-		// a guarantee for never incorrectly assume that Google Play Services 
-		// is properly configured
-		if(isGooglePlayServicesAvailable()){
-			//TODO
-		}
-		super.onResume();
-	}
-	
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		
-		Bundle extras = intent.getExtras();		
-		if (extras != null && extras.getBoolean("StartChat", false)) {
-			//TODO: LinphoneService.instance().removeMessageNotification();
-			String sipUri = extras.getString("ChatContactSipUri");
-			displayChat(sipUri);
-		}
-	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
@@ -131,6 +114,28 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		hancelFragmentsAvailable = new ArrayList <HancelFragments>();
 		currentFragment = nextFragment = HancelFragments.PANIC;
 		hancelFragmentsAvailable.add(currentFragment);	
+	}
+	
+	@Override
+	protected void onResume() {
+		// a guarantee for never incorrectly assume that Google Play Services 
+		// is properly configured
+		if(isGooglePlayServicesAvailable()){
+			//TODO
+		}
+		super.onResume();
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		
+		Bundle extras = intent.getExtras();		
+		if (extras != null && extras.getBoolean("StartChat", false)) {
+			LinphoneService.instance().removeMessageNotification();
+			String sipUri = extras.getString("ChatContactSipUri");
+			displayChat(sipUri);
+		}
 	}
 	
 	
@@ -320,6 +325,5 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			LinphoneChatMessage message, int id) {
 		// TODO Auto-generated method stub
 		
-	}	
-	
+	}		
 }
