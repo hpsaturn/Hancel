@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.util.ByteArrayBuffer;
+import org.hansel.myAlert.R;
 import org.linphone.LinphoneSimpleListener.LinphoneOnComposingReceivedListener;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.core.LinphoneAddress;
@@ -133,7 +134,7 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 		String displayName = getArguments().getString("DisplayName");
 		String pictureUri = getArguments().getString("PictureUri");
 
-        view = inflater.inflate(R.layout.chat, container, false);
+        view = inflater.inflate(R.layout.fragment_chat, container, false);
 
         useLinphoneMessageStorage = getResources().getBoolean(R.bool.use_linphone_chat_storage);
 
@@ -351,9 +352,9 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 		}
 
         if (pictureUri != null) {
-        	LinphoneUtils.setImagePictureFromUri(view.getContext(), contactPicture.getView(), Uri.parse(pictureUri), R.drawable.unknown_small);
+        	LinphoneUtils.setImagePictureFromUri(view.getContext(), contactPicture.getView(), Uri.parse(pictureUri), R.drawable.ic_contact_picture);
         } else {
-        	contactPicture.setImageResource(R.drawable.unknown_small);
+        	contactPicture.setImageResource(R.drawable.ic_contact_picture);
         }
 	}
 
