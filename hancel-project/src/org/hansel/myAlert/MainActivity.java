@@ -428,7 +428,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 //				hideStatusBar();
 //			}
 //		}
-		/*if (statusFragment != null) {
+		if (statusFragment != null) {
 			statusFragment.closeStatusBar();
 		}
 
@@ -476,8 +476,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if (currentFragment == FragmentsAvailable.DIALER) {
 			fragmentsHistory.clear();
 		}
-		fragmentsHistory.add(currentFragment);*/
+		fragmentsHistory.add(currentFragment);
 	}
+	
 
 	public void displayHistoryDetail(String sipUri, LinphoneCallLog log) {
 		LinphoneAddress lAddress;

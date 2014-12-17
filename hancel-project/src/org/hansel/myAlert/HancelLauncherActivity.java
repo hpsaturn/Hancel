@@ -81,7 +81,8 @@ public class HancelLauncherActivity  extends Activity {
 			classToStart = RemoteProvisioningActivity.class;
 		} 
 		else {
-			classToStart = MainActivity.class;
+			//classToStart = MainActivity.class;
+			classToStart = Login.class;
 		}
 		
 		LinphoneService.instance().setActivityToLaunchOnIncomingReceived(classToStart);
