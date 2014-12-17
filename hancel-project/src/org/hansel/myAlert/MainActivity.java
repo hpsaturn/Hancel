@@ -121,6 +121,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	/** Recovering code after crashing Google Play services **/
 	private static final int RECOVER_CODE_PLAY_SERVICES = 1001;
 	
+	private static final String TAG = "Hancel";
 	
 	public static final String PREF_FIRST_LAUNCH = "pref_first_launch";
 	private static final int SETTINGS_ACTIVITY = 123;
@@ -135,8 +136,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	private RelativeLayout contacts, history, settings, chat, aboutChat, aboutSettings;
 	private FragmentsAvailable currentFragment, nextFragment;
 	private List<FragmentsAvailable> fragmentsHistory;
-	private Fragment dialerFragment, messageListenerFragment, messageListFragment, friendStatusListenerFragment;
-	private SavedState dialerSavedState;
+	private Fragment panicFragment, dialerFragment, messageListenerFragment, messageListFragment, friendStatusListenerFragment;
+	private SavedState dialerSavedState, panicSavedState;
 	private boolean preferLinphoneContacts = false, isAnimationDisabled = false, isContactPresenceDisabled = true;
 	private Handler mHandler = new Handler();
 	private List<Contact> contactList, sipContactList;
@@ -177,10 +178,10 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		PanicButtonFragment panicFragment = new PanicButtonFragment();
+		panicFragment = new PanicButtonFragment();
 		
 		panicFragment.setArguments(data);
-		fragmentTransaction.replace(R.id.status, panicFragment);
+		fragmentTransaction.replace(R.id.fragmentContainer, panicFragment);
 		fragmentTransaction.commit();
 		initButtons();
 		
@@ -242,8 +243,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			return;
 		}
 		
-		findViewById(R.id.status).setVisibility(View.GONE);
+		findViewById(R.id.fragmentContainer).setVisibility(View.GONE);
 		findViewById(R.id.fragmentContainer).setPadding(0, 0, 0, 0);
+		
 	}
 
 	public void showStatusBar() {
@@ -256,7 +258,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			// dialer from chat
 			statusFragment.getView().setVisibility(View.VISIBLE);
 		}
-		findViewById(R.id.status).setVisibility(View.VISIBLE);
+		findViewById(R.id.fragmentContainer).setVisibility(View.VISIBLE);
 		findViewById(R.id.fragmentContainer).setPadding(0, LinphoneUtils.pixelsToDpi(getResources(), 40), 0, 0);
 	}
 
@@ -274,13 +276,21 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if (currentFragment == FragmentsAvailable.DIALER) {
 			try {
 				dialerSavedState = getSupportFragmentManager().saveFragmentInstanceState(dialerFragment);
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
+			}
+		}
+		else if(currentFragment == FragmentsAvailable.PANIC){
+			try{
+				panicSavedState = getSupportFragmentManager().saveFragmentInstanceState(panicFragment);
+			}
+			catch (Exception e) {
 			}
 		}
 
 		Fragment newFragment = null;
 
-		switch (newFragmentType) {
+		switch (newFragmentType) {		
 		case HISTORY:
 			if (getResources().getBoolean(R.bool.use_simple_history)) {
 				newFragment = new HistorySimpleFragment();
@@ -322,6 +332,13 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			break;
 		case ACCOUNT_SETTINGS:
 			newFragment = new AccountPreferencesFragment();
+			break;
+		case PANIC:
+			newFragment = new PanicButtonFragment();
+			if(panicPressed){
+				extras.putBoolean("panico", true);
+			}
+			newFragment.setArguments(extras);
 			break;
 		case ABOUT:
 		case ABOUT_INSTEAD_OF_CHAT:
@@ -368,8 +385,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 		
 		if(newFragment == null)
-			System.out.println(":::: newFragment es nulo");
-		System.out.println(":::: FragmentType" + newFragmentType.name());
+			Log.v("newFragment es nulo");
+		Log.v("FragmentType:  " + newFragmentType.name());
 
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -395,6 +412,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 
 		transaction.addToBackStack(newFragmentType.toString());
+		//transaction.replace(R.id.fragmentContainer, newFragment, newFragmentType.toString());
 		transaction.replace(R.id.fragmentContainer, newFragment, newFragmentType.toString());
 		transaction.commitAllowingStateLoss();
 		getSupportFragmentManager().executePendingTransactions();

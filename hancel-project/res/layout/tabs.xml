@@ -47,11 +47,26 @@
 	</LinearLayout>
 	
 	 <FrameLayout
-	        android:id="@+id/status"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"/>  
-	
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/mark"
+        android:layout_alignParentTop="true">
 
+        <LinearLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingTop="40dp" />   
+       <fragment
+            android:id="@+id/status"
+            android:name="org.linphone.StatusFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/status" />  
+               
+    </FrameLayout>
+    
     <LinearLayout
         android:id="@+id/menu"
         android:layout_width="match_parent"
