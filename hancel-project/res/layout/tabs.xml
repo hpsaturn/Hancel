@@ -51,21 +51,54 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"/>  
 	
-	<LinearLayout
+
+    <LinearLayout
         android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:baselineAligned="false"
-        android:background="@color/background_app"
         android:orientation="horizontal">
-    
-    	<RelativeLayout
-    	    android:id="@+id/completeChat"
-    	    android:layout_width="match_parent"
-    	    android:layout_height="wrap_content"
-    	    android:adjustViewBounds="true"
-    	    android:background="@color/background_header" >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+			android:adjustViewBounds="true">
+
+            <include layout="@layout/menu_history_button" />
+
+            <TextView
+                android:id="@+id/missedCalls"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/missed_calls_bg"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <include layout="@layout/menu_contact_button" />
+        
+        <ImageView
+            android:id="@+id/dialer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+			android:adjustViewBounds="true"
+			android:scaleType="fitCenter"
+            android:contentDescription="@string/content_description_dialer"
+            android:src="@drawable/dialer" />
+        
+        <include layout="@layout/menu_about_chat_button" />
+
+        <RelativeLayout
+            android:id="@+id/completeChat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+			android:adjustViewBounds="true">
 
             <include layout="@layout/menu_chat_button" />
 
@@ -75,13 +108,18 @@
                 android:layout_height="25dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:background="@color/blue_hancel"
+                android:background="@drawable/missed_calls_bg"
                 android:gravity="center"
                 android:textSize="20sp"
                 android:visibility="gone" />
             
         </RelativeLayout>
-</LinearLayout>
+
+        <include layout="@layout/menu_settings_button" />
+        
+        <include layout="@layout/menu_about_settings_button" />
+        
+    </LinearLayout>
 
 	<LinearLayout
         android:id="@+id/fragmentContainer2"
