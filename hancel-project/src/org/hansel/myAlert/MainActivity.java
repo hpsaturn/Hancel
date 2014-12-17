@@ -213,7 +213,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		chat = (RelativeLayout) findViewById(R.id.chat);
 		chat.setOnClickListener(this);
 		aboutChat = (RelativeLayout) findViewById(R.id.about_chat);
-		aboutSettings = (RelativeLayout) findViewById(R.id.about_settings);
+		aboutSettings = (RelativeLayout) findViewById(R.id.about_settings);		
 
 		if (getResources().getBoolean(R.bool.replace_chat_by_about)) {
 			chat.setVisibility(View.GONE);
@@ -342,7 +342,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			newFragment.setArguments(extras);
 			if (isTablet()) {
 				changeFragmentForTablets(newFragment, newFragmentType, withoutAnimation);
-			} else {
+			} 
+			else {
 				changeFragment(newFragment, newFragmentType, withoutAnimation);
 			}
 		}
@@ -365,6 +366,10 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if (statusFragment != null) {
 			statusFragment.closeStatusBar();
 		}
+		
+		if(newFragment == null)
+			System.out.println(":::: newFragment es nulo");
+		System.out.println(":::: FragmentType" + newFragmentType.name());
 
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -374,7 +379,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 						R.anim.slide_out_right_to_left,
 						R.anim.slide_in_left_to_right,
 						R.anim.slide_out_left_to_right);
-			} else {
+			} 
+			else {
 				transaction.setCustomAnimations(R.anim.slide_in_left_to_right,
 						R.anim.slide_out_left_to_right,
 						R.anim.slide_in_right_to_left,
@@ -383,7 +389,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 		try {
 			getSupportFragmentManager().popBackStackImmediate(newFragmentType.toString(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-		} catch (java.lang.IllegalStateException e) {
+		} 
+		catch (java.lang.IllegalStateException e) {
 
 		}
 
@@ -592,10 +599,12 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			history.setSelected(true);
 			LinphoneManager.getLc().resetMissedCallsCount();
 			displayMissedCalls(0);
-		} else if (id == R.id.contacts) {
+		} 
+		else if (id == R.id.contacts) {
 			changeCurrentFragment(FragmentsAvailable.CONTACTS, null);
 			contacts.setSelected(true);
-		} else if (id == R.id.dialer) {
+		} 
+		else if (id == R.id.dialer) {
 			changeCurrentFragment(FragmentsAvailable.DIALER, null);
 			dialer.setSelected(true);
 		} else if (id == R.id.settings) {
