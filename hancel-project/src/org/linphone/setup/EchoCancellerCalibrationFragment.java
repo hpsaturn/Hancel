@@ -25,6 +25,11 @@ import org.hansel.myAlert.R;
 import org.linphone.LinphoneManager;
 import org.linphone.LinphoneManager.EcCalibrationListener;
 import org.linphone.LinphonePreferences;
+<<<<<<< HEAD
+=======
+import org.hansel.myAlert.R;
+
+>>>>>>> 0780808357278ed61ab533d075dc5e24f9203c3e
 import org.linphone.core.LinphoneCore.EcCalibratorStatus;
 import org.linphone.core.LinphoneCoreException;
 import org.linphone.mediastream.Log;
