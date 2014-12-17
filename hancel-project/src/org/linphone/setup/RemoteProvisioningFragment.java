@@ -3,6 +3,7 @@ package org.linphone.setup;
 import org.linphone.LinphoneActivity;
 import org.linphone.LinphoneLauncherActivity;
 import org.linphone.LinphonePreferences;
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 
 import android.content.Intent;
@@ -43,7 +44,7 @@ public class RemoteProvisioningFragment extends Fragment implements OnClickListe
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), LinphoneLauncherActivity.class);
 			getActivity().finish();
-			LinphoneActivity.instance().exit();
+			MainActivity.instance().exit();
 			startActivity(intent);
 		}
 	}

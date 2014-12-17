@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneCore;
 import org.linphone.mediastream.Log;
@@ -63,7 +64,7 @@ public class DialerFragment extends Fragment {
 		
 		mCall = (CallButton) view.findViewById(R.id.Call);
 		mCall.setAddressWidget(mAddress);
-		if (LinphoneActivity.isInstanciated() && LinphoneManager.getLc().getCallsNb() > 0) {
+		if (MainActivity.isInstanciated() && LinphoneManager.getLc().getCallsNb() > 0) {
 			if (isCallTransferOngoing) {
 				mCall.setImageResource(R.drawable.transfer_call);
 			} 
@@ -85,13 +86,13 @@ public class DialerFragment extends Fragment {
 		addContactListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				LinphoneActivity.instance().displayContactsForEdition(mAddress.getText().toString());
+				MainActivity.instance().displayContactsForEdition(mAddress.getText().toString());
 			}
 		};
 		cancelListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				LinphoneActivity.instance().resetClassicMenuLayoutAndGoBackToCallIfStillRunning();
+				MainActivity.instance().resetClassicMenuLayoutAndGoBackToCallIfStillRunning();
 			}
 		};
 		transferListener = new OnClickListener() {
@@ -103,11 +104,11 @@ public class DialerFragment extends Fragment {
 				}
 				lc.transferCall(lc.getCurrentCall(), mAddress.getText().toString());
 				isCallTransferOngoing = false;
-				LinphoneActivity.instance().resetClassicMenuLayoutAndGoBackToCallIfStillRunning();
+				MainActivity.instance().resetClassicMenuLayoutAndGoBackToCallIfStillRunning();
 			}
 		};
 		
-		mAddContact.setEnabled(!(LinphoneActivity.isInstanciated() && LinphoneManager.getLc().getCallsNb() > 0));
+		mAddContact.setEnabled(!(MainActivity.isInstanciated() && LinphoneManager.getLc().getCallsNb() > 0));
 		resetLayout(isCallTransferOngoing);
 		
 		if (getArguments() != null) {
@@ -138,10 +139,10 @@ public class DialerFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		
-		if (LinphoneActivity.isInstanciated()) {
-			LinphoneActivity.instance().selectMenu(FragmentsAvailable.DIALER);
-			LinphoneActivity.instance().updateDialerFragment(this);
-			LinphoneActivity.instance().showStatusBar();
+		if (MainActivity.isInstanciated()) {
+			MainActivity.instance().selectMenu(FragmentsAvailable.DIALER);
+			MainActivity.instance().updateDialerFragment(this);
+			MainActivity.instance().showStatusBar();
 		}
 		
 		if (shouldEmptyAddressField) {

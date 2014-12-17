@@ -35,7 +35,9 @@ public enum FragmentsAvailable {
 	SETTINGS,
 	CHATLIST,
 	CHAT,
-	RING;
+	RING,
+	PANIC,
+	TRAKING;
 	
 	public boolean shouldAddToBackStack() {
 		return true;

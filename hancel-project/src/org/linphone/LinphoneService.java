@@ -21,6 +21,7 @@ package org.linphone;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.LinphoneSimpleListener.LinphoneServiceListener;
 import org.linphone.compatibility.Compatibility;
@@ -367,7 +368,7 @@ public final class LinphoneService extends Service implements LinphoneServiceLis
 	private Object[] mSetForegroundArgs = new Object[1];
 	private Object[] mStartForegroundArgs = new Object[2];
 	private Object[] mStopForegroundArgs = new Object[1];
-	private Class<? extends Activity> incomingReceivedActivity = LinphoneActivity.class;
+	private Class<? extends Activity> incomingReceivedActivity = MainActivity.class;
 
 	void invokeMethod(Method method, Object[] args) {
 		try {
@@ -538,8 +539,8 @@ public final class LinphoneService extends Service implements LinphoneServiceLis
 
 		mHandler.post(new Runnable() {
 			public void run() {
-				if (LinphoneActivity.isInstanciated()) {
-					LinphoneActivity.instance().onRegistrationStateChanged(proxy,state,message);
+				if (MainActivity.isInstanciated()) {
+					MainActivity.instance().onRegistrationStateChanged(proxy,state,message);
 				}
 			}
 		});

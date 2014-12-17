@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.LinphoneSimpleListener.ConnectivityChangedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnAudioChangedListener;
@@ -341,8 +342,8 @@ public class LinphoneManager implements LinphoneCoreListener {
 				mListenerDispatcher.tryingNewOutgoingCallButCannotGetCallParameters();
 				return;
 			}
-		} else if (LinphoneActivity.isInstanciated()) {
-			LinphoneActivity.instance().displayCustomToast(getString(R.string.error_network_unreachable), Toast.LENGTH_LONG);
+		} else if (MainActivity.isInstanciated()) {
+			MainActivity.instance().displayCustomToast(getString(R.string.error_network_unreachable), Toast.LENGTH_LONG);
 		} else {
 			Log.e("Error: " + getString(R.string.error_network_unreachable));
 		}
@@ -706,14 +707,14 @@ public class LinphoneManager implements LinphoneCoreListener {
 	public void show(LinphoneCore lc) {}
 
 	public void newSubscriptionRequest(LinphoneCore lc, LinphoneFriend lf, String url) {
-		for (LinphoneSimpleListener listener : getSimpleListeners(LinphoneActivity.class)) {
-			((LinphoneActivity) listener).onNewSubscriptionRequestReceived(lf, url);
+		for (LinphoneSimpleListener listener : getSimpleListeners(MainActivity.class)) {
+			((MainActivity) listener).onNewSubscriptionRequestReceived(lf, url);
 		}
 	}
 
 	public void notifyPresenceReceived(LinphoneCore lc, LinphoneFriend lf) {
-		for (LinphoneSimpleListener listener : getSimpleListeners(LinphoneActivity.class)) {
-			((LinphoneActivity) listener).onNotifyPresenceReceived(lf);
+		for (LinphoneSimpleListener listener : getSimpleListeners(MainActivity.class)) {
+			((MainActivity) listener).onNotifyPresenceReceived(lf);
 		}
 	}
 
@@ -829,8 +830,8 @@ public class LinphoneManager implements LinphoneCoreListener {
 
 	public Context getContext() {
 		try {
-			if (LinphoneActivity.isInstanciated())
-				return LinphoneActivity.instance();
+			if (MainActivity.isInstanciated())
+				return MainActivity.instance();
 			else if (InCallActivity.isInstanciated())
 				return InCallActivity.instance();
 			else if (IncomingCallActivity.isInstanciated())

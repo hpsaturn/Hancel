@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneCall;
 import org.linphone.core.LinphoneCallParams;
@@ -98,8 +99,8 @@ public class StatusFragment extends Fragment {
 		exit.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if (LinphoneActivity.isInstanciated()) {
-					LinphoneActivity.instance().exit();
+				if (MainActivity.isInstanciated()) {
+					MainActivity.instance().exit();
 				}
 				return true;
 			}
@@ -118,8 +119,8 @@ public class StatusFragment extends Fragment {
 		super.onAttach(activity);
 		isAttached = true;
 		
-		if (activity instanceof LinphoneActivity) {
-			((LinphoneActivity) activity).updateStatusFragment(this);
+		if (activity instanceof MainActivity) {
+			((MainActivity) activity).updateStatusFragment(this);
 			isInCall = false;
 		} else if (activity instanceof InCallActivity) {
 			((InCallActivity) activity).updateStatusFragment(this);
@@ -246,8 +247,8 @@ public class StatusFragment extends Fragment {
 	
 	private String getStatusIconText(LinphoneCore.RegistrationState state) {
 		Context context = getActivity();
-		if (!isAttached && LinphoneActivity.isInstanciated())
-			context = LinphoneActivity.instance();
+		if (!isAttached && MainActivity.isInstanciated())
+			context = MainActivity.instance();
 		else if (!isAttached && LinphoneService.isReady())
 			context = LinphoneService.instance();
 		

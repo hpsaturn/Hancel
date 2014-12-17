@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.core.CallDirection;
 import org.linphone.core.LinphoneAddress;
@@ -132,11 +133,11 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 	public void onResume() {
 		super.onResume();
 		
-		if (LinphoneActivity.isInstanciated()) {
-			LinphoneActivity.instance().selectMenu(FragmentsAvailable.HISTORY);
+		if (MainActivity.isInstanciated()) {
+			MainActivity.instance().selectMenu(FragmentsAvailable.HISTORY);
 			
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
-				LinphoneActivity.instance().hideStatusBar();
+				MainActivity.instance().hideStatusBar();
 			}
 		}
 		
@@ -212,7 +213,7 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 				historyList.setAdapter(new CallHistoryAdapter(getActivity().getApplicationContext()));
 			}
 		} else {
-			if (LinphoneActivity.isInstanciated()) {
+			if (MainActivity.isInstanciated()) {
 				LinphoneCallLog log = mLogs.get(position);
 				LinphoneAddress address;
 				if (log.getDirection() == CallDirection.Incoming) {
@@ -220,7 +221,7 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 				} else {
 					address = log.getTo();
 				}
-				LinphoneActivity.instance().setAddresGoToDialerAndCall(address.asStringUriOnly(), address.getDisplayName(), null);
+				MainActivity.instance().setAddresGoToDialerAndCall(address.asStringUriOnly(), address.getDisplayName(), null);
 			}
 		}
 	}
@@ -230,7 +231,7 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 			return;
 		}
 			
-		if (LinphoneActivity.instance().isAnimationDisabled()) {
+		if (MainActivity.instance().isAnimationDisabled()) {
 			deleteAll.setVisibility(View.INVISIBLE);
 		} else {
 			Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_right_to_left);
@@ -260,7 +261,7 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 			return;
 		}
 		
-		if (LinphoneActivity.instance().isAnimationDisabled()) {
+		if (MainActivity.instance().isAnimationDisabled()) {
 			deleteAll.setVisibility(View.VISIBLE);
 		} else {
 			Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left_to_right);
@@ -421,8 +422,8 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 				detail.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if (LinphoneActivity.isInstanciated()) {
-							LinphoneActivity.instance().displayHistoryDetail(address.asStringUriOnly(), log);
+						if (MainActivity.isInstanciated()) {
+							MainActivity.instance().displayHistoryDetail(address.asStringUriOnly(), log);
 						}
 					}
 				});

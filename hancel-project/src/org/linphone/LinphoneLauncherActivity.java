@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package org.linphone;
 
-import static android.content.Intent.ACTION_MAIN;
+/*import static android.content.Intent.ACTION_MAIN;
 
 import org.hansel.myAlert.R;
 import org.linphone.mediastream.Log;
@@ -30,7 +30,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
-
+*/
 /**
  * 
  * Launch Linphone main activity when Service is ready.
@@ -38,7 +38,10 @@ import android.os.Handler;
  * @author Guillaume Beraudo
  *
  */
-public class LinphoneLauncherActivity extends Activity {
+public class LinphoneLauncherActivity {
+}
+/*extends Activity {
+}
 
 	private Handler mHandler;
 	private ServiceWaitThread mThread;
@@ -110,6 +113,6 @@ public class LinphoneLauncherActivity extends Activity {
 			mThread = null;
 		}
 	}
-}
+}*/
 
 

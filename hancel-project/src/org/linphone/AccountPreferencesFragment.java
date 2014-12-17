@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.ui.PreferencesListFragment;
 
@@ -326,7 +327,7 @@ public class AccountPreferencesFragment extends PreferencesListFragment {
     	delete.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 	        public boolean onPreferenceClick(Preference preference) {
 	        	mPrefs.deleteAccount(n);
-	        	LinphoneActivity.instance().displaySettings();
+	        	MainActivity.instance().displaySettings();
 	        	return true;
 	        }
         });

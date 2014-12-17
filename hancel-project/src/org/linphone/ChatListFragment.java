@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneChatMessage;
@@ -116,8 +117,8 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 		mHandler.post(new Runnable() {
 			@Override
 			public void run() {
-				mConversations = LinphoneActivity.instance().getChatList();
-				mDrafts = LinphoneActivity.instance().getDraftChatList();
+				mConversations = MainActivity.instance().getChatList();
+				mDrafts = MainActivity.instance().getDraftChatList();
 				mConversations.removeAll(mDrafts);
 				hideAndDisplayMessageIfNoChat();
 			}
@@ -126,7 +127,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 	
 	private boolean isVersionUsingNewChatStorage() {
 		try {
-			Context context = LinphoneActivity.instance();
+			Context context = MainActivity.instance();
 			return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode >= 2200;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
@@ -140,7 +141,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 		
 		//Check if the is the first time we show the chat view since we use liblinphone chat storage
 		useLinphoneStorage = getResources().getBoolean(R.bool.use_linphone_chat_storage);
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LinphoneActivity.instance());
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.instance());
 		boolean updateNeeded = prefs.getBoolean(getString(R.string.pref_first_time_linphone_chat_storage), true);
 		updateNeeded = updateNeeded && !isVersionUsingNewChatStorage();
 		if (useLinphoneStorage && updateNeeded) {
@@ -148,7 +149,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
                 private ProgressDialog pd;
                 @Override
                 protected void onPreExecute() {
-                         pd = new ProgressDialog(LinphoneActivity.instance());
+                         pd = new ProgressDialog(MainActivity.instance());
                          pd.setTitle(getString(R.string.wait));
                          pd.setMessage(getString(R.string.importing_messages));
                          pd.setCancelable(false);
@@ -160,7 +161,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
                         try {
                         	if (importAndroidStoredMessagedIntoLibLinphoneStorage()) {
                 				prefs.edit().putBoolean(getString(R.string.pref_first_time_linphone_chat_storage), false).commit();
-                				LinphoneActivity.instance().getChatStorage().restartChatStorage();
+                				MainActivity.instance().getChatStorage().restartChatStorage();
                 			}
                         } catch (Exception e) {
                                e.printStackTrace();
@@ -175,12 +176,12 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
         	task.execute((Void[])null);
 		}
 		
-		if (LinphoneActivity.isInstanciated()) {
-			LinphoneActivity.instance().selectMenu(FragmentsAvailable.CHATLIST);
-			LinphoneActivity.instance().updateChatListFragment(this);
+		if (MainActivity.isInstanciated()) {
+			MainActivity.instance().selectMenu(FragmentsAvailable.CHATLIST);
+			MainActivity.instance().updateChatListFragment(this);
 			
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
-				LinphoneActivity.instance().hideStatusBar();
+				MainActivity.instance().hideStatusBar();
 			}
 		}
 		
@@ -201,9 +202,9 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 		}
 		String sipUri = (String) info.targetView.getTag();
 		
-		LinphoneActivity.instance().removeFromChatList(sipUri);
-		mConversations = LinphoneActivity.instance().getChatList();
-		mDrafts = LinphoneActivity.instance().getDraftChatList();
+		MainActivity.instance().removeFromChatList(sipUri);
+		mConversations = MainActivity.instance().getChatList();
+		mDrafts = MainActivity.instance().getDraftChatList();
 		mConversations.removeAll(mDrafts);
 		hideAndDisplayMessageIfNoChat();
 		return true;
@@ -231,7 +232,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 		else if (id == R.id.newDiscussion) {
 			String sipUri = fastNewChat.getText().toString();
 			if (sipUri.equals("")) {
-				LinphoneActivity.instance().displayContacts(true);
+				MainActivity.instance().displayContacts(true);
 			} else {
 				if (!LinphoneUtils.isSipAddress(sipUri)) {
 					if (LinphoneManager.getLc().getDefaultProxyConfig() == null) {
@@ -242,7 +243,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 				if (!LinphoneUtils.isStrictSipAddress(sipUri)) {
 					sipUri = "sip:" + sipUri;
 				}
-				LinphoneActivity.instance().displayChat(sipUri);
+				MainActivity.instance().displayChat(sipUri);
 			}
 		}
 	}
@@ -251,25 +252,25 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		String sipUri = (String) view.getTag();
 		
-		if (LinphoneActivity.isInstanciated() && !isEditMode) {
-			LinphoneActivity.instance().displayChat(sipUri);
-		} else if (LinphoneActivity.isInstanciated()) {
-			LinphoneActivity.instance().removeFromChatList(sipUri);
-			LinphoneActivity.instance().removeFromDrafts(sipUri);
+		if (MainActivity.isInstanciated() && !isEditMode) {
+			MainActivity.instance().displayChat(sipUri);
+		} else if (MainActivity.isInstanciated()) {
+			MainActivity.instance().removeFromChatList(sipUri);
+			MainActivity.instance().removeFromDrafts(sipUri);
 			
-			mConversations = LinphoneActivity.instance().getChatList();
-			mDrafts = LinphoneActivity.instance().getDraftChatList();
+			mConversations = MainActivity.instance().getChatList();
+			mDrafts = MainActivity.instance().getDraftChatList();
 			mConversations.removeAll(mDrafts);
 			hideAndDisplayMessageIfNoChat();
 			
-			LinphoneActivity.instance().updateMissedChatCount();
+			MainActivity.instance().updateMissedChatCount();
 		}
 	}
 	
 	private boolean importAndroidStoredMessagedIntoLibLinphoneStorage() {
 		Log.w("Importing previous messages into new database...");
 		try {
-			ChatStorage db = LinphoneActivity.instance().getChatStorage();
+			ChatStorage db = MainActivity.instance().getChatStorage();
 			List<String> conversations = db.getChatList();
 			for (int j = conversations.size() - 1; j >= 0; j--) {
 				String correspondent = conversations.get(j);
@@ -356,7 +357,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 				isDraft = true;
 			}
 			view.setTag(contact);
-			int unreadMessagesCount = LinphoneActivity.instance().getChatStorage().getUnreadMessageCount(contact);
+			int unreadMessagesCount = MainActivity.instance().getChatStorage().getUnreadMessageCount(contact);
 			
 			LinphoneAddress address;
 			try {
@@ -381,7 +382,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 					}
 				}
 			} else {
-				List<ChatMessage> messages = LinphoneActivity.instance().getChatMessages(contact);
+				List<ChatMessage> messages = MainActivity.instance().getChatMessages(contact);
 				if (messages != null && messages.size() > 0) {
 					int iterator = messages.size() - 1;
 					ChatMessage lastMessage = null;

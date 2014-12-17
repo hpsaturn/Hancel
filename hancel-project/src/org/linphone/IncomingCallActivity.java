@@ -20,6 +20,7 @@ package org.linphone;
 
 import java.util.List;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
 import org.linphone.core.LinphoneAddress;
@@ -167,15 +168,17 @@ public class IncomingCallActivity extends Activity implements LinphoneOnCallStat
 		if (!LinphoneManager.getInstance().acceptCallWithParams(mCall, params)) {
 			// the above method takes care of Samsung Galaxy S
 			Toast.makeText(this, R.string.couldnt_accept_call, Toast.LENGTH_LONG).show();
-		} else {
-			if (!LinphoneActivity.isInstanciated()) {
+		} 
+		else {
+			if (!MainActivity.isInstanciated()) {
 				return;
 			}
 			final LinphoneCallParams remoteParams = mCall.getRemoteParams();
 			if (remoteParams != null && remoteParams.getVideoEnabled() && LinphonePreferences.instance().shouldAutomaticallyAcceptVideoRequests()) {
-				LinphoneActivity.instance().startVideoActivity(mCall);
-			} else {
-				LinphoneActivity.instance().startIncallActivity(mCall);
+				MainActivity.instance().startVideoActivity(mCall);
+			} 
+			else {
+				MainActivity.instance().startIncallActivity(mCall);
 			}
 		}
 	}

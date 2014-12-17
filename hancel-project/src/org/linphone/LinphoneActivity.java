@@ -18,6 +18,8 @@ package org.linphone;
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+/*
 import static android.content.Intent.ACTION_MAIN;
 
 import java.text.SimpleDateFormat;
@@ -89,7 +91,8 @@ import android.widget.Toast;
 /**
  * @author Sylvain Berfini
  */
-public class LinphoneActivity extends FragmentActivity implements
+public class LinphoneActivity{}
+/*extends FragmentActivity implements
 		OnClickListener, ContactPicked, LinphoneOnCallStateChangedListener,
 		LinphoneOnMessageReceivedListener,
 		LinphoneOnRegistrationStateChangedListener {
@@ -920,7 +923,7 @@ public class LinphoneActivity extends FragmentActivity implements
 
 	/**
 	 * Register a sensor to track phoneOrientation changes
-	 */
+	 
 	private synchronized void startOrientationSensor() {
 		if (mOrientationHelper == null) {
 			mOrientationHelper = new LocalOrientationEventListener(this);
@@ -1482,4 +1485,4 @@ public class LinphoneActivity extends FragmentActivity implements
 interface ContactPicked {
 	void setAddresGoToDialerAndCall(String number, String name, Uri photo);
 	void goToDialer();
-}
+}*/

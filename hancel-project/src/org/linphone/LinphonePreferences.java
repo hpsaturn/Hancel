@@ -19,6 +19,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneAuthInfo;
@@ -686,7 +687,7 @@ public class LinphonePreferences {
 		if (proxyCfg != null)
 			getLc().removeProxyConfig(proxyCfg);
 		if (getLc().getProxyConfigList().length == 0) {
-			LinphoneActivity.instance().getStatusFragment().registrationStateChanged(RegistrationState.RegistrationNone);
+			MainActivity.instance().getStatusFragment().registrationStateChanged(RegistrationState.RegistrationNone);
 		} else {
 			resetDefaultProxyConfig();
 			getLc().refreshRegisters();

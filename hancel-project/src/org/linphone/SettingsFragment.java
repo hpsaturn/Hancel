@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.LinphoneManager.EcCalibrationListener;
 import org.linphone.core.LinphoneAddress;
@@ -92,8 +93,8 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		findPreference(getString(R.string.menu_about_key)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				if (LinphoneActivity.isInstanciated()) {
-					LinphoneActivity.instance().displayAbout();
+				if (MainActivity.isInstanciated()) {
+					MainActivity.instance().displayAbout();
 					return true;
 				}
 				return false;
@@ -299,7 +300,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 			account.setOnPreferenceClickListener(new OnPreferenceClickListener()
 			{
 				public boolean onPreferenceClick(Preference preference) {
-					LinphoneActivity.instance().displayAccountSettings(accountId);
+					MainActivity.instance().displayAccountSettings(accountId);
 					return false;
 				}
 			});
@@ -918,11 +919,11 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 		initAccounts();
 
-		if (LinphoneActivity.isInstanciated()) {
-			LinphoneActivity.instance().selectMenu(FragmentsAvailable.SETTINGS);
+		if (MainActivity.isInstanciated()) {
+			MainActivity.instance().selectMenu(FragmentsAvailable.SETTINGS);
 
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
-				LinphoneActivity.instance().hideStatusBar();
+				MainActivity.instance().hideStatusBar();
 			}
 		}
 	}

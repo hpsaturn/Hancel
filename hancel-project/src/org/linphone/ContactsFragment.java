@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 import java.util.List;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.core.LinphoneFriend;
@@ -157,7 +158,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		} 
 		else if (id == R.id.newContact) {
 			editConsumed = true;
-			LinphoneActivity.instance().addContact(null, sipAddressToAdd);
+			MainActivity.instance().addContact(null, sipAddressToAdd);
 		} 
 		else if (id == R.id.clearSearchField) {
 			searchField.setText("");
@@ -198,8 +199,8 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			searchCursor.close();
 		}
 		
-		Cursor allContactsCursor = LinphoneActivity.instance().getAllContactsCursor();
-		Cursor sipContactsCursor = LinphoneActivity.instance().getSIPContactsCursor();
+		Cursor allContactsCursor = MainActivity.instance().getAllContactsCursor();
+		Cursor sipContactsCursor = MainActivity.instance().getSIPContactsCursor();
 
 		noSipContact.setVisibility(View.GONE);
 		noContact.setVisibility(View.GONE);
@@ -211,7 +212,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 				contactsList.setVisibility(View.GONE);
 			} else {
 				indexer = new AlphabetIndexer(sipContactsCursor, Compatibility.getCursorDisplayNameColumnIndex(sipContactsCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-				contactsList.setAdapter(new ContactsListAdapter(LinphoneActivity.instance().getSIPContacts(), sipContactsCursor));
+				contactsList.setAdapter(new ContactsListAdapter(MainActivity.instance().getSIPContacts(), sipContactsCursor));
 			}
 		} else {
 			if (allContactsCursor.getCount() == 0) {
@@ -219,10 +220,10 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 				contactsList.setVisibility(View.GONE);
 			} else {
 				indexer = new AlphabetIndexer(allContactsCursor, Compatibility.getCursorDisplayNameColumnIndex(allContactsCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-				contactsList.setAdapter(new ContactsListAdapter(LinphoneActivity.instance().getAllContacts(), allContactsCursor));
+				contactsList.setAdapter(new ContactsListAdapter(MainActivity.instance().getAllContacts(), allContactsCursor));
 			}
 		}
-		LinphoneActivity.instance().setLinphoneContactsPrefered(onlyDisplayLinphoneContacts);
+		MainActivity.instance().setLinphoneContactsPrefered(onlyDisplayLinphoneContacts);
 	}
 	
 	private void changeContactsToggle() {
@@ -240,10 +241,10 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		Contact contact = (Contact) adapter.getItemAtPosition(position);
 		if (editOnClick) {
 			editConsumed = true;
-			LinphoneActivity.instance().editContact(contact, sipAddressToAdd);
+			MainActivity.instance().editContact(contact, sipAddressToAdd);
 		} else {
 			lastKnownPosition = contactsList.getFirstVisiblePosition();
-			LinphoneActivity.instance().displayContact(contact, onlyDisplayChatAddress);
+			MainActivity.instance().displayContact(contact, onlyDisplayChatAddress);
 		}
 	}
 	
@@ -257,12 +258,12 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			sipAddressToAdd = null;
 		}
 		
-		if (LinphoneActivity.isInstanciated()) {
-			LinphoneActivity.instance().selectMenu(FragmentsAvailable.CONTACTS);
-			onlyDisplayLinphoneContacts = LinphoneActivity.instance().isLinphoneContactsPrefered();
+		if (MainActivity.isInstanciated()) {
+			MainActivity.instance().selectMenu(FragmentsAvailable.CONTACTS);
+			onlyDisplayLinphoneContacts = MainActivity.instance().isLinphoneContactsPrefered();
 			
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
-				LinphoneActivity.instance().hideStatusBar();
+				MainActivity.instance().hideStatusBar();
 			}
 		}
 		
@@ -360,7 +361,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			
 			ImageView friendStatus = (ImageView) view.findViewById(R.id.friendStatus);
 			LinphoneFriend friend = contact.getFriend();
-			if (!LinphoneActivity.instance().isContactPresenceDisabled() && friend != null) {
+			if (!MainActivity.instance().isContactPresenceDisabled() && friend != null) {
 				friendStatus.setVisibility(View.VISIBLE);
 				PresenceActivityType presenceActivity = friend.getPresenceModel().getActivity().getType();
 				if (presenceActivity == PresenceActivityType.Online) {

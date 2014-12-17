@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.mediastream.Log;
@@ -102,7 +103,7 @@ public class EditContactFragment extends Fragment {
 
 		        try {
 		            getActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-			        LinphoneActivity.instance().prepareContactsInBackground();
+			        MainActivity.instance().prepareContactsInBackground();
 		        } catch (Exception e) {
 		        	e.printStackTrace();
 		        }
@@ -117,7 +118,7 @@ public class EditContactFragment extends Fragment {
 			lastName.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					InputMethodManager imm = (InputMethodManager) LinphoneActivity.instance().getSystemService(Context.INPUT_METHOD_SERVICE);
+					InputMethodManager imm = (InputMethodManager) MainActivity.instance().getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
 				}
 			});
@@ -193,9 +194,9 @@ public class EditContactFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		
-		if (LinphoneActivity.isInstanciated()) {
+		if (MainActivity.isInstanciated()) {
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
-				LinphoneActivity.instance().hideStatusBar();
+				MainActivity.instance().hideStatusBar();
 			}
 		}
 	}
@@ -223,8 +224,8 @@ public class EditContactFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					deleteExistingContact();
-					LinphoneActivity.instance().removeContactFromLists(contact);
-					LinphoneActivity.instance().displayContacts(false);
+					MainActivity.instance().removeContactFromLists(contact);
+					MainActivity.instance().displayContacts(false);
 				}
 			});
 			controls.addView(deleteContact, controls.getChildCount());

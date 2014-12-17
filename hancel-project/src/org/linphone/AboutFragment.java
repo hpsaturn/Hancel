@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.mediastream.Log;
 
@@ -63,23 +64,23 @@ public class AboutFragment extends Fragment implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 		
-		if (LinphoneActivity.isInstanciated()) {
-			LinphoneActivity.instance().selectMenu(about);
+		if (MainActivity.isInstanciated()) {
+			MainActivity.instance().selectMenu(about);
 			
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
-				LinphoneActivity.instance().hideStatusBar();
+				MainActivity.instance().hideStatusBar();
 			}
 		}
 	}
 	
 	@Override
 	public void onClick(View v) {
-		if (LinphoneActivity.isInstanciated()) {
+		if (MainActivity.isInstanciated()) {
 
 			if (getResources().getBoolean(R.bool.enable_log_collect)) {
-				LinphoneUtils.collectLogs(LinphoneActivity.instance(), getString(R.string.about_bugreport_email));
+				LinphoneUtils.collectLogs(MainActivity.instance(), getString(R.string.about_bugreport_email));
 			} else {
-				LinphoneActivity.instance().exit();
+				MainActivity.instance().exit();
 			}
 		}
 	}

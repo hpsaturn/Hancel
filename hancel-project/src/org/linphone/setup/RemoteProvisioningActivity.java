@@ -26,6 +26,7 @@ import org.linphone.LinphoneManager;
 import org.linphone.LinphonePreferences;
 import org.linphone.LinphoneService;
 import org.linphone.LinphoneSimpleListener.LinphoneOnRemoteProvisioningListener;
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 
 import android.os.Bundle;
@@ -196,7 +197,7 @@ public class RemoteProvisioningActivity extends Activity implements LinphoneOnRe
 	
 	private void goToLinphoneActivity() {
 		if (LinphoneService.isReady()) {
-			LinphoneService.instance().setActivityToLaunchOnIncomingReceived(LinphoneActivity.class);
+			LinphoneService.instance().setActivityToLaunchOnIncomingReceived(MainActivity.class);
 			//finish(); // To prevent the user to come back to this page using back button
 			startActivity(new Intent().setClass(this, LinphoneActivity.class));
 		} else {

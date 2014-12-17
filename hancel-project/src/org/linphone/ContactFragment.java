@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 import java.io.InputStream;
 
+import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.core.LinphoneProxyConfig;
@@ -48,8 +49,8 @@ public class ContactFragment extends Fragment implements OnClickListener {
 	private OnClickListener dialListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			if (LinphoneActivity.isInstanciated()) {
-				LinphoneActivity.instance().setAddresGoToDialerAndCall(v.getTag().toString(), contact.getName(), contact.getPhotoUri());
+			if (MainActivity.isInstanciated()) {
+				MainActivity.instance().setAddresGoToDialerAndCall(v.getTag().toString(), contact.getName(), contact.getPhotoUri());
 			}
 		}
 	};
@@ -57,8 +58,8 @@ public class ContactFragment extends Fragment implements OnClickListener {
 	private OnClickListener chatListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			if (LinphoneActivity.isInstanciated())
-				LinphoneActivity.instance().displayChat(v.getTag().toString());
+			if (MainActivity.isInstanciated())
+				MainActivity.instance().displayChat(v.getTag().toString());
 		}
 	};
 	
@@ -87,7 +88,7 @@ public class ContactFragment extends Fragment implements OnClickListener {
 	private void displayContact(LayoutInflater inflater, View view) {
 		AvatarWithShadow contactPicture = (AvatarWithShadow) view.findViewById(R.id.contactPicture);
 		if (contact.getPhotoUri() != null) {
-			InputStream input = Compatibility.getContactPictureInputStream(LinphoneActivity.instance().getContentResolver(), contact.getID());
+			InputStream input = Compatibility.getContactPictureInputStream(MainActivity.instance().getContentResolver(), contact.getID());
 			contactPicture.setImageBitmap(BitmapFactory.decodeStream(input));
         } else {
         	contactPicture.setImageResource(R.drawable.unknown_small);
@@ -144,7 +145,7 @@ public class ContactFragment extends Fragment implements OnClickListener {
 					friend.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							if (LinphoneActivity.instance().newFriend(contact, finalNumberOrAddress)) {
+							if (MainActivity.instance().newFriend(contact, finalNumberOrAddress)) {
 								displayContact(ContactFragment.this.inflater, ContactFragment.this.view);
 							}
 						}
@@ -154,7 +155,7 @@ public class ContactFragment extends Fragment implements OnClickListener {
 					friend.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							if (LinphoneActivity.instance().removeFriend(contact, finalNumberOrAddress)) {
+							if (MainActivity.instance().removeFriend(contact, finalNumberOrAddress)) {
 								displayContact(ContactFragment.this.inflater, ContactFragment.this.view);
 							}
 						}
@@ -174,18 +175,18 @@ public class ContactFragment extends Fragment implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 		
-		if (LinphoneActivity.isInstanciated()) {
-			LinphoneActivity.instance().selectMenu(FragmentsAvailable.CONTACT);
+		if (MainActivity.isInstanciated()) {
+			MainActivity.instance().selectMenu(FragmentsAvailable.CONTACT);
 			
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
-				LinphoneActivity.instance().hideStatusBar();
+				MainActivity.instance().hideStatusBar();
 			}
 		}
 		
 		contact.refresh(getActivity().getContentResolver());
 		if (contact.getName() == null || contact.getName().equals("")) {
 			//Contact has been deleted, return
-			LinphoneActivity.instance().displayContacts(false);
+			MainActivity.instance().displayContacts(false);
 		}
 		displayContact(inflater, view);
 	}
@@ -195,7 +196,7 @@ public class ContactFragment extends Fragment implements OnClickListener {
 		int id = v.getId();
 			
 		if (id == R.id.editContact) {
-			LinphoneActivity.instance().editContact(contact);
+			MainActivity.instance().editContact(contact);
 		}
 	}
 }
