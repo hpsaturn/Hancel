@@ -7,3 +7,4 @@
     <item
          android:drawable="@drawable/chat_photo_default" />
 </selector>
+
