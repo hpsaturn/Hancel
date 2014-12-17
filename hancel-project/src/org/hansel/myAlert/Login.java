@@ -27,6 +27,17 @@ import org.hansel.myAlert.WelcomeInfo.ScreenSlidePageAdapter;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
 import org.json.JSONObject;
 
+import org.linphone.LinphoneService;
+import org.linphone.LinphoneManager;
+import org.linphone.core.LinphoneAuthInfo;
+import org.linphone.core.LinphoneCore;
+import org.linphone.core.LinphoneCoreFactory;
+import org.linphone.core.LinphoneAddress;
+import org.linphone.core.LinphoneAddress.TransportType;
+import org.linphone.core.LinphoneProxyConfig;
+import org.linphone.core.LinphoneCore.RegistrationState;
+import org.linphone.core.LinphoneCoreException;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
@@ -131,8 +142,39 @@ public class Login extends org.holoeverywhere.app.Activity {
 		CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.pagerIndicator);
 		indicator.setViewPager(mpager);
 		
+		try
+		{
+		LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
+
+		String username = "asly";
+		String password = "Joshua123";
+		String domain = "sip.linphone.org";
 		
+		LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance().createAuthInfo(username, password, null, domain);
 		
+		String identity = "sip:" + username +"@" + domain;
+		String proxy = "sip:" + domain;
+		LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
+		//proxyAddr.setTransport(TransportType.LinphoneTransportTls);
+		proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
+		LinphoneProxyConfig proxycon = lc.createProxyConfig(identity, proxyAddr.asStringUriOnly(), proxyAddr.asStringUriOnly(), true);
+		lc.addProxyConfig(proxycon);
+		lc.setDefaultProxyConfig(proxycon);
+		
+		LinphoneProxyConfig lDefaultProxyConfig = lc.getDefaultProxyConfig();
+		if (lDefaultProxyConfig != null) {
+			//escape +
+			lDefaultProxyConfig.setDialEscapePlus(false);
+		} else if (LinphoneService.isReady()) {
+			//LinphoneService.instance().registrationState(lc, lDefaultProxyConfig, RegistrationState.RegistrationNone, null);
+		}
+		
+		lc.addAuthInfo(lAuthInfo);
+		Log.v("probando authInfo");
+		} catch(LinphoneCoreException e)
+		{
+			Log.v(e.getMessage());
+		}
 	}
 	
 	private void AttempLogin()
