@@ -135,7 +135,7 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 		String displayName = getArguments().getString("DisplayName");
 		String pictureUri = getArguments().getString("PictureUri");
 
-        view = inflater.inflate(R.layout.fragment_chat, container, false);
+        view = inflater.inflate(R.layout.chat_fragment, container, false);
 
         useLinphoneMessageStorage = getResources().getBoolean(R.bool.use_linphone_chat_storage);
 

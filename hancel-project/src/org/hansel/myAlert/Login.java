@@ -144,33 +144,34 @@ public class Login extends org.holoeverywhere.app.Activity {
 		
 		try
 		{
-		LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
-
-		String username = "asly";
-		String password = "Joshua123";
-		String domain = "sip.linphone.org";
-		
-		LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance().createAuthInfo(username, password, null, domain);
-		
-		String identity = "sip:" + username +"@" + domain;
-		String proxy = "sip:" + domain;
-		LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
-		//proxyAddr.setTransport(TransportType.LinphoneTransportTls);
-		proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
-		LinphoneProxyConfig proxycon = lc.createProxyConfig(identity, proxyAddr.asStringUriOnly(), proxyAddr.asStringUriOnly(), true);
-		lc.addProxyConfig(proxycon);
-		lc.setDefaultProxyConfig(proxycon);
-		
-		LinphoneProxyConfig lDefaultProxyConfig = lc.getDefaultProxyConfig();
-		if (lDefaultProxyConfig != null) {
-			//escape +
-			lDefaultProxyConfig.setDialEscapePlus(false);
-		} else if (LinphoneService.isReady()) {
-			//LinphoneService.instance().registrationState(lc, lDefaultProxyConfig, RegistrationState.RegistrationNone, null);
-		}
-		
-		lc.addAuthInfo(lAuthInfo);
-		Log.v("probando authInfo");
+			LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
+	
+			String username = "asly";
+			String password = "Joshua123";
+			String domain = "sip.linphone.org";
+			
+			LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance().createAuthInfo(username, password, null, domain);
+			
+			String identity = "sip:" + username +"@" + domain;
+			String proxy = "sip:" + domain;
+			LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
+			//proxyAddr.setTransport(TransportType.LinphoneTransportTls);
+			proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
+			LinphoneProxyConfig proxycon = lc.createProxyConfig(identity, proxyAddr.asStringUriOnly(), proxyAddr.asStringUriOnly(), true);
+			lc.addProxyConfig(proxycon);
+			lc.setDefaultProxyConfig(proxycon);
+			
+			LinphoneProxyConfig lDefaultProxyConfig = lc.getDefaultProxyConfig();
+			if (lDefaultProxyConfig != null) {
+				//escape +
+				lDefaultProxyConfig.setDialEscapePlus(false);
+			} 
+			else if (LinphoneService.isReady()) {
+				//LinphoneService.instance().registrationState(lc, lDefaultProxyConfig, RegistrationState.RegistrationNone, null);
+			}
+			
+			lc.addAuthInfo(lAuthInfo);
+			Log.v("probando authInfo");
 		} catch(LinphoneCoreException e)
 		{
 			Log.v(e.getMessage());
