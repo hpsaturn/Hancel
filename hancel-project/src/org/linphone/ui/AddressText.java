@@ -38,7 +38,7 @@ public class AddressText extends EditText implements AddressType {
 	private String displayedName;
 	private Uri pictureUri;
 	private Paint mTestPaint;
-	private DialerFragment dialer;
+	//TODO test private DialerFragment dialer;
 	
 	public void setPictureUri(Uri uri) {
 		pictureUri = uri;
@@ -88,9 +88,9 @@ public class AddressText extends EditText implements AddressType {
 
 		refitText(getWidth(), getHeight());
 		
-		if (dialer != null) {
+		/* TODO test if (dialer != null) {
 			dialer.enableDisableAddContact();
-		}
+		}*/
 
 		super.onTextChanged(text, start, before, after);
 	}
@@ -146,7 +146,7 @@ public class AddressText extends EditText implements AddressType {
 		setMeasuredDimension(parentWidth, height);
 	}
 
-	public void setDialerFragment(DialerFragment dialerFragment) {
+	/* TODO test public void setDialerFragment(DialerFragment dialerFragment) {
 		dialer = dialerFragment;
-	}
+	}*/
 }

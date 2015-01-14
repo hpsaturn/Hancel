@@ -39,7 +39,7 @@ import android.widget.ImageView;
 /**
  * @author Sylvain Berfini
  */
-public class DialerFragment extends Fragment {
+public class DialerFragment extends Fragment {/*
 	private static DialerFragment instance;
 	private static boolean isCallTransferOngoing = false;
 	
@@ -128,9 +128,10 @@ public class DialerFragment extends Fragment {
 		return view;
     }
 
+
 	/**
 	 * @return null if not ready yet
-	 */
+	 
 	public static DialerFragment instance() { 
 		return instance;
 	}
@@ -211,5 +212,5 @@ public class DialerFragment extends Fragment {
 	
 			LinphoneManager.getInstance().newOutgoingCall(mAddress);
 		}
-	}
+	}*/
 }

@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 public enum FragmentsAvailable {
 	UNKNOW,	
-	DIALER,
+	/*DIALER,*/
 	HISTORY,
 	HISTORY_DETAIL,
 	CONTACTS,
@@ -64,12 +64,12 @@ public enum FragmentsAvailable {
 		case EDIT_CONTACT:
 			return CONTACT.isRightOf(fragment) || fragment == CONTACT;
 			
-		case DIALER:
-			return EDIT_CONTACT.isRightOf(fragment) || fragment == EDIT_CONTACT;
+		/*TODO test case DIALER:
+			return EDIT_CONTACT.isRightOf(fragment) || fragment == EDIT_CONTACT;*/
 			
 		case ABOUT_INSTEAD_OF_CHAT:
-		case CHATLIST:
-			return DIALER.isRightOf(fragment) || fragment == DIALER;
+		/*TODO test case CHATLIST:
+			return DIALER.isRightOf(fragment) || fragment == DIALER;*/
 			
 		case CHAT:
 			return CHATLIST.isRightOf(fragment) || fragment == CHATLIST;

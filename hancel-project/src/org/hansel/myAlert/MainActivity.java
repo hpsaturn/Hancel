@@ -136,7 +136,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	private RelativeLayout contacts, history, settings, chat, aboutChat, aboutSettings;
 	private FragmentsAvailable currentFragment, nextFragment;
 	private List<FragmentsAvailable> fragmentsHistory;
-	private Fragment panicFragment, dialerFragment, messageListenerFragment, messageListFragment, friendStatusListenerFragment;
+	private Fragment panicFragment, /*dialerFragment,*/ messageListenerFragment, messageListFragment, friendStatusListenerFragment;
 	private SavedState dialerSavedState, panicSavedState;
 	private boolean preferLinphoneContacts = false, isAnimationDisabled = false, isContactPresenceDisabled = true;
 	private Handler mHandler = new Handler();
@@ -273,13 +273,13 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			return;
 		}
 		nextFragment = newFragmentType;
-
+		/* TODO test
 		if (currentFragment == FragmentsAvailable.DIALER) {
 			try {
 				dialerSavedState = getSupportFragmentManager().saveFragmentInstanceState(dialerFragment);
 			} catch (Exception e) {
 			}
-		}
+		}*/
 
 		Fragment newFragment = null;
 
@@ -313,13 +313,20 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		case EDIT_CONTACT:
 			newFragment = new EditContactFragment();
 			break;
+		case PANIC:
+			newFragment = new PanicButtonFragment();
+			if (extras == null) {
+				newFragment.setInitialSavedState(panicSavedState);
+			}
+			break;
+		/* TODO test
 		case DIALER:
 			newFragment = new DialerFragment();
 			if (extras == null) {
 				newFragment.setInitialSavedState(dialerSavedState);
 			}
 			dialerFragment = newFragment;
-			break;
+			break;*/
 		case SETTINGS:
 			newFragment = new SettingsFragment();
 			break;
@@ -419,8 +426,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			
 			transaction.addToBackStack(newFragmentType.toString());
 			transaction.replace(R.id.fragmentContainer2, newFragment);
-		} else {
-			if (newFragmentType == FragmentsAvailable.DIALER 
+		} 
+		else {
+			if (newFragmentType == FragmentsAvailable.PANIC /*newFragmentType == FragmentsAvailable.DIALER*/ 
 					|| newFragmentType == FragmentsAvailable.ABOUT 
 					|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT 
 					|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS
@@ -452,9 +460,11 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		getSupportFragmentManager().executePendingTransactions();
 		
 		currentFragment = newFragmentType;
-		if (currentFragment == FragmentsAvailable.DIALER) {
+		/*TODO test
+		 * if (currentFragment == FragmentsAvailable.DIALER) {
+		 
 			fragmentsHistory.clear();
-		}
+		}*/
 		fragmentsHistory.add(currentFragment);
 	}
 
@@ -599,10 +609,15 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		} else if (id == R.id.contacts) {
 			changeCurrentFragment(FragmentsAvailable.CONTACTS, null);
 			contacts.setSelected(true);
-		} else if (id == R.id.dialer) {
+		} /* TODO test else if (id == R.id.dialer) {
 			changeCurrentFragment(FragmentsAvailable.DIALER, null);
+			dialer.setSelected(true);		
+		} */
+		else if (id == R.id.dialer) {
+			changeCurrentFragment(FragmentsAvailable.PANIC, null);
 			dialer.setSelected(true);
-		} else if (id == R.id.settings) {
+		}
+		else if (id == R.id.settings) {
 			changeCurrentFragment(FragmentsAvailable.SETTINGS, null);
 			settings.setSelected(true);
 		} else if (id == R.id.about_chat) {
@@ -646,9 +661,12 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		case EDIT_CONTACT:
 			contacts.setSelected(true);
 			break;
-		case DIALER:
+		case PANIC:
 			dialer.setSelected(true);
 			break;
+		/*TODO test case DIALER:
+			dialer.setSelected(true);
+			break;*/
 		case SETTINGS:
 		case ACCOUNT_SETTINGS:
 			settings.setSelected(true);
@@ -666,11 +684,12 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 	}
 
-	public void updateDialerFragment(DialerFragment fragment) {
+	/*TODO test
+	 * public void updateDialerFragment(DialerFragment fragment) {
 		dialerFragment = fragment;
 		// Hack to maintain soft input flags
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-	}
+	}*/
 
 	public void updateChatFragment(ChatFragment fragment) {
 		messageListenerFragment = fragment;
@@ -894,18 +913,18 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		address.setText(number);
 		LinphoneManager.getInstance().newOutgoingCall(address);
 	}
-
+	
+	/* TODO test
 	public void setAddressAndGoToDialer(String number) {
 		Bundle extras = new Bundle();
 		extras.putString("SipUri", number);
 		changeCurrentFragment(FragmentsAvailable.DIALER, extras);
+	}*/
+	
+	@Override	
+	 public void goToDialer() {	 
+		//TODO test changeCurrentFragment(FragmentsAvailable.DIALER, null);
 	}
-
-	@Override
-	public void goToDialer() {
-		changeCurrentFragment(FragmentsAvailable.DIALER, null);
-	}
-
 	public void startVideoActivity(LinphoneCall currentCall) {
 		Intent intent = new Intent(this, InCallActivity.class);
 		intent.putExtra("VideoEnabled", true);
@@ -1166,21 +1185,23 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		sipContactsHandler.start();
 	}
 
-	private void initInCallMenuLayout(boolean callTransfer) {
+	/*TODO test
+	 * private void initInCallMenuLayout(boolean callTransfer) {
 		selectMenu(FragmentsAvailable.DIALER);
 		if (dialerFragment != null) {
 			((DialerFragment) dialerFragment).resetLayout(callTransfer);
 		}
-	}
+	}*/
 
 	public void resetClassicMenuLayoutAndGoBackToCallIfStillRunning() {
 		mHandler.post(new Runnable() {
 			@Override
 			public void run() {
+				/* TODO test
 				if (dialerFragment != null) {
 					((DialerFragment) dialerFragment).resetLayout(false);
 				}
-
+				*/
 				if (LinphoneManager.isInstanciated() && LinphoneManager.getLc().getCallsNb() > 0) {
 					LinphoneCall call = LinphoneManager.getLc().getCalls()[0];
 					if (call.getState() == LinphoneCall.State.IncomingReceived) {
@@ -1255,7 +1276,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				changeCurrentFragment(newFragment, null, true);
 				selectMenu(newFragment);
 			}
-		} else if (resultCode == Activity.RESULT_FIRST_USER && requestCode == CALL_ACTIVITY) {
+		} 
+		/*TODO test
+		 * else if (resultCode == Activity.RESULT_FIRST_USER && requestCode == CALL_ACTIVITY) {
 			getIntent().putExtra("PreviousActivity", CALL_ACTIVITY);
 			boolean callTransfer = data == null ? false : data.getBooleanExtra("Transfer", false);
 			if (LinphoneManager.getLc().getCallsNb() > 0) {
@@ -1263,7 +1286,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			} else {
 				resetClassicMenuLayoutAndGoBackToCallIfStillRunning();
 			}
-		} else {
+		}*/ 
+		else {
 			super.onActivityResult(requestCode, resultCode, data);
 		}
 	}
@@ -1359,7 +1383,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				}
 			}
 		} else {
-			if (dialerFragment != null) {
+			/* TODO test
+			 * if (dialerFragment != null) {
+			 
 				if (extras != null && extras.containsKey("SipUriOrNumber")) {
 					if (getResources().getBoolean(R.bool.automatically_start_intercepted_outgoing_gsm_call)) {
 						((DialerFragment) dialerFragment).newOutgoingCall(extras.getString("SipUriOrNumber"));
@@ -1369,7 +1395,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				} else {
 					((DialerFragment) dialerFragment).newOutgoingCall(intent);
 				}
-			}
+			}*/
 			if (LinphoneManager.getLc().getCalls().length > 0) {
 				LinphoneCall calls[] = LinphoneManager.getLc().getCalls();
 				if (calls.length > 0) {
@@ -1400,6 +1426,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			/*TODO test
 			if (currentFragment == FragmentsAvailable.DIALER) {
 				boolean isBackgroundModeActive = LinphonePreferences.instance().isBackgroundModeEnabled();
 				if (!isBackgroundModeActive) {
@@ -1408,7 +1435,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				} else if (LinphoneUtils.onKeyBackGoHome(this, keyCode, event)) {
 					return true;
 				}
-			} else {
+			} else {*/
 				if (isTablet()) {
 					if (currentFragment == FragmentsAvailable.SETTINGS) {
 						updateAnimationsState();
@@ -1421,7 +1448,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 						if (newFragmentType.shouldAddItselfToTheRightOf(currentFragment)) {
 							ll.setVisibility(View.VISIBLE);
 						} else {
-							if (newFragmentType == FragmentsAvailable.DIALER 
+							if (newFragmentType == FragmentsAvailable.PANIC //TODO test newFragmentType == FragmentsAvailable.DIALER 
 									|| newFragmentType == FragmentsAvailable.ABOUT 
 									|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT 
 									|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS
@@ -1434,7 +1461,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 						}
 					}
 				}
-			}
+			//}
 		} else if (keyCode == KeyEvent.KEYCODE_MENU && statusFragment != null) {
 			if (event.getRepeatCount() < 1) {
 				statusFragment.openOrCloseStatusBar(true);
