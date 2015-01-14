@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="@string/delete_contact"
-    android:background="@drawable/alert"
+    android:background="@drawable/alert_btn"
     android:textColor="@android:color/white"
     android:gravity="center"
     android:textSize="30dp"

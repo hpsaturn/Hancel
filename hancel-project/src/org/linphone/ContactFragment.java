@@ -99,6 +99,7 @@ public class ContactFragment extends Fragment implements OnClickListener {
 		
 		TableLayout controls = (TableLayout) view.findViewById(R.id.controls);
 		controls.removeAllViews();
+		
 		for (String numberOrAddress : contact.getNumerosOrAddresses()) {
 			View v = inflater.inflate(R.layout.contact_control_row, null);
 			
@@ -114,12 +115,14 @@ public class ContactFragment extends Fragment implements OnClickListener {
 			if (!displayChatAddressOnly) {
 				v.findViewById(R.id.dial).setOnClickListener(dialListener);
 				v.findViewById(R.id.dial).setTag(displayednumberOrAddress);
-			} else {
+			} 
+			else {
 				v.findViewById(R.id.dial).setVisibility(View.GONE);
 			}
 
 			v.findViewById(R.id.start_chat).setOnClickListener(chatListener);
 			LinphoneProxyConfig lpc = LinphoneManager.getLc().getDefaultProxyConfig();
+			
 			if (lpc != null) {
 				if (!displayednumberOrAddress.startsWith("sip:")) {
 					numberOrAddress = "sip:" + displayednumberOrAddress;

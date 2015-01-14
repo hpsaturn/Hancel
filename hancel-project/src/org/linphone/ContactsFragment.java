@@ -58,7 +58,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 	
 	private LayoutInflater mInflater;
 	private ListView contactsList;
-	private TextView allContacts, linphoneContacts, newContact, noSipContact, noContact;
+	private TextView allContacts, linphoneContacts, newContact;//, noSipContact, noContact;
 	private boolean onlyDisplayLinphoneContacts;
 	private int lastKnownPosition;
 	private AlphabetIndexer indexer;
@@ -83,6 +83,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
         Bundle savedInstanceState) {
 		mInflater = inflater;
         View view = inflater.inflate(R.layout.contacts_list, container, false);
+        onlyDisplayLinphoneContacts = true;
         
         if (getArguments() != null) {
 	        editOnClick = getArguments().getBoolean("EditOnClick");
@@ -91,26 +92,26 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 	        onlyDisplayChatAddress = getArguments().getBoolean("ChatAddressOnly");
         }
         
-        noSipContact = (TextView) view.findViewById(R.id.noSipContact);
-        noContact = (TextView) view.findViewById(R.id.noContact);
+        /*noSipContact = (TextView) view.findViewById(R.id.noSipContact);
+        noContact = (TextView) view.findViewById(R.id.noContact);*/
         
         contactsList = (ListView) view.findViewById(R.id.contactsList);
         contactsList.setOnItemClickListener(this);
         
+        /* TODO testting
         allContacts = (TextView) view.findViewById(R.id.allContacts);
         allContacts.setOnClickListener(this);
         
         linphoneContacts = (TextView) view.findViewById(R.id.linphoneContacts);
-        linphoneContacts.setOnClickListener(this);
+        linphoneContacts.setOnClickListener(this);*/
         
         newContact = (TextView) view.findViewById(R.id.newContact);
         newContact.setOnClickListener(this);
         newContact.setEnabled(LinphoneManager.getLc().getCallsNb() == 0);
         
-        allContacts.setEnabled(onlyDisplayLinphoneContacts);
-        linphoneContacts.setEnabled(!allContacts.isEnabled());
+        //allContacts.setEnabled(onlyDisplayLinphoneContacts);
+        //linphoneContacts.setEnabled(!allContacts.isEnabled());
 		
-        
 		clearSearchField = (ImageView) view.findViewById(R.id.clearSearchField);
 		clearSearchField.setOnClickListener(this);
 		
@@ -133,6 +134,9 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			}
 		});
         
+		//TODO test		
+		searchContacts(null);
+		
 		return view;
     }
 
@@ -140,7 +144,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 	public void onClick(View v) {
 		int id = v.getId();
 		
-		if (id == R.id.allContacts) {
+		/*if (id == R.id.allContacts) {
 			onlyDisplayLinphoneContacts = false;
 			if (searchField.getText().toString().length() > 0) {
 				searchContacts();
@@ -155,8 +159,10 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			} else {
 				changeContactsAdapter();
 			}
-		} 
-		else if (id == R.id.newContact) {
+		} */
+		
+		//TODO TESTING : else if (id == R.id.newContact) {
+		if (id == R.id.newContact) {	
 			editConsumed = true;
 			MainActivity.instance().addContact(null, sipAddressToAdd);
 		} 
@@ -175,7 +181,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			return;
 		}
 		
-		changeContactsToggle();
+		//TODO test changeContactsToggle();
 		
 		if (searchCursor != null) {
 			searchCursor.close();
@@ -193,48 +199,52 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 	}
 	
 	private void changeContactsAdapter() {
-		changeContactsToggle();
+		//TODO test changeContactsToggle();
 		
 		if (searchCursor != null) {
 			searchCursor.close();
 		}
 		
-		Cursor allContactsCursor = MainActivity.instance().getAllContactsCursor();
+		//Cursor allContactsCursor = MainActivity.instance().getAllContactsCursor();
 		Cursor sipContactsCursor = MainActivity.instance().getSIPContactsCursor();
 
-		noSipContact.setVisibility(View.GONE);
-		noContact.setVisibility(View.GONE);
+		//noSipContact.setVisibility(View.GONE);
+		//noContact.setVisibility(View.GONE);
 		contactsList.setVisibility(View.VISIBLE);
 		
-		if (onlyDisplayLinphoneContacts) {
+		//if (onlyDisplayLinphoneContacts) {
 			if (sipContactsCursor.getCount() == 0) {
-				noSipContact.setVisibility(View.VISIBLE);
+				//noSipContact.setVisibility(View.VISIBLE);
 				contactsList.setVisibility(View.GONE);
-			} else {
+			} 
+			else {
 				indexer = new AlphabetIndexer(sipContactsCursor, Compatibility.getCursorDisplayNameColumnIndex(sipContactsCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 				contactsList.setAdapter(new ContactsListAdapter(MainActivity.instance().getSIPContacts(), sipContactsCursor));
 			}
-		} else {
+		//} 
+		/*else {
 			if (allContactsCursor.getCount() == 0) {
-				noContact.setVisibility(View.VISIBLE);
+				//noContact.setVisibility(View.VISIBLE);
 				contactsList.setVisibility(View.GONE);
 			} else {
 				indexer = new AlphabetIndexer(allContactsCursor, Compatibility.getCursorDisplayNameColumnIndex(allContactsCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 				contactsList.setAdapter(new ContactsListAdapter(MainActivity.instance().getAllContacts(), allContactsCursor));
 			}
-		}
+		}*/
 		MainActivity.instance().setLinphoneContactsPrefered(onlyDisplayLinphoneContacts);
 	}
 	
-	private void changeContactsToggle() {
+	//TODO test
+	/*private void changeContactsToggle() {
 		if (onlyDisplayLinphoneContacts) {
 			allContacts.setEnabled(true);
 			linphoneContacts.setEnabled(false);
-		} else {
+		} 
+		else {
 			allContacts.setEnabled(false);
 			linphoneContacts.setEnabled(true);
 		}
-	}
+	}*/
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
@@ -332,7 +342,8 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			
 			if (convertView != null) {
 				view = convertView;
-			} else {
+			} 
+			else {
 				view = mInflater.inflate(R.layout.contact_cell, parent, false);
 			}
 			
