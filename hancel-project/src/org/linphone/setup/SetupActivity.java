@@ -346,13 +346,15 @@ public class SetupActivity extends FragmentActivity implements OnClickListener {
 		}
 	}
 
-	public void displayWizardConfirm(String username) {
+	public void displayWizardConfirm(String username, String password, String email) {
 		WizardConfirmFragment fragment = new WizardConfirmFragment();
 		
 		String IMEI = Util.getIMEI(getApplicationContext());
 
 		Bundle extras = new Bundle();
 		extras.putString("Username", username);
+		extras.putString("Password", password);
+		extras.putString("Email", email);
 		extras.putString("IMEI", IMEI);
 
 		fragment.setArguments(extras);

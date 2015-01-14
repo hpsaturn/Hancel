@@ -52,6 +52,7 @@ import de.timroes.axmlrpc.XMLRPCServerException;
 public class WizardConfirmFragment extends Fragment {
 	private String username;
 	private String IMEI;
+	private String mPassword;
 	private String mErrores;
 	private Handler mHandler = new Handler();
 	
@@ -61,6 +62,8 @@ public class WizardConfirmFragment extends Fragment {
 		View view = inflater.inflate(R.layout.setup_wizard_confirm, container, false);
 		
 		username = getArguments().getString("Username");
+		mPassword = getArguments().getString("Password");
+
 		IMEI = getArguments().getString("IMEI");
 		
 		ImageView checkAccount = (ImageView) view.findViewById(R.id.setup_check);
@@ -131,7 +134,6 @@ public class WizardConfirmFragment extends Fragment {
 			
 			try
 			{	
-				String mPassword="";
 				String mEmail="";
 				String id = SimpleCrypto.md5(String.valueOf(Calendar.getInstance().getTimeInMillis()));
 				JSONObject result=  HttpUtils.Register(id, username, SimpleCrypto.md5(mPassword), mEmail,"", IMEI);
