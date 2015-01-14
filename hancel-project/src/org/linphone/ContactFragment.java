@@ -28,6 +28,7 @@ import org.linphone.ui.AvatarWithShadow;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -123,6 +124,8 @@ public class ContactFragment extends Fragment implements OnClickListener {
 			v.findViewById(R.id.start_chat).setOnClickListener(chatListener);
 			LinphoneProxyConfig lpc = LinphoneManager.getLc().getDefaultProxyConfig();
 			
+			Log.d("Hancel", "----- " + displayednumberOrAddress);
+			
 			if (lpc != null) {
 				if (!displayednumberOrAddress.startsWith("sip:")) {
 					numberOrAddress = "sip:" + displayednumberOrAddress;
@@ -133,7 +136,8 @@ public class ContactFragment extends Fragment implements OnClickListener {
 					tag = numberOrAddress + "@" + lpc.getDomain();
 				}
 				v.findViewById(R.id.start_chat).setTag(tag);
-			} else {
+			} 
+			else {
 				v.findViewById(R.id.start_chat).setTag(numberOrAddress);
 			}
 			

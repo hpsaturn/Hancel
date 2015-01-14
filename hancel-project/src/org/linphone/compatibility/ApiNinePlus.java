@@ -102,7 +102,7 @@ public class ApiNinePlus {
 		String[] projection = {ContactsContract.CommonDataKinds.Im.DATA};
 
 		// Phone Numbers
-		Cursor c = cr.query(Phone.CONTENT_URI, new String[] { }, Phone.CONTACT_ID + " = " + id, null, null);
+		Cursor c = cr.query(Phone.CONTENT_URI, new String[] {Phone.NUMBER}, Phone.CONTACT_ID + " = " + id, null, null);
 		
 		/* TODO Testing
 		Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER }, Phone.CONTACT_ID + " = " + id, null, null);

@@ -151,6 +151,7 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
         messagesList = (ListView) view.findViewById(R.id.chatMessageList);
         
         message = (EditText) view.findViewById(R.id.message);
+        
         if (!getActivity().getResources().getBoolean(R.bool.allow_chat_multiline)) {
         	message.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
         	message.setMaxLines(1);
@@ -162,6 +163,7 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
         
         progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
         sendImage = (TextView) view.findViewById(R.id.sendPicture);
+        
         if (!getResources().getBoolean(R.bool.disable_chat_send_file)) {
 	        registerForContextMenu(sendImage);
 	        sendImage.setOnClickListener(new OnClickListener() {
@@ -187,9 +189,11 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 
         LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
 		if (lc != null) {
-			chatRoom = lc.getOrCreateChatRoom(sipUri);
+			chatRoom = lc.getOrCreateChatRoom(sipUri);		
 			//Only works if using liblinphone storage
+			Log.d("Hancel","Mensajes sin leer: " + chatRoom.getUnreadMessagesCount());
 			chatRoom.markAsRead();
+			Log.d("Hancel","*** No es nulo el LC");
 		}
 		
         displayChatHeader(displayName, pictureUri);
@@ -236,7 +240,7 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 				}
 			});
 		}
-
+		messagesList.setVisibility(View.VISIBLE);
 		return view;
     }
 
@@ -353,9 +357,9 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 		}
 
         if (pictureUri != null) {
-        	LinphoneUtils.setImagePictureFromUri(view.getContext(), contactPicture.getView(), Uri.parse(pictureUri), R.drawable.ic_contact_picture);
+        	LinphoneUtils.setImagePictureFromUri(view.getContext(), contactPicture.getView(), Uri.parse(pictureUri), R.drawable.unknown_small);
         } else {
-        	contactPicture.setImageResource(R.drawable.ic_contact_picture);
+        	contactPicture.setImageResource(R.drawable.unknown_small);
         }
 	}
 
