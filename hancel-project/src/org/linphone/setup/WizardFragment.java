@@ -215,7 +215,7 @@ public class WizardFragment extends Fragment {
 		return password.length() >= 6;
 	}
 	
-	private void createAccount(final String username, final String password, String email, boolean suscribe) {
+	private void createAccount(final String username, final String password, final String email, boolean suscribe) {
 		final Runnable runNotReachable = new Runnable() {
 			public void run() {
 				errorMessage.setText(R.string.wizard_server_unavailable);
@@ -237,7 +237,7 @@ public class WizardFragment extends Fragment {
 	    		Runnable runOk = new Runnable() {
     				public void run() {
     					SetupActivity.instance().saveCreatedAccount(username, password, context.getString(R.string.default_domain));
-    					SetupActivity.instance().displayWizardConfirm(username);
+    					SetupActivity.instance().displayWizardConfirm(username, password, email);
 					}
 	    		};
 	    		

@@ -18,9 +18,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 import java.net.URL;
+import java.util.Calendar;
 
 import org.hansel.myAlert.R;
+import org.hansel.myAlert.Log.Log;
+import org.hansel.myAlert.Utils.PreferenciasHancel;
+import org.hansel.myAlert.Utils.SimpleCrypto;
+import org.hansel.myAlert.Utils.Util;
+import org.hancel.http.HttpUtils;
+import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -34,11 +43,17 @@ import de.timroes.axmlrpc.XMLRPCCallback;
 import de.timroes.axmlrpc.XMLRPCClient;
 import de.timroes.axmlrpc.XMLRPCException;
 import de.timroes.axmlrpc.XMLRPCServerException;
+
+
+
 /**
  * @author Sylvain Berfini
  */
 public class WizardConfirmFragment extends Fragment {
 	private String username;
+	private String IMEI;
+	private String mPassword;
+	private String mErrores;
 	private Handler mHandler = new Handler();
 	
 	@Override
@@ -47,6 +62,9 @@ public class WizardConfirmFragment extends Fragment {
 		View view = inflater.inflate(R.layout.setup_wizard_confirm, container, false);
 		
 		username = getArguments().getString("Username");
+		mPassword = getArguments().getString("Password");
+
+		IMEI = getArguments().getString("IMEI");
 		
 		ImageView checkAccount = (ImageView) view.findViewById(R.id.setup_check);
 		checkAccount.setOnClickListener(new OnClickListener() {
@@ -104,6 +122,65 @@ public class WizardConfirmFragment extends Fragment {
 		} 
 		catch(Exception ex) {
 			mHandler.post(runNotReachable);
+		}
+	}
+
+	@SuppressLint("DefaultLocale")
+	public class UserCreateTask extends AsyncTask<Void, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Void... arg0) {
+			//conexion a la BD para obtener Login.
+			
+			try
+			{	
+				String mEmail="";
+				String id = SimpleCrypto.md5(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+				JSONObject result=  HttpUtils.Register(id, username, SimpleCrypto.md5(mPassword), mEmail,"", IMEI);
+				try {
+					 
+					 if(result.optString("resultado").equals("ok"))
+					 {
+						 
+						return true;
+						 /*
+					 
+						 //parseamos data del ID
+						 JSONObject jObject = result.getJSONObject("descripcion");
+						 int androidId = Integer.parseInt(jObject.getString("usr-id"));
+						 
+						 PreferenciasHancel.setDeviceId(getApplicationContext(), id);
+						 PreferenciasHancel.setUserId(getApplicationContext(), androidId);
+						 Util.insertNewTrackId(getApplicationContext(), 0);
+						  Util.setLoginOkInPreferences(getApplicationContext(), true);
+						  int idUsr=(int) usuarioDAO.Insertar( mUsuario, mPassword, mEmail);
+							if(idUsr!=0){
+								return true;
+							}
+							*/
+					 
+					 }else if(result.optString("resultado").equals("error"))
+					 {
+						 JSONObject jObject = result.getJSONObject("descripcion");
+						 mErrores = jObject.getString("usuario");
+						 //buscamos el error:
+						 return false;
+					 }
+					 
+					
+				} catch (Exception e) {
+					Log.v("Error al parsear Json: "+ result);
+					mErrores= "Error al obtener los datos";
+					return false;
+				}
+			
+				return false;
+			}catch(Exception ex)
+			{
+				mErrores="Error al intentar la conexi�n";
+				Log.v("Error login: "+ex.getMessage());
+			}
+			return false;
 		}
 	}
 }
