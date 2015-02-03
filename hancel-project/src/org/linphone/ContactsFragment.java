@@ -58,8 +58,8 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 	
 	private LayoutInflater mInflater;
 	private ListView contactsList;
-	private TextView allContacts, linphoneContacts, newContact;//, noSipContact, noContact;
-	private boolean onlyDisplayLinphoneContacts;
+	private TextView allContacts, allRings, newContact, newHancelRing;//, noSipContact, noContact;
+	private boolean onlyDisplayLinphoneContacts, displayContacts;
 	private int lastKnownPosition;
 	private AlphabetIndexer indexer;
 	private boolean editOnClick = false, editConsumed = false, onlyDisplayChatAddress = false;
@@ -84,6 +84,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		mInflater = inflater;
         View view = inflater.inflate(R.layout.contacts_list, container, false);
         onlyDisplayLinphoneContacts = true;
+        displayContacts = true;
         
         if (getArguments() != null) {
 	        editOnClick = getArguments().getBoolean("EditOnClick");
@@ -98,20 +99,26 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
         contactsList = (ListView) view.findViewById(R.id.contactsList);
         contactsList.setOnItemClickListener(this);
         
-        /* TODO testting
+        /* TODO testting*/
         allContacts = (TextView) view.findViewById(R.id.allContacts);
         allContacts.setOnClickListener(this);
         
-        linphoneContacts = (TextView) view.findViewById(R.id.linphoneContacts);
-        linphoneContacts.setOnClickListener(this);*/
+        allRings = (TextView) view.findViewById(R.id.allRings);
+        allRings.setOnClickListener(this); /**/
         
         newContact = (TextView) view.findViewById(R.id.newContact);
         newContact.setOnClickListener(this);
         newContact.setEnabled(LinphoneManager.getLc().getCallsNb() == 0);
         
-        //allContacts.setEnabled(onlyDisplayLinphoneContacts);
-        //linphoneContacts.setEnabled(!allContacts.isEnabled());
-		
+        newHancelRing = (TextView) view.findViewById(R.id.newHancelRing);
+        newHancelRing.setOnClickListener(this);
+        newHancelRing.setEnabled(LinphoneManager.getLc().getCallsNb() == 0);
+        
+        /* TODO Testing*/
+        allContacts.setEnabled(displayContacts);
+        allRings.setEnabled(!allContacts.isEnabled());
+		/**/
+        
 		clearSearchField = (ImageView) view.findViewById(R.id.clearSearchField);
 		clearSearchField.setOnClickListener(this);
 		
@@ -144,28 +151,36 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 	public void onClick(View v) {
 		int id = v.getId();
 		
-		/*if (id == R.id.allContacts) {
-			onlyDisplayLinphoneContacts = false;
+		if (id == R.id.allContacts) {
 			if (searchField.getText().toString().length() > 0) {
 				searchContacts();
-			} else {
+			} 
+			else {
 				changeContactsAdapter();
 			}
 		} 
-		else if (id == R.id.linphoneContacts) {
-			onlyDisplayLinphoneContacts = true;
-			if (searchField.getText().toString().length() > 0) {
+		else if (id == R.id.allRings) {
+			displayContacts = false;
+			/*if (searchField.getText().toString().length() > 0) {
 				searchContacts();
-			} else {
+			} 
+			else {
 				changeContactsAdapter();
-			}
-		} */
+			}*/
+		} 
 		
-		//TODO TESTING : else if (id == R.id.newContact) {
-		if (id == R.id.newContact) {	
+		else if (id == R.id.newContact) {
+		//TODO if (id == R.id.newContact) {	
 			editConsumed = true;
 			MainActivity.instance().addContact(null, sipAddressToAdd);
-		} 
+		}
+		
+		else if (id == R.id.newHancelRing) {
+			//TODO if (id == R.id.newContact) {	
+			editConsumed = true;
+			MainActivity.instance().addContact(null, sipAddressToAdd);
+		}
+		
 		else if (id == R.id.clearSearchField) {
 			searchField.setText("");
 		}
@@ -191,7 +206,8 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			searchCursor = Compatibility.getSIPContactsCursor(getActivity().getContentResolver(), search);
 			indexer = new AlphabetIndexer(searchCursor, Compatibility.getCursorDisplayNameColumnIndex(searchCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			contactsList.setAdapter(new ContactsListAdapter(null, searchCursor));
-		} else {
+		} 
+		else {
 			searchCursor = Compatibility.getContactsCursor(getActivity().getContentResolver(), search);
 			indexer = new AlphabetIndexer(searchCursor, Compatibility.getCursorDisplayNameColumnIndex(searchCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			contactsList.setAdapter(new ContactsListAdapter(null, searchCursor));

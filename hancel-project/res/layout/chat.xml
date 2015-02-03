@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-	    	android:textColor="@color/text_contrast" />
+	    	android:textColor="@color/blue_hancel" />
         
     </LinearLayout>
     
@@ -140,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-    	android:textColor="@color/text_contrast"
+    	android:textColor="@color/android_green"
         android:text="@string/remote_composing"
         android:layout_above="@id/footer"/>
 
@@ -148,9 +148,9 @@
 		android:id="@+id/chatMessageList"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:divider="@android:color/transparent"
+		android:divider="@android:color/white"
 		android:stackFromBottom="true"
-		android:cacheColorHint="@color/transparent"
+		android:cacheColorHint="@color/holo_orange_dark"
 		android:dividerHeight="1dp"
 		android:layout_above="@id/remoteComposing"
 		android:layout_below="@id/header"/>

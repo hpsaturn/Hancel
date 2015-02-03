@@ -406,7 +406,8 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			
 			if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && address.getDisplayName() != null && LinphoneUtils.isSipAddress(address.getDisplayName())) {
 				address.setDisplayName(LinphoneUtils.getUsernameFromAddress(address.getDisplayName()));
-			} else if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(contact)) {
+			} 
+			else if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(contact)) {
 				contact = LinphoneUtils.getUsernameFromAddress(contact);
 			} 
 			
@@ -422,13 +423,15 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			if (unreadMessagesCount > 0) {
 				unreadMessages.setVisibility(View.VISIBLE);
 				unreadMessages.setText(String.valueOf(unreadMessagesCount));
-			} else {
+			} 
+			else {
 				unreadMessages.setVisibility(View.GONE);
 			}
 			
 			if (isEditMode) {
 				delete.setVisibility(View.VISIBLE);
-			} else {
+			} 
+			else {
 				delete.setVisibility(View.INVISIBLE);
 			}
 			

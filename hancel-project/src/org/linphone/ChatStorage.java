@@ -78,8 +78,10 @@ public class ChatStorage {
 	private ChatStorage(Context c) {
 	    context = c;
 	    boolean useLinphoneStorage = c.getResources().getBoolean(R.bool.use_linphone_chat_storage);
+	    Log.d("Hancel", "Valor para useLinphoneChatStorage: " + useLinphoneStorage);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LinphoneService.instance());
 		boolean updateNeeded = prefs.getBoolean(c.getString(R.string.pref_first_time_linphone_chat_storage), !LinphonePreferences.instance().isFirstLaunch());
+		Log.d("Hancel", "Valor para updateNeeded: " + updateNeeded);
 		updateNeeded = updateNeeded && !isVersionUsingNewChatStorage();
 	    useNativeAPI = useLinphoneStorage && !updateNeeded;
 	    Log.d("Using native API: " + useNativeAPI);
@@ -87,6 +89,7 @@ public class ChatStorage {
 	    if (!useNativeAPI) {
 		    ChatHelper chatHelper = new ChatHelper(context);
 		    db = chatHelper.getWritableDatabase();
+		    Log.d("BD ReadOnly: " + db.isReadOnly());
 	    }
 	}
 	
@@ -135,7 +138,7 @@ public class ChatStorage {
 		if (useNativeAPI) {
 			return -1;
 		}
-		
+		Log.d("Valores a insertar: " + from + " " + to + " " + message + " " + time);
 		ContentValues values = new ContentValues();
 		if (from.equals("")) {
 			values.put("localContact", from);
@@ -143,7 +146,8 @@ public class ChatStorage {
 			values.put("direction", OUTGOING);
 			values.put("read", READ);
 			values.put("status", LinphoneChatMessage.State.InProgress.toInt());
-		} else if (to.equals("")) {
+		} 
+		else if (to.equals("")) {
 			values.put("localContact", to);
 			values.put("remoteContact", from);
 			values.put("direction", INCOMING);
@@ -152,7 +156,9 @@ public class ChatStorage {
 		}
 		values.put("message", message);
 		values.put("time", time);
-		return (int) db.insert(TABLE_NAME, null, values);
+		int result = (int) db.insert(TABLE_NAME, null, values);
+		Log.d("El resultado de la insercion del mensaje fue :" + result);
+		return result;
 	}
 	
 	public int saveImageMessage(String from, String to, Bitmap image, String url, long time) {
@@ -422,10 +428,15 @@ public class ChatStorage {
 		}
 	}
 	
-	public void markConversationAsRead(LinphoneChatRoom chatroom) {
-		if (useNativeAPI) {
+	public void markConversationAsRead( String correspondant ) {
+		/*if (useNativeAPI) {
 			chatroom.markAsRead();
 		}
+		*/
+		ContentValues values = new ContentValues();
+		values.put("read", READ);
+		db.update(TABLE_NAME, values, "remoteContact LIKE \"" + correspondant + "\" AND read LIKE " + NOT_READ, null);
+		
 	}
 	
 	public int getUnreadMessageCount() {

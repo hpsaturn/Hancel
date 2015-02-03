@@ -762,8 +762,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		ChatFragment chatFragment = ((ChatFragment) messageListenerFragment);
 		if (messageListenerFragment != null && messageListenerFragment.isVisible() && chatFragment.getSipUri().equals(from.asStringUriOnly())) {
 			chatFragment.onMessageReceived(id, from, message);
-			getChatStorage().markMessageAsRead(id);
-		} else if (LinphoneService.isReady()) {
+			getChatStorage().markMessageAsRead(id);			
+		} 
+		else if (LinphoneService.isReady()) {
 			displayMissedChats(getChatStorage().getUnreadMessageCount());
 			if (messageListFragment != null && messageListFragment.isVisible()) {
 				((ChatListFragment) messageListFragment).refresh();
@@ -777,7 +778,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 	public int onMessageSent(String to, String message) {
 		getChatStorage().deleteDraft(to);
-		return getChatStorage().saveTextMessage("", to, message, System.currentTimeMillis());
+		int result = getChatStorage().saveTextMessage("", to, message, System.currentTimeMillis());
+		
+		return result;
 	}
 
 	public int onMessageSent(String to, Bitmap image, String imageURL) {
@@ -1225,6 +1228,18 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	}
 	
 	public void addContact(String displayName, String sipUri)
+	{
+		if (getResources().getBoolean(R.bool.use_android_native_contact_edit_interface)) {
+			Intent intent = Compatibility.prepareAddContactIntent(displayName, sipUri);
+			startActivity(intent);
+		} else {
+			Bundle extras = new Bundle();
+			extras.putSerializable("NewSipAdress", sipUri);
+			changeCurrentFragment(FragmentsAvailable.EDIT_CONTACT, extras);
+		}
+	}
+	
+	public void addRing(String displayName, String sipUri)
 	{
 		if (getResources().getBoolean(R.bool.use_android_native_contact_edit_interface)) {
 			Intent intent = Compatibility.prepareAddContactIntent(displayName, sipUri);

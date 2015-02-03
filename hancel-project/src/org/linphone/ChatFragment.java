@@ -151,6 +151,7 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
         messagesList = (ListView) view.findViewById(R.id.chatMessageList);
         
         message = (EditText) view.findViewById(R.id.message);
+                
         
         if (!getActivity().getResources().getBoolean(R.bool.allow_chat_multiline)) {
         	message.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
@@ -190,10 +191,11 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
         LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
 		if (lc != null) {
 			chatRoom = lc.getOrCreateChatRoom(sipUri);		
-			//Only works if using liblinphone storage
-			Log.d("Hancel","Mensajes sin leer: " + chatRoom.getUnreadMessagesCount());
-			chatRoom.markAsRead();
-			Log.d("Hancel","*** No es nulo el LC");
+								
+			if(MainActivity.isInstanciated()){
+				MainActivity.instance().getChatStorage().markConversationAsRead(sipUri);
+			}
+			
 		}
 		
         displayChatHeader(displayName, pictureUri);
@@ -213,7 +215,8 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 			{
 				if (message.getText().toString().equals("")) {
 					sendMessage.setEnabled(false);
-				} else {
+				} 
+				else {
 					if (chatRoom != null)
 						chatRoom.compose();
 					sendMessage.setEnabled(true);
@@ -240,6 +243,7 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 				}
 			});
 		}
+		displayMessages(); //TODO revisar
 		messagesList.setVisibility(View.VISIBLE);
 		return view;
     }
@@ -287,48 +291,61 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 	}
 	
 	class ChatMessageAdapter extends BaseAdapter {
-		LinphoneChatMessage[] history;
+		List<ChatMessage> history;
 		Context context;
+		
+		public void addMessage(){
+			
+		}
 		 
-		public ChatMessageAdapter(Context context, LinphoneChatMessage[] history) {
+		public ChatMessageAdapter(Context context, List<ChatMessage> history) {
 			this.history = history; 
 			this.context = context;
 		}
 		
 		public void refreshHistory(){
-			this.history = chatRoom.getHistory();
+			if(MainActivity.isInstanciated()){
+				ChatStorage storage = MainActivity.instance().getChatStorage();
+				this.history = storage.getMessages(sipUri);
+			}
 		}
 		 
 		@Override
 		public int getCount() {
-			return history.length;
+			return history.size();
 		}
 
 		@Override
-		public LinphoneChatMessage getItem(int position) {
-			return history[position];
+		public ChatMessage getItem(int position) {
+			return history.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			return history[position].getStorageId();
+			return history.get(position).getId();
 		}
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			BubbleChat bubble;
-			LinphoneChatMessage msg = history[position];
+			ChatMessage msg = history.get(position);
 			View v;
 
-			if (msg.getExternalBodyUrl() != null ) {	
-				bubble = displayImageMessage(msg.getStorageId(), null, msg.getTime(), !msg.isOutgoing(), msg.getStatus(), context, msg.getExternalBodyUrl());
-			} else {
-				bubble = displayMessage(msg.getStorageId(), msg.getText(), msg.getTime(), !msg.isOutgoing(), msg.getStatus(), context);
-				
+			//if (msg.getExternalBodyUrl() != null ) {
+			if (msg.getUrl() != null ) {
+				bubble = displayImageMessage(msg.getId(),null,new Long(msg.getTimestamp()).longValue(),
+						msg.isIncoming(),msg.getStatus(),context,msg.getUrl());
+				//bubble = displayImageMessage(msg.getStorageId(), null, msg.getTime(), !msg.isOutgoing(), msg.getStatus(), context, msg.getExternalBodyUrl());
+			} 
+			else {
+				bubble = displayMessage(msg.getId(),msg.getMessage(),new Long(msg.getTimestamp()).longValue(),
+						msg.isIncoming(),msg.getStatus(),context);
+				//bubble = displayMessage(msg.getStorageId(), msg.getText(), msg.getTime(), !msg.isOutgoing(), msg.getStatus(), context);			
 			}
 			
 			v = bubble.getView();
-			bubble.setNativeMessageObject(msg);
+			LinphoneChatMessage chatMessage = chatRoom.createLinphoneChatMessage(msg.getMessage(),sipUri,State.InProgress,new Long(msg.getTimestamp()).longValue(),msg.isRead(),msg.isIncoming());
+			bubble.setNativeMessageObject(chatMessage);
 			registerForContextMenu(v);
 			
 			RelativeLayout rlayout = new RelativeLayout(context);
@@ -342,9 +359,15 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 		return messagesList.getChildAt(position);
 	}
 	
-	public void dispayMessageList(){
-		 adapter = new ChatMessageAdapter(this.getActivity(), chatRoom.getHistory());
-		 messagesList.setAdapter(adapter);  
+	public void dispayMessageList(){		
+		if(MainActivity.isInstanciated()){
+			ChatStorage storage = MainActivity.instance().getChatStorage();
+			List<ChatMessage> old = storage.getMessages(sipUri);
+			adapter = new ChatMessageAdapter(this.getActivity(), old);
+			messagesList.setAdapter(adapter);
+		}
+		// adapter = new ChatMessageAdapter(this.getActivity(), chatRoom.getHistory());
+		// messagesList.setAdapter(adapter);  
 	}
 
 	private void displayChatHeader(String displayName, String pictureUri) {
@@ -437,14 +460,18 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 	}
 
 	public void changeDisplayedChat(String newSipUri, String displayName, String pictureUri) {
+		Log.d(" En changeDisplayedChat ");
 		if (!message.getText().toString().equals("") && MainActivity.isInstanciated()) {
 			ChatStorage chatStorage = MainActivity.instance().getChatStorage();
+			
 			if (chatStorage.getDraft(sipUri) == null) {
 				chatStorage.saveDraft(sipUri, message.getText().toString());
-			} else {
+			} 
+			else {
 				chatStorage.updateDraft(sipUri, message.getText().toString());
 			}
-		} else if (MainActivity.isInstanciated()) {
+		} 
+		else if (MainActivity.isInstanciated()) {
 			MainActivity.instance().getChatStorage().deleteDraft(sipUri);
 		}
 
@@ -580,22 +607,27 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 	private void sendTextMessage(String messageToSend) {
 		LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
 		boolean isNetworkReachable = lc == null ? false : lc.isNetworkReachable();
-
-		if (chatRoom != null && messageToSend != null && messageToSend.length() > 0 && isNetworkReachable) {
-			LinphoneChatMessage chatMessage = chatRoom.createLinphoneChatMessage(messageToSend);
-			chatRoom.sendMessage(chatMessage, this);
-
-			if (MainActivity.isInstanciated()) {
+		
+		if (chatRoom != null && messageToSend != null && messageToSend.length() > 0 
+				&& isNetworkReachable) {			
+			LinphoneChatMessage chatMessage = chatRoom.createLinphoneChatMessage(messageToSend,sipUri,State.Delivered, 300,false,false);
+			Log.i("==textMessage: " + chatMessage.getText());
+			chatRoom.sendMessage(messageToSend);//chatMessage, this);
+			
+			if (MainActivity.isInstanciated()) {				
 				MainActivity.instance().onMessageSent(sipUri, messageToSend);	
 			}
 
+			Log.d("==CHAT HISTORY: " + chatRoom.getHistorySize());
 			adapter.refreshHistory();
 			adapter.notifyDataSetChanged();
-			
+								
 			Log.i("Sent message current status: " + chatMessage.getStatus());
 			scrollToEnd();
-		} else if (!isNetworkReachable && MainActivity.isInstanciated()) {
+		} 
+		else if (!isNetworkReachable && MainActivity.isInstanciated()) {
 			MainActivity.instance().displayCustomToast(getString(R.string.error_network_unreachable), Toast.LENGTH_LONG);
+			Log.i("== Problema: " + R.string.error_network_unreachable);
 		}
 	}
 
@@ -664,7 +696,7 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 		}
 	}
 
-	private void scrollToEnd() {
+	private void scrollToEnd() {		
 		messagesList.smoothScrollToPosition(messagesList.getCount());
 		chatRoom.markAsRead();
 	}
@@ -1099,13 +1131,16 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 
 	@Override
 	public void onComposingReceived(LinphoneChatRoom room) {
-		if (chatRoom != null && room != null && chatRoom.getPeerAddress().asStringUriOnly().equals(room.getPeerAddress().asStringUriOnly())) {
+		if (chatRoom != null && room != null && chatRoom.getPeerAddress().asStringUriOnly().equals(room.getPeerAddress().asStringUriOnly())) {			
 			mHandler.post(new Runnable() {
 				@Override
 				public void run() {
 					remoteComposing.setVisibility(chatRoom.isRemoteComposing() ? View.VISIBLE : View.GONE);
+					Log.d("==ChatFragment onComposingReceived");
 				}
-			});
+			});			
 		}
+		else
+			Log.d("==ChatFragment onComposingReceived: No creo el Run");
 	}
 }

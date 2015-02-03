@@ -146,8 +146,8 @@ public class Login extends org.holoeverywhere.app.Activity {
 		{
 			LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
 	
-			String username = "asly";
-			String password = "Joshua123";
+			String username = "asly"; //aslan2"andres.calderon";//
+			String password = "Joshua123"; //Joshua2123"ccm3mm5";//
 			String domain = "sip.linphone.org";
 			
 			LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance().createAuthInfo(username, password, null, domain);
@@ -155,8 +155,8 @@ public class Login extends org.holoeverywhere.app.Activity {
 			String identity = "sip:" + username +"@" + domain;
 			String proxy = "sip:" + domain;
 			LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
-			proxyAddr.setTransport(TransportType.LinphoneTransportTls);
-			//proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
+			//proxyAddr.setTransport(TransportType.LinphoneTransportTls);
+			proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
 			LinphoneProxyConfig proxycon = lc.createProxyConfig(identity, proxyAddr.asStringUriOnly(), proxyAddr.asStringUriOnly(), true);
 			lc.addProxyConfig(proxycon);
 			lc.setDefaultProxyConfig(proxycon);

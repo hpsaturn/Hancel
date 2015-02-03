@@ -1386,8 +1386,9 @@ public class LinphoneManager implements LinphoneCoreListener {
 	@Override
 	public void isComposingReceived(LinphoneCore lc, LinphoneChatRoom cr) {
 		Log.d("Composing received for chatroom " + cr.getPeerAddress().asStringUriOnly());
-		if (composingReceivedListener != null)
-			composingReceivedListener.onComposingReceived(cr);
+		if (composingReceivedListener != null){
+			composingReceivedListener.onComposingReceived(cr);				
+		}
 	}
 
 	private LinphoneOnRemoteProvisioningListener remoteProvisioningListener;
