@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.linphone.Contact;
+import org.linphone.LinphoneService;
 import org.hansel.myAlert.R;
+import org.hansel.myAlert.Utils.Ring;
+import org.hansel.myAlert.dataBase.RingDAO;
 import org.linphone.core.LinphoneAddress;
 
 import android.annotation.TargetApi;
@@ -210,16 +213,22 @@ public class ApiFivePlus {
 	        Uri photo = getContactPictureUri(id);
 	        InputStream input = getContactPictureInputStream(cr, id);
 	        
+	        RingDAO ringDAO = new RingDAO(LinphoneService.instance().getApplicationContext());
+	        Cursor c = ringDAO.getRingsByContactCursor(id); 
+	        ArrayList<Ring> rings = getContactRings(c);
+	        
 	        Contact contact;
-	        if (input == null) {
+	        if (input == null) {	        	
 	        	contact = new Contact(id, name);
+	        	contact.setRings(rings);
 	        }
 	        else {
 	        	Bitmap bm = null;
 	        	try {
 	        		bm = BitmapFactory.decodeStream(input);
-	        	} catch (OutOfMemoryError oome) {}
-	        	contact = new Contact(id, name, photo, bm);
+	        	} 
+	        	catch (OutOfMemoryError oome) {}
+	        	contact = new Contact(id, name, photo, bm, rings);
 	        }
 	        
 	        return contact;
@@ -236,6 +245,18 @@ public class ApiFivePlus {
 	
 	private static String getContactDisplayName(Cursor cursor) {
 		return cursor.getString(cursor.getColumnIndex(Data.DISPLAY_NAME));
+	}
+	
+	private static ArrayList<Ring> getContactRings(Cursor c){
+		ArrayList<Ring> rings = new ArrayList<Ring>();
+		if(c != null ){
+			c.moveToFirst();
+			for(int i = 0; i < c.getCount(); i++){
+				Ring r = new Ring(c.getString(0), c.getString(1));
+				c.moveToNext();
+			}
+		}
+		return rings;
 	}
 	
 	private static Uri getContactPictureUri(String id) {

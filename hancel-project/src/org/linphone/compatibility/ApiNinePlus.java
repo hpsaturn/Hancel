@@ -68,7 +68,7 @@ public class ApiNinePlus {
 	        .build()
 	    );
 	}
-	
+			
 	public static void updateSipAddressForContact(ArrayList<ContentProviderOperation> ops, String oldIm, String newIm, String contactID) {
 		String select = ContactsContract.Data.CONTACT_ID + "=? AND " 
 				+ ContactsContract.Data.MIMETYPE + "='" + ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE +  "' AND " 

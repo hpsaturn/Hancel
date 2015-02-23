@@ -83,7 +83,8 @@ public class Compatibility {
 	public static Cursor getContactsCursor(ContentResolver cr) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			return ApiNinePlus.getContactsCursor(cr, null);
-		} else {
+		} 
+		else {
 			return ApiFivePlus.getContactsCursor(cr);
 		}
 	}
@@ -91,7 +92,8 @@ public class Compatibility {
 	public static Cursor getContactsCursor(ContentResolver cr, String search) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			return ApiNinePlus.getContactsCursor(cr, search);
-		} else {
+		} 
+		else {
 			return ApiFivePlus.getContactsCursor(cr);
 		}
 	}
@@ -99,7 +101,8 @@ public class Compatibility {
 	public static Cursor getSIPContactsCursor(ContentResolver cr) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			return ApiNinePlus.getSIPContactsCursor(cr, null);
-		} else {
+		} 
+		else {
 			return ApiFivePlus.getSIPContactsCursor(cr);
 		}
 	}
@@ -107,7 +110,8 @@ public class Compatibility {
 	public static Cursor getSIPContactsCursor(ContentResolver cr, String search) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			return ApiNinePlus.getSIPContactsCursor(cr, search);
-		} else {
+		} 
+		else {
 			return ApiFivePlus.getSIPContactsCursor(cr);
 		}
 	}
@@ -259,7 +263,8 @@ public class Compatibility {
 	public static void deleteSipAddressFromContact(ArrayList<ContentProviderOperation> ops, String oldSipAddress, String contactID) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			ApiNinePlus.deleteSipAddressFromContact(ops, oldSipAddress, contactID);
-		} else {
+		} 
+		else {
 			ApiFivePlus.deleteSipAddressFromContact(ops, oldSipAddress, contactID);
 		}
 	}
