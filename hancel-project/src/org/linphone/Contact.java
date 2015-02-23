@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hansel.myAlert.Utils.Ring;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.core.LinphoneFriend;
 
@@ -41,27 +42,32 @@ public class Contact implements Serializable {
 	private List<String> numerosOrAddresses;
 	private LinphoneFriend friend;
 	
+	private List<Ring> rings;
+	
 	public Contact(String id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.photoUri = null;
+		this.rings = null;
 	}
 	
-	public Contact(String id, String name, Uri photo) {
+	public Contact(String id, String name, Uri photo, List<Ring> rings) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.photoUri = photo;
 		this.photo = null;
+		this.setRings(rings);
 	}
 	
-	public Contact(String id, String name, Uri photo, Bitmap picture) {
+	public Contact(String id, String name, Uri photo, Bitmap picture, List<Ring> rings) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.photoUri = photo;
 		this.photo = picture;
+		this.setRings(rings);
 	}
 	
 	public void setFriend(LinphoneFriend friend) {
@@ -94,8 +100,22 @@ public class Contact implements Serializable {
 		return numerosOrAddresses;
 	}
 	
+	public void setNumerosOrAddresses(List<String> numerosOrAddresses) {
+		this.numerosOrAddresses = numerosOrAddresses;
+	}
+
 	public void refresh(ContentResolver cr) {
 		this.numerosOrAddresses = Compatibility.extractContactNumbersAndAddresses(id, cr);
 		this.name = Compatibility.refreshContactName(cr, id);
+	}
+
+	public List<Ring> getRings() {
+		if (rings == null)
+			rings = new ArrayList<Ring>();
+		return rings;
+	}
+
+	public void setRings(List<Ring> rings) {
+		this.rings = rings;
 	}
 }

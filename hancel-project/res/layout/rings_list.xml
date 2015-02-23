@@ -12,49 +12,25 @@
 		android:background="@drawable/toolsbar_background">
 
 		<TextView
-			android:visibility="invisible"
-			android:paddingTop="20dp"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:scaleType="centerCrop"
-			android:adjustViewBounds="true"
-			android:layout_weight="1"/>
-
-		<TextView
-			android:contentDescription="@string/content_description_all_contacts"
-			android:id="@+id/allContacts"
-			android:background="@drawable/contacts_all"
-			android:text="@string/button_all_contacts"
-			android:gravity="center"
-			android:paddingTop="20dp"
-			android:textSize="13sp"
-			android:textColor="@drawable/text_switch_button_color"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:scaleType="centerCrop"
-			android:adjustViewBounds="true"
-			android:layout_weight="1"/>
-
-		<TextView
-			android:contentDescription="@string/content_description_linphone_contacts"
-			android:id="@+id/linphoneContacts"
-			android:background="@drawable/contacts_sip"
-			android:text="@string/button_sip_contacts"
-			android:gravity="center"
-			android:paddingTop="20dp"
-			android:textSize="13sp"
-			android:textColor="@drawable/text_switch_button_color"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:scaleType="centerCrop"
-			android:adjustViewBounds="true"
-			android:layout_weight="1"/>
-
-		<TextView
-			android:contentDescription="@string/content_description_add_contact"
-			android:id="@+id/newContact"
+			android:contentDescription="@string/content_description_all_rings"
+			android:id="@+id/newRing"
 			android:background="@drawable/contacts_add_contact"
-			android:text="@string/button_add_contact"
+			android:text="@string/button_all_rings"
+			android:gravity="center"
+			android:paddingTop="20dp"
+			android:textSize="13sp"
+			android:textColor="@drawable/text_button"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:scaleType="centerCrop"
+			android:adjustViewBounds="true"
+			android:layout_weight="1"/>
+
+		<TextView
+			android:contentDescription="@string/content_description_add_ring"
+			android:id="@+id/allRings"
+			android:background="@drawable/contacts_add_contact"
+			android:text="@string/button_add_ring"
 			android:gravity="center"
 			android:paddingTop="20dp"
 			android:textSize="13sp"
@@ -102,7 +78,7 @@
 		android:layout_height="match_parent">
 
 		<ListView
-			android:id="@+id/contactsList"
+			android:id="@+id/ringsList"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:divider="@android:color/darker_gray"
@@ -111,7 +87,7 @@
 			android:fastScrollEnabled="true"
 			android:dividerHeight="1dp" />
 
-		<TextView
+		<!-- TextView
 			android:id="@+id/noSipContact"
 			android:visibility="gone"
 			android:layout_width="match_parent"
@@ -120,16 +96,16 @@
 			android:layout_centerVertical="true"
 			android:text="@string/no_sip_contact"
 			android:textColor="@drawable/text_color"
-			android:textAppearance="@android:style/TextAppearance.Large"/>
+			android:textAppearance="@android:style/TextAppearance.Large"/-->
 
 		<TextView
-			android:id="@+id/noContact"
+			android:id="@+id/noRings"
 			android:visibility="gone"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center"
 			android:layout_centerVertical="true"
-			android:text="@string/no_contact"
+			android:text="@string/no_rings"
 			android:textColor="@drawable/text_color"
 			android:textAppearance="@android:style/TextAppearance.Large"/>
 

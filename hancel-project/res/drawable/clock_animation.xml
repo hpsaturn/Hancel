@@ -38,7 +38,7 @@
     <item
         android:drawable="@drawable/clock_12"
         android:duration="200"/>
-    <item
+    <!-- item
         android:drawable="@drawable/clock_13"
         android:duration="200"/>
     <item
@@ -49,6 +49,6 @@
         android:duration="200"/>
     <item
         android:drawable="@drawable/clock_16"
-        android:duration="200"/>
+        android:duration="200"/-->
 
 </animation-list>

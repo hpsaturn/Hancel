@@ -920,7 +920,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		initAccounts();
 
 		if (MainActivity.isInstanciated()) {
-			MainActivity.instance().selectMenu(FragmentsAvailable.SETTINGS);
+			//MainActivity.instance().selectMenu(FragmentsAvailable.SETTINGS);
 
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
 				MainActivity.instance().hideStatusBar();

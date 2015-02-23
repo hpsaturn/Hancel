@@ -324,7 +324,7 @@
 	<string name="status_not_connected">Not Registered</string>
 	<string name="status_in_progress">Registration in progress</string>
 	<string name="status_error">Registration failed</string>
-
+		
 	<string name="addressHint">Number or address</string>
 	<string name="conference">Conference</string>
 	<string name="incoming">Incoming call</string>
@@ -335,6 +335,7 @@
 	<string name="no_contact">No contact in your address book.</string>
 	<string name="no_sip_contact">No SIP contact in your address book.</string>
 	<string name="no_chat_history">No chat history.</string>
+	<string name="no_rings">No rings found.</string>
 
 	<string name="call_stats_audio">Audio</string>
 	<string name="call_stats_video">Video</string>
@@ -347,10 +348,12 @@
 	<!-- Used by Android to help blind people by describing them images -->
 	<string name="content_description_add_contact">Add to contacts button</string>
 	<string name="content_description_add_ring">Add to Ring button</string>
+	<string name="content_description_all_rings">Show all rings button</string>
 	<string name="content_description_about"></string>
 	<string name="content_description_chat"></string>
 	<string name="content_description_dial_back"></string>
 	<string name="content_description_contact_picture"></string>
+	<string name="content_description_ring_picture"></string>
 	<string name="content_description_send_message"></string>
 	<string name="content_description_detail"></string>
 	<string name="content_description_delete"></string>
@@ -416,6 +419,7 @@
 	<string name="button_sip_contacts">SIP</string>
 	<string name="button_add_contact">New contact</string>
 	<string name="button_add_ring">New Ring</string>
+	<string name="button_all_rings">All Rings</string>
 	<string name="button_all_call">All</string>
 	<string name="button_missed_call">Missed</string>
 	<string name="button_delete_all">Delete</string>
