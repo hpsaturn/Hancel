@@ -19,11 +19,11 @@ import android.content.Context;
 import android.database.Cursor;
 
 public class TrackDAO extends SQLiteHelper{
-
-	public static final String DATABASE_NAME ="t_Track";
+	
+	/*public static final String DATABASE_NAME ="t_Track";
 	public static final String KEY_ID = "_id";
 	public static final String FECHA = "fecha";
-	public static final String ANDROID_ID = "androidId";
+	public static final String ANDROID_ID = "androidId";*/
 	
 	
 	public TrackDAO(Context ctx) {
@@ -32,42 +32,45 @@ public class TrackDAO extends SQLiteHelper{
 	} 
 	
 	public int getList(String mUsr,String mPass){
-		Cursor c= super.mDb.rawQuery("select top 1 max(_id) from "+SQLiteHelper.sqlTablaTrack
-				,null );
-		int id=0;
+		int id = 0;
+		Cursor c = super.mDb.rawQuery("select top 1 max(_id) from " + 
+				DBConstants.TABLE_TRACK, null );
+		
 		if(c.moveToFirst()){
 			id = c.getInt(0);
 		}
 		return id;
 	}
+	
 	private int getLastAndroidId(){
-		Cursor c= super.mDb.rawQuery("select max("+  ANDROID_ID   +") from "+DATABASE_NAME + " LIMIT 1"
-				,null );
-		int id=0;
+		int id = 0;
+		Cursor c = super.mDb.rawQuery("select max("+  DBConstants.ANDROID_ID + 
+				") from " +	DBConstants.TABLE_TRACK + " LIMIT 1", null );
+		
 		if(c.moveToFirst()){
 			id = c.getInt(0);
 		}
 		return id;
 	}
+	
 	public long Insertar(String mUsr) {
 		ContentValues newValues = new ContentValues();		
 		int idAnd = (getLastAndroidId() +1 );
-		newValues.put(ANDROID_ID,(idAnd));
-		newValues.put(FECHA, mUsr);
-		super.mDb.insert(DATABASE_NAME, null, newValues);
+		newValues.put(DBConstants.ANDROID_ID,(idAnd));
+		newValues.put(DBConstants.FECHA, mUsr);
+		super.mDb.insert(DBConstants.TABLE_TRACK, null, newValues);
 		return idAnd;
 	}
-	public void borraTabla()
-	{
-		mDb.delete(DATABASE_NAME, null, null);
+	
+	public void borraTabla(){
+		mDb.delete(DBConstants.TABLE_TRACK, null, null);
 	}
+	
 	public long InsertaNewId(String fecha,int id) {
 		borraTabla();
 		ContentValues newValues = new ContentValues();		
-		newValues.put(ANDROID_ID,id);
-		newValues.put(FECHA, fecha);
-		return super.mDb.insert(DATABASE_NAME, null, newValues);
+		newValues.put(DBConstants.ANDROID_ID,id);
+		newValues.put(DBConstants.FECHA, fecha);
+		return super.mDb.insert(DBConstants.TABLE_TRACK, null, newValues);
 	}	
-	
-
 }
