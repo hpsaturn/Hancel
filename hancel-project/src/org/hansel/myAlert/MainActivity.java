@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hansel.myAlert.Log.Log;
+import org.hansel.myAlert.dataBase.RingDAO;
 
 import org.holoeverywhere.app.Activity;
 import org.linphone.LinphoneManager.AddressType;
@@ -88,7 +89,6 @@ import org.linphone.ChatStorage;
 import org.linphone.Contact;
 import org.linphone.ContactFragment;
 import org.linphone.ContactsFragment;
-import org.linphone.DialerFragment;
 import org.linphone.EditContactFragment;
 import org.linphone.FragmentsAvailable;
 import org.linphone.HistoryDetailFragment;
@@ -125,23 +125,22 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	
 	public static final String PREF_FIRST_LAUNCH = "pref_first_launch";
 	private static final int SETTINGS_ACTIVITY = 123;
-	//private static final int FIRST_LOGIN_ACTIVITY = 101;
-	//private static final int REMOTE_PROVISIONING_LOGIN_ACTIVITY = 102;
-	private static final int CALL_ACTIVITY = 19;
+		private static final int CALL_ACTIVITY = 19;
 
 	private StatusFragment statusFragment;
 	private TextView missedCalls, missedChats;
 	private ImageView dialer;
 	private LinearLayout menu, mark;
-	private RelativeLayout contacts, history, settings, chat, aboutChat, aboutSettings;
+	private RelativeLayout contacts, history, settings, chat, aboutChat, aboutSettings, rings;
 	private FragmentsAvailable currentFragment, nextFragment;
 	private List<FragmentsAvailable> fragmentsHistory;
-	private Fragment panicFragment, /*dialerFragment,*/ messageListenerFragment, messageListFragment, friendStatusListenerFragment;
-	private SavedState dialerSavedState, panicSavedState;
+	private Fragment panicFragment,messageListenerFragment, messageListFragment, friendStatusListenerFragment;
+	private SavedState  panicSavedState;
 	private boolean preferLinphoneContacts = false, isAnimationDisabled = false, isContactPresenceDisabled = true;
 	private Handler mHandler = new Handler();
 	private List<Contact> contactList, sipContactList;
-	private Cursor contactCursor, sipContactCursor;
+	private List<Ring> allRings;
+	private Cursor contactCursor, sipContactCursor, ringsCursor;
 	private OrientationEventListener mOrientationHelper;
 	
 	
@@ -212,6 +211,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		dialer.setOnClickListener(this);
 		settings = (RelativeLayout) findViewById(R.id.settings);
 		settings.setOnClickListener(this);
+		rings = (RelativeLayout) findViewById(R.id.rings);
+		rings.setOnClickListener(this);
 		chat = (RelativeLayout) findViewById(R.id.chat);
 		chat.setOnClickListener(this);
 		aboutChat = (RelativeLayout) findViewById(R.id.about_chat);
@@ -272,22 +273,15 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if (newFragmentType == currentFragment && newFragmentType != FragmentsAvailable.CHAT) {
 			return;
 		}
-		nextFragment = newFragmentType;
-		/* TODO test
-		if (currentFragment == FragmentsAvailable.DIALER) {
-			try {
-				dialerSavedState = getSupportFragmentManager().saveFragmentInstanceState(dialerFragment);
-			} catch (Exception e) {
-			}
-		}*/
-
+		nextFragment = newFragmentType;		
 		Fragment newFragment = null;
 
 		switch (newFragmentType) {
 		case HISTORY:
 			if (getResources().getBoolean(R.bool.use_simple_history)) {
 				newFragment = new HistorySimpleFragment();
-			} else {
+			} 
+			else {
 				newFragment = new HistoryFragment();
 			}
 			break;
@@ -302,7 +296,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			    i.addCategory("android.intent.category.LAUNCHER");
 			    i.addCategory("android.intent.category.DEFAULT");
 			    startActivity(i);
-			} else {
+			} 
+			else {
 				newFragment = new ContactsFragment();
 				friendStatusListenerFragment = newFragment;
 			}
@@ -310,7 +305,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		case CONTACT:
 			newFragment = new ContactFragment();
 			break;
-		case EDIT_CONTACT:
+		case EDIT_CONTACT:			
 			newFragment = new EditContactFragment();
 			break;
 		case PANIC:
@@ -318,17 +313,16 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			if (extras == null) {
 				newFragment.setInitialSavedState(panicSavedState);
 			}
-			break;
-		/* TODO test
-		case DIALER:
-			newFragment = new DialerFragment();
-			if (extras == null) {
-				newFragment.setInitialSavedState(dialerSavedState);
-			}
-			dialerFragment = newFragment;
-			break;*/
+			break;	
 		case SETTINGS:
 			newFragment = new SettingsFragment();
+			break;
+		case RINGS:
+			newFragment = new RingsFragment();
+			break;
+		case EDIT_RING:
+			Log.v("=== Cambianbdo frame a EditRing");
+			newFragment = new EditRingFragment();			
 			break;
 		case ACCOUNT_SETTINGS:
 			newFragment = new AccountPreferencesFragment();
@@ -352,7 +346,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			newFragment.setArguments(extras);
 			if (isTablet()) {
 				changeFragmentForTablets(newFragment, newFragmentType, withoutAnimation);
-			} else {
+			} 
+			else {
 				changeFragment(newFragment, newFragmentType, withoutAnimation);
 			}
 		}
@@ -394,12 +389,14 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 		try {
 			getSupportFragmentManager().popBackStackImmediate(newFragmentType.toString(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-		} catch (java.lang.IllegalStateException e) {
-
+		} 
+		catch (java.lang.IllegalStateException e) {
+			e.printStackTrace();
 		}
 
 		transaction.addToBackStack(newFragmentType.toString());
 		transaction.replace(R.id.fragmentContainer, newFragment, newFragmentType.toString());
+		Log.v("=== Cambiando a fragment " + newFragmentType.toString());
 		transaction.commitAllowingStateLoss();
 		getSupportFragmentManager().executePendingTransactions();
 
@@ -407,13 +404,6 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	}
 
 	private void changeFragmentForTablets(Fragment newFragment, FragmentsAvailable newFragmentType, boolean withoutAnimation) {
-//		if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
-//			if (newFragmentType == FragmentsAvailable.DIALER) {
-//				showStatusBar();
-//			} else {
-//				hideStatusBar();
-//			}
-//		}
 		if (statusFragment != null) {
 			statusFragment.closeStatusBar();
 		}
@@ -428,28 +418,35 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			transaction.replace(R.id.fragmentContainer2, newFragment);
 		} 
 		else {
-			if (newFragmentType == FragmentsAvailable.PANIC /*newFragmentType == FragmentsAvailable.DIALER*/ 
+			if (newFragmentType == FragmentsAvailable.PANIC  
 					|| newFragmentType == FragmentsAvailable.ABOUT 
 					|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT 
 					|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS
 					|| newFragmentType == FragmentsAvailable.SETTINGS 
 					|| newFragmentType == FragmentsAvailable.ACCOUNT_SETTINGS) {
 				ll.setVisibility(View.GONE);
-			} else {
+			} 
+			else {
 				ll.setVisibility(View.INVISIBLE);
 			}
 			
 			if (!withoutAnimation && !isAnimationDisabled && currentFragment.shouldAnimate()) {
 				if (newFragmentType.isRightOf(currentFragment)) {
-					transaction.setCustomAnimations(R.anim.slide_in_right_to_left, R.anim.slide_out_right_to_left, R.anim.slide_in_left_to_right, R.anim.slide_out_left_to_right);
-				} else {
-					transaction.setCustomAnimations(R.anim.slide_in_left_to_right, R.anim.slide_out_left_to_right, R.anim.slide_in_right_to_left, R.anim.slide_out_right_to_left);
+					transaction.setCustomAnimations(R.anim.slide_in_right_to_left, 
+							R.anim.slide_out_right_to_left, R.anim.slide_in_left_to_right, 
+							R.anim.slide_out_left_to_right);
+				} 
+				else {
+					transaction.setCustomAnimations(R.anim.slide_in_left_to_right, 
+							R.anim.slide_out_left_to_right, R.anim.slide_in_right_to_left, 
+							R.anim.slide_out_right_to_left);
 				}
 			}
 			
 			try {
 				getSupportFragmentManager().popBackStackImmediate(newFragmentType.toString(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-			} catch (java.lang.IllegalStateException e) {
+			} 
+			catch (java.lang.IllegalStateException e) {
 				
 			}
 			
@@ -459,12 +456,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		transaction.commitAllowingStateLoss();
 		getSupportFragmentManager().executePendingTransactions();
 		
-		currentFragment = newFragmentType;
-		/*TODO test
-		 * if (currentFragment == FragmentsAvailable.DIALER) {
-		 
-			fragmentsHistory.clear();
-		}*/
+		currentFragment = newFragmentType;		
 		fragmentsHistory.add(currentFragment);
 	}
 
@@ -472,7 +464,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		LinphoneAddress lAddress;
 		try {
 			lAddress = LinphoneCoreFactory.instance().createLinphoneAddress(sipUri);
-		} catch (LinphoneCoreException e) {
+		} 
+		catch (LinphoneCoreException e) {
 			//Log.e("Cannot display history details",e);
 			return;
 		}
@@ -484,10 +477,12 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		String status;
 		if (log.getDirection() == CallDirection.Outgoing) {
 			status = "Outgoing";
-		} else {
+		} 
+		else {
 			if (log.getStatus() == CallStatus.Missed) {
 				status = "Missed";
-			} else {
+			} 
+			else {
 				status = "Incoming";
 			}
 		}
@@ -499,7 +494,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if (fragment2 != null && fragment2.isVisible() && currentFragment == FragmentsAvailable.HISTORY_DETAIL) {
 			HistoryDetailFragment historyDetailFragment = (HistoryDetailFragment) fragment2;
 			historyDetailFragment.changeDisplayedHistory(sipUri, displayName, pictureUri, status, callTime, callDate);
-		} else {
+		} 
+		else {
 			Bundle extras = new Bundle();
 			extras.putString("SipUri", sipUri);
 			if (displayName != null) {
@@ -527,7 +523,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if (fragment2 != null && fragment2.isVisible() && currentFragment == FragmentsAvailable.CONTACT) {
 			ContactFragment contactFragment = (ContactFragment) fragment2;
 			contactFragment.changeDisplayedContact(contact);
-		} else {
+		} 
+		else {
 			Bundle extras = new Bundle();
 			extras.putSerializable("Contact", contact);
 			extras.putBoolean("ChatAddressOnly", chatOnly);
@@ -565,7 +562,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		LinphoneAddress lAddress;
 		try {
 			lAddress = LinphoneCoreFactory.instance().createLinphoneAddress(sipUri);
-		} catch (LinphoneCoreException e) {
+		} 
+		catch (LinphoneCoreException e) {
 			//Log.e("Cannot display chat",e);
 			return;
 		}
@@ -578,7 +576,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			if (fragment2 != null && fragment2.isVisible() && currentFragment == FragmentsAvailable.CHAT) {
 				ChatFragment chatFragment = (ChatFragment) fragment2;
 				chatFragment.changeDisplayedChat(sipUri, displayName, pictureUri);
-			} else {
+			} 
+			else {
 				Bundle extras = new Bundle();
 				extras.putString("SipUri", sipUri);
 				if (lAddress.getDisplayName() != null) {
@@ -587,10 +586,12 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				}
 				changeCurrentFragment(FragmentsAvailable.CHAT, extras);
 			}
-		} else {
+		} 
+		else {
 			changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
 			displayChat(sipUri);
 		}
+		
 		LinphoneService.instance().resetMessageNotifCount();
 		LinphoneService.instance().removeMessageNotification();
 		displayMissedChats(getChatStorage().getUnreadMessageCount());
@@ -606,13 +607,11 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			history.setSelected(true);
 			LinphoneManager.getLc().resetMissedCallsCount();
 			displayMissedCalls(0);
-		} else if (id == R.id.contacts) {
+		} 
+		else if (id == R.id.contacts) {
 			changeCurrentFragment(FragmentsAvailable.CONTACTS, null);
 			contacts.setSelected(true);
-		} /* TODO test else if (id == R.id.dialer) {
-			changeCurrentFragment(FragmentsAvailable.DIALER, null);
-			dialer.setSelected(true);		
-		} */
+		}
 		else if (id == R.id.dialer) {
 			changeCurrentFragment(FragmentsAvailable.PANIC, null);
 			dialer.setSelected(true);
@@ -620,17 +619,26 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		else if (id == R.id.settings) {
 			changeCurrentFragment(FragmentsAvailable.SETTINGS, null);
 			settings.setSelected(true);
-		} else if (id == R.id.about_chat) {
+			Log.v("Click en settings");
+		} 
+		else if (id == R.id.rings) {
+			changeCurrentFragment(FragmentsAvailable.RINGS, null);
+			rings.setSelected(true);
+			Log.v("Click en rings");
+		} 
+		else if (id == R.id.about_chat) {
 			Bundle b = new Bundle();
 			b.putSerializable("About", FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT);
 			changeCurrentFragment(FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT, b);
 			aboutChat.setSelected(true);
-		} else if (id == R.id.about_settings) {
+		} 
+		else if (id == R.id.about_settings) {
 			Bundle b = new Bundle();
 			b.putSerializable("About", FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS);
 			changeCurrentFragment(FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS, b);
 			aboutSettings.setSelected(true);
-		} else if (id == R.id.chat) {
+		} 
+		else if (id == R.id.chat) {
 			changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
 			chat.setSelected(true);
 		}
@@ -641,6 +649,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		contacts.setSelected(false);
 		dialer.setSelected(false);
 		settings.setSelected(false);
+		rings.setSelected(false);
 		chat.setSelected(false);
 		aboutChat.setSelected(false);
 		aboutSettings.setSelected(false);
@@ -664,9 +673,6 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		case PANIC:
 			dialer.setSelected(true);
 			break;
-		/*TODO test case DIALER:
-			dialer.setSelected(true);
-			break;*/
 		case SETTINGS:
 		case ACCOUNT_SETTINGS:
 			settings.setSelected(true);
@@ -683,18 +689,13 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			break;
 		}
 	}
-
-	/*TODO test
-	 * public void updateDialerFragment(DialerFragment fragment) {
-		dialerFragment = fragment;
-		// Hack to maintain soft input flags
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-	}*/
-
+	
 	public void updateChatFragment(ChatFragment fragment) {
 		messageListenerFragment = fragment;
 		// Hack to maintain soft input flags
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams
+				.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams
+				.SOFT_INPUT_STATE_HIDDEN);
 	}
 
 	public void updateChatListFragment(ChatListFragment fragment) {
@@ -711,7 +712,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 		LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
 		if (lc != null && lc.getDefaultProxyConfig() != null) {
-			statusFragment.registrationStateChanged(LinphoneManager.getLc().getDefaultProxyConfig().getState());
+			statusFragment.registrationStateChanged(LinphoneManager.getLc()
+					.getDefaultProxyConfig().getState());
 		}
 	}
 
@@ -721,7 +723,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	}
 
 	public void applyConfigChangesIfNeeded() {
-		if (nextFragment != FragmentsAvailable.SETTINGS && nextFragment != FragmentsAvailable.ACCOUNT_SETTINGS) {
+		if (nextFragment != FragmentsAvailable.SETTINGS && nextFragment != 
+				FragmentsAvailable.ACCOUNT_SETTINGS) {
 			updateAnimationsState();
 		}
 	}
@@ -758,9 +761,11 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	}
 
 	@Override
-	public void onMessageReceived(LinphoneAddress from, LinphoneChatMessage message, int id) {
+	public void onMessageReceived(LinphoneAddress from, 
+			LinphoneChatMessage message, int id) {
 		ChatFragment chatFragment = ((ChatFragment) messageListenerFragment);
-		if (messageListenerFragment != null && messageListenerFragment.isVisible() && chatFragment.getSipUri().equals(from.asStringUriOnly())) {
+		if (messageListenerFragment != null && messageListenerFragment.isVisible() 
+				&& chatFragment.getSipUri().equals(from.asStringUriOnly())) {
 			chatFragment.onMessageReceived(id, from, message);
 			getChatStorage().markMessageAsRead(id);			
 		} 
@@ -868,14 +873,20 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			} else {
 				startIncallActivity(call);
 			}
-		} else if (state == State.CallEnd || state == State.Error || state == State.CallReleased) {
+		} else if (state == State.CallEnd || state == State.Error || 
+				state == State.CallReleased) {
 			// Convert LinphoneCore message for internalization
 			if (message != null && message.equals("Call declined.")) { 
-				displayCustomToast(getString(R.string.error_call_declined), Toast.LENGTH_LONG);
-			} else if (message != null && message.equals("Not Found")) {
-				displayCustomToast(getString(R.string.error_user_not_found), Toast.LENGTH_LONG);
-			} else if (message != null && message.equals("Unsupported media type")) {
-				displayCustomToast(getString(R.string.error_incompatible_media), Toast.LENGTH_LONG);
+				displayCustomToast(getString(R.string.error_call_declined), 
+						Toast.LENGTH_LONG);
+			} 
+			else if (message != null && message.equals("Not Found")) {
+				displayCustomToast(getString(R.string.error_user_not_found), 
+						Toast.LENGTH_LONG);
+			} 
+			else if (message != null && message.equals("Unsupported media type")) {
+				displayCustomToast(getString(R.string.error_incompatible_media), 
+						Toast.LENGTH_LONG);
 			}
 			resetClassicMenuLayoutAndGoBackToCallIfStillRunning();
 		}
@@ -889,7 +900,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			@Override
 			public void run() {
 				LayoutInflater inflater = getLayoutInflater();
-				View layout = inflater.inflate(R.layout.toast, (ViewGroup) findViewById(R.id.toastRoot));
+				View layout = inflater.inflate(R.layout.toast, (ViewGroup) 
+						findViewById(R.id.toastRoot));
 
 				TextView toastText = (TextView) layout.findViewById(R.id.toastMessage);
 				toastText.setText(message);
@@ -1010,6 +1022,15 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 	public Cursor getSIPContactsCursor() {
 		return sipContactCursor;
+	}
+	
+	public Cursor getAllRingsCursor(){
+		
+		return ringsCursor;		
+	}
+	
+	public List<Ring> getAllRings() {
+		return allRings;
 	}
 
 	public void setLinphoneContactsPrefered(boolean isPrefered) {
@@ -1136,6 +1157,31 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			}
 		}
 	}
+	
+	public synchronized void prepareRingsInBackground(){
+		if(ringsCursor != null){
+			ringsCursor.close();
+		}
+		RingDAO ringDao = new RingDAO(LinphoneService.instance()
+				.getApplicationContext());
+		ringDao.open();
+		ringsCursor = ringDao.getRigsCursor();
+		allRings = new ArrayList<Ring>();		
+		Thread ringHandler = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ringsCursor.moveToFirst();
+				for(int i = 0; i < ringsCursor.getCount(); i++){
+					Ring r = new Ring(ringsCursor.getString(0),ringsCursor
+							.getString(1), ringsCursor.getLong(2));
+					allRings.add(r);
+					ringsCursor.moveToNext();
+				}
+			}			
+		});
+		ringHandler.start();
+		//ringDao.close();
+	}
 
 	public synchronized void prepareContactsInBackground() {
 		if (contactCursor != null) {
@@ -1227,6 +1273,14 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		return ChatStorage.getInstance();
 	}
 	
+	public void addRing()
+	{
+		Log.v("=== En addRing de MainActivity");
+		Bundle extras = new Bundle();
+		extras.putSerializable("NewRing", true);
+		changeCurrentFragment(FragmentsAvailable.EDIT_RING, extras);	
+	}
+	
 	public void addContact(String displayName, String sipUri)
 	{
 		if (getResources().getBoolean(R.bool.use_android_native_contact_edit_interface)) {
@@ -1251,8 +1305,13 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 	}
 	
-	public void editContact(Contact contact)
-	{
+	public void editRing(Ring ring){
+		Bundle extras = new Bundle();
+		extras.putSerializable("Ring", ring);
+		changeCurrentFragment(FragmentsAvailable.EDIT_RING, extras);		
+	}
+	
+	public void editContact(Contact contact){
 		if (getResources().getBoolean(R.bool.use_android_native_contact_edit_interface)) {
 			Intent intent = Compatibility.prepareEditContactIntent(Integer.parseInt(contact.getID()));
 			startActivity(intent);

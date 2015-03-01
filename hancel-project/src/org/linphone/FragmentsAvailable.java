@@ -35,7 +35,9 @@ public enum FragmentsAvailable {
 	SETTINGS,
 	CHATLIST,
 	CHAT,
+	RINGS,
 	RING,
+	EDIT_RING,
 	PANIC,
 	TRAKING;
 	

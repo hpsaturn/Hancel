@@ -149,6 +149,8 @@
                 android:visibility="gone" />
             
         </RelativeLayout>
+        
+        <include layout="@layout/menu_rings_button" />
 
         <include layout="@layout/menu_settings_button" />
         
