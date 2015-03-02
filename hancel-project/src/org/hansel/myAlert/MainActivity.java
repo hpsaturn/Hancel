@@ -139,8 +139,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	private boolean preferLinphoneContacts = false, isAnimationDisabled = false, isContactPresenceDisabled = true;
 	private Handler mHandler = new Handler();
 	private List<Contact> contactList, sipContactList;
-	private List<Ring> allRings;
-	private Cursor contactCursor, sipContactCursor, ringsCursor;
+	
+	private Cursor contactCursor, sipContactCursor;
 	private OrientationEventListener mOrientationHelper;
 	
 	
@@ -1024,14 +1024,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		return sipContactCursor;
 	}
 	
-	public Cursor getAllRingsCursor(){
-		
-		return ringsCursor;		
-	}
 	
-	public List<Ring> getAllRings() {
-		return allRings;
-	}
 
 	public void setLinphoneContactsPrefered(boolean isPrefered) {
 		preferLinphoneContacts = isPrefered;
@@ -1157,31 +1150,6 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			}
 		}
 	}
-	
-	/*public synchronized void prepareRingsInBackground(){
-		if(ringsCursor != null){
-			ringsCursor.close();
-		}
-		RingDAO ringDao = new RingDAO(LinphoneService.instance()
-				.getApplicationContext());
-		ringDao.open();
-		ringsCursor = ringDao.getRigsCursor();
-		allRings = new ArrayList<Ring>();		
-		Thread ringHandler = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				ringsCursor.moveToFirst();
-				for(int i = 0; i < ringsCursor.getCount(); i++){
-					Ring r = new Ring(ringsCursor.getString(0),ringsCursor
-							.getString(1), ringsCursor.getLong(2));					
-					allRings.add(r);
-					ringsCursor.moveToNext();
-				}
-			}			
-		});
-		ringHandler.start();
-		ringDao.close();
-	}*/
 
 	public synchronized void prepareContactsInBackground() {
 		if (contactCursor != null) {
