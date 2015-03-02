@@ -1158,7 +1158,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 	}
 	
-	public synchronized void prepareRingsInBackground(){
+	/*public synchronized void prepareRingsInBackground(){
 		if(ringsCursor != null){
 			ringsCursor.close();
 		}
@@ -1173,15 +1173,15 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				ringsCursor.moveToFirst();
 				for(int i = 0; i < ringsCursor.getCount(); i++){
 					Ring r = new Ring(ringsCursor.getString(0),ringsCursor
-							.getString(1), ringsCursor.getLong(2));
+							.getString(1), ringsCursor.getLong(2));					
 					allRings.add(r);
 					ringsCursor.moveToNext();
 				}
 			}			
 		});
 		ringHandler.start();
-		//ringDao.close();
-	}
+		ringDao.close();
+	}*/
 
 	public synchronized void prepareContactsInBackground() {
 		if (contactCursor != null) {

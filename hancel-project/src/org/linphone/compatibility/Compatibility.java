@@ -96,6 +96,15 @@ public class Compatibility {
 		}
 	}
 	
+	public static Cursor getContactsInCursor(ContentResolver cr, String in) {
+		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
+			return ApiNinePlus.getContactsInCursor(cr, in);
+		} 
+		else {
+			return ApiFivePlus.getContactsCursor(cr);
+		}
+	}
+	
 	public static Cursor getSIPContactsCursor(ContentResolver cr) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			return ApiNinePlus.getSIPContactsCursor(cr, null);
@@ -125,6 +134,7 @@ public class Compatibility {
 		}
 		return null;
 	}
+		
 
 	public static InputStream getContactPictureInputStream(ContentResolver cr, String id) {
 		if (Version.sdkAboveOrEqual(Version.API05_ECLAIR_20)) {
