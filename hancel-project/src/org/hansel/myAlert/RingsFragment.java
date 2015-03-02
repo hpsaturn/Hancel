@@ -144,50 +144,44 @@ private Handler mHandler = new Handler();
 		RingDAO ringDAO = new RingDAO(LinphoneService.instance().getApplicationContext());
 		ringDAO.open();
 		searchCursor = ringDAO.getRingsByNameCursor(search);
-		//searchCursor = Compatibility.getSIPContactsCursor(getActivity().getContentResolver(), search);-
 		indexer = new AlphabetIndexer(searchCursor, 1, " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		ringsList.setAdapter(new RingsListAdapter(null,searchCursor));		
 		ringDAO.close();
 	}
 	
-	private void changeContactsAdapter() {
-		//changeContactsToggle();		
+	private void changeContactsAdapter() {		
 		if (searchCursor != null) {
 			searchCursor.close();
 		}
 		
 		RingDAO ringDAO = new RingDAO(LinphoneService.instance().getApplicationContext());
 		ringDAO.open();
-		Cursor allRingsCursor = ringDAO.getRigsCursor();		
+		Cursor ringsCursor = ringDAO.getRigsCursor();
+		
+		List<Ring> allRings = new ArrayList<Ring>();
+		ringsCursor.moveToFirst();
+		do{
+			allRings.add(new Ring(ringsCursor.getString(0),ringsCursor
+					.getString(1), ringsCursor.getLong(2)));
+			ringsCursor.moveToNext();
+		}while(ringsCursor.isLast());
+		
 		
 		ringsList.setVisibility(View.VISIBLE);
 		
-		if (allRingsCursor == null || allRingsCursor.getCount() == 0) {
+		if (ringsCursor == null || ringsCursor.getCount() == 0) {
 			noRings.setVisibility(View.VISIBLE);
 			ringsList.setVisibility(View.GONE);
 		} 
 		else {
-			indexer = new AlphabetIndexer(allRingsCursor, 1, 
+			indexer = new AlphabetIndexer(ringsCursor, 1, 
 					" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-			ringsList.setAdapter(new RingsListAdapter(MainActivity.instance()
-					.getAllRings(), allRingsCursor));
+			ringsList.setAdapter(new RingsListAdapter(allRings, ringsCursor));
 			noRings.setVisibility(View.GONE);
 			ringsList.setVisibility(View.VISIBLE);
 		}		
 		ringDAO.close();
 	}
-	
-	/*
-	private void changeContactsToggle() {
-		if (onlyDisplayLinphoneContacts) {
-			allRings.setEnabled(true);
-			linphoneContacts.setEnabled(false);
-		} else {
-			allContacts.setEnabled(false);
-			linphoneContacts.setEnabled(true);
-		}
-	}
-	*/
 	
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
