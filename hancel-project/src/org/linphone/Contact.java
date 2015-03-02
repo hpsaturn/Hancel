@@ -41,6 +41,7 @@ public class Contact implements Serializable {
 	private List<String> numerosOrAddresses;
 	private LinphoneFriend friend;
 	
+
 	public Contact(String id, String name) {
 		super();
 		this.id = id;
@@ -93,7 +94,7 @@ public class Contact implements Serializable {
 			numerosOrAddresses = new ArrayList<String>();
 		return numerosOrAddresses;
 	}
-	
+		
 	public void refresh(ContentResolver cr) {
 		this.numerosOrAddresses = Compatibility.extractContactNumbersAndAddresses(id, cr);
 		this.name = Compatibility.refreshContactName(cr, id);

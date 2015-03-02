@@ -73,6 +73,7 @@
 
 		<ImageView
 			android:contentDescription="@string/content_description_cancel"
+			android:visibility="gone"
 			android:id="@+id/clearSearchField"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -85,6 +86,7 @@
 
 		<EditText
 			android:textCursorDrawable="@null"
+			android:visibility="gone"
 			android:id="@+id/searchField"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

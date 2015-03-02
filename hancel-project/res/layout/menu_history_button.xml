@@ -13,6 +13,9 @@
 		android:contentDescription="@string/content_description_history"
 		android:src="@drawable/history" />
     
+    
+     
+    
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"

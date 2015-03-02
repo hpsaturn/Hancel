@@ -1,10 +1,12 @@
 package org.hansel.myAlert;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
+import org.hansel.myAlert.Utils.ContactRing;
 import org.hansel.myAlert.dataBase.RingDAO;
 import org.linphone.Contact;
 import org.linphone.LinphoneManager;
@@ -13,6 +15,7 @@ import org.linphone.LinphoneUtils;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.core.LinphoneFriend;
 import org.linphone.core.PresenceActivityType;
+import org.linphone.mediastream.Log;
 import org.linphone.mediastream.Version;
 import org.linphone.ui.AvatarWithShadow;
 
@@ -45,9 +48,9 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class EditRingFragment extends Fragment implements OnClickListener, OnItemClickListener{
+public class EditRingFragment extends Fragment {
 	private View view;
-	private TextView ok;
+	private TextView ok, deleteContacts, addContacts, deleteRing;
 	private EditText ringName;
 	private CheckBox ringDefault;
 	private LayoutInflater inflater;
@@ -60,18 +63,36 @@ public class EditRingFragment extends Fragment implements OnClickListener, OnIte
 	private RingDAO ringDao;
 	private Cursor searchCursor;
 	private AlphabetIndexer indexer;
-	private ArrayList<ContentProviderOperation> ops;
+	private List<String> idContacts;
 
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		this.inflater = inflater;		
 		ring = null;
+		idContacts = new ArrayList<String>();
 		
 		if (getArguments() != null) {
 			if (getArguments().getSerializable("Ring") != null) {
 				ring = (Ring) getArguments().getSerializable("Ring");
 				isNewRing = false;
 				ringID = Long.parseLong(ring.getId());
+				
+				RingDAO ringDao = new RingDAO(LinphoneService.instance()
+						.getApplicationContext());
+				
+				ringDao.open();
+				Cursor c = ringDao.getAllContactsRing(ring.getId());
+				
+				if(c != null && c.getCount() > 0){
+					c.moveToFirst();
+					do{
+						idContacts.add(c.getString(0));
+						c.moveToNext();
+					}while(!c.isLast());
+				}
+								
+				Log.d("=== Cantidad de contactos en el anillo: " + idContacts.size());
+				ringDao.close();
 			}			
 		}
 		
@@ -88,29 +109,8 @@ public class EditRingFragment extends Fragment implements OnClickListener, OnIte
 		ringName = (EditText) view.findViewById(R.id.ringName);
 		ringDefault = (CheckBox) view.findViewById(R.id.ringDefault);
 		
-		contactsList = (ListView) view.findViewById(R.id.ringContactsList);
-        contactsList.setOnItemClickListener(this);
-                              
-		clearSearchField = (ImageView) view.findViewById(R.id.clearSearchField);
-		clearSearchField.setOnClickListener(this);
-		
-		searchField = (EditText) view.findViewById(R.id.searchField);
-		searchField.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {			
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {				
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-				searchContacts(searchField.getText().toString());
-			}
-		});
-
+		contactsList = (ListView) view.findViewById(R.id.ringContactsList);        
+                              		
 		ok = (TextView) view.findViewById(R.id.ok);
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
@@ -129,7 +129,7 @@ public class EditRingFragment extends Fragment implements OnClickListener, OnIte
 				else 
 					updateRing();
 									
-		        MainActivity.instance().prepareRingsInBackground();		        		       
+		        //MainActivity.instance().prepareRingsInBackground();		        		       
 				getFragmentManager().popBackStackImmediate();
 			}
 		});
@@ -179,11 +179,68 @@ public class EditRingFragment extends Fragment implements OnClickListener, OnIte
 				ringDefault.setChecked(true);
 			else 
 				ringDefault.setChecked(false);
+	
+			deleteContacts = (TextView) view.findViewById(R.id.deleteContact);
+			deleteContacts.setVisibility(View.VISIBLE);
+			deleteContacts.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					Log.d("=== Eliminar contactos seleccionados");
+				}
+			} );
+			addContacts = (TextView) view.findViewById(R.id.newContact);
+			addContacts.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					Log.d("=== Adicionar contactos seleccionados");
+				}
+			} );
+			deleteRing = (TextView) view.findViewById(R.id.deleteRing);
+			deleteRing.setVisibility(View.VISIBLE);
+			deleteRing.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					Log.d("=== Eliminando anillo");
+				}
+			} );
+		}
+		else{
+			clearSearchField = (ImageView) view.findViewById(R.id.clearSearchField);
+			//clearSearchField.setOnClickListener(this);
+			clearSearchField.setVisibility(View.VISIBLE);
+			searchField = (EditText) view.findViewById(R.id.searchField);
+			searchField.setVisibility(View.VISIBLE);
+			searchField.addTextChangedListener(new TextWatcher() {
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {			
+				}
+				
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count,
+						int after) {				
+				}
+				
+				@Override
+				public void afterTextChanged(Editable s) {
+					searchContacts(searchField.getText().toString());
+				}
+			});
 		}
 		
-		AvatarWithShadow ringPicture = (AvatarWithShadow) view.findViewById(R.id.ringPicture);
-		ringPicture.setImageResource(R.drawable.unknown_small);
-
+		searchContacts("");
+		
+		contactsList.setOnItemClickListener(new OnItemClickListener() {
+			   public void onItemClick(AdapterView<?> adapter, View view,
+					     int position, long id) {
+				   Log.d("=== Selecciono/deselecciono Contacto");
+				   ContactRing contactRing = (ContactRing) adapter.getItemAtPosition(position);		
+					if(contactRing.isSelected())
+						idContacts.add(contactRing.getContactId());
+					else
+						idContacts.remove(contactRing.getContactId());			
+				}
+			 });
+		
 		ringName.requestFocus();
 		
 		return view;
@@ -199,191 +256,19 @@ public class EditRingFragment extends Fragment implements OnClickListener, OnIte
 			}
 		}
 	}
-	
-	/*private void initNumbersFields(final TableLayout controls, final Contact contact) {
-		controls.removeAllViews();
-		numbersAndAddresses = new ArrayList<NewOrUpdatedNumberOrAddress>();
-		
-		if (contact != null) {
-			for (String numberOrAddress : contact.getNumerosOrAddresses()) {
-				View view = displayNumberOrAddress(controls, numberOrAddress);
-				if (view != null)
-					controls.addView(view);
-			}
-		}
-		if (newSipOrNumberToAdd != null) {
-			View view = displayNumberOrAddress(controls, newSipOrNumberToAdd);
-			if (view != null)
-				controls.addView(view);
-		}
-		
-		if (!isNewRing) {
-			deleteContact = inflater.inflate(R.layout.contact_delete_button, null);
-			deleteContact.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					deleteExistingContact();
-					MainActivity.instance().removeContactFromLists(contact);
-					MainActivity.instance().displayContacts(false);
-				}
-			});
-			controls.addView(deleteContact, controls.getChildCount());
-		}
 
-		// Add one for phone numbers, one for SIP address
-		if (!getResources().getBoolean(R.bool.hide_phone_numbers_in_editor)) {
-			addEmptyRowToAllowNewNumberOrAddress(controls, false);
-		}
-		
-		if (!getResources().getBoolean(R.bool.hide_sip_addresses_in_editor)) {
-			firstSipAddressIndex = controls.getChildCount() - 2; // Update the value to always display phone numbers before SIP accounts
-			addEmptyRowToAllowNewNumberOrAddress(controls, true);
-		}
-	} */
 	
-	/*
-	private View displayNumberOrAddress(final TableLayout controls, String numberOrAddress) {
-		return displayNumberOrAddress(controls, numberOrAddress, false);
-	}*/
-	
-	/*
-	private View displayNumberOrAddress(final TableLayout controls, String numberOrAddress, boolean forceAddNumber) {
-		boolean isSip = LinphoneUtils.isStrictSipAddress(numberOrAddress) || !LinphoneUtils.isNumberAddress(numberOrAddress);
-		
-		if (isSip) {
-			if (firstSipAddressIndex == -1) {
-				firstSipAddressIndex = controls.getChildCount();
-			}
-			numberOrAddress = numberOrAddress.replace("sip:", "");
-		}
-		if ((getResources().getBoolean(R.bool.hide_phone_numbers_in_editor) && !isSip) || (getResources().getBoolean(R.bool.hide_sip_addresses_in_editor) && isSip)) {
-			if (forceAddNumber)
-				isSip = !isSip; // If number can't be displayed because we hide a sort of number, change that category
-			else
-				return null;
-		}
-		
-		NewOrUpdatedNumberOrAddress tempNounoa;
-		if (forceAddNumber) {
-			tempNounoa = new NewOrUpdatedNumberOrAddress(isSip);
-		} else {
-			if(isNewRing) {
-				tempNounoa = new NewOrUpdatedNumberOrAddress(isSip, numberOrAddress);
-			} else {
-				tempNounoa = new NewOrUpdatedNumberOrAddress(numberOrAddress, isSip);
-			}
-		}
-		final NewOrUpdatedNumberOrAddress nounoa = tempNounoa;
-		numbersAndAddresses.add(nounoa);
-		
-		final View view = inflater.inflate(R.layout.contact_edit_row, null);
-		
-		final EditText noa = (EditText) view.findViewById(R.id.numoraddr);
-		noa.setInputType(isSip ? InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS : InputType.TYPE_CLASS_PHONE);
-		noa.setText(numberOrAddress);
-		noa.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				nounoa.setNewNumberOrAddress(noa.getText().toString());
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
-		if (forceAddNumber) {
-			nounoa.setNewNumberOrAddress(noa.getText().toString());
-		}
-		
-		ImageView delete = (ImageView) view.findViewById(R.id.delete);
-		delete.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				nounoa.delete();
-				numbersAndAddresses.remove(nounoa);
-				view.setVisibility(View.GONE);
-			}
-		});
-		return view;
-	} */
-	
-	/*
-	private void addEmptyRowToAllowNewNumberOrAddress(final TableLayout controls, final boolean isSip) {
-		final View view = inflater.inflate(R.layout.contact_add_row, null);
-		
-		final NewOrUpdatedNumberOrAddress nounoa = new NewOrUpdatedNumberOrAddress(isSip);
-		
-		final EditText noa = (EditText) view.findViewById(R.id.numoraddr);
-		numbersAndAddresses.add(nounoa);
-		noa.setHint(isSip ? getString(R.string.sip_address) : getString(R.string.phone_number));
-		noa.setInputType(isSip ? InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS : InputType.TYPE_CLASS_PHONE);
-		noa.requestFocus();
-		noa.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				nounoa.setNewNumberOrAddress(noa.getText().toString());
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
-		
-		final ImageView add = (ImageView) view.findViewById(R.id.add);
-		add.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// Add a line, and change add button for a delete button
-				add.setImageResource(R.drawable.list_delete);
-				ImageView delete = add;
-				delete.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						nounoa.delete();
-						numbersAndAddresses.remove(nounoa);
-						view.setVisibility(View.GONE);
-					}
-				});
-				if (!isSip) {
-					firstSipAddressIndex++;
-					addEmptyRowToAllowNewNumberOrAddress(controls, false);
-				} else {
-					addEmptyRowToAllowNewNumberOrAddress(controls, true);
-				}
-			}
-		});
-		
-		if (isSip) {
-			controls.addView(view, controls.getChildCount());
-		} else {
-			if (firstSipAddressIndex != -1) {
-				controls.addView(view, firstSipAddressIndex);
-			} else {
-				controls.addView(view);
-			}
-		}
-		if (deleteContact != null) {
-			// Move to the bottom the remove contact button
-			controls.removeView(deleteContact);
-			controls.addView(deleteContact, controls.getChildCount());
-		}
-	}
-	*/
 	private void createRing() {
         ringID = 0;
         ringDao = new RingDAO(LinphoneService.instance()
         		.getApplicationContext());  
         ringDao.open();
         ringID = ringDao.addRing(ringName.getText().toString(),ringDefault
-        		.isChecked());       
+        		.isChecked());
+        Iterator<String> it = idContacts.iterator();        
+        while( it.hasNext() ){        	
+        	ringDao.addContactToRing(it.next(),String.valueOf(ringID));
+        }
         ringDao.close();
 	}
 	
@@ -394,6 +279,7 @@ public class EditRingFragment extends Fragment implements OnClickListener, OnIte
 			ringDao.open();
 			ringDao.updateRing(String.valueOf(ring.getId()), ringName.getText()
 					.toString(), ringDefault.isChecked());
+			
 			ringDao.close();
 		}
 			
@@ -415,250 +301,76 @@ public class EditRingFragment extends Fragment implements OnClickListener, OnIte
         }*/
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 	private void searchContacts(String search) {
 		if(searchCursor != null)
 			searchCursor.close();
-	
-		if (search == null || search.length() == 0) 		
-			searchCursor = MainActivity.instance().getAllContactsCursor();			
+			
+		List<ContactRing> contactsRing = new ArrayList<ContactRing>();
 		
+		if(isNewRing){
+			searchCursor = Compatibility.getContactsCursor(getActivity()
+					.getContentResolver(), search);			
+		}
 		else{
-			searchCursor = Compatibility.getContactsCursor(getActivity().getContentResolver(), search);
-			indexer = new AlphabetIndexer(searchCursor, Compatibility.getCursorDisplayNameColumnIndex(searchCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");			
+			String in = "";
+			if(idContacts.size() > 1){	
+				Iterator<String> it = idContacts.iterator();
+				while(it.hasNext()){
+					in += it.next() + ",";
+				}			
+				in = in.substring(0,in.length()-1);				
+			}
+			searchCursor = Compatibility.getContactsInCursor(getActivity()
+					.getContentResolver(), in);
 		}
 		
-		contactsList.setAdapter(new RingsContactsListAdapter(null, searchCursor));
+		indexer = new AlphabetIndexer(searchCursor, Compatibility
+				.getCursorDisplayNameColumnIndex(searchCursor), 
+				" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+		ringDao = new RingDAO(LinphoneManager.getInstance()
+					.getContext());
+		ringDao.open();		
+		searchCursor.moveToFirst();		
+			
+		for(int i= 0; i<searchCursor.getCount(); i++){
+			Contact c = Compatibility.getContact(getActivity()
+				.getContentResolver(), searchCursor, i);
+			contactsRing.add(new ContactRing(c.getID(), c.getName(), 
+					c.getPhotoUri(), c.getPhoto(), !isNewRing));				
+		}
+		ringDao.close();		
+		contactsList.setAdapter(new RingsContactsListAdapter(contactsRing));
 	}
 	
-	/*private String getDisplayName() {
-		String displayName = null;
-		if (firstName.getText().length() > 0 && lastName.getText().length() > 0)
-			displayName = firstName.getText().toString() + " " + lastName.getText().toString();
-		else if (firstName.getText().length() > 0)
-			displayName = firstName.getText().toString();
-		else if (lastName.getText().length() > 0)
-			displayName = lastName.getText().toString();
-		return displayName;
-	}*/
-	
-	/*private String findRawContactID(String contactID) {
-		Cursor c = getActivity().getContentResolver().query(RawContacts.CONTENT_URI,
-		          new String[]{RawContacts._ID},
-		          RawContacts.CONTACT_ID + "=?",
-		          new String[]{contactID}, null);
-		if (c != null) {
-			String result = null;
-			if (c.moveToFirst()) {
-				result = c.getString(c.getColumnIndex(RawContacts._ID));
-			}
-			c.close();
-			return result;
-		}
-		return null;
-	}*/
-	
-	/*private String findContactFirstName(String contactID) {
-		Cursor c = getActivity().getContentResolver().query(ContactsContract.Data.CONTENT_URI,
-		          new String[]{ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME},
-		          ContactsContract.Data.CONTACT_ID + "=? AND " + ContactsContract.Data.MIMETYPE + "=?",
-		          new String[]{contactID, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE}, null);
-		if (c != null) {
-			String result = null;
-			if (c.moveToFirst()) {
-				result = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-			}
-			c.close();
-			return result;
-		}
-		return null;
-	}*/
-	
-	/*private String findContactLastName(String contactID) {
-		Cursor c = getActivity().getContentResolver().query(ContactsContract.Data.CONTENT_URI,
-		          new String[]{ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME},
-		          ContactsContract.Data.CONTACT_ID + "=? AND " + ContactsContract.Data.MIMETYPE + "=?",
-		          new String[]{contactID, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE}, null);
-		if (c != null) {
-			String result = null;
-			if (c.moveToFirst()) {
-				result = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-			}
-			c.close();
-			return result;
-		}
-		return null;
-	}*/
-	
-	/*
-	class NewOrUpdatedNumberOrAddress {
-		private String oldNumberOrAddress;
-		private String newNumberOrAddress;
-		private boolean isSipAddress;
-		
-		public NewOrUpdatedNumberOrAddress() {
-			oldNumberOrAddress = null;
-			newNumberOrAddress = null;
-			isSipAddress = false;
-		}
-		
-		public NewOrUpdatedNumberOrAddress(boolean isSip) {
-			oldNumberOrAddress = null;
-			newNumberOrAddress = null;
-			isSipAddress = isSip;
-		}
-		
-		public NewOrUpdatedNumberOrAddress(String old, boolean isSip) {
-			oldNumberOrAddress = old;
-			newNumberOrAddress = null;
-			isSipAddress = isSip;
-		}
-		
-		public NewOrUpdatedNumberOrAddress(boolean isSip, String newSip) {
-			oldNumberOrAddress = null;
-			newNumberOrAddress = newSip;
-			isSipAddress = isSip;
-		}
-		
-		public void setNewNumberOrAddress(String newN) {
-			newNumberOrAddress = newN;
-		}
-		
-		public void save() {
-			if (newNumberOrAddress == null || newNumberOrAddress.equals(oldNumberOrAddress))
-				return;
-
-			if (oldNumberOrAddress == null) {
-				// New number to add
-				addNewNumber();
-			} else {
-				// Old number to update
-				updateNumber();
-			}
-		}
-		
-		public void delete() {
-			if (isSipAddress) {
-				Compatibility.deleteSipAddressFromContact(ops, oldNumberOrAddress, String.valueOf(contactID));
-			} else {
-				String select = ContactsContract.Data.CONTACT_ID + "=? AND " 
-						+ ContactsContract.Data.MIMETYPE + "='" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE +  "' AND " 
-						+ ContactsContract.CommonDataKinds.Phone.NUMBER + "=?"; 
-				String[] args = new String[] { String.valueOf(contactID), oldNumberOrAddress };   
-				
-	            ops.add(ContentProviderOperation.newDelete(ContactsContract.Data.CONTENT_URI) 
-	        		.withSelection(select, args) 
-	                .build()
-	            );
-			}
-		}
-		
-		private void addNewNumber() {
-			if (newNumberOrAddress == null || newNumberOrAddress.length() == 0) {
-				return;
-			}
-			
-			if (isNewRing) {
-				if (isSipAddress) {
-					if (newNumberOrAddress.startsWith("sip:"))
-						newNumberOrAddress = newNumberOrAddress.substring(4);
-					if(!newNumberOrAddress.contains("@"))
-						newNumberOrAddress = newNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
-					Compatibility.addSipAddressToContact(getActivity(), ops, newNumberOrAddress);
-				} else {
-					ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)        
-				        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-				        .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-				        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, newNumberOrAddress)
-				        .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,  ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM)
-				        .withValue(ContactsContract.CommonDataKinds.Phone.LABEL, getString(R.string.addressbook_label))
-				        .build()
-				    );
-				}
-			} else {
-				String rawContactId = findRawContactID(String.valueOf(contactID));
-				
-				if (isSipAddress) {
-					if (newNumberOrAddress.startsWith("sip:"))
-						newNumberOrAddress = newNumberOrAddress.substring(4);
-					if(!newNumberOrAddress.contains("@"))
-						newNumberOrAddress = newNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
-					Compatibility.addSipAddressToContact(getActivity(), ops, newNumberOrAddress, rawContactId);	
-				} else {
-					ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)         
-					    .withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)       
-				        .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-				        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, newNumberOrAddress)
-				        .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,  ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM)
-				        .withValue(ContactsContract.CommonDataKinds.Phone.LABEL, getString(R.string.addressbook_label))
-				        .build()
-				    );
-				}
-			}
-		}
-		
-		private void updateNumber() {
-			if (newNumberOrAddress == null || newNumberOrAddress.length() == 0) {
-				return;
-			}
-			
-			if (isSipAddress) {
-				if (newNumberOrAddress.startsWith("sip:"))
-					newNumberOrAddress = newNumberOrAddress.substring(4);
-				if(!newNumberOrAddress.contains("@"))
-					newNumberOrAddress = newNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
-				Compatibility.updateSipAddressForContact(ops, oldNumberOrAddress, newNumberOrAddress, String.valueOf(contactID));
-			} else {
-				String select = ContactsContract.Data.CONTACT_ID + "=? AND " 
-						+ ContactsContract.Data.MIMETYPE + "='" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE +  "' AND " 
-						+ ContactsContract.CommonDataKinds.Phone.NUMBER + "=?"; 
-				String[] args = new String[] { String.valueOf(contactID), oldNumberOrAddress };   
-				
-	            ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI) 
-	        		.withSelection(select, args) 
-	                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-	                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, newNumberOrAddress)
-	                .build()
-	            );
-			}
-		}
-	}*/
 	
 	class RingsContactsListAdapter extends BaseAdapter implements SectionIndexer {
 		private int margin;
 		private Bitmap bitmapUnknown;
-		private List<Contact> contacts;
-		private Cursor cursor;
+		private List<ContactRing> contactsRing;
+		//private Cursor cursor;
 		
-		RingsContactsListAdapter(List<Contact> contactsList, Cursor c) {
-			contacts = contactsList;
-			cursor = c;
-
+		RingsContactsListAdapter(List<ContactRing> contacts) {
+			this.contactsRing = contacts;				
 			margin = LinphoneUtils.pixelsToDpi(getResources(), 10);
 			bitmapUnknown = BitmapFactory.decodeResource(getResources(), R.drawable.unknown_small);
 		}
 		
 		public int getCount() {
-			return cursor.getCount();
+			//return cursor.getCount();
+			if(contactsRing == null)
+				return 0;
+			return contactsRing.size();
 		}
 
 		public Object getItem(int position) {
-			if (contacts == null || position >= contacts.size()) {
-				return Compatibility.getContact(getActivity().getContentResolver(), cursor, position);
-			} else {
-				return contacts.get(position);
+			if (contactsRing == null || position >= contactsRing.size()) {
+				//return Compatibility.getContact(getActivity().getContentResolver(), cursor, position);
+				return null;
+			} 
+			else {
+				return contactsRing.get(position);
 			}
 		}
 
@@ -667,65 +379,66 @@ public class EditRingFragment extends Fragment implements OnClickListener, OnIte
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view = null;
-			Contact contact = null;
-			do {
-				contact = (Contact) getItem(position);
-			} while (contact == null);
-			
+			ViewHolder holder = null;
+						
 			if (convertView != null) {
-				view = convertView;
+				holder = (ViewHolder) convertView.getTag();
 			} 
 			else {
-				view = inflater.inflate(R.layout.contact_cell, parent, false);
+				convertView= inflater.inflate(R.layout.contact_ring_cell, parent, false);					
+				holder = new ViewHolder();
+				holder.contactName = (TextView) convertView.findViewById(R.id.name);
+				holder.contactId = (TextView) convertView.findViewById(R.id.contactId);
+				holder.selected = (CheckBox) convertView.findViewById(R.id.chooseFriend);
+				holder.icon = (ImageView) convertView.findViewById(R.id.icon);
+				convertView.setTag(holder);
+			   
+				holder.selected.setOnClickListener(new View.OnClickListener() { 
+					public void onClick(View v) {
+						Log.d("=== Seleccionado/Deseleccionado Objeto");
+						CheckBox cb = (CheckBox) v ; 
+						ContactRing cr = (ContactRing)cb.getTag(); 
+						cr.setSelected(cb.isChecked());
+				        if(cb.isChecked())
+				        	idContacts.add(cr.getContactId());
+				        else
+				        	idContacts.remove(cr.getContactId());				        
+					}    
+				});
 			}
 			
-			TextView name = (TextView) view.findViewById(R.id.name);
-			name.setText(contact.getName());
+			ContactRing cr = contactsRing.get(position);			
 			
-			TextView separator = (TextView) view.findViewById(R.id.separator);
-			LinearLayout layout = (LinearLayout) view.findViewById(R.id.layout);
+			holder.contactId.setText(cr.getContactId());
+			holder.contactName.setText(cr.getContactName());
+			holder.selected.setChecked(cr.isSelected());
+			holder.selected.setTag(cr);
+			holder.icon.setImageBitmap(bitmapUnknown);
+			 
+			if (cr.getPhoto() != null) {
+				holder.icon.setImageBitmap(cr.getPhoto());
+			} 
+			else if (cr.getPhotoUri() != null) {
+				holder.icon.setImageURI(cr.getPhotoUri());
+			} 
+			else {
+				holder.icon.setImageBitmap(bitmapUnknown);
+			}
 			
+			TextView separator = (TextView) convertView.findViewById(R.id.separator);
+			LinearLayout layout = (LinearLayout) convertView.findViewById(R.id.layout);
+						
 			if (getPositionForSection(getSectionForPosition(position)) != position) {
 				separator.setVisibility(View.GONE);
 				layout.setPadding(0, margin, 0, margin);
 			} 
 			else {
 				separator.setVisibility(View.VISIBLE);
-				separator.setText(String.valueOf(contact.getName().charAt(0)));
+				separator.setText(String.valueOf(cr.getContactName().charAt(0)));
 				layout.setPadding(0, 0, 0, margin);
 			}
 			
-			ImageView icon = (ImageView) view.findViewById(R.id.icon);
-			if (contact.getPhoto() != null) {
-				icon.setImageBitmap(contact.getPhoto());
-			} 
-			else if (contact.getPhotoUri() != null) {
-				icon.setImageURI(contact.getPhotoUri());
-			} 
-			else {
-				icon.setImageBitmap(bitmapUnknown);
-			}
-			
-			ImageView friendStatus = (ImageView) view.findViewById(R.id.friendStatus);
-			LinphoneFriend friend = contact.getFriend();
-			if (!MainActivity.instance().isContactPresenceDisabled() && friend != null) {
-				friendStatus.setVisibility(View.VISIBLE);
-				PresenceActivityType presenceActivity = friend.getPresenceModel().getActivity().getType();
-				if (presenceActivity == PresenceActivityType.Online) {
-					friendStatus.setImageResource(R.drawable.led_connected);
-				} else if (presenceActivity == PresenceActivityType.Busy) {
-					friendStatus.setImageResource(R.drawable.led_error);
-				} else if (presenceActivity == PresenceActivityType.Away) {
-					friendStatus.setImageResource(R.drawable.led_inprogress);
-				} else if (presenceActivity == PresenceActivityType.Offline) {
-					friendStatus.setImageResource(R.drawable.led_disconnected);
-				} else {
-					friendStatus.setImageResource(R.drawable.call_quality_indicator_0);
-				}
-			}
-			
-			return view;
+			return convertView;
 		}
 
 		@Override
@@ -742,6 +455,14 @@ public class EditRingFragment extends Fragment implements OnClickListener, OnIte
 		public Object[] getSections() {
 			return indexer.getSections();
 		}
+		
+		private class ViewHolder {			   
+			   TextView contactId;
+			   TextView contactName;
+			   CheckBox selected;
+			   ImageView icon;
+		}
 	}
+		
 }
 

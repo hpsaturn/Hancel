@@ -112,7 +112,7 @@ private Handler mHandler = new Handler();
 				searchRings();
 			} 
 			else {
-				MainActivity.instance().prepareRingsInBackground();
+				//MainActivity.instance().prepareRingsInBackground();
 				changeContactsAdapter();
 			}
 		} 		
@@ -155,8 +155,10 @@ private Handler mHandler = new Handler();
 		if (searchCursor != null) {
 			searchCursor.close();
 		}
-				
-		Cursor allRingsCursor = MainActivity.instance().getAllRingsCursor();
+		
+		RingDAO ringDAO = new RingDAO(LinphoneService.instance().getApplicationContext());
+		ringDAO.open();
+		Cursor allRingsCursor = ringDAO.getRigsCursor();		
 		
 		ringsList.setVisibility(View.VISIBLE);
 		
@@ -172,6 +174,7 @@ private Handler mHandler = new Handler();
 			noRings.setVisibility(View.GONE);
 			ringsList.setVisibility(View.VISIBLE);
 		}		
+		ringDAO.close();
 	}
 	
 	/*
@@ -189,9 +192,10 @@ private Handler mHandler = new Handler();
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		Ring ring = (Ring) adapter.getItemAtPosition(position);
-		Log.d("=== Ring a modificar: " + ring.getName());
+		
 		if (editOnClick) {
 			editConsumed = true;
+			Log.d("=== Ring a modificar: " + ring.getName());
 			MainActivity.instance().editRing(ring);
 		} 		
 	}

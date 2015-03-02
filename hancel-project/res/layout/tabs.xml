@@ -6,12 +6,13 @@
     android:layout_height="match_parent">
 
     <!-- Hack to adjust perfectly on every screen the bottom of the fragment with the curved menu -->
+
     <LinearLayout
-	    android:id="@+id/mark"
+        android:id="@+id/mark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal" >
     
 		<ImageView
 		    android:contentDescription="@string/content_description_mark"
@@ -93,12 +94,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
-
+		
+        
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-			android:adjustViewBounds="true">
+			android:adjustViewBounds="true">			            
 
             <include layout="@layout/menu_history_button" />
 
@@ -113,8 +115,9 @@
                 android:textSize="20sp"
                 android:visibility="gone" />
         </RelativeLayout>
-
+		<include layout="@layout/menu_about_button" />
         <include layout="@layout/menu_contact_button" />
+        
         
         <ImageView
             android:id="@+id/dialer"
@@ -152,7 +155,7 @@
         
         <include layout="@layout/menu_rings_button" />
 
-        <include layout="@layout/menu_settings_button" />
+        <include layout="@layout/menu_settings_button" /> 
         
         <include layout="@layout/menu_about_settings_button" />
         
