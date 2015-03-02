@@ -19,14 +19,6 @@ public class RingDAO extends SQLiteHelper {
 		return c;
 	}
 	
-	public Cursor getAllContactsRing(String idRing){
-		String query = "select _id_contact from " + DBConstants.TABLE_CONTACS_RINGS
-				+" where _ID_RING = " + idRing;
-		Cursor c = super.mDb.rawQuery(query, null);
-		return c;
-		
-	}
-	
 	public Cursor getRingsByNameCursor(String name) {
 		String query = "select * from " + DBConstants.TABLE_RINGS
 				+" where NAME like '%" + name +"%'";

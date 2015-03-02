@@ -144,18 +144,6 @@ public class ApiFivePlus {
 		
 		return getGeneralContactCursor(cr, req, true);
 	}
-	
-	public static Cursor getContactsInCursor(ContentResolver cr, String in) {
-		String req = Data.MIMETYPE + " = '" + CommonDataKinds.Phone.CONTENT_ITEM_TYPE
-                + "' AND " + CommonDataKinds.Phone.NUMBER + " IS NOT NULL";
-		
-    	req += " OR (" + Contacts.Data.MIMETYPE + " = '" + CommonDataKinds.Im.CONTENT_ITEM_TYPE 
-                + "' AND lower(" + CommonDataKinds.Im.CUSTOM_PROTOCOL + ") = 'sip')";
-    	
-    	req += " AND " + Data.CONTACT_ID + " IN (" + in + ")";
-		
-		return getGeneralContactCursor(cr, req, true);
-	}
 
 	public static Cursor getSIPContactsCursor(ContentResolver cr) {
 		String req = null;

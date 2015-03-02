@@ -1,9 +1,6 @@
 package org.hansel.myAlert;
 
 import java.io.Serializable;
-import java.util.List;
-
-import org.linphone.Contact;
 
 public class Ring implements Serializable{
 	
@@ -11,7 +8,6 @@ public class Ring implements Serializable{
 	private String id;
 	private String name;
 	private long always;
-	private List<Contact> contacs;
 	
 	
 	public Ring(){
@@ -40,11 +36,5 @@ public class Ring implements Serializable{
 	}
 	public void setAlways(long always) {
 		this.always = always;
-	}
-	public List<Contact> getContacs() {
-		return contacs;
-	}
-	public void setContacs(List<Contact> contacs) {
-		this.contacs = contacs;
 	}
 }
