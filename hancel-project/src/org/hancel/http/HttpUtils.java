@@ -35,7 +35,7 @@ import org.json.JSONObject;
 import android.os.Build;
 
 public class HttpUtils {
-	private static String URL_BASE = "http://hancel.flip.org.co:5000/hansel/?";
+	private static String URL_BASE = "http://www.hanselapp.com/wp-3/sisweb.php?";
 	 
 	public static JSONObject requestHttp(String url, List<NameValuePair> params, String method)
 	 {
@@ -114,7 +114,7 @@ public class HttpUtils {
 		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
 		 if(result==null)
 		 {
-			 throw new NoInternetException("Error en peticiï¿½n al server");
+			 throw new NoInternetException("Error en petici˜n al server");
 		 }
 		 return result;
 		
@@ -140,7 +140,7 @@ public class HttpUtils {
 		 JSONObject result = requestHttp(URL_BASE, values, "GET");
 		 if(result==null)
 		 {
-			 throw new NoInternetException("Error en peticiï¿½n al server");
+			 throw new NoInternetException("Error en petici˜n al server");
 		 }
 		 return result;
 		
@@ -161,7 +161,7 @@ public class HttpUtils {
 		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
 		 if(result==null)
 		 {
-			 throw new NoInternetException("Error en peticiï¿½n al server");
+			 throw new NoInternetException("Error en petici—n al server");
 		 }
 		 return result;
 		 
@@ -183,7 +183,7 @@ public class HttpUtils {
 		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
 		 if(result==null)
 		 {
-			 throw new NoInternetException("Error en peticiï¿½n al server");
+			 throw new NoInternetException("Error en petici—n al server");
 		 }
 		 return result;
 		 

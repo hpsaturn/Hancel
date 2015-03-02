@@ -62,8 +62,6 @@
 		    android:scaleType="fitXY"
 		    android:src="@drawable/mark"
 		    android:visibility="invisible" />
-		
-	
         
     </LinearLayout>
     

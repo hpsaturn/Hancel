@@ -36,7 +36,7 @@ import android.widget.TextView;
  * @author Sylvain Berfini
  */
 public class AboutFragment extends Fragment implements OnClickListener {
-	/*private FragmentsAvailable about = FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT;
+	private FragmentsAvailable about = FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -58,19 +58,19 @@ public class AboutFragment extends Fragment implements OnClickListener {
 		issue.setVisibility(View.VISIBLE);
 		
 		return view;
-	}*/
+	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		/*
+		
 		if (MainActivity.isInstanciated()) {
 			MainActivity.instance().selectMenu(about);
 			
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
 				MainActivity.instance().hideStatusBar();
 			}
-		}*/
+		}
 	}
 	
 	@Override

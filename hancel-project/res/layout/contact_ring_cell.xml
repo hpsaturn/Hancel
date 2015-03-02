@@ -21,24 +21,11 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="40dp"
     	android:orientation="horizontal">
-	    
-	    <ImageView
-            android:contentDescription="@string/content_description_contact_picture"
-	        android:id="@+id/icon"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-		    android:layout_centerVertical="true"
-	        android:adjustViewBounds="true"
-	        android:layout_marginLeft="10dp"
-	        android:scaleType="centerInside"
-	        android:src="@drawable/unknown_small" />
-		
-	    
-	    
-		<TextView 
-		    android:id="@+id/name"
+    	
+        <TextView 
+		    android:id="@+id/contactId"
 		    android:lines="1"
+		    android:visibility="invisible"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_toRightOf="@id/icon"
@@ -46,18 +33,43 @@
 		    android:textAppearance="?android:attr/textAppearanceLarge"
 		    android:textColor="@color/text_contrast"
 		    android:layout_marginLeft="10dp" />
+	    
+	    <ImageView
+	        android:id="@+id/icon"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBottom="@+id/name"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginLeft="10dp"
+	        android:adjustViewBounds="true"
+	        android:contentDescription="@string/content_description_contact_picture"
+	        android:scaleType="centerInside"
+	        android:src="@drawable/unknown_small" />
+		    
+		<TextView 
+		    android:id="@+id/name"
+		    android:lines="1"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_toRightOf="@id/icon"
+		    android:layout_centerVertical="true"
+		    android:textSize="15sp"
+		    
+		    android:textColor="@color/text_contrast"
+		    android:layout_marginLeft="10dp" />
 		
-		<ImageView 
-		    android:id="@+id/friendStatus"
-		    android:visibility="gone"
+				
+		<CheckBox 
+		    android:id="@+id/chooseFriend"
+		    android:visibility="visible"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentRight="true"
 		    android:layout_centerVertical="true"
+		    android:gravity="right"
+		    android:background="@color/background_header"		    
 	        android:adjustViewBounds="true"
-	        android:layout_marginRight="20dp"
-	        android:scaleType="centerInside"
-	        android:src="@drawable/led_connected" />
+	        android:layout_marginRight="5dp"/>
 	
 	</RelativeLayout>
     

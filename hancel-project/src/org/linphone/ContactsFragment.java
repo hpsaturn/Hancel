@@ -152,8 +152,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			onlyDisplayLinphoneContacts = true;
 			if (searchField.getText().toString().length() > 0) {
 				searchContacts();
-			} 
-			else {
+			} else {
 				changeContactsAdapter();
 			}
 		} 
@@ -186,8 +185,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			searchCursor = Compatibility.getSIPContactsCursor(getActivity().getContentResolver(), search);
 			indexer = new AlphabetIndexer(searchCursor, Compatibility.getCursorDisplayNameColumnIndex(searchCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			contactsList.setAdapter(new ContactsListAdapter(null, searchCursor));
-		} 
-		else {
+		} else {
 			searchCursor = Compatibility.getContactsCursor(getActivity().getContentResolver(), search);
 			indexer = new AlphabetIndexer(searchCursor, Compatibility.getCursorDisplayNameColumnIndex(searchCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			contactsList.setAdapter(new ContactsListAdapter(null, searchCursor));
@@ -244,8 +242,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		if (editOnClick) {
 			editConsumed = true;
 			MainActivity.instance().editContact(contact, sipAddressToAdd);
-		} 
-		else {
+		} else {
 			lastKnownPosition = contactsList.getFirstVisiblePosition();
 			MainActivity.instance().displayContact(contact, onlyDisplayChatAddress);
 		}
