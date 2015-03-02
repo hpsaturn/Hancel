@@ -131,7 +131,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	private TextView missedCalls, missedChats;
 	private ImageView dialer;
 	private LinearLayout menu, mark;
-	private RelativeLayout contacts, history, settings, chat, aboutChat, aboutSettings, rings;
+	private RelativeLayout contacts, history, settings, chat, about, rings;
 	private FragmentsAvailable currentFragment, nextFragment;
 	private List<FragmentsAvailable> fragmentsHistory;
 	private Fragment panicFragment,messageListenerFragment, messageListFragment, friendStatusListenerFragment;
@@ -215,10 +215,11 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		rings.setOnClickListener(this);
 		chat = (RelativeLayout) findViewById(R.id.chat);
 		chat.setOnClickListener(this);
-		aboutChat = (RelativeLayout) findViewById(R.id.about_chat);
-		aboutSettings = (RelativeLayout) findViewById(R.id.about_settings);
+		about = (RelativeLayout) findViewById(R.id.about);
+		about.setOnClickListener(this);
+		//aboutSettings = (RelativeLayout) findViewById(R.id.about_settings);
 
-		if (getResources().getBoolean(R.bool.replace_chat_by_about)) {
+		/*if (getResources().getBoolean(R.bool.replace_chat_by_about)) {
 			chat.setVisibility(View.GONE);
 			chat.setOnClickListener(null);
 			findViewById(R.id.completeChat).setVisibility(View.GONE);
@@ -230,7 +231,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			settings.setOnClickListener(null);
 			aboutSettings.setVisibility(View.VISIBLE);
 			aboutSettings.setOnClickListener(this);
-		}
+		}*/
 
 		missedCalls = (TextView) findViewById(R.id.missedCalls);
 		missedChats = (TextView) findViewById(R.id.missedChats);
@@ -328,8 +329,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			newFragment = new AccountPreferencesFragment();
 			break;
 		case ABOUT:
-		case ABOUT_INSTEAD_OF_CHAT:
-		case ABOUT_INSTEAD_OF_SETTINGS:
+		/*case ABOUT_INSTEAD_OF_CHAT:
+		case ABOUT_INSTEAD_OF_SETTINGS:*/
 			newFragment = new AboutFragment();
 			break;
 		case CHAT:
@@ -420,8 +421,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		else {
 			if (newFragmentType == FragmentsAvailable.PANIC  
 					|| newFragmentType == FragmentsAvailable.ABOUT 
-					|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT 
-					|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS
+					/*|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT 
+					|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS */
 					|| newFragmentType == FragmentsAvailable.SETTINGS 
 					|| newFragmentType == FragmentsAvailable.ACCOUNT_SETTINGS) {
 				ll.setVisibility(View.GONE);
@@ -626,18 +627,18 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			rings.setSelected(true);
 			Log.v("Click en rings");
 		} 
-		else if (id == R.id.about_chat) {
+		else if (id == R.id.about) {
 			Bundle b = new Bundle();
-			b.putSerializable("About", FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT);
-			changeCurrentFragment(FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT, b);
-			aboutChat.setSelected(true);
+			b.putSerializable("About", FragmentsAvailable.ABOUT);//_INSTEAD_OF_CHAT);
+			changeCurrentFragment(FragmentsAvailable.ABOUT, null);//_INSTEAD_OF_CHAT, b);
+			about.setSelected(true);
 		} 
-		else if (id == R.id.about_settings) {
+		/*else if (id == R.id.about_settings) {
 			Bundle b = new Bundle();
 			b.putSerializable("About", FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS);
 			changeCurrentFragment(FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS, b);
 			aboutSettings.setSelected(true);
-		} 
+		} */
 		else if (id == R.id.chat) {
 			changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
 			chat.setSelected(true);
@@ -651,8 +652,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		settings.setSelected(false);
 		rings.setSelected(false);
 		chat.setSelected(false);
-		aboutChat.setSelected(false);
-		aboutSettings.setSelected(false);
+		about.setSelected(false);
+		//aboutSettings.setSelected(false);
 	}
 
 	@SuppressWarnings("incomplete-switch")
@@ -677,12 +678,15 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		case ACCOUNT_SETTINGS:
 			settings.setSelected(true);
 			break;
-		case ABOUT_INSTEAD_OF_CHAT:
+		case ABOUT:
+			about.setSelected(true);
+			break;
+		/*case ABOUT_INSTEAD_OF_CHAT:
 			aboutChat.setSelected(true);
 			break;
 		case ABOUT_INSTEAD_OF_SETTINGS:
 			aboutSettings.setSelected(true);
-			break;
+			break;*/
 		case CHAT:
 		case CHATLIST:
 			chat.setSelected(true);
@@ -1492,8 +1496,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 						} else {
 							if (newFragmentType == FragmentsAvailable.PANIC //TODO test newFragmentType == FragmentsAvailable.DIALER 
 									|| newFragmentType == FragmentsAvailable.ABOUT 
-									|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT 
-									|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS
+									//|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT 
+									//|| newFragmentType == FragmentsAvailable.ABOUT_INSTEAD_OF_SETTINGS
 									|| newFragmentType == FragmentsAvailable.SETTINGS 
 									|| newFragmentType == FragmentsAvailable.ACCOUNT_SETTINGS) {
 								ll.setVisibility(View.GONE);
