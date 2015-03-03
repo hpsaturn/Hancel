@@ -156,31 +156,41 @@ private Handler mHandler = new Handler();
 		
 		RingDAO ringDAO = new RingDAO(LinphoneService.instance().getApplicationContext());
 		ringDAO.open();
-		Cursor ringsCursor = ringDAO.getRigsCursor();
+		Cursor ringsCursor = ringDAO.getRigsCursor();		
+		List<Ring> allRings = null;
 		
-		List<Ring> allRings = new ArrayList<Ring>();
-		ringsCursor.moveToFirst();
-		do{
-			allRings.add(new Ring(ringsCursor.getString(0),ringsCursor
-					.getString(1), ringsCursor.getLong(2)));
-			ringsCursor.moveToNext();
-		}while(ringsCursor.isLast());
-		
-		
-		ringsList.setVisibility(View.VISIBLE);
-		
-		if (ringsCursor == null || ringsCursor.getCount() == 0) {
-			noRings.setVisibility(View.VISIBLE);
-			ringsList.setVisibility(View.GONE);
-		} 
-		else {
+		if(ringsCursor != null && ringsCursor.getCount() > 0){
+			allRings = new ArrayList<Ring>();		
+			ringsCursor.moveToFirst();
+			
+			do{
+				allRings.add(new Ring(ringsCursor.getString(0),ringsCursor
+						.getString(1), ringsCursor.getLong(2)));
+				ringsCursor.moveToNext();
+			}while(!ringsCursor.isLast());
+			
+			Log.d("=== Cantidad de Anillos en AllRings: " + allRings.size());
+			
 			indexer = new AlphabetIndexer(ringsCursor, 1, 
 					" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			ringsList.setAdapter(new RingsListAdapter(allRings, ringsCursor));
 			noRings.setVisibility(View.GONE);
 			ringsList.setVisibility(View.VISIBLE);
-		}		
-		ringDAO.close();
+			
+			ringDAO.close();
+		}
+		else {
+			noRings.setVisibility(View.VISIBLE);
+			ringsList.setVisibility(View.GONE);
+		} 
+		/*else {
+			indexer = new AlphabetIndexer(ringsCursor, 1, 
+					" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+			ringsList.setAdapter(new RingsListAdapter(allRings, ringsCursor));
+			noRings.setVisibility(View.GONE);
+			ringsList.setVisibility(View.VISIBLE);
+		}		*/
+		
 	}
 	
 	@Override
