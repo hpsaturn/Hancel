@@ -121,12 +121,17 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			String emailList = "";
 			SharedPreferences preferencias = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			String mensaje = preferencias.getString("pref_key_custom_msg","Ayuda");
+			
+			/*TODO TEST */
+			enviarSMS("3002753666", mensaje + mapa+ " bateria: " + 
+					getNivelBateria()+"%");
+			//Fin
 
 			for (int i = 0; i < users.size(); i++) { // por cada contacto
 				ContactInfo ci = users.get(i);
-				ArrayList<String> numeros = ci.getPhoneNumbers();
+				ArrayList<String> numeros = ci.getPhoneNumbers();				
 
-				for (int j = 0; j < numeros.size(); j++) { // por cada "número seleccionado"
+				for (int j = 0; j < numeros.size(); j++) { // por cada "nï¿½mero seleccionado"
 					try {
 						Log.v("Mensaje a: " + numeros.get(j));
 						Log.v(mensaje + mapa + " bateria: "+getNivelBateria()+"%");
@@ -196,7 +201,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 			// iniciamos rastreo
-			// mostramos el fragmento de programación de rastreo como "detener"
+			// mostramos el fragmento de programaciï¿½n de rastreo como "detener"
 			/*
 			 * Rastreo rastreo = (Rastreo)
 			 * getApplicationContext().getSupportFragmentManager
@@ -208,7 +213,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			if (!Util.isMyServiceRunning(getApplicationContext())) {
 				Util.inicarServicio(getApplicationContext());
 			}
-			// mostramos la fecha de la ultima vez que se corrio el pánico y
+			// mostramos la fecha de la ultima vez que se corrio el pï¿½nico y
 			// guardamos la nueva fecha
 			String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar
 					.getInstance());

@@ -7,15 +7,19 @@
 	<string name="today_date_format">HH:mm</string>
 	<string name="picture_name_format">linphone-mms-%s.jpg</string>
     
-	<string name="app_name">Hancel</string>
+	<string name="hancel_app_name">Hancel</string>
 	<string name="service_name">Hancel Service</string>
 	<string name="addressbook_label">Hancel</string>
 	<string name="notification_title">Hancel</string>
 	<string name="wait_dialog_text">Iniciando</string>
 	<string name="notification_registered">Registered to %s </string> 
 	<string name="notification_register_failure">Error al registrar %s</string>
-	<string name="about_text">Hancel %s SIP (rfc 3261) compatible phone under GNU Public License V2</string>
-	<string name="about_link">http://www.linphone.org\n\nInstructions\nhttp://www.linphone.org/m/help\n\n© 2011 Belledonne Communications</string>
+	<string name="about_licence">Hancel %s (rfc 3261) GNU GPL License V2</string>
+	<string name="about_based_title">Based on</string>
+	<string name="about_based_link">http://www.linphone.org\n© 2011 Belledonne Communications</string>
+	<string name="about_text_colaboration">Colaboration</string>
+	<string name="about_survey_title">Encuenta de evaluación de riesgo</string>
+	<string name="about_survey_link">http://bit.ly/18Hf5iX</string>
 	
 	<string name="setup_welcome">This assistant will help you to use a SIP account for your calls.</string>
 	<string name="setup_create_account">Cree una cuenta en linphone.org</string>

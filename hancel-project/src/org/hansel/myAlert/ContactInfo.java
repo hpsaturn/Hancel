@@ -64,12 +64,7 @@ public class ContactInfo {
 		phoneNumbers = numbers;
 	}
 	public ArrayList<String> getPhoneNumbers()
-	{
-		/*TODO: remove hardcoded number */
-		if(phoneNumbers.size()==0)
-		{
-			phoneNumbers.add("3002753666");
-		}
+	{		
 		return phoneNumbers;
 	}
 	public void setContactNumbers(String numbers)

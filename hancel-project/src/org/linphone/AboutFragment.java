@@ -48,8 +48,9 @@ public class AboutFragment extends Fragment implements OnClickListener {
 		
 		TextView aboutText = (TextView) view.findViewById(R.id.AboutText);
 		try {
-			aboutText.setText(String.format(getString(R.string.about_text), getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
-		} catch (NameNotFoundException e) {
+			aboutText.setText(String.format(getString(R.string.about_licence), getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
+		} 
+		catch (NameNotFoundException e) {
 			Log.e(e, "cannot get version name");
 		}
 
