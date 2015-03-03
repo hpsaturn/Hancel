@@ -34,10 +34,10 @@ import android.widget.TextView;
 
 public class EditContactFragment extends Fragment {
 	private View view;
-	private TextView ok;
+	private TextView ok, deleteContact;
 	private EditText firstName, lastName;
 	private LayoutInflater inflater;
-	private View deleteContact;
+	//private View deleteContact;
 	
 	private boolean isNewContact = true;
 	private Contact contact;
@@ -93,7 +93,8 @@ public class EditContactFragment extends Fragment {
 						}
 					}
 					createNewContact();
-				} else {
+				} 
+				else {
 					updateExistingContact();
 				}
 				
@@ -104,7 +105,8 @@ public class EditContactFragment extends Fragment {
 		        try {
 		            getActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
 			        MainActivity.instance().prepareContactsInBackground();
-		        } catch (Exception e) {
+		        } 
+		        catch (Exception e) {
 		        	e.printStackTrace();
 		        }
 		        
@@ -178,7 +180,8 @@ public class EditContactFragment extends Fragment {
 		if (contact != null && contact.getPhotoUri() != null) {
 			InputStream input = Compatibility.getContactPictureInputStream(getActivity().getContentResolver(), contact.getID());
 			contactPicture.setImageBitmap(BitmapFactory.decodeStream(input));
-        } else {
+        } 
+		else {
         	contactPicture.setImageResource(R.drawable.unknown_small);
         }
 		
@@ -218,8 +221,11 @@ public class EditContactFragment extends Fragment {
 				controls.addView(view);
 		}
 		
-		if (!isNewContact) {
-			deleteContact = inflater.inflate(R.layout.contact_delete_button, null);
+		if (!isNewContact) {			
+			//deleteContact = inflater.inflate(R.layout.contact_delete_button, null);
+			//deleteContact.setOnClickListener
+			
+			deleteContact = (TextView) view.findViewById(R.id.deleteContact);
 			deleteContact.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -228,7 +234,7 @@ public class EditContactFragment extends Fragment {
 					MainActivity.instance().displayContacts(false);
 				}
 			});
-			controls.addView(deleteContact, controls.getChildCount());
+			//controls.addView(deleteContact, controls.getChildCount());
 		}
 
 		// Add one for phone numbers, one for SIP address
@@ -247,7 +253,8 @@ public class EditContactFragment extends Fragment {
 	}
 	
 	private View displayNumberOrAddress(final TableLayout controls, String numberOrAddress, boolean forceAddNumber) {
-		boolean isSip = LinphoneUtils.isStrictSipAddress(numberOrAddress) || !LinphoneUtils.isNumberAddress(numberOrAddress);
+		boolean isSip = LinphoneUtils.isStrictSipAddress(numberOrAddress) || 
+				!LinphoneUtils.isNumberAddress(numberOrAddress);
 		
 		if (isSip) {
 			if (firstSipAddressIndex == -1) {
@@ -368,11 +375,11 @@ public class EditContactFragment extends Fragment {
 				controls.addView(view);
 			}
 		}
-		if (deleteContact != null) {
+		/*if (deleteContact != null) {
 			// Move to the bottom the remove contact button
 			controls.removeView(deleteContact);
 			controls.addView(deleteContact, controls.getChildCount());
-		}
+		}*/
 	}
 	
 	private void createNewContact() {

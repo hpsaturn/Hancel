@@ -25,6 +25,22 @@
 		    android:adjustViewBounds="true"
 		    android:layout_weight="1"/>
         
+        
+        
+        <TextView 
+            android:contentDescription="@string/content_description_cancel"
+            android:id="@+id/deleteContact"
+            android:background="@drawable/contact_cancel"
+            android:text="@string/button_delete_all"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:textColor="@drawable/text_button"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:scaleType="centerCrop"
+		    android:adjustViewBounds="true"
+		    android:layout_weight="1"/>
+        
         <TextView 
             android:contentDescription="@string/content_description_validate"
             android:id="@+id/ok"
@@ -70,14 +86,14 @@
 		        <LinearLayout
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
-			        android:orientation="vertical">
+			        android:orientation="vertical">			        			       
 			        
 			        <EditText
             			android:textCursorDrawable="@null"
-				        android:id="@+id/contactLastName"
+				        android:id="@+id/contactFirstName"
 				        android:layout_width="match_parent"
 				        android:layout_height="wrap_content"
-				        android:hint="@string/contact_last_name"
+				        android:hint="@string/contact_first_name"
 				        android:textColor="@color/text_contrast"
 				        android:background="@drawable/chat_fast_address_background"
 				        android:gravity="left"
@@ -86,10 +102,10 @@
 			        
 			        <EditText
             			android:textCursorDrawable="@null"
-				        android:id="@+id/contactFirstName"
+				        android:id="@+id/contactLastName"
 				        android:layout_width="match_parent"
 				        android:layout_height="wrap_content"
-				        android:hint="@string/contact_first_name"
+				        android:hint="@string/contact_last_name"
 				        android:textColor="@color/text_contrast"
 				        android:background="@drawable/chat_fast_address_background"
 				        android:gravity="left"

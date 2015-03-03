@@ -123,8 +123,7 @@ public class ContactFragment extends Fragment implements OnClickListener {
 
 			v.findViewById(R.id.start_chat).setOnClickListener(chatListener);
 			LinphoneProxyConfig lpc = LinphoneManager.getLc().getDefaultProxyConfig();
-			
-			Log.d("Hancel", "----- " + displayednumberOrAddress);
+						
 			
 			if (lpc != null) {
 				if (!displayednumberOrAddress.startsWith("sip:")) {

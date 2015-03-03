@@ -431,6 +431,7 @@
 	<string name="button_add_call">Add call</string>
 	<string name="button_video">Video</string>
 	<string name="button_micro">Micro</string>
+	<string name="button_call"></string>
 	<string name="button_speaker">Speaker</string>
 	<string name="button_route">Route</string>
 	<string name="button_receiver">Receiver</string>
