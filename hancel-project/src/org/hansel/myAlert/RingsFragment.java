@@ -145,7 +145,20 @@ private Handler mHandler = new Handler();
 		ringDAO.open();
 		searchCursor = ringDAO.getRingsByNameCursor(search);
 		indexer = new AlphabetIndexer(searchCursor, 1, " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		ringsList.setAdapter(new RingsListAdapter(null,searchCursor));		
+		
+		ArrayList<Ring> allRings = null;
+		if(searchCursor != null && searchCursor.getCount() > 0){
+			allRings = new ArrayList<Ring>();		
+			searchCursor.moveToFirst();
+			
+			do{
+				allRings.add(new Ring(searchCursor.getString(0),searchCursor
+						.getString(1), searchCursor.getLong(2)));
+				searchCursor.moveToNext();
+			}while(!searchCursor.isLast());
+		}
+		
+		ringsList.setAdapter(new RingsListAdapter(allRings));			
 		ringDAO.close();
 	}
 	
@@ -158,22 +171,22 @@ private Handler mHandler = new Handler();
 		ringDAO.open();
 		Cursor ringsCursor = ringDAO.getRigsCursor();		
 		List<Ring> allRings = null;
-		
+				
 		if(ringsCursor != null && ringsCursor.getCount() > 0){
 			allRings = new ArrayList<Ring>();		
 			ringsCursor.moveToFirst();
-			
-			do{
+			Log.d("=== Cantidad de Anillos en DB: " + ringsCursor.getCount());
+			for(int i = 0; i< ringsCursor.getCount(); i++){
 				allRings.add(new Ring(ringsCursor.getString(0),ringsCursor
 						.getString(1), ringsCursor.getLong(2)));
 				ringsCursor.moveToNext();
-			}while(!ringsCursor.isLast());
+			}
 			
 			Log.d("=== Cantidad de Anillos en AllRings: " + allRings.size());
 			
 			indexer = new AlphabetIndexer(ringsCursor, 1, 
 					" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-			ringsList.setAdapter(new RingsListAdapter(allRings, ringsCursor));
+			ringsList.setAdapter(new RingsListAdapter(allRings));
 			noRings.setVisibility(View.GONE);
 			ringsList.setVisibility(View.VISIBLE);
 			
@@ -254,27 +267,30 @@ private Handler mHandler = new Handler();
 		private int margin;
 		private Bitmap bitmapUnknown;
 		private List<Ring> rings;
-		private Cursor cursor;
+		//private Cursor cursor;
 		
-		public RingsListAdapter(List<Ring> ringsList, Cursor c) {
+		public RingsListAdapter(List<Ring> ringsList) {
 			rings = ringsList;
-			cursor = c;
+			//cursor = c;
 			margin = LinphoneUtils.pixelsToDpi(getResources(), 10);
 			bitmapUnknown = BitmapFactory.decodeResource(getResources(), R.drawable.unknown_small);
 		}
 		
 		
 		public int getCount() {
-			return cursor.getCount();
+			if(rings != null)
+				return rings.size();
+			return 0;
 		}
 
 		public Object getItem(int position) {
 			if (rings == null || position >= rings.size()) {
-				cursor.moveToFirst();
+				return null;
+				/*cursor.moveToFirst();
 				if(!cursor.moveToPosition(position))
 					return null;
 				return new Ring(cursor.getString(0),cursor.getString(1),
-						cursor.getLong(2));
+						cursor.getLong(2));*/
 			} 
 			else {
 				return rings.get(position);

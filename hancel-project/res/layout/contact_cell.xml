@@ -43,9 +43,9 @@
 		    android:layout_height="wrap_content"
 		    android:layout_toRightOf="@id/icon"
 		    android:layout_centerVertical="true"
-		    android:textAppearance="?android:attr/textAppearanceLarge"
+		    android:textSize="15sp"
 		    android:textColor="@color/text_contrast"
-		    android:layout_marginLeft="10dp" />
+		    android:layout_marginLeft="5dp" />
 		
 		<ImageView 
 		    android:id="@+id/friendStatus"

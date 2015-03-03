@@ -106,6 +106,19 @@
 				    android:layout_width="match_parent"
 				    android:layout_height="wrap_content"
 				    android:orientation="horizontal">
+				    
+		            <TextView
+						android:contentDescription="@string/content_description_add_contact"
+						android:visibility="invisible"
+						android:id="@+id/blank1"
+						android:background="@drawable/contacts_add_contact"
+						android:text="@string/button_add_contacts_ring"
+						android:gravity="center"
+						android:paddingTop="15dp"
+						android:textSize="13sp"						
+						android:layout_width="match_parent"
+						android:layout_weight="1"
+						android:layout_height="35dp"/>
 			    
 				    <TextView
 						android:contentDescription="@string/content_description_add_contact"
@@ -135,6 +148,19 @@
 						android:layout_width="match_parent"
 						android:scaleType="centerCrop"
 						android:adjustViewBounds="true"
+						android:layout_weight="1"
+						android:layout_height="35dp"/>
+				    
+				   <TextView
+						android:contentDescription="@string/content_description_add_contact"
+						android:visibility="invisible"
+						android:id="@+id/blank2"
+						android:background="@drawable/contacts_add_contact"
+						android:text="@string/button_add_contacts_ring"
+						android:gravity="center"
+						android:paddingTop="15dp"
+						android:textSize="13sp"						
+						android:layout_width="match_parent"
 						android:layout_weight="1"
 						android:layout_height="35dp"/>
 			</LinearLayout>
