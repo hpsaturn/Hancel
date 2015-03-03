@@ -197,6 +197,7 @@
            	<TextView
 	            android:id="@+id/video"
 	           	android:background="@drawable/video_off"
+	           	android:visibility="invisible"
 	            android:text="@string/button_video"
 	            android:gravity="center"
 	            android:paddingTop="45dp"
@@ -253,6 +254,7 @@
             <TextView
                 android:id="@+id/options"
                 android:background="@drawable/options"
+                android:visibility="invisible"
 	            android:text="@string/button_options"
 	            android:gravity="center"
 	            android:paddingTop="45dp"
@@ -292,6 +294,7 @@
 
             <TextView
                 android:id="@+id/dialer"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
