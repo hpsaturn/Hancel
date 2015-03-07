@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hansel.myAlert.Log.Log;
-import org.hansel.myAlert.dataBase.RingDAO;
 
 import org.holoeverywhere.app.Activity;
 import org.linphone.LinphoneManager.AddressType;
@@ -928,7 +927,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 //		changeCurrentFragment(FragmentsAvailable.DIALER, extras);
 		
 		AddressType address = new AddressText(this, null);
-		address.setDisplayedName(name);
+		address.setDisplayedName(name);		
 		address.setText(number);
 		LinphoneManager.getInstance().newOutgoingCall(address);
 	}
@@ -1175,7 +1174,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 						if (contact == null)
 							continue;
 						
-						contact.refresh(getContentResolver());
+						contact.refresh(getContentResolver(), getResources().getString(R.string.default_account_prefix));
 						if (!isContactPresenceDisabled) {
 							searchFriendAndAddToContact(contact);
 						}

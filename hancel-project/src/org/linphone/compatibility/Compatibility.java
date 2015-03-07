@@ -72,11 +72,12 @@ public class Compatibility {
 		}
 	}
 	
-	public static List<String> extractContactNumbersAndAddresses(String id, ContentResolver cr) {
+	public static List<String> extractContactNumbersAndAddresses(String id, ContentResolver cr){//, String prefix) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
-			return ApiNinePlus.extractContactNumbersAndAddresses(id, cr);
-		} else {
-			return ApiFivePlus.extractContactNumbersAndAddresses(id, cr);
+			return ApiNinePlus.extractContactNumbersAndAddresses(id, cr);//, prefix);
+		} 
+		else {
+			return ApiFivePlus.extractContactNumbersAndAddresses(id, cr);//, prefix);
 		}
 	}
 	
@@ -261,7 +262,8 @@ public class Compatibility {
 	public static void updateSipAddressForContact(ArrayList<ContentProviderOperation> ops, String oldSipAddress, String newSipAddress, String contactID) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			ApiNinePlus.updateSipAddressForContact(ops, oldSipAddress, newSipAddress, contactID);
-		} else {
+		} 
+		else {
 			ApiFivePlus.updateSipAddressForContact(ops, oldSipAddress, newSipAddress, contactID);
 		}
 	}

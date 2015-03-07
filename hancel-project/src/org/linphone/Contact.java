@@ -95,8 +95,8 @@ public class Contact implements Serializable {
 		return numerosOrAddresses;
 	}
 		
-	public void refresh(ContentResolver cr) {
-		this.numerosOrAddresses = Compatibility.extractContactNumbersAndAddresses(id, cr);
+	public void refresh(ContentResolver cr, String prefix) {
+		this.numerosOrAddresses = Compatibility.extractContactNumbersAndAddresses(id, cr);//, prefix);
 		this.name = Compatibility.refreshContactName(cr, id);
 	}
 }

@@ -32,7 +32,7 @@
 		    android:layout_centerVertical="true"
 		    android:textAppearance="?android:attr/textAppearanceLarge"
 		    android:textColor="@color/text_contrast"
-		    android:layout_marginLeft="10dp" />
+		    android:layout_marginLeft="5dp" />
 	    
 	    <ImageView
 	        android:id="@+id/icon"
@@ -53,11 +53,9 @@
 		    android:layout_height="wrap_content"
 		    android:layout_toRightOf="@id/icon"
 		    android:layout_centerVertical="true"
-		    android:textSize="15sp"
-		    
+		    android:textSize="14sp"		    
 		    android:textColor="@color/text_contrast"
-		    android:layout_marginLeft="10dp" />
-		
+		    android:layout_marginLeft="5dp" />		
 				
 		<CheckBox 
 		    android:id="@+id/chooseFriend"
@@ -69,7 +67,7 @@
 		    android:gravity="right"
 		    android:background="@color/background_header"		    
 	        android:adjustViewBounds="true"
-	        android:layout_marginRight="5dp"/>
+	        android:layout_marginRight="15dp"/>
 	
 	</RelativeLayout>
     

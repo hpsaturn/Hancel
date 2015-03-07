@@ -13,6 +13,7 @@ import org.linphone.ui.AvatarWithShadow;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -56,10 +57,12 @@ public class EditContactFragment extends Fragment {
 				contact = (Contact) getArguments().getSerializable("Contact");
 				isNewContact = false;
 				contactID = Integer.parseInt(contact.getID());
-				contact.refresh(getActivity().getContentResolver());
+				contact.refresh(getActivity().getContentResolver(), 
+						getResources().getString(R.string.default_account_prefix));
 			}
 			if (getArguments().getString("NewSipAdress") != null) {
 				newSipOrNumberToAdd = getArguments().getString("NewSipAdress");
+				Log.d("=== OnClick 1 " + newSipOrNumberToAdd);
 				isNewContact = true;
 			}
 		}
@@ -170,7 +173,8 @@ public class EditContactFragment extends Fragment {
 			if (fn != null || ln != null) {
 				firstName.setText(fn);
 				lastName.setText(ln);
-			} else {
+			} 
+			else {
 				lastName.setText(contact.getName());
 				firstName.setText("");
 			}
@@ -219,8 +223,7 @@ public class EditContactFragment extends Fragment {
 			View view = displayNumberOrAddress(controls, newSipOrNumberToAdd);
 			if (view != null)
 				controls.addView(view);
-		}
-		
+		}		
 		if (!isNewContact) {			
 			//deleteContact = inflater.inflate(R.layout.contact_delete_button, null);
 			//deleteContact.setOnClickListener
@@ -260,7 +263,12 @@ public class EditContactFragment extends Fragment {
 			if (firstSipAddressIndex == -1) {
 				firstSipAddressIndex = controls.getChildCount();
 			}
-			numberOrAddress = numberOrAddress.replace("sip:", "");
+			numberOrAddress = numberOrAddress.replace("sip:", "")
+					.replace(getResources().getString(
+							R.string.default_account_prefix),"").replace(
+									getResources().getString(
+											R.string.default_domain),"").replace("@", ""); 
+			Log.d("=== NumberOrAddress a mostrar: " + numberOrAddress);			
 		}
 		if ((getResources().getBoolean(R.bool.hide_phone_numbers_in_editor) && !isSip) || (getResources().getBoolean(R.bool.hide_sip_addresses_in_editor) && isSip)) {
 			if (forceAddNumber)
@@ -272,14 +280,17 @@ public class EditContactFragment extends Fragment {
 		NewOrUpdatedNumberOrAddress tempNounoa;
 		if (forceAddNumber) {
 			tempNounoa = new NewOrUpdatedNumberOrAddress(isSip);
-		} else {
+		} 
+		else {
 			if(isNewContact) {
 				tempNounoa = new NewOrUpdatedNumberOrAddress(isSip, numberOrAddress);
-			} else {
+			} 
+			else {
 				tempNounoa = new NewOrUpdatedNumberOrAddress(numberOrAddress, isSip);
 			}
 		}
 		final NewOrUpdatedNumberOrAddress nounoa = tempNounoa;
+		Log.d("=== Agregando SIPS : " + nounoa);
 		numbersAndAddresses.add(nounoa);
 		
 		final View view = inflater.inflate(R.layout.contact_edit_row, null);
@@ -323,6 +334,7 @@ public class EditContactFragment extends Fragment {
 		final NewOrUpdatedNumberOrAddress nounoa = new NewOrUpdatedNumberOrAddress(isSip);
 		
 		final EditText noa = (EditText) view.findViewById(R.id.numoraddr);
+		Log.d("=== addEmptyRowToAllowNewNumberOrAddress " + nounoa.newNumberOrAddress);
 		numbersAndAddresses.add(nounoa);
 		noa.setHint(isSip ? getString(R.string.sip_address) : getString(R.string.phone_number));
 		noa.setInputType(isSip ? InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS : InputType.TYPE_CLASS_PHONE);
@@ -392,9 +404,12 @@ public class EditContactFragment extends Fragment {
         if (getDisplayName() != null) {           
             ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)              
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, contactID)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, firstName.getText().toString())
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, lastName.getText().toString())
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract
+                		.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName
+                		.GIVEN_NAME, firstName.getText().toString())
+                .withValue(ContactsContract.CommonDataKinds.StructuredName
+                		.FAMILY_NAME, lastName.getText().toString())
                 .build()
             );
         }
@@ -402,14 +417,19 @@ public class EditContactFragment extends Fragment {
 	
 	private void updateExistingContact() {
 		if (getDisplayName() != null) {        
-			String select = ContactsContract.Data.CONTACT_ID + "=? AND " + ContactsContract.Data.MIMETYPE + "='" + ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE +  "'" ; 
+			String select = ContactsContract.Data.CONTACT_ID + "=? AND " + 
+					ContactsContract.Data.MIMETYPE + "='" + ContactsContract
+					.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE +  "'" ; 
 			String[] args = new String[] { String.valueOf(contactID) };   
 			
             ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI) 
         		.withSelection(select, args) 
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, firstName.getText().toString())
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, lastName.getText().toString())
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract
+                		.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName
+                		.GIVEN_NAME, firstName.getText().toString())
+                .withValue(ContactsContract.CommonDataKinds.StructuredName
+                		.FAMILY_NAME, lastName.getText().toString())
                 .build()
             );
         }
@@ -538,8 +558,11 @@ public class EditContactFragment extends Fragment {
 		
 		public void delete() {
 			if (isSipAddress) {
-				Compatibility.deleteSipAddressFromContact(ops, oldNumberOrAddress, String.valueOf(contactID));
-			} else {
+				String fullOldNumberOrAddress = getResources().getString(R.string.default_account_prefix) +
+						oldNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
+				Compatibility.deleteSipAddressFromContact(ops, fullOldNumberOrAddress, String.valueOf(contactID));
+			} 
+			else {
 				String select = ContactsContract.Data.CONTACT_ID + "=? AND " 
 						+ ContactsContract.Data.MIMETYPE + "='" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE +  "' AND " 
 						+ ContactsContract.CommonDataKinds.Phone.NUMBER + "=?"; 
@@ -561,10 +584,21 @@ public class EditContactFragment extends Fragment {
 				if (isSipAddress) {
 					if (newNumberOrAddress.startsWith("sip:"))
 						newNumberOrAddress = newNumberOrAddress.substring(4);
-					if(!newNumberOrAddress.contains("@"))
-						newNumberOrAddress = newNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
+					
+					if (!newNumberOrAddress.startsWith(getResources().getString(R.string.default_account_prefix))){
+						newNumberOrAddress = getResources().getString(R.string.default_account_prefix)
+							+ newNumberOrAddress;
+					}
+					
+					if(!newNumberOrAddress.contains("@")){
+						newNumberOrAddress = newNumberOrAddress 
+								+ "@" + getResources().getString(R.string.default_domain);
+					}
+					
+					Log.d("=== Adding new newNumberOrAddress 1: " + newNumberOrAddress);
 					Compatibility.addSipAddressToContact(getActivity(), ops, newNumberOrAddress);
-				} else {
+				} 
+				else{
 					ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)        
 				        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
 				        .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
@@ -574,14 +608,74 @@ public class EditContactFragment extends Fragment {
 				        .build()
 				    );
 				}
-			} else {
+			} 
+			else {
 				String rawContactId = findRawContactID(String.valueOf(contactID));
 				
 				if (isSipAddress) {
 					if (newNumberOrAddress.startsWith("sip:"))
 						newNumberOrAddress = newNumberOrAddress.substring(4);
+					
+					if (!newNumberOrAddress.startsWith(getResources().getString(R.string
+							.default_account_prefix))){
+						newNumberOrAddress = getResources().getString(R.string
+							.default_account_prefix) + newNumberOrAddress;
+					}
+					
 					if(!newNumberOrAddress.contains("@"))
-						newNumberOrAddress = newNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
+						newNumberOrAddress =  newNumberOrAddress 
+								+ "@" + getResources().getString(
+										R.string.default_domain);
+				
+					Log.d("=== Adding new newNumberOrAddress 2: " + newNumberOrAddress);
+					Compatibility.addSipAddressToContact(getActivity(), ops, newNumberOrAddress, rawContactId);	
+				} 
+				else {
+					ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)         
+					    .withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)       
+				        .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+				        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, newNumberOrAddress)
+				        .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,  ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM)
+				        .withValue(ContactsContract.CommonDataKinds.Phone.LABEL, getString(R.string.addressbook_label))
+				        .build()
+				    );
+				}
+			}
+			/*if (newNumberOrAddress == null || newNumberOrAddress.length() == 0) {
+				return;
+			}
+			
+			if (isNewContact) {
+				if (isSipAddress) {
+					if (newNumberOrAddress.startsWith("sip:"))
+						newNumberOrAddress = newNumberOrAddress.substring(4);
+					//if(!newNumberOrAddress.contains("@"))					
+					newNumberOrAddress = getResources().getString(R.string.default_account_prefix) + 
+							newNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
+					Compatibility.addSipAddressToContact(getActivity(), ops, newNumberOrAddress);
+				} 
+				else {
+					ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)        
+				        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+				        .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+				        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, newNumberOrAddress)
+				        .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,  ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM)
+				        .withValue(ContactsContract.CommonDataKinds.Phone.LABEL, getString(R.string.addressbook_label))
+				        .build()
+				    );
+				}
+			} 
+			else {
+				String rawContactId = findRawContactID(String.valueOf(contactID));
+				
+				if (isSipAddress) {
+					if (newNumberOrAddress.startsWith("sip:"))
+						newNumberOrAddress = newNumberOrAddress.substring(4);
+					//if(!newNumberOrAddress.contains("@"))
+					Log.d("=== Nuevo1" + newNumberOrAddress);
+					newNumberOrAddress = getResources().getString(R.string.default_account_prefix) + 
+							newNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
+					Log.d("=== Nuevo2" + newNumberOrAddress);
 					Compatibility.addSipAddressToContact(getActivity(), ops, newNumberOrAddress, rawContactId);	
 				} else {
 					ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)         
@@ -593,7 +687,7 @@ public class EditContactFragment extends Fragment {
 				        .build()
 				    );
 				}
-			}
+			}*/
 		}
 		
 		private void updateNumber() {
@@ -604,10 +698,38 @@ public class EditContactFragment extends Fragment {
 			if (isSipAddress) {
 				if (newNumberOrAddress.startsWith("sip:"))
 					newNumberOrAddress = newNumberOrAddress.substring(4);
-				if(!newNumberOrAddress.contains("@"))
-					newNumberOrAddress = newNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
+				
+				if(!newNumberOrAddress.startsWith(getResources().getString(R.string.default_account_prefix)))
+					newNumberOrAddress =  getResources().getString(R.string.default_account_prefix) + 
+						newNumberOrAddress;
+				
+				if(!newNumberOrAddress.contains("@")){
+					newNumberOrAddress = newNumberOrAddress + "@" + getResources().getString(
+								R.string.default_domain);
+				}
+				
+				oldNumberOrAddress = getResources().getString(R.string
+						.default_account_prefix) + oldNumberOrAddress +
+						"@" + getResources().getString(R.string.default_domain);
+				
+				Log.d("=== Update new newNumberOrAddress: " + newNumberOrAddress);
+				Log.d("=== Update new oldNumberOrAddress: " + oldNumberOrAddress);
 				Compatibility.updateSipAddressForContact(ops, oldNumberOrAddress, newNumberOrAddress, String.valueOf(contactID));
-			} else {
+				
+				/*
+				if (newNumberOrAddress.startsWith("sip:"))
+					newNumberOrAddress = newNumberOrAddress.substring(4);
+				
+				Log.d("=== Update 1 " + newNumberOrAddress);
+				newNumberOrAddress = getResources().getString(R.string.default_account_prefix) +
+						newNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
+				oldNumberOrAddress = getResources().getString(R.string.default_account_prefix) +
+						oldNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
+				Log.d("=== Update 2 " + newNumberOrAddress + " old: " + oldNumberOrAddress);				
+				Compatibility.updateSipAddressForContact(ops, oldNumberOrAddress, newNumberOrAddress, String.valueOf(contactID));
+				*/
+			} 
+			else {
 				String select = ContactsContract.Data.CONTACT_ID + "=? AND " 
 						+ ContactsContract.Data.MIMETYPE + "='" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE +  "' AND " 
 						+ ContactsContract.CommonDataKinds.Phone.NUMBER + "=?"; 
@@ -619,6 +741,19 @@ public class EditContactFragment extends Fragment {
 	                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, newNumberOrAddress)
 	                .build()
 	            );
+				/*
+				String select = ContactsContract.Data.CONTACT_ID + "=? AND " 
+						+ ContactsContract.Data.MIMETYPE + "='" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE +  "' AND " 
+						+ ContactsContract.CommonDataKinds.Phone.NUMBER + "=?"; 
+				String[] args = new String[] { String.valueOf(contactID), oldNumberOrAddress };  
+				Log.d("=== update" + newNumberOrAddress);
+				
+	            ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI) 
+	        		.withSelection(select, args) 
+	                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+	                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, newNumberOrAddress)
+	                .build()
+	            );*/
 			}
 		}
 	}

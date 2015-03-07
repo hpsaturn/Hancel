@@ -95,25 +95,22 @@ public class ApiFivePlus {
 		return intent;
 	}
 	
-	public static List<String> extractContactNumbersAndAddresses(String id, ContentResolver cr) {
+	public static List<String> extractContactNumbersAndAddresses(String id, ContentResolver cr){//, String prefix) {
 		List<String> list = new ArrayList<String>();
 
 		Uri uri = Data.CONTENT_URI;
 		String[] projection = {ContactsContract.CommonDataKinds.Im.DATA};
 
 		// Phone Numbers
-		Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER}, Phone.CONTACT_ID + " = " + id, null, null);
-		
-		/*TODO: testing
-		Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER }, Phone.CONTACT_ID + " = " + id, null, null);
+		Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER}, Phone.CONTACT_ID + " = " + id, null, null);		
+		//Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER }, Phone.CONTACT_ID + " = " + id, null, null);
 		if (c != null) {
 	        while (c.moveToNext()) {
 	            String number = c.getString(c.getColumnIndex(Phone.NUMBER));
 	            list.add(number); 
 	        }
 	        c.close();
-		}*/
-		
+		}		
 		// SIP addresses
 		String selection = new StringBuilder()
 			.append(Data.CONTACT_ID).append(" =  ? AND ")
@@ -128,6 +125,14 @@ public class ApiFivePlus {
 			int nbId = c.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA);
 			while (c.moveToNext()) {
 				list.add("sip:" + c.getString(nbId)); 
+				/*String sip = "";
+				String[] sips = c.getString(nbId).split("@");
+				if(sips != null && sips.length != 0)
+					sip =  sips[0];
+				if (prefix != null && prefix.length() != 0)
+					sip =  sip.replace(prefix,"");
+				//list.add(c.getString(nbid));
+				list.add(sip);*/
 			}
 			c.close();
 		}
