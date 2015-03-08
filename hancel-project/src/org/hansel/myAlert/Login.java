@@ -160,7 +160,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 								
 					LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
 							.createAuthInfo(LINPHONE_ACCOUNT_PREFIX + mUser, 
-									/*SimpleCrypto.md5(mPasswd),*/"password", null, SP_DOMAIN);
+									SimpleCrypto.md5(mPasswd).substring(0, 10), null, SP_DOMAIN);
 					
 					String identity = "sip:" + LINPHONE_ACCOUNT_PREFIX + mUser.toLowerCase() +"@" + SP_DOMAIN;
 					String proxy = "sip:" + SP_DOMAIN;

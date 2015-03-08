@@ -332,7 +332,7 @@ public class Registro extends org.holoeverywhere.app.Activity{
 									
 						LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
 								.createAuthInfo(Login.LINPHONE_ACCOUNT_PREFIX + mUsuario, 
-										"password"/*SimpleCrypto.md5(mPassword)*/, null, Login.SP_DOMAIN);
+										SimpleCrypto.md5(mPassword).substring(0, 10), null, Login.SP_DOMAIN);
 						
 						String identity = "sip:" + Login.LINPHONE_ACCOUNT_PREFIX + mUsuario +"@" + Login.SP_DOMAIN;
 						String proxy = "sip:" + Login.SP_DOMAIN;
