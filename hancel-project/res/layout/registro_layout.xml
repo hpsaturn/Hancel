@@ -58,11 +58,11 @@
 					android:textColor="#FF7B1E"
 					android:textAppearance="?android:attr/textAppearanceLarge" />
 				
-				<TextView
+				<!-- TextView
 					android:id="@+id/textView2"
 					style="@style/TextoInstruccion"
 					android:textColor="#FFFFFF"
-					android:text="@string/ingreseDatos" />
+					android:text="@string/ingreseDatos" /-->
 				
 			</LinearLayout>
 	
@@ -98,12 +98,12 @@
 					android:text="@string/Usuario" />
 				
 				<EditText
-					android:id="@+id/reg_fullname"
-					style="@style/inputText"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="10dp"
-					android:singleLine="true" />
+				    android:id="@+id/reg_fullname"
+				    style="@style/inputText"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_marginBottom="5dp"
+				    android:singleLine="true" />
 				
 				<!-- Password Label -->
 				
@@ -120,6 +120,24 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="0dp"
+					android:layout_marginBottom="5dp"
+					android:password="true"
+					android:singleLine="true" />
+				
+				<TextView
+					style="@style/labelText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textColor="#000000"
+					android:text="@string/Contrasenia2" />
+				
+				<EditText
+					android:id="@+id/reg_password2"
+					style="@style/inputText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="0dp"
+					android:layout_marginBottom="5dp"
 					android:password="true"
 					android:singleLine="true" />
 				

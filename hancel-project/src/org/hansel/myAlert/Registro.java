@@ -55,18 +55,11 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class Registro extends org.holoeverywhere.app.Activity{
 
-	private EditText vUsuario;
-	private EditText vPassword;
-	private EditText vEmail;
-	private String mUsuario;
-	private String mPassword;
-	private String mEmail;
-	private UserCreateTask mAuthTask;
-	private TextView errores;
-	private View mLoginFormView;
-	private View mLoginStatusView;
-	private String mErrores;
-	private TextView mLoginStatusMessageView;
+	private EditText vUsuario, vPassword, vPasswordConfirm, vEmail;
+	private String mUsuario, mPassword, mPasswordConfirm, mEmail, mErrores;
+	private UserCreateTask mAuthTask;	
+	private View mLoginFormView,mLoginStatusView;
+	private TextView mLoginStatusMessageView, errores;
 	private UsuarioDAO usuarioDAO;
 
 	@Override
@@ -76,7 +69,8 @@ public class Registro extends org.holoeverywhere.app.Activity{
 		setContentView(R.layout.registro_layout);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		vUsuario =(EditText)findViewById(R.id.reg_fullname);
-		vPassword =(EditText)findViewById(R.id.reg_password);
+		vPassword =(EditText)findViewById(R.id.reg_password2);
+		vPasswordConfirm = (EditText)findViewById(R.id.reg_password);
 		vEmail = (EditText)findViewById(R.id.reg_email);
 		errores=(TextView)findViewById(R.id.err_registro);
 		Button btnCreate = (Button)findViewById(R.id.btnRegister);
@@ -106,23 +100,26 @@ public class Registro extends org.holoeverywhere.app.Activity{
 
 	}
 
-	/*TODO Buscar una major forma */
-	public String getmUsuario() {
-		return mUsuario;
-	}
-
 	protected void AttempCreate() {
 		if(mAuthTask != null){
 			return;
 		}
-
-		//obtenemos datos
-		mUsuario = vUsuario.getText().toString().trim().toLowerCase();
-		mPassword = vPassword.getText().toString().trim();
-		mEmail = vEmail.getText().toString().trim();
-
+		
 		boolean cancel = false;
 		View focusView = null;
+		
+		try{
+			mUsuario = vUsuario.getText().toString().trim().toLowerCase();
+			mPassword = vPassword.getText().toString().trim();
+			mPasswordConfirm = vPasswordConfirm.getText().toString().trim();
+			mEmail = vEmail.getText().toString().trim();
+		}
+		catch(NullPointerException e){
+			vUsuario.setError(getString(R.string.invalid_empty));
+			focusView = vUsuario;
+			cancel = true;
+		}		
+		
 		// Check for a valid user.
 		if (TextUtils.isEmpty(mUsuario)) {
 			vUsuario.setError(getString(R.string.error_field_required));
@@ -134,27 +131,35 @@ public class Registro extends org.holoeverywhere.app.Activity{
 			focusView = vPassword;
 			cancel = true;
 		}
+		if (TextUtils.isEmpty(mPasswordConfirm)) {
+			vPasswordConfirm.setError(getString(R.string.error_field_required));
+			focusView = vPassword;
+			cancel = true;
+		}
+		
+		if (mPasswordConfirm.compareTo(mPassword) != 0) {
+			vPassword.setError(getString(R.string.error_password_confirm));
+			focusView = vPassword;
+			cancel = true;
+		}
 		if (TextUtils.isEmpty(mEmail) ) {
 			vEmail.setError(getString(R.string.error_field_required));
 			focusView = vEmail;
-			cancel = true;
-		}else if(!mEmail.contains("@"))
-		{
-			vEmail.setError("Correo no válido");
+			cancel = true;			
+		}
+		else if(!mEmail.contains("@")){
+			vEmail.setError(getString(R.string.invalid_email));
 			focusView = vEmail;
 			cancel = true;
 		}
-		/*if (TextUtils.isEmpty(mEmailContacto) ) {
-			vEmail.setError(getString(R.string.error_field_required));
-			focusView = vEmailContacto;
-			cancel = true;
-		}else */
+		
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
-		} else {
-			//escondemos teclado
+		} 
+		else {
+			//hidding keyboard
 			try
 			{
 				((InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE))

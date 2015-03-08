@@ -230,19 +230,26 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			hideAndDisplayMessageIfNoChat();
 		}
 		else if (id == R.id.newDiscussion) {
+			Log.d("=== New Discussion");
 			String sipUri = fastNewChat.getText().toString();
 			if (sipUri.equals("")) {
 				MainActivity.instance().displayContacts(true);
-			} else {
+			} 
+			else {
 				if (!LinphoneUtils.isSipAddress(sipUri)) {
 					if (LinphoneManager.getLc().getDefaultProxyConfig() == null) {
 						return;
 					}
-					sipUri = sipUri + "@" + LinphoneManager.getLc().getDefaultProxyConfig().getDomain();
+					//TODO test					
+					sipUri = getResources().getString(R.string.default_account_prefix) + 
+							sipUri + "@" + LinphoneManager.getLc()
+							.getDefaultProxyConfig().getDomain();
+					Log.d("=== SipUri " + sipUri);
 				}
 				if (!LinphoneUtils.isStrictSipAddress(sipUri)) {
 					sipUri = "sip:" + sipUri;
 				}
+				Log.d("=== Antes de DisplayChat " +  sipUri);
 				MainActivity.instance().displayChat(sipUri);
 			}
 		}
@@ -252,9 +259,12 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		String sipUri = (String) view.getTag();
 		
+		Log.d("=== SIPURI" + sipUri);
+		
 		if (MainActivity.isInstanciated() && !isEditMode) {
 			MainActivity.instance().displayChat(sipUri);
-		} else if (MainActivity.isInstanciated()) {
+		} 
+		else if (MainActivity.isInstanciated()) {
 			MainActivity.instance().removeFromChatList(sipUri);
 			MainActivity.instance().removeFromDrafts(sipUri);
 			
@@ -344,15 +354,18 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			
 			if (convertView != null) {
 				view = convertView;
-			} else {
+			} 
+			else {
 				view = mInflater.inflate(R.layout.chatlist_cell, parent, false);
 				
 			}
 			String contact;
 			boolean isDraft = false;
+			
 			if (position >= mDrafts.size()) {
 				contact = mConversations.get(position - mDrafts.size());
-			} else {
+			} 
+			else {
 				contact = mDrafts.get(position);
 				isDraft = true;
 			}
@@ -360,9 +373,11 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			int unreadMessagesCount = MainActivity.instance().getChatStorage().getUnreadMessageCount(contact);
 			
 			LinphoneAddress address;
+			
 			try {
 				address = LinphoneCoreFactory.instance().createLinphoneAddress(contact);
-			} catch (LinphoneCoreException e) {
+			} 
+			catch (LinphoneCoreException e) {
 				Log.e("Chat view cannot parse address",e);
 				return view;
 			}
@@ -372,6 +387,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			if (useNativeAPI) {
 				LinphoneChatRoom chatRoom = LinphoneManager.getLc().getOrCreateChatRoom(contact);
 				LinphoneChatMessage[] history = chatRoom.getHistory(20);
+				
 				if (history != null && history.length > 0) {
 					for (int i = history.length - 1; i >= 0; i--) {
 						LinphoneChatMessage msg = history[i];
@@ -381,7 +397,8 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 						}
 					}
 				}
-			} else {
+			} 
+			else {
 				List<ChatMessage> messages = MainActivity.instance().getChatMessages(contact);
 				if (messages != null && messages.size() > 0) {
 					int iterator = messages.size() - 1;
@@ -409,9 +426,14 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			} 
 			else if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(contact)) {
 				contact = LinphoneUtils.getUsernameFromAddress(contact);
+				contact = contact.replace(getResources()
+						.getString(R.string.default_account_prefix),"")
+						.replace("@","").replace(getResources().getString(R.string.default_domain), "");
+				Log.d("=== CONTACT: " + contact);
 			} 
 			
 			sipUri.setText(address.getDisplayName() == null ? contact : address.getDisplayName());
+			
 			if (isDraft) {
 				view.findViewById(R.id.draft).setVisibility(View.VISIBLE);
 			}

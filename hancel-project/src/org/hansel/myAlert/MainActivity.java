@@ -561,6 +561,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 		LinphoneAddress lAddress;
 		try {
+			Log.v("=== Main Activity displayChat " + sipUri);
 			lAddress = LinphoneCoreFactory.instance().createLinphoneAddress(sipUri);
 		} 
 		catch (LinphoneCoreException e) {

@@ -4,6 +4,7 @@
     <string name="dialog_alarm_desc">Favor de deshabilitar la Alarma</string>
     <string name="Usuario">Usuario</string>
     <string name="Contrasenia">Contraseña</string>
+	<string name="Contrasenia2">Confirmar contraseña</string>
     <string name="Registrarme">Registrarme</string>
     <string name="Ingresar">Ingresar</string>
     <string name="errores">errores</string>
