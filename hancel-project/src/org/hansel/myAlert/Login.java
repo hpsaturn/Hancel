@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Created by Javier Mejia @zenyagami
 zenyagami@gmail.com
-	*/
+ */
 
 
 import java.util.Calendar;
@@ -75,13 +75,13 @@ public class Login extends org.holoeverywhere.app.Activity {
 	private UsuarioDAO usuarioDao;
 	public static final String LINPHONE_ACCOUNT_PREFIX = "hancel_lp_dummy_";
 	public static final String SP_DOMAIN = "sip.linphone.org";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
-		
-		
+
+
 		//buscamos si quedo en un paso del registro y no termino
 		int step= PreferenciasHancel.getCurrentWizardStep(getApplicationContext());
 		switch (step) {
@@ -104,7 +104,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 		default:
 			break;
 		}
-		
+
 		if(PreferenciasHancel.getLoginOk(getApplicationContext())){
 			Intent i = new Intent(getApplicationContext(),MainActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK 
@@ -112,15 +112,14 @@ public class Login extends org.holoeverywhere.app.Activity {
 			startActivity(i);
 			finish();
 		}
-				
+
 		user = (EditText)findViewById(R.id.txtUser);
 		passwd = (EditText) findViewById(R.id.txtPassword);
-				
+
 		Button btnLogin = (Button)findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(new View.OnClickListener() {
-			
+
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				AttempLogin();
 				Log.v("=== Usuario ya creado. Se va a autenticar en el SIP");
 				spAuth();
@@ -128,81 +127,81 @@ public class Login extends org.holoeverywhere.app.Activity {
 				//password = SimpleCrypto.md5(passwd.getText().toString());//"Joshua123"; //Joshua2123"ccm3mm5";//			
 			}
 		});
-		
+
 		TextView txt = (TextView)findViewById(R.id.link_to_register);
 		txt.setOnClickListener(new View.OnClickListener() {
-			
+
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(), Registro.class);
 				startActivity(i);
-				
+
 			}
 		});
-		
+
 		errores =(TextView)findViewById(R.id.tvError);
 		mLoginFormView = findViewById(R.id.login_form1);
 		mLoginStatusView = findViewById(R.id.login_status1);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message1);
 
-		
+
 		ViewPager mpager = (ViewPager) findViewById(R.id.pager);
 		PagerAdapter mpagerAdapter = new ScreenSlidePageAdapter(getSupportFragmentManager());
 		mpager.setAdapter(mpagerAdapter);
 		CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.pagerIndicator);
 		indicator.setViewPager(mpager);
-				
+
 	}
-	
+
 	private void spAuth(){
 		//Registering in Linphone Server
-				try{
-					LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
-								
-					LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
-							.createAuthInfo(LINPHONE_ACCOUNT_PREFIX + mUser, 
-									SimpleCrypto.md5(mPasswd).substring(0, 10), null, SP_DOMAIN);
-					
-					String identity = "sip:" + LINPHONE_ACCOUNT_PREFIX + mUser.toLowerCase() +"@" + SP_DOMAIN;
-					String proxy = "sip:" + SP_DOMAIN;
-					Log.v("=== Usuario que va a autenticar en el SIP: " + identity);
-					LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
-					//proxyAddr.setTransport(TransportType.LinphoneTransportTls);
-					proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
-					LinphoneProxyConfig proxycon = lc.createProxyConfig(identity, proxyAddr.asStringUriOnly(), proxyAddr.asStringUriOnly(), true);
-					
-					lc.addProxyConfig(proxycon);
-					lc.setDefaultProxyConfig(proxycon);
-					
-					LinphoneProxyConfig lDefaultProxyConfig = lc.getDefaultProxyConfig();
-					if (lDefaultProxyConfig != null) {			
-						lDefaultProxyConfig.setDialEscapePlus(false);
-					} 
-					else if (LinphoneService.isReady()) {
-						//LinphoneService.instance().registrationState(lc, lDefaultProxyConfig, RegistrationState.RegistrationNone, null);
-					}
-					
-					lc.addAuthInfo(lAuthInfo);
-					
-				} catch(LinphoneCoreException e)
-				{
-					Log.v(e.getMessage());
-				}
+		try{
+			LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
+
+			LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
+					.createAuthInfo(LINPHONE_ACCOUNT_PREFIX + mUser, 
+							SimpleCrypto.md5(mPasswd).substring(0, 10), null, SP_DOMAIN);
+
+			String identity = "sip:" + LINPHONE_ACCOUNT_PREFIX + mUser.toLowerCase() +"@" + SP_DOMAIN;
+			String proxy = "sip:" + SP_DOMAIN;
+			Log.v("=== Usuario que va a autenticar en el SIP: " + identity);
+			LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
+			//proxyAddr.setTransport(TransportType.LinphoneTransportTls);
+			proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
+			LinphoneProxyConfig proxycon = lc.createProxyConfig(identity, proxyAddr.asStringUriOnly(), proxyAddr.asStringUriOnly(), true);
+
+			lc.addProxyConfig(proxycon);
+			lc.setDefaultProxyConfig(proxycon);
+
+			LinphoneProxyConfig lDefaultProxyConfig = lc.getDefaultProxyConfig();
+			if (lDefaultProxyConfig != null) {			
+				lDefaultProxyConfig.setDialEscapePlus(false);
+			} 
+			else if (LinphoneService.isReady()) {
+				//LinphoneService.instance().registrationState(lc, lDefaultProxyConfig, RegistrationState.RegistrationNone, null);
+			}
+
+			lc.addAuthInfo(lAuthInfo);
+
+		} 
+		catch(LinphoneCoreException e)
+		{
+			Log.v(e.getMessage());
+		}
 	}
-	
+
 	private void AttempLogin()
 	{
-		if(mAuthTask!=null) //sal , si la tarea aun esta ejecutandose
-		{
+		if(mAuthTask!=null){		
 			return;
 		}
+
 		user.setError(null);
-		passwd.setError(null);
-		//obtenemos los valores antes de hacer log in
+		passwd.setError(null);		
 		mUser = user.getText().toString().toLowerCase();
 		mPasswd = passwd.getText().toString();
 		boolean cancel = false;
 		View focusView = null;
-		
+
 		// Check for a valid user.
 		if (TextUtils.isEmpty(mUser)) {
 			user.setError(getString(R.string.error_field_required));
@@ -219,14 +218,14 @@ public class Login extends org.holoeverywhere.app.Activity {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
-		} else {
+		} 
+		else {
 			//escondemos teclado
 			try
 			{
 				((InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE))
 				.hideSoftInputFromWindow(passwd.getWindowToken(), 0);
-			}catch(Exception ex)
-			{
+			}catch(Exception ex){
 				Log.v("Error al esconder teclado: "+ex.getMessage() );
 			}
 			// Show a progress spinner, and kick off a background task to
@@ -252,25 +251,25 @@ public class Login extends org.holoeverywhere.app.Activity {
 
 			mLoginStatusView.setVisibility(View.VISIBLE);
 			mLoginStatusView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 1 : 0)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginStatusView.setVisibility(show ? View.VISIBLE
-									: View.GONE);
-						}
-					});
+			.alpha(show ? 1 : 0)
+			.setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mLoginStatusView.setVisibility(show ? View.VISIBLE
+							: View.GONE);
+				}
+			});
 
 			mLoginFormView.setVisibility(View.VISIBLE);
 			mLoginFormView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 0 : 1)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE
-									: View.VISIBLE);
-						}
-					});
+			.alpha(show ? 0 : 1)
+			.setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mLoginFormView.setVisibility(show ? View.GONE
+							: View.VISIBLE);
+				}
+			});
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
@@ -287,74 +286,55 @@ public class Login extends org.holoeverywhere.app.Activity {
 			super.onPreExecute();
 			errores.setVisibility(View.GONE);
 			mErrores="";
-			
+
 		}
+		
 		@SuppressLint("DefaultLocale")
 		@Override
 		protected Boolean doInBackground(Void... arg0) {
 			//conexion a la BD para obtener Login.						
-			try
-			{
+			try{			
 				String id_device = String.valueOf(Calendar.getInstance().getTimeInMillis());
 				String PassMd5= SimpleCrypto.md5(mPasswd);
 				id_device = SimpleCrypto.md5(id_device);
-				//obtenemos Json para login v�lido
+
+				//obtenemos Json para login válido
 				JSONObject result =  HttpUtils.Login(mUser, PassMd5, id_device);
-				 try {
-					 if(result.optString("resultado").equals("ok"))
-					 {
-						 //parseamos data del ID
-						 JSONObject jObject = result.getJSONObject("descripcion");
-						 int androidId = Integer.parseInt(jObject.getString("usr-id"));
-						 int trackId = Integer.valueOf(jObject.getString("id-tracking"));
-						 PreferenciasHancel.setDeviceId(getApplicationContext(), id_device);
-						 PreferenciasHancel.setUserId(getApplicationContext(), androidId);
-						 Util.insertNewTrackId(getApplicationContext(), trackId);
-						  Util.setLoginOkInPreferences(getApplicationContext(), true);
+				try {
+					if(result.optString("resultado").equals("ok")){
+						//parseamos data del ID
+						JSONObject jObject = result.getJSONObject("descripcion");
+						int androidId = Integer.parseInt(jObject.getString("usr-id"));
+						int trackId = Integer.valueOf(jObject.getString("id-tracking"));
+						PreferenciasHancel.setDeviceId(getApplicationContext(), id_device);
+						PreferenciasHancel.setUserId(getApplicationContext(), androidId);
+						Util.insertNewTrackId(getApplicationContext(), trackId);
+						Util.setLoginOkInPreferences(getApplicationContext(), true);
 						//abre Base de datos
-							usuarioDao=new UsuarioDAO(Login.this);
-							usuarioDao.open();
-							usuarioDao.Insertar( mUser, mPasswd, id_device);
-							usuarioDao.close();
-					 }
-					 else
-					 {
-						 mErrores=result.optString("descripcion");
-						 return false;
-					 }
-					 
-					
+						usuarioDao = new UsuarioDAO(Login.this);
+						usuarioDao.open();
+						usuarioDao.Insertar( mUser, PassMd5/*mPasswd*/, id_device);
+						usuarioDao.close();
+					}
+					else{
+						mErrores=result.optString("descripcion");
+						return false;
+					}										
 				} catch (Exception e) {
 					Log.v("Error al parsear Json: "+ result);
 					return false;
 				}
-				//encriptamos password
-				/*String hash = SimpleCrypto.md5(SimpleCrypto.MD5_KEY);
-				if(hash.length()>0)
-				{
-					String encrypted= SimpleCrypto.encrypt(mPasswd, hash);
-					if(encrypted.length()>0)
-					{
-						mPasswd = encrypted;
-					}
-				}*/
-				
-			//	usuarioDao.Insertar( mUser, mPasswd, IMEI);
-				
-			        return true;
-						
-			}catch(NoInternetException ni)
-			{
+				return true;
+
+			}catch(NoInternetException ni){
 				mErrores = "Error al conectarse al servidor";
 				Log.v("Error login: "+ni.getMessage());
 			}
-			catch(Exception ex)
-			{
-				
-				mErrores = "Error al procear la informaci�n";
+			catch(Exception ex){				
+				mErrores = "Error al procear la información";
 				Log.v("Error login: "+ex.getMessage());
 			}
-			
+
 			return false;
 		}
 		@Override
@@ -367,7 +347,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK 
 						| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(i);
-				
+
 			} else {
 				errores.setVisibility(View.VISIBLE);
 				errores.setText(mErrores);
@@ -378,6 +358,6 @@ public class Login extends org.holoeverywhere.app.Activity {
 			mAuthTask = null;
 			showProgress(false);
 		}
-		
+
 	}
 }

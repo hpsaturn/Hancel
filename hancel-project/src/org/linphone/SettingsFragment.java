@@ -73,21 +73,31 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		super.onCreate(bundle);
 
 		// Init the settings page interface
+		Log.d("=== InitSettings ");
 		initSettings();
+		Log.d("=== Fin de InitSettings ");
 		setListeners();
+		Log.d("=== Fin de InitListeners ");
 		hideSettings();
+		Log.d("=== Fin de HideSettings ");
 	}
 
 	// Inits the values or the listener on some settings
 	private void initSettings() {
 		//Init accounts on Resume instead of on Create to update the account list when coming back from wizard
-
+		Log.d("=== Dentro de InitSettings ");
 		initTunnelSettings();
+		Log.d("=== Fin de InitTunnelSettings ");
 		initAudioSettings();
+		Log.d("=== Fin de InitAudioSettings ");
 		initVideoSettings();
+		Log.d("=== Fin de InitVideoSettings ");
 		initCallSettings();
+		Log.d("=== Fin de InitCallSettings ");
 		initNetworkSettings();
+		Log.d("=== Fin de InitNetworkSettings ");
 		initAdvancedSettings();
+		Log.d("=== Fin de InitAdvancedSettings ");
 
 		// Add action on About button
 		findPreference(getString(R.string.menu_about_key)).setOnPreferenceClickListener(new OnPreferenceClickListener() {

@@ -68,7 +68,7 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- LinearLayout
+    <LinearLayout
         style="@style/panelAcciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -81,6 +81,6 @@
             class="org.hansel.myAlert/Rastreo"
              tools:layout="@layout/fragment_rastreo"
             />
-    </LinearLayout-->
+    </LinearLayout>
 
 </LinearLayout>

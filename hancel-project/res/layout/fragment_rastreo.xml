@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
-        android:text="Programar Rastreo"
+        android:text="@string/program_tracking"
         android:visibility="gone" />
 
     
@@ -27,17 +27,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_header"
+        android:background="@color/background_app"
         android:orientation="vertical" >
         
-     
+     	
+        <ImageView
+            android:contentDescription="@string/content_description_contact_picture"
+	        android:id="@+id/icon_track"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:adjustViewBounds="true"	        
+	        android:scaleType="centerInside"
+	        android:src="@drawable/tracking" />
 
-        <TextView
+        <!-- TextView
             style="@style/TextoCabecera"
             android:layout_marginTop="5dp"
             android:text="@string/current_track_info"
             android:textColor="@color/orange_hancel"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium" /-->
 
         <LinearLayout
             android:id="@+id/date"
@@ -52,7 +61,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="15 - Abril - 08:30"
-                android:textColor="@color/white"
+                android:textColor="@color/background_header"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
     </LinearLayout>
@@ -62,21 +71,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
+        <TextView
+			android:visibility="invisible"
+			android:paddingTop="20dp"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:scaleType="centerCrop"
+			android:adjustViewBounds="true"
+			android:layout_weight="1"/>
+        
         <Button
             android:id="@+id/btnCancelCurrentTrack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/button"
+            android:layout_gravity="left"           
+            style="@style/inner_app_button"
             android:text="@string/cancel" />
 
         <Button
             android:id="@+id/btnModifyCurrentTrack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/button"
+            style="@style/inner_app_button"            
+            android:layout_gravity="right"
             android:text="@string/edit" />
+        
+        <TextView
+			android:visibility="invisible"
+			android:paddingTop="20dp"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:scaleType="centerCrop"
+			android:adjustViewBounds="true"
+			android:layout_weight="1"/>
     </LinearLayout>
   </LinearLayout>    
 </RelativeLayout>

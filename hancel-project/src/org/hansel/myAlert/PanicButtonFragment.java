@@ -21,7 +21,9 @@ import java.lang.reflect.Method;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -43,21 +45,43 @@ public class PanicButtonFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		//habilitamos wifi para tratar de tener una mejor localizaci�n	
+		//habilitamos wifi para tratar de tener una mejor localización	
 		View v = inflater.inflate(R.layout.fragment_panic, container,false);
 		Button btnPanico = (Button)v.findViewById(R.id.btnPanico);
 		txtLastPanic =(TextView)v.findViewById(R.id.txtUltimaAlerta);
-		//btnTracking = (Button)v.findViewById(R.id.IniciaTrackId);
-		btnPanico.setOnClickListener(new View.OnClickListener() {
-	
+		
+		btnTracking = (Button)v.findViewById(R.id.IniciaTrackId);
+		btnPanico.setOnClickListener(new View.OnClickListener() {						
 			@Override
 			public void onClick(View v) {
-				getActivity().startService(new Intent(getActivity(),SendPanicService.class));
-				Toast.makeText(getActivity().getApplicationContext(), "Alerta enviada"
-						, Toast.LENGTH_SHORT).show();
+				
 				//Arregla el bug en el que al iniciar el servicio, no notifica a la Actividad de que
 				//ya se estaa ejecutando, entonces no se puede detener inmediatamente.
 				//btnTracking.setText(STOP_TRACK);
+				
+				AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
+				alt_bld.setMessage("Desea enviar la alerta?")
+				.setCancelable(false)
+				.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						getActivity().startService(new Intent(getActivity(),SendPanicService.class));
+						Toast.makeText(getActivity().getApplicationContext(), "Alerta enviada"
+								, Toast.LENGTH_SHORT).show();
+						btnTracking.setText(STOP_TRACK);
+					}
+				})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				
+				AlertDialog alert = alt_bld.create();
+				// Title for AlertDialog
+				alert.setTitle("Confirmación de alerta");
+				// Icon for AlertDialog
+				//alert.setIcon(R.drawable.icon);
+				alert.show();				
 			}
 		});
 		//programar rastreo

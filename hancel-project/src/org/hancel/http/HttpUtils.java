@@ -115,7 +115,7 @@ public class HttpUtils {
 		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
 		 if(result==null)
 		 {
-			 throw new NoInternetException("Error en petici�n al server");
+			 throw new NoInternetException("Error en petición al server");
 		 }
 		 return result;
 		

@@ -22,6 +22,7 @@ import java.util.Date;
 
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
+import org.hansel.myAlert.Utils.SimpleCrypto;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.TrackDAO;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
@@ -85,27 +86,25 @@ public class Rastreo extends Fragment implements OnClickListener{
 		currentTrackInfo.setVisibility(showTrackInfo ? View.VISIBLE : View.GONE );
 		btnTracking.setVisibility(showTrackInfo? View.GONE : View.VISIBLE);
 	}
+
 	public void panicButtonPressed()
 	{
-		//se presiona botón de panico, cancelamos "servicio" si aun no esta corriendo y cancelamos la alarma
+		//se presiona botï¿½n de panico, cancelamos "servicio" si aun no esta corriendo y cancelamos la alarma
 		showCurrentTrackInfo(false);
-		//cancelamos la alarma antes de ejecutar el servicio por el botón de pánico
-		//si esta corriendo es que corrió por causa de la alarma
-		if(!Util.isMyServiceRunning(getActivity()))
-		{
+		//cancelamos la alarma antes de ejecutar el servicio por el botï¿½n de pï¿½nico
+		//si esta corriendo es que corriï¿½ por causa de la alarma
+		if(!Util.isMyServiceRunning(getActivity())){
 			alarmManager.cancel(Util.getServicePendingIntent(getActivity()));
 		}
-		//corriendo siempre será "true" por que al presionar el botón de pánico
+		//corriendo siempre serï¿½ "true" por que al presionar el botï¿½n de pï¿½nico
 		// se inizializa el servicio
-		corriendo=true;
-		setupButtonText();
-		
+		corriendo = true;
+		setupButtonText();		
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(requestCode==REQUEST_CODE && resultCode== Activity.RESULT_OK && data!=null)
-		{
+		if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data!=null){
 			
 			/*
 			//cancelamos la alarma anterios en caso que se modificque
@@ -142,7 +141,7 @@ public class Rastreo extends Fragment implements OnClickListener{
 		
 		View v = inflater.inflate(R.layout.fragment_rastreo, container,false);
 		btnTracking = (Button)v.findViewById(R.id.IniciaTrackId);
-		usuarioDao=new UsuarioDAO(getActivity().getApplicationContext());
+		usuarioDao = new UsuarioDAO(getActivity().getApplicationContext());
 		usuarioDao.open();
 		//convertimos a entero el valor
 		minutos = Util.getTrackingMinutes(getActivity().getApplicationContext());
@@ -157,7 +156,7 @@ public class Rastreo extends Fragment implements OnClickListener{
 		btnModifyCurrentTrack.setOnClickListener(this);
 		showCurrentTrackInfo(false);
 		
-	 Log.v("Buscando el tiempo por defecto para actualizar: "+minutos);
+	 Log.v("=== Buscando el tiempo por defecto para actualizar: " + minutos);
 	if(savedInstanceState!=null)
 	{
 		corriendo = savedInstanceState.getBoolean("run");
@@ -218,8 +217,8 @@ public class Rastreo extends Fragment implements OnClickListener{
 	}
 	protected void createPasswordDialog(final Button btnPanico) {
 	    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());                 
-	    alert.setTitle("Contraseña para cancelar...");  
-	    alert.setMessage("Contraseña:");                
+	    alert.setTitle("ContraseÃ±a para cancelar...");  
+	    alert.setMessage("ContraseÃ±a:");                
 
 	     // Set an EditText view to get user input   
 	     final EditText input = new EditText(getActivity());
@@ -229,19 +228,10 @@ public class Rastreo extends Fragment implements OnClickListener{
 	        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
 	        public void onClick(DialogInterface dialog, int whichButton) {  
 	            String value = input.getText().toString();
-	            //encriptamos el password y lo comparamos con el guardado
-	          /*  String hash = SimpleCrypto.md5(SimpleCrypto.MD5_KEY);
-				if(hash.length()>0)
-				{
-					String encrypted= SimpleCrypto.encrypt(value, hash);
-					if(encrypted.length()>0)
-					{
-						value = encrypted;
-					}
-				}*/
+	            String crypto = SimpleCrypto.md5(value);	            
 	            boolean isOK = usuarioDao.getPassword(value.trim());
-	            if(isOK && btnPanico.getId()== R.id.IniciaTrackId ) //buscar en la BD la contraseña
-	            {
+	            
+	            if(isOK && btnPanico.getId()== R.id.IniciaTrackId ){
 		        	Log.v("Detener Rastreo");
 		        	alarmManager.cancel(getPendingAlarm());
 		        	btnPanico.setText(START_TRACK);
@@ -249,25 +239,25 @@ public class Rastreo extends Fragment implements OnClickListener{
 					getActivity().stopService(new Intent(getActivity().getApplicationContext()
 							,LocationManagement.class));
 					alarmManager.cancel(Util.getPendingAlarmPanicButton(getActivity().getApplicationContext()));
-					corriendo=false;
+					corriendo = false;
+					
 		            Toast.makeText(getActivity(), "Rastreo Detenido", Toast.LENGTH_SHORT).show();
 		            PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
-	            return;                  
-	           }else if(isOK && btnPanico.getId() == R.id.btnCancelCurrentTrack )
-	           {
+		            return;                  
+	           }
+	           else if(isOK && btnPanico.getId() == R.id.btnCancelCurrentTrack ){
 	       			//cancelamos alarma para iniciar servicio
 	       			//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
 	       			cancelAlarms();
-	       			Toast.makeText(getActivity(), "Programación de Rastreo Cancelado", Toast.LENGTH_SHORT).show();
+	       			Toast.makeText(getActivity(), "ProgramaciÃ³n de Rastreo Cancelado", Toast.LENGTH_SHORT).show();
 	       			showCurrentTrackInfo(false);
 	       			 PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
-	           }else if(isOK && btnPanico.getId()==R.id.btnModifyCurrentTrack)
-	           {
+	           }
+	           else if(isOK && btnPanico.getId()==R.id.btnModifyCurrentTrack){
 	        	   startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
 	           }
-	            else
-	           {
-	        	   Toast.makeText(getActivity(), "Contraseña Incorrecta", 
+	            else{
+	        	   Toast.makeText(getActivity(), "ContraseÃ±a Incorrecta", 
 	        			   Toast.LENGTH_SHORT).show();
 	        	   return;
 	           }
@@ -315,7 +305,7 @@ public class Rastreo extends Fragment implements OnClickListener{
 			//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
 		
 			/*cancelAlarms();
-			Toast.makeText(getActivity(), "Programación de Rastreo Cancelado", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Programaciï¿½n de Rastreo Cancelado", Toast.LENGTH_SHORT).show();
 			showCurrentTrackInfo(false);
 			 PreferenciasHancel.setAlarmStartDate(getActivity(), 0);*/
 			//break;

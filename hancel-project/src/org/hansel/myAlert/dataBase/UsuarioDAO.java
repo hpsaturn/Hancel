@@ -51,7 +51,7 @@ public class UsuarioDAO extends SQLiteHelper{
 	} 
 	public boolean getPassword(String Password)
 	{
-		Cursor c= super.mDb.rawQuery("select * from "+DATABASE_TABLE+
+		Cursor c= super.mDb.rawQuery("select * from "+ DATABASE_TABLE+
 					" where "+password +"='"+Password+"'",null
 				);
 		if(c.moveToFirst())
