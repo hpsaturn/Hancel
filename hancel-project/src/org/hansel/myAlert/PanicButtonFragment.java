@@ -47,17 +47,17 @@ public class PanicButtonFragment extends Fragment
 		
 		//habilitamos wifi para tratar de tener una mejor localización	
 		View v = inflater.inflate(R.layout.fragment_panic, container,false);
-		Button btnPanico = (Button)v.findViewById(R.id.btnPanico);
-		txtLastPanic =(TextView)v.findViewById(R.id.txtUltimaAlerta);
+		Button btnPanico = (Button)v.findViewById(R.id.btnPanic);
+		txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);
 		
-		btnTracking = (Button)v.findViewById(R.id.IniciaTrackId);
+		btnTracking = (Button)v.findViewById(R.id.inicia_TrackId);
 		btnPanico.setOnClickListener(new View.OnClickListener() {						
 			@Override
 			public void onClick(View v) {
 				
 				//Arregla el bug en el que al iniciar el servicio, no notifica a la Actividad de que
 				//ya se estaa ejecutando, entonces no se puede detener inmediatamente.
-				//btnTracking.setText(STOP_TRACK);
+				btnTracking.setText(STOP_TRACK);
 				
 				AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
 				alt_bld.setMessage("Desea enviar la alerta?")

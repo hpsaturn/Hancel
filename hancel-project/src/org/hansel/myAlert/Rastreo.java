@@ -140,18 +140,18 @@ public class Rastreo extends Fragment implements OnClickListener{
 			Bundle savedInstanceState) {
 		
 		View v = inflater.inflate(R.layout.fragment_rastreo, container,false);
-		btnTracking = (Button)v.findViewById(R.id.IniciaTrackId);
+		btnTracking = (Button)v.findViewById(R.id.inicia_TrackId);
 		usuarioDao = new UsuarioDAO(getActivity().getApplicationContext());
 		usuarioDao.open();
 		//convertimos a entero el valor
 		minutos = Util.getTrackingMinutes(getActivity().getApplicationContext());
 		//minutos =4;
 		//Layouts para ocultar o mostrar dependiendo de la alerta
-		currentTrackInfo = v.findViewById(R.id.layoutCurrentTrack);
-		txtCurrentTrackInfo = (TextView)v.findViewById(R.id.txtUltimaAlerta);
+		currentTrackInfo = v.findViewById(R.id.layout_CurrentTrack);
+		txtCurrentTrackInfo = (TextView)v.findViewById(R.id.txt_UltimaAlerta);
 		
-		btnCancelCurrentTrack = (Button)v.findViewById(R.id.btnCancelCurrentTrack);
-		btnModifyCurrentTrack = (Button)v.findViewById(R.id.btnModifyCurrentTrack);
+		btnCancelCurrentTrack = (Button)v.findViewById(R.id.btn_CancelCurrentTrack);
+		btnModifyCurrentTrack = (Button)v.findViewById(R.id.btn_ModifyCurrentTrack);
 		btnCancelCurrentTrack.setOnClickListener(this);
 		btnModifyCurrentTrack.setOnClickListener(this);
 		showCurrentTrackInfo(false);
@@ -232,7 +232,7 @@ public class Rastreo extends Fragment implements OnClickListener{
 	            
 	            boolean isOK = usuarioDao.getPassword(crypto);	           	          
 	            
-	            if(isOK && btnPanico.getId()== R.id.IniciaTrackId ){
+	            if(isOK && btnPanico.getId()== R.id.inicia_TrackId ){
 		        	Log.v("Detener Rastreo");
 		        	alarmManager.cancel(getPendingAlarm());
 		        	btnPanico.setText(START_TRACK);
@@ -246,7 +246,7 @@ public class Rastreo extends Fragment implements OnClickListener{
 		            PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
 		            return;                  
 	           }
-	           else if(isOK && btnPanico.getId() == R.id.btnCancelCurrentTrack ){
+	           else if(isOK && btnPanico.getId() == R.id.btn_CancelCurrentTrack ){
 	       			//cancelamos alarma para iniciar servicio
 	       			//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
 	       			cancelAlarms();
@@ -254,7 +254,7 @@ public class Rastreo extends Fragment implements OnClickListener{
 	       			showCurrentTrackInfo(false);
 	       			 PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
 	           }
-	           else if(isOK && btnPanico.getId()==R.id.btnModifyCurrentTrack){
+	           else if(isOK && btnPanico.getId()==R.id.btn_ModifyCurrentTrack){
 	        	   startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
 	           }
 	            else{
@@ -301,7 +301,7 @@ public class Rastreo extends Fragment implements OnClickListener{
 			return;
 		}
 		switch (v.getId()) {
-		case R.id.btnCancelCurrentTrack:
+		case R.id.btn_CancelCurrentTrack:
 			//cancelamos alarma para iniciar servicio
 			//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
 		
@@ -310,11 +310,11 @@ public class Rastreo extends Fragment implements OnClickListener{
 			showCurrentTrackInfo(false);
 			 PreferenciasHancel.setAlarmStartDate(getActivity(), 0);*/
 			//break;
-		case R.id.btnModifyCurrentTrack:
+		case R.id.btn_ModifyCurrentTrack:
 			createPasswordDialog((Button) v);	
 			//startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
 			break;
-		case R.id.IniciaTrackId:
+		case R.id.inicia_TrackId:
 			if(!corriendo)
 			{
 				startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );

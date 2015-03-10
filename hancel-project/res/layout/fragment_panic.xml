@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@color/background_header"
         android:orientation="vertical" >
-        <!-- @drawable/bg_top" -->
-
+       
         <TextView
             android:id="@+id/textView2"
             style="@style/TextoCabecera"
@@ -24,14 +23,14 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
-            android:id="@+id/date"
+            android:id="@+id/datePanic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="7dp" >
 
             <TextView
-                android:id="@+id/txtUltimaAlerta"
+                android:id="@+id/txtLastPanic"
                 style="@style/TextoInstruccion"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -50,13 +49,14 @@
         android:src="@drawable/separador" />
 
     <RelativeLayout
+        android:id="@+id/trakingRelativePanel"
         android:layout_width="wrap_content"
         android:layout_height="0dip"
-        android:layout_gravity="center"
+        android:layout_gravity="center"        
         android:layout_weight="1" >
 
         <Button
-            android:id="@+id/btnPanico"
+            android:id="@+id/btnPanic"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_centerHorizontal="true"
@@ -74,13 +74,14 @@
         android:layout_height="wrap_content"
         android:background="#F5F5F5"
         android:orientation="vertical" >
-
-        <fragment android:id="@+id/fragmentRastreo" 
+		
+        <include layout="@layout/fragment_rastreo" />
+        <!-- fragment android:id="@+id/fragmentRastreo" 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             class="org.hansel.myAlert/Rastreo"
              tools:layout="@layout/fragment_rastreo"
-            />
+            /-->
     </LinearLayout>
 
 </LinearLayout>

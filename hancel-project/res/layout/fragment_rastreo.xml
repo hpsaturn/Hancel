@@ -6,7 +6,7 @@
     android:orientation="horizontal" >
 
     <Button
-        android:id="@+id/IniciaTrackId"
+        android:id="@+id/inicia_TrackId"
         style="@style/inner_app_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
    <LinearLayout android:layout_width="match_parent" 
        android:layout_height="wrap_content"
        android:orientation="vertical"
-       android:id="@+id/layoutCurrentTrack"
+       android:id="@+id/layout_CurrentTrack"
        android:visibility="visible"
        >
        
@@ -49,14 +49,14 @@
             android:textAppearance="?android:attr/textAppearanceMedium" /-->
 
         <LinearLayout
-            android:id="@+id/date"
+            android:id="@+id/traking_Date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="5dp" >
 
             <TextView
-                android:id="@+id/txtUltimaAlerta"
+                android:id="@+id/txt_UltimaAlerta"
                 style="@style/TextoInstruccion"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -67,7 +67,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutBtnCancelTrack"
+        android:id="@+id/layout_BtnCancelTrack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -76,7 +76,7 @@
 
         <TextView
 			android:visibility="invisible"
-			android:id="@+id/blank1"
+			android:id="@+id/blank_10"
 			android:paddingTop="20dp"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -85,7 +85,7 @@
 			android:layout_weight="1"/>
         
         <Button
-            android:id="@+id/btnCancelCurrentTrack"
+            android:id="@+id/btn_CancelCurrentTrack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"           
@@ -93,7 +93,7 @@
             android:text="@string/cancel" />
 
         <Button
-            android:id="@+id/btnModifyCurrentTrack"
+            android:id="@+id/btn_ModifyCurrentTrack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/inner_app_button"            
@@ -103,7 +103,7 @@
         <TextView
 			android:visibility="invisible"
 			android:paddingTop="20dp"
-			android:id="@+id/blank2"
+			android:id="@+id/blank_20"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:scaleType="centerCrop"
