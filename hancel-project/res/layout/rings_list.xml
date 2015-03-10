@@ -13,14 +13,17 @@
 		
 	    <TextView
 			android:visibility="gone"
+			android:id="@+id/space1"
 			android:paddingTop="20dp"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:scaleType="centerCrop"
 			android:adjustViewBounds="true"
 			android:layout_weight="1"/>
+	    
 	    <TextView
 			android:visibility="invisible"
+			android:id="@+id/space2"
 			android:paddingTop="20dp"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -60,11 +63,11 @@
 
 	</LinearLayout>
 
-	<RelativeLayout
+	<!-- RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
-		<!-- ImageView
+		<ImageView
 			android:contentDescription="@string/content_description_cancel"
 			android:id="@+id/clearSearchField"
 			android:layout_width="wrap_content"
@@ -86,9 +89,9 @@
 			android:gravity="center"
 			android:layout_toLeftOf="@id/clearSearchField"
 			android:paddingRight="5dp"
-			android:inputType="textPersonName"/-->
+			android:inputType="textPersonName"/>
 
-	</RelativeLayout>
+	</RelativeLayout> -->
 
 	<RelativeLayout
 		android:layout_width="match_parent"

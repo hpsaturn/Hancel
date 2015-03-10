@@ -76,6 +76,7 @@
 
         <TextView
 			android:visibility="invisible"
+			android:id="@+id/blank1"
 			android:paddingTop="20dp"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -102,6 +103,7 @@
         <TextView
 			android:visibility="invisible"
 			android:paddingTop="20dp"
+			android:id="@+id/blank2"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:scaleType="centerCrop"
