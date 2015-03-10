@@ -117,10 +117,24 @@ public class HttpUtils {
 		 {
 			 throw new NoInternetException("Error en petición al server");
 		 }
-		 return result;
-		
-		 
+		 return result;			 
 	}
+
+	public static JSONObject SendActivationCode(String user, String password, String code ) throws NoInternetException
+	{
+		 ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
+		 values.add(new BasicNameValuePair("f","activation"));
+		 values.add(new BasicNameValuePair("strUsr",user));
+		 values.add(new BasicNameValuePair("strPass",password));
+		 values.add(new BasicNameValuePair("activation_code",code));
+		 
+		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
+		 if(result==null)
+		 {
+			 throw new NoInternetException("Error en petición al server");
+		 }
+		 return result;			 
+	}	
 	public static JSONObject sendTrack(String idDevice, 
 			String androidId,
 			String idUsuario
