@@ -17,12 +17,16 @@ package org.hansel.myAlert;
  */
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.ContactoDAO;
+import org.hansel.myAlert.dataBase.RingDAO;
+import org.linphone.LinphoneManager;
+import org.linphone.compatibility.Compatibility;
 
 import android.app.AlarmManager;
 import android.app.Service;
@@ -40,7 +44,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds;
 import android.telephony.SmsManager;
+import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
@@ -117,67 +124,59 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			}
 			// String direccion = Util.geoCodeMyLocation(Lat, Long,
 			// getActivity());
-			ArrayList<ContactInfo> users = getSqliteContacts();
-			String emailList = "";
-			SharedPreferences preferencias = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-			String mensaje = preferencias.getString("pref_key_custom_msg","Ayuda");
 			
-			/*TODO TEST */
-			enviarSMS("3002753666", mensaje + mapa+ " bateria: " + 
-					getNivelBateria()+"%");
-			//Fin
-
-			for (int i = 0; i < users.size(); i++) { // por cada contacto
-				ContactInfo ci = users.get(i);
-				ArrayList<String> numeros = ci.getPhoneNumbers();				
-
-				for (int j = 0; j < numeros.size(); j++) { // por cada "n�mero seleccionado"
-					try {
-						Log.v("Mensaje a: " + numeros.get(j));
-						Log.v(mensaje + mapa + " bateria: "+getNivelBateria()+"%");
-
-						enviarSMS(numeros.get(j), mensaje + mapa+ " bateria: "+getNivelBateria()+"%");
-						// enviarSMS(numeros.get(j), direccion);
-					} catch (Exception ex) {
-						Log.v("Ocurrio un Error al enviar SMS :" + numeros	+ " Excepcion:" + ex.getMessage());
+			RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
+					.getContext());
+			ringDao.open();
+			Cursor c = ringDao.getNotificationContactsId();
+			
+			if(c != null && c.getCount()>0){				
+				c.moveToFirst();
+				List<String> numbers = new ArrayList<String>();
+				
+				for(int i= 0; i< c.getCount(); i++){
+					List<String> contactNumbers = Compatibility.extractContactNumbers(c.getString(0),
+							getContentResolver());
+					if(contactNumbers != null && contactNumbers.size() > 0)
+						numbers.addAll(contactNumbers);
+					c.moveToNext();
+				}
+				
+				SharedPreferences preferencias = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				String message = preferencias.getString("pref_key_custom_msg","Ayuda");
+				
+				for(int i = 0; i < numbers.size(); i++){
+					try{
+						String number =  numbers.get(i).replaceAll("\\D+", "");	
+						if(number != null && number.length() > 0){
+							Log.v("=== Enviando SMS a : " + number);
+							enviarSMS(number, message + mapa + " Power: " + getNivelBateria() + "%");
+						}
 					}
-				}
-				try {
-					emailList += getContactById(ci.getPhotoId());
-				} catch (Exception e) {
-					e.printStackTrace();
-					Log.v("Error al obtener la lista de email: "+ e.getMessage());
-				}
+					catch (Exception ex) {
+						Log.v("Ocurrio un Error al enviar SMS. Excepcion: " + 
+								ex.getMessage());
+					}
+				}				
 			}
-			
-			try {
-				Log.v("Inicia envio de panico: ");
-				String ongList = PreferenciasHancel.getSelectedOng(getApplicationContext());
-				if (ongList != null) {
-					try {
-						ongList = ongList.endsWith(",") ? ongList.substring(0,ongList.length() - 1) : ongList;
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-
-				}
-				try {
-					emailList = emailList.endsWith(",") ? emailList.substring(0, emailList.length() - 1) : emailList;
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
+			else{
+				//TODO: mensaje que no hay numeros a quienes enviar mensaje
+			}			
+			try{
 				HttpUtils.sendPanic(PreferenciasHancel.getDeviceId(getApplicationContext()),
-								String.valueOf(PreferenciasHancel.getUserId(getApplicationContext())),
-								String.valueOf(loc.getLatitude()),
-								String.valueOf(loc.getLongitude()),
-								String.valueOf(getNivelBateria()),
-								emailList, ongList);
-			} catch (Exception ex) {
-				Log.v("Error al mandar el track: " + ex.getMessage());
+					String.valueOf(PreferenciasHancel.getUserId(getApplicationContext())),
+					String.valueOf(loc.getLatitude()),
+					String.valueOf(loc.getLongitude()),
+					String.valueOf(getNivelBateria()),
+					"", "");
+			}catch (Exception ex) {
+				Log.v("Error al Enviar el track: " + ex.getMessage());
 			}
+			
 			return null;
 		}
 
+		/*
 		private String getContactById(String photoId) {
 			StringBuilder lista = new StringBuilder();
 			Cursor cur1 = getApplicationContext().getContentResolver().query(
@@ -196,7 +195,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			cur1.close();
 			return lista.toString();
 		}
-
+		*/
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
@@ -247,6 +246,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			sms.sendTextMessage(telefono, null, mensaje, null, null);
 			Log.v("Mensaje enviado a " + telefono);
 		} catch (Exception e) {
+				Log.v(e.getMessage());
 			try {
 				ArrayList<String> parts = sms.divideMessage(mensaje);
 				sms.sendMultipartTextMessage(telefono, null, parts, null, null);
@@ -259,6 +259,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 
 	}
 
+	/*
 	private ArrayList<ContactInfo> getSqliteContacts() {
 		ArrayList<ContactInfo> userInfo = new ArrayList<ContactInfo>();
 		contactoDao = new ContactoDAO(getApplicationContext());
@@ -282,7 +283,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 		contactoDao.close();
 		return userInfo;
 	}
-
+	*/
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
 		// TODO Auto-generated method stub
@@ -309,10 +310,8 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 	 * @return int ( nivel de bateria)
 	 */
 	private int getNivelBateria() {
-		// Log.v("*******entre bateria");
 		Intent i = new ContextWrapper(this).registerReceiver(null,
 				new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-		// Log.v("*******nivel"+i.getIntExtra(BatteryManager.EXTRA_LEVEL, -1));
 		return   i.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 	}
 	

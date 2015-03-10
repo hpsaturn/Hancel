@@ -160,9 +160,8 @@ public class HttpUtils {
 		 values.add(new BasicNameValuePair("emailsIds",emailsIds));
 		 values.add(new BasicNameValuePair("ongsIds",ongList ));
 		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
-		 if(result==null)
-		 {
-			 throw new NoInternetException("Error en petici�n al server");
+		 if(result==null){		 
+			 throw new NoInternetException("Error en petición al server");
 		 }
 		 return result;
 		 

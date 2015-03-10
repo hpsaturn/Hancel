@@ -172,6 +172,22 @@ public class ApiNinePlus {
 		return list;
 	}
 
+	
+
+	public static List<String> extractContactNumbers(String id, ContentResolver cr){//, String prefix) {
+		List<String> list = new ArrayList<String>();		
+		Cursor c = cr.query(Phone.CONTENT_URI, new String[] {Phone.NUMBER}, Phone.CONTACT_ID + " = " + id, null, null);
+		if (c != null) {
+	        while (c.moveToNext()) {
+	            String number = c.getString(c.getColumnIndex(Phone.NUMBER));
+	            list.add(number); 
+	        }
+	        c.close();
+		}		
+		return list;
+	}
+
+	
 	public static Cursor getContactsCursor(ContentResolver cr, String search) {
 		String req = "(" + Data.MIMETYPE + " = '" + CommonDataKinds.Phone.CONTENT_ITEM_TYPE
                 + "' AND " + CommonDataKinds.Phone.NUMBER + " IS NOT NULL OR (" 

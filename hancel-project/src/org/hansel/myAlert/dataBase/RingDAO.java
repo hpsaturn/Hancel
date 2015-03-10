@@ -70,7 +70,8 @@ public class RingDAO extends SQLiteHelper {
 		int alwaysNotify = always==true?1:0;
 		ContentValues newValues = new ContentValues();
 		newValues.put("name", name);
-		newValues.put("notify", String.valueOf(alwaysNotify));		
+		newValues.put("always", String.valueOf(alwaysNotify));
+		newValues.put("notify", 0);
 		return super.mDb.insert(DBConstants.TABLE_RINGS, null, newValues);		
 	}
 	
@@ -78,7 +79,7 @@ public class RingDAO extends SQLiteHelper {
 		int result = -1;
 		ContentValues values = new ContentValues();
 		values.put("NAME", name);
-		values.put("NOTIFY", always==true?1:0);
+		values.put("ALWAYS", always==true?1:0);
 		
 		String whereClause = "_ID = " + id;
 		super.mDb.beginTransaction();
@@ -97,7 +98,7 @@ public class RingDAO extends SQLiteHelper {
 				insertValues.put("_ID_CONTACT", it.next());
 				super.mDb.insert(DBConstants.TABLE_CONTACS_RINGS, null, insertValues);
 			}
-			Log.d("=== Poniendo transaccion exitosa");
+			
 			mDb.setTransactionSuccessful();
 		}
 		finally {
@@ -106,9 +107,29 @@ public class RingDAO extends SQLiteHelper {
 		return result;
 	}
 	
-	public boolean deleteRing(String idRing){
-		String whereClause = "_ID_RING = ?1";
-		return super.mDb.delete(DBConstants.TABLE_CONTACS_RINGS, whereClause,
-				new String[] {idRing}) > 0;
+	public long deleteRing(String idRing){
+		String whereClause1 = "_ID_RING = " + idRing;
+		String whereClause2 = "_id = " + idRing;
+		long result = 0;
+		
+		super.mDb.beginTransaction();			
+		try{
+			result = super.mDb.delete(DBConstants.TABLE_CONTACS_RINGS, 
+				whereClause1, null);
+			result += super.mDb.delete(DBConstants.TABLE_RINGS, 
+						whereClause2, null);		
+			super.mDb.setTransactionSuccessful();
+		}
+		finally {
+			super.mDb.endTransaction();				
+		}
+		return result;
+	}
+	
+	public Cursor getNotificationContactsId(){		
+		Cursor c = super.mDb.rawQuery("select _ID_CONTACT from " + 
+				DBConstants.TABLE_RINGS + "," + DBConstants.TABLE_CONTACS_RINGS 
+				+ " where always = 1 or notify = 1 and _ID_RING = _ID", null);
+		return c;				
 	}
 }

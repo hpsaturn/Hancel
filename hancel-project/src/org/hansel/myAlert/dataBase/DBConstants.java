@@ -26,6 +26,6 @@ public class DBConstants {
 	public static final String sqlTablaAlerta = "CREATE TABLE T_ALERTA (_id INTEGER PRIMARY KEY NOT NULL , esperaAlerta TEXT, fkIdSesion INTEGER)";
 	public static final String sqlTablaEvento = "CREATE TABLE T_EVENTO (_id INTEGER PRIMARY KEY NOT NULL , estatus INTEGER, fkIdSesion INTEGER)";
 	public static final String sqlTablaTrack = "CREATE TABLE T_TRACK (_id INTEGER PRIMARY KEY NOT NULL ,androidId INTEGER NOT NULL, fecha TEXT)";
-	public static final String sqlRingsTable = "CREATE TABLE T_RINGS (_id INTEGER PRIMARY KEY NOT NULL, name TEXT, notify INTEGER)";
+	public static final String sqlRingsTable = "CREATE TABLE T_RINGS (_id INTEGER PRIMARY KEY NOT NULL, name TEXT, notify INTEGER, always INTEGER)";
 	public static final String sqlContactsRingsTable = "CREATE TABLE T_CONTACTS_RINGS (_ID_RING INTEGER, _ID_CONTACT INTEGER, PRIMARY KEY (_ID_RING, _ID_CONTACT), FOREIGN KEY(_ID_RING) REFERENCES T_RINGS(_ID))";
 }

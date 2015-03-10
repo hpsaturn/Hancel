@@ -18,7 +18,7 @@
 	<string name="about_based_title">Based on</string>
 	<string name="about_based_link">http://www.linphone.org\n© 2011 Belledonne Communications</string>
 	<string name="about_text_colaboration">Colaboration</string>
-	<string name="about_survey_title">Encuenta de evaluación de riesgo</string>
+	<string name="about_survey_title">Check your risk level</string>
 	<string name="about_survey_link">http://bit.ly/18Hf5iX</string>
 	
 	<string name="setup_welcome">This assistant will help you to use a SIP account for your calls.</string>

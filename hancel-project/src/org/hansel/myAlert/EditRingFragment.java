@@ -51,7 +51,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class EditRingFragment extends Fragment {
 	private View view;
-	private TextView ok, deleteContacts, addContacts, deleteRing;
+	private TextView ok,addContacts, deleteRing;
 	private EditText ringName;
 	private CheckBox ringDefault;
 	private LayoutInflater inflater;
@@ -86,10 +86,10 @@ public class EditRingFragment extends Fragment {
 				
 				if(c != null && c.getCount() > 0){
 					c.moveToFirst();
-					do{
+					for(int i =0; i< c.getCount(); i++){
 						idContacts.add(c.getString(0));
 						c.moveToNext();
-					}while(!c.isLast());
+					}
 				}
 								
 				Log.d("=== Cantidad de contactos en el anillo: " + idContacts.size());
@@ -192,7 +192,8 @@ public class EditRingFragment extends Fragment {
 			deleteRing.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v) {
-					Log.d("=== Eliminando anillo");
+					Log.d("=== Eliminando anillo " + ring.getName());
+					deleteRing();
 				}
 			} );
 		}
@@ -267,10 +268,9 @@ public class EditRingFragment extends Fragment {
 	private void updateRing() {
 		if (ringName.getText().length() > 0) {
 			
-			//List<String> contactsInRing = ((RingsContactsListAdapter)contactsList.getAdapter()).getSelectedContacts();
-			
 			if(idContacts != null && idContacts.size() == 0){
-				 Toast.makeText(getActivity(), "El anillo debe tener al menos un contacto", Toast.LENGTH_SHORT).show();
+				 Toast.makeText(getActivity(), getResources().getString(
+						 R.string.no_contacts_ring),Toast.LENGTH_SHORT).show();
 				 return;
 			}
 			
@@ -278,30 +278,25 @@ public class EditRingFragment extends Fragment {
 					.getContext());
 			ringDao.open();
 			long result = ringDao.updateRing(String.valueOf(ring.getId()), 
-				ringName.getText().toString(),ringDefault.isChecked(), idContacts);
+				ringName.getText().toString(),ringDefault.isChecked(),idContacts);
 			ringDao.close();
 			
 			if(result == -1)
-				 Toast.makeText(getActivity(), "El anillo no fué modificado", Toast.LENGTH_SHORT).show();
+				 Toast.makeText(getActivity(), getResources().getString(
+						 R.string.ring_not_modified),Toast.LENGTH_SHORT).show();
 		}
 		else
-			Toast.makeText(getActivity(), "Debe ingresar un nombre para el anillo", Toast.LENGTH_SHORT).show();			
+			Toast.makeText(getActivity(), getResources().getString(
+					 R.string.ring_without_name), Toast.LENGTH_SHORT).show();			
 	}
 	
 	private void deleteRing() {
-		/*String select = ContactsContract.Data.CONTACT_ID + "=?"; 
-		String[] args = new String[] { String.valueOf(contactID) };   
+		ringDao = new RingDAO(LinphoneManager.getInstance()
+				.getContext());
+		ringDao.open();
 		
-        ops.add(ContentProviderOperation.newDelete(ContactsContract.Data.CONTENT_URI) 
-    		.withSelection(select, args) 
-            .build()
-        );
-        
-        try {
-            getActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-        } catch (Exception e) {
-        	e.printStackTrace();
-        }*/
+		ringDao.deleteRing(ring.getId());
+		ringDao.close();
 	}
 
 	

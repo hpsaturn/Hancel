@@ -29,7 +29,7 @@
 		android:text="@string/about_licence" 
 		android:gravity="center" 
 		android:paddingTop="5sp"
-		android:textStyle="bold" 
+		android:textSize="12sp" 
 		android:textColor="@color/text_contrast"
 		android:id="@+id/AboutText"/>
 	
@@ -43,13 +43,13 @@
 	        android:textColor="@color/text_default"
 	        android:textSize="15sp"
 	        android:textStyle="bold" />
-	
-	<ImageView
-        android:contentDescription="@string/content_description_welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="15sp"
-        android:src="@drawable/logo_linphone_57x57" />
+		    
+		<ImageView
+	        android:contentDescription="@string/content_description_welcome"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="10sp"
+	        android:src="@drawable/logo_linphone_57x57" />					
 	
 	<TextView 
 	    android:layout_width="wrap_content"
@@ -57,11 +57,11 @@
 		android:text="@string/about_based_link"
 		android:autoLink="web" 
 		android:gravity="center" 
-		android:textStyle="bold" 
+		android:textSize="12sp"
 		android:textColor="@color/text_contrast"
 		android:id="@+id/AboutLink"/>
 	
-	<TextView
+		<TextView
 	        android:id="@+id/textColaboration"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -72,19 +72,34 @@
 	        android:textSize="15sp"
 	        android:textStyle="bold" />
 	
+	
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="85dp"
 	    android:background="@drawable/background"
 	    android:gravity="center"
-	    android:orientation="horizontal" >
+	    android:orientation="horizontal" >	
 		
 		<ImageView
 		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
+	        android:layout_height="wrap_content"
+		    android:contentDescription="@string/content_description_welcome"
+		    android:src="@drawable/ong_3" />
+		    
+		<ImageView
+	        android:contentDescription="@string/content_description_welcome"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="15sp"
+	        android:src="@drawable/karisma" />
+		
+		<ImageView
+		    android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+		    android:visibility="invisible"		   
 		    android:contentDescription="@string/content_description_welcome"
 		    android:src="@drawable/ong_3" />	
-	
+					
 	</LinearLayout>
 	
 	<TextView

@@ -81,6 +81,15 @@ public class Compatibility {
 		}
 	}
 	
+	public static List<String> extractContactNumbers(String id, ContentResolver cr){//, String prefix) {
+		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
+			return ApiNinePlus.extractContactNumbers(id, cr);//, prefix);
+		} 
+		else {
+			return ApiFivePlus.extractContactNumbers(id, cr);//, prefix);
+		}
+	}
+	
 	public static Cursor getContactsCursor(ContentResolver cr) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			return ApiNinePlus.getContactsCursor(cr, null);
