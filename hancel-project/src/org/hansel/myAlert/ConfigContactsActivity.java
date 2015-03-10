@@ -157,7 +157,7 @@ public class ConfigContactsActivity extends org.holoeverywhere.app.Activity{
 		                	launchPicker(contactId);
 	                	}else if(contactoDAO.getList(Integer.valueOf(contactId))==0 && ci.getPhoneNumbers().size()==1)
 	                	{
-	                		//si solo tiene un contacto no es necesario preguntar por que números agregar
+	                		//si solo tiene un contacto no es necesario preguntar por que nÃºmeros agregar
 	                		InsertaBD(ci.getPhoneNumbers(),contactId,ci.getPhotoId());
 	                	}else
 	                	{
@@ -165,8 +165,8 @@ public class ConfigContactsActivity extends org.holoeverywhere.app.Activity{
 	                	}
 	                }else
 	                {
-	                	Toast.makeText(getApplicationContext(), "No contiene Números telefónicos", Toast.LENGTH_SHORT).show();
-	                	//no inserta, no existen numeros telefónicos
+	                	Toast.makeText(getApplicationContext(), "No contiene NÃºmeros telefÃ³nicos", Toast.LENGTH_SHORT).show();
+	                	//no inserta, no existen numeros telefÃ³nicos
 	                }
 	               // updateListView();
 	            }
@@ -177,7 +177,7 @@ public class ConfigContactsActivity extends org.holoeverywhere.app.Activity{
 	        	{
 	        		String contactoId = data.getExtras().getString("id");
 	        		ArrayList<String> phoneNumbers = data.getExtras().getStringArrayList("phones");
-	        		//guardar los teléfonos en la BD
+	        		//guardar los telÃ©fonos en la BD
 	        		InsertaBD(phoneNumbers, contactoId,contactoId);
 	        	}
 	        	
@@ -186,11 +186,11 @@ public class ConfigContactsActivity extends org.holoeverywhere.app.Activity{
 	    }
 	private void InsertaBD(ArrayList<String> phoneNumbers,String contactId,String photID) {
 		String csv ="";
-		try { //en caso que exista algún error
+		try { //en caso que exista algÃºn error
 			for (int i = 0; i < phoneNumbers.size(); i++) {
 				csv +=  phoneNumbers.get(i)+",";
 			}
-			csv = csv.length()>0?  csv.substring(0,csv.length()-1) :"" ; //quitamos última "coma,"
+			csv = csv.length()>0?  csv.substring(0,csv.length()-1) :"" ; //quitamos Ãºltima "coma,"
 			//csv =phoneNumbers.toString().substring(1, phoneNumbers.toString().length() - 2).replace(", ", ",");
 		} catch (Exception e) {
 			//usamos for para concatenar 
@@ -198,7 +198,7 @@ public class ConfigContactsActivity extends org.holoeverywhere.app.Activity{
 				csv +=  phoneNumbers.get(i)+",";
 				
 			}
-			csv = csv.length()>0?  csv.substring(0,csv.length()-1) :"" ; //quitamos última "coma,"
+			csv = csv.length()>0?  csv.substring(0,csv.length()-1) :"" ; //quitamos Ãºltima "coma,"
 		}
 		//guardamos email
 		//String lista="";

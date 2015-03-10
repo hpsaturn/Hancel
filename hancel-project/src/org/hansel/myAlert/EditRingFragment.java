@@ -56,8 +56,6 @@ public class EditRingFragment extends Fragment {
 	private CheckBox ringDefault;
 	private LayoutInflater inflater;
 	private ListView contactsList;
-	//private ImageView clearSearchField;
-	//private EditText searchField;
 	private boolean isNewRing = true;
 	private Ring ring;
 	private long ringID;	

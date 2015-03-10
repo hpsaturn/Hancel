@@ -18,8 +18,8 @@
     <string name="registro4">Registro: Paso 4 de 4</string>
     <string name="ingreseDatos">Ingrese los siguientes datos</string>
     <string name="ingreseONGS">Selecciones las ONGs a las cuales enviará alertas</string>
-    <string name="ingreseContactos">Agregue contactos a los que se enviarán alertas</string>
-    <string name="finRegistro">Felicidades, ha concluido su registro en Hancel pulse finalizar para empezar a utilizar hancel</string>
+    <string name="ingreseContactos">Es necesaro seleccionar al menos un usuario (o más) a los que se enviarán alertas </string>
+    <string name="finRegistro">Felicidades, ha concluido su registro en Hancel pulse Continuar para empezar a utilizar Hancel</string>
     <string name="bienvenido">Bienvenido a Hancel</string>
     <string name="ultima">Última alerta</string>
     <string name="programarrastreo">Programar rastreo</string>
