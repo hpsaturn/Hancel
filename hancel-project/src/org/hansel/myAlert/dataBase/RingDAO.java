@@ -1,4 +1,7 @@
 package org.hansel.myAlert.dataBase;
+import java.util.Iterator;
+import java.util.List;
+
 import org.linphone.mediastream.Log;
 
 import android.content.ContentValues;
@@ -71,14 +74,36 @@ public class RingDAO extends SQLiteHelper {
 		return super.mDb.insert(DBConstants.TABLE_RINGS, null, newValues);		
 	}
 	
-	public long updateRing(String id, String name, boolean always){
+	public long updateRing(String id, String name, boolean always, List<String> contacts){
+		int result = -1;
 		ContentValues values = new ContentValues();
 		values.put("NAME", name);
 		values.put("NOTIFY", always==true?1:0);
 		
-		String whereClause = "_ID="+id;		
-		return super.mDb.update(DBConstants.TABLE_RINGS, values, whereClause, 
+		String whereClause = "_ID = " + id;
+		super.mDb.beginTransaction();
+		try{
+			result = super.mDb.update(DBConstants.TABLE_RINGS, values, whereClause, 
 				null);
+			
+			whereClause = "_ID_RING = " + id;
+			super.mDb.delete(DBConstants.TABLE_CONTACS_RINGS, whereClause, null);
+		
+			ContentValues insertValues = new ContentValues();
+			insertValues.put("_ID_RING", id);
+			Iterator <String> it = contacts.iterator();
+		
+			while(it.hasNext()){
+				insertValues.put("_ID_CONTACT", it.next());
+				super.mDb.insert(DBConstants.TABLE_CONTACS_RINGS, null, insertValues);
+			}
+			Log.d("=== Poniendo transaccion exitosa");
+			mDb.setTransactionSuccessful();
+		}
+		finally {
+			mDb.endTransaction();			
+		}
+		return result;
 	}
 	
 	public boolean deleteRing(String idRing){

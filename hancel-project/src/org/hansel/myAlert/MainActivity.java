@@ -321,7 +321,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			newFragment = new RingsFragment();
 			break;
 		case EDIT_RING:
-			Log.v("=== Cambianbdo frame a EditRing");
+			Log.v("=== Cambiando frame a EditRing");
 			newFragment = new EditRingFragment();			
 			break;
 		case ACCOUNT_SETTINGS:

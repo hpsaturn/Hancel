@@ -228,8 +228,9 @@ public class Rastreo extends Fragment implements OnClickListener{
 	        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
 	        public void onClick(DialogInterface dialog, int whichButton) {  
 	            String value = input.getText().toString();
-	            String crypto = SimpleCrypto.md5(value);	            
-	            boolean isOK = usuarioDao.getPassword(value.trim());
+	            String crypto = SimpleCrypto.md5(value);	  
+	            
+	            boolean isOK = usuarioDao.getPassword(crypto);	           	          
 	            
 	            if(isOK && btnPanico.getId()== R.id.IniciaTrackId ){
 		        	Log.v("Detener Rastreo");
