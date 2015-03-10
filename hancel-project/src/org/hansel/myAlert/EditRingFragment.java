@@ -61,7 +61,7 @@ public class EditRingFragment extends Fragment {
 	private boolean isNewRing = true;
 	private Ring ring;
 	private long ringID;
-	private RingDAO ringDao;
+	
 	private Cursor searchCursor;
 	private AlphabetIndexer indexer;
 	private List<String> idContacts;
@@ -128,8 +128,7 @@ public class EditRingFragment extends Fragment {
 					createRing();
 				} 
 				else 
-					updateRing();
-											        	        		      
+					updateRing();											        	        		     
 				getFragmentManager().popBackStackImmediate();
 			}
 		});
@@ -184,7 +183,9 @@ public class EditRingFragment extends Fragment {
 			addContacts.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v) {
-					Log.d("=== Adicionar contactos seleccionados");
+					Log.d("=== Adicionar más contactos");
+					Log.d("=== Contactos actuales: " + idContacts.toString());
+					searchNotIncludedContacts();					
 				}
 			} );
 			deleteRing = (TextView) view.findViewById(R.id.deleteRing);
@@ -194,6 +195,7 @@ public class EditRingFragment extends Fragment {
 				public void onClick(View v) {
 					Log.d("=== Eliminando anillo " + ring.getName());
 					deleteRing();
+					getFragmentManager().popBackStackImmediate();
 				}
 			} );
 		}
@@ -253,7 +255,7 @@ public class EditRingFragment extends Fragment {
 	
 	private void createRing() {
         ringID = 0;
-        ringDao = new RingDAO(LinphoneService.instance()
+        RingDAO ringDao = new RingDAO(LinphoneService.instance()
         		.getApplicationContext());  
         ringDao.open();
         ringID = ringDao.addRing(ringName.getText().toString(),ringDefault
@@ -274,7 +276,7 @@ public class EditRingFragment extends Fragment {
 				 return;
 			}
 			
-			ringDao = new RingDAO(LinphoneManager.getInstance()
+			RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
 					.getContext());
 			ringDao.open();
 			long result = ringDao.updateRing(String.valueOf(ring.getId()), 
@@ -291,7 +293,7 @@ public class EditRingFragment extends Fragment {
 	}
 	
 	private void deleteRing() {
-		ringDao = new RingDAO(LinphoneManager.getInstance()
+		RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
 				.getContext());
 		ringDao.open();
 		
@@ -327,9 +329,9 @@ public class EditRingFragment extends Fragment {
 		indexer = new AlphabetIndexer(searchCursor, Compatibility
 				.getCursorDisplayNameColumnIndex(searchCursor), 
 				" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		ringDao = new RingDAO(LinphoneManager.getInstance()
+		/*RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
 					.getContext());
-		ringDao.open();		
+		ringDao.open();		*/
 		searchCursor.moveToFirst();		
 			
 		for(int i= 0; i<searchCursor.getCount(); i++){
@@ -338,9 +340,45 @@ public class EditRingFragment extends Fragment {
 			contactsRing.add(new ContactRing(c.getID(), c.getName(), 
 					c.getPhotoUri(), c.getPhoto(), !isNewRing));				
 		}
-		ringDao.close();		
+		//ringDao.close();		
 		contactsList.setAdapter(new RingsContactsListAdapter(contactsRing));
 	}
+	
+	private void searchNotIncludedContacts(){
+		String notIn = "";
+		List<ContactRing> contactsRing = new ArrayList<ContactRing>(); 
+		
+		if(idContacts.size() > 1){	
+			Iterator<String> it = idContacts.iterator();
+			while(it.hasNext()){
+				notIn += it.next() + ",";
+			}			
+			notIn = notIn.substring(0,notIn.length()-1);				
+		}
+			
+		searchCursor = Compatibility.getContactsNotInCursor(getActivity()
+					.getContentResolver(), notIn);
+								
+		if(searchCursor != null && searchCursor.getCount() > 0){
+			indexer = new AlphabetIndexer(searchCursor, Compatibility
+					.getCursorDisplayNameColumnIndex(searchCursor), 
+					" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+			
+			searchCursor.moveToFirst();		
+			
+			for(int i= 0; i<searchCursor.getCount(); i++){
+				Contact c = Compatibility.getContact(getActivity()
+						.getContentResolver(), searchCursor, i);
+				contactsRing.add(new ContactRing(c.getID(), c.getName(), 
+					c.getPhotoUri(), c.getPhoto(), false));				
+			}
+		}
+				
+		contactsList.setAdapter(new RingsContactsListAdapter(contactsRing));	
+	}
+	
+	
+	
 	
 	
 	class RingsContactsListAdapter extends BaseAdapter implements SectionIndexer {

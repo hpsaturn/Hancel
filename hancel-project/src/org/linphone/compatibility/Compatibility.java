@@ -111,7 +111,16 @@ public class Compatibility {
 			return ApiNinePlus.getContactsInCursor(cr, in);
 		} 
 		else {
-			return ApiFivePlus.getContactsCursor(cr);
+			return ApiFivePlus.getContactsInCursor(cr, in);
+		}
+	}
+		
+	public static Cursor getContactsNotInCursor(ContentResolver cr, String in) {
+		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
+			return ApiNinePlus.getContactsNotInCursor(cr, in);
+		} 
+		else {
+			return ApiFivePlus.getContactsNotInCursor(cr, in);
 		}
 	}
 	

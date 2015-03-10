@@ -105,35 +105,32 @@
 		        <LinearLayout 
 				    android:layout_width="match_parent"
 				    android:layout_height="wrap_content"
+				    android:background="@drawable/toolsbar_background"
 				    android:orientation="horizontal">
 				    
 		            <TextView
-						android:contentDescription="@string/content_description_add_contact"
 						android:visibility="invisible"
-						android:id="@+id/blank1"
-						android:background="@drawable/contacts_add_contact"
-						android:text="@string/button_add_contacts_ring"
-						android:gravity="center"
-						android:paddingTop="15dp"
-						android:textSize="13sp"						
+						android:paddingTop="20dp"
 						android:layout_width="match_parent"
-						android:layout_weight="1"
-						android:layout_height="35dp"/>
+						android:layout_height="match_parent"
+						android:scaleType="centerCrop"
+						android:adjustViewBounds="true"
+						android:layout_weight="1"/>
 			    
 				    <TextView
 						android:contentDescription="@string/content_description_add_contact"
 						android:id="@+id/newContact"
 						android:background="@drawable/contacts_add_contact"
-						android:text="@string/button_add_contacts_ring"
+						android:text="@string/button_add_contact"
 						android:gravity="center"
-						android:paddingTop="15dp"
+						android:paddingTop="20dp"
 						android:textSize="13sp"
 						android:textColor="@drawable/text_button"
 						android:layout_width="match_parent"
+						android:layout_height="match_parent"
 						android:scaleType="centerCrop"
 						android:adjustViewBounds="true"
-						android:layout_weight="1"
-						android:layout_height="35dp"/>
+						android:layout_weight="1"/>
 				    
 				    <TextView
 						android:contentDescription="@string/content_description_add_contact"
@@ -152,16 +149,14 @@
 						android:layout_height="35dp"/>
 				    
 				   <TextView
-						android:contentDescription="@string/content_description_add_contact"
-						android:visibility="invisible"						
-						android:background="@drawable/contacts_add_contact"
-						android:text="@string/button_add_contacts_ring"
-						android:gravity="center"
-						android:paddingTop="15dp"
-						android:textSize="13sp"						
+						android:visibility="invisible"
+						android:paddingTop="20dp"
 						android:layout_width="match_parent"
-						android:layout_weight="1"
-						android:layout_height="35dp"/>
+						android:layout_height="match_parent"
+						android:scaleType="centerCrop"
+						android:adjustViewBounds="true"
+						android:layout_weight="1"/>
+				   
 				   <!-- TextView
 						android:contentDescription="@string/content_description_add_contact"
 						android:visibility="invisible"

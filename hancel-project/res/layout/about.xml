@@ -4,7 +4,9 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical"
   	android:background="@drawable/background"
+  	android:scrollbars="vertical"
 	android:gravity="center">
+    
     
     <ImageView
         android:contentDescription="@string/content_description_welcome"
@@ -122,6 +124,29 @@
 		android:textStyle="bold" 
 		android:textColor="@color/text_contrast"
 		android:id="@+id/AboutSurvey"/>
+	
+		<TextView
+	        android:id="@+id/image_credits"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="5dp"
+	        android:text="@string/image_credits"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="@color/text_default"
+	        android:textSize="15sp"
+	        android:textStyle="bold" />
+	
+	<TextView 
+	    android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:text="@string/image_credits_value"
+		android:autoLink="web" 
+		android:gravity="left" 
+		android:textSize="12sp"
+		android:lines="8"
+		android:padding="15dp"
+		android:textColor="@color/text_contrast"
+		android:id="@+id/imageCreditsValue"/>
 	
 	<Button android:id="@+id/exit"
 		android:layout_width="wrap_content"

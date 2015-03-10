@@ -129,8 +129,7 @@ public class HttpUtils {
 		 values.add(new BasicNameValuePair("activation_code",code));
 		 
 		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
-		 if(result==null)
-		 {
+		 if(result == null){
 			 throw new NoInternetException("Error en petición al server");
 		 }
 		 return result;			 
