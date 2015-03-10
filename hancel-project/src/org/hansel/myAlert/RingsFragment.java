@@ -41,12 +41,9 @@ private Handler mHandler = new Handler();
 	
 	private LayoutInflater mInflater;
 	private ListView ringsList;
-	private TextView allRings, newRing, noRings;
+	private TextView newRing, noRings;
 	private int lastKnownPosition;
-	private AlphabetIndexer indexer;
-	private boolean editOnClick = true, editConsumed = false;
-	private ImageView clearSearchField;
-	private EditText searchField;
+	private AlphabetIndexer indexer;;
 	private Cursor searchCursor;
 
 	private static RingsFragment instance;
@@ -69,100 +66,26 @@ private Handler mHandler = new Handler();
         
         ringsList = (ListView) view.findViewById(R.id.ringsList);        
         ringsList.setOnItemClickListener(this);
-        
-        allRings = (TextView) view.findViewById(R.id.allRings);
-        allRings.setOnClickListener(this);
-                  
+                         
         newRing = (TextView) view.findViewById(R.id.newRing);
         newRing.setOnClickListener(this);
-                                    
-		clearSearchField = (ImageView) view.findViewById(R.id.clearSearchField);
-		clearSearchField.setOnClickListener(this);
-		
-		searchField = (EditText) view.findViewById(R.id.searchField);
-		searchField.addTextChangedListener(new TextWatcher() {
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-				searchRings(searchField.getText().toString());
-			}
-		});
         
+        changeRingsAdapter();
+                                           
 		return view;
     }
 
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
-		
-		if (id == R.id.allRings) {
-			Log.d("=== allRings");
-			if (searchField.getText().toString().length() > 0) {
-				searchRings();
-			} 
-			else {
-				//MainActivity.instance().prepareRingsInBackground();
-				changeContactsAdapter();
-			}
-		} 		
-		else if (id == R.id.newRing) {
-			editConsumed = true;			
+					
+		if (id == R.id.newRing) {
+			//editConsumed = true;			
 			MainActivity.instance().addRing();
-		} 
-		else if (id == R.id.clearSearchField) {
-			searchField.setText("");
-		}
+		} 		
 	}
 	
-	private void searchRings() {
-		searchRings(searchField.getText().toString());
-	}
-
-	
-	private void searchRings(String search) {
-		if (search == null || search.length() == 0) {
-			changeContactsAdapter();
-			return;
-		}
-		
-		//changeContactsToggle();
-		
-		if (searchCursor != null) {
-			searchCursor.close();
-		}
-		RingDAO ringDAO = new RingDAO(LinphoneService.instance().getApplicationContext());
-		ringDAO.open();
-		searchCursor = ringDAO.getRingsByNameCursor(search);
-		indexer = new AlphabetIndexer(searchCursor, 1, " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		
-		ArrayList<Ring> allRings = null;
-		if(searchCursor != null && searchCursor.getCount() > 0){
-			allRings = new ArrayList<Ring>();		
-			searchCursor.moveToFirst();
-			
-			do{
-				allRings.add(new Ring(searchCursor.getString(0),searchCursor
-						.getString(1), searchCursor.getLong(2)));
-				searchCursor.moveToNext();
-			}while(!searchCursor.isLast());
-		}
-		
-		ringsList.setAdapter(new RingsListAdapter(allRings));			
-		ringDAO.close();
-	}
-	
-	private void changeContactsAdapter() {		
+	private void changeRingsAdapter() {		
 		if (searchCursor != null) {
 			searchCursor.close();
 		}
@@ -175,14 +98,12 @@ private Handler mHandler = new Handler();
 		if(ringsCursor != null && ringsCursor.getCount() > 0){
 			allRings = new ArrayList<Ring>();		
 			ringsCursor.moveToFirst();
-			Log.d("=== Cantidad de Anillos en DB: " + ringsCursor.getCount());
+			
 			for(int i = 0; i< ringsCursor.getCount(); i++){
 				allRings.add(new Ring(ringsCursor.getString(0),ringsCursor
 						.getString(1), ringsCursor.getLong(2)));
 				ringsCursor.moveToNext();
 			}
-			
-			Log.d("=== Cantidad de Anillos en AllRings: " + allRings.size());
 			
 			indexer = new AlphabetIndexer(ringsCursor, 1, 
 					" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -196,40 +117,22 @@ private Handler mHandler = new Handler();
 			noRings.setVisibility(View.VISIBLE);
 			ringsList.setVisibility(View.GONE);
 		} 
-		/*else {
-			indexer = new AlphabetIndexer(ringsCursor, 1, 
-					" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-			ringsList.setAdapter(new RingsListAdapter(allRings, ringsCursor));
-			noRings.setVisibility(View.GONE);
-			ringsList.setVisibility(View.VISIBLE);
-		}		*/
-		
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		Ring ring = (Ring) adapter.getItemAtPosition(position);
+		Ring ring = (Ring) adapter.getItemAtPosition(position);		
+		MainActivity.instance().editRing(ring);
 		
-		if (editOnClick) {
-			editConsumed = true;
-			Log.d("=== Ring a modificar: " + ring.getName());
-			MainActivity.instance().editRing(ring);
-		} 		
 	}
 	
 	@Override
 	public void onResume() {
 		instance = this;
-		super.onResume();
-		
-		if (editConsumed) {
-			editOnClick = false;
-			//sipAddressToAdd = null;
-		}
-		
+		super.onResume();		
+			
 		if (MainActivity.isInstanciated()) {
 			MainActivity.instance().selectMenu(FragmentsAvailable.RINGS);
-			//onlyDisplayLinphoneContacts = MainActivity.instance().isLinphoneContactsPrefered();
 			
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
 				MainActivity.instance().hideStatusBar();
@@ -251,13 +154,8 @@ private Handler mHandler = new Handler();
 	public void invalidate() {
 		mHandler.post(new Runnable() {
 			@Override
-			public void run() {
-				if (searchField != null && searchField.getText().toString().length() > 0) {
-					searchRings(searchField.getText().toString());
-				} 
-				else {
-					changeContactsAdapter();
-				}
+			public void run() {				
+				changeRingsAdapter();
 				ringsList.setSelectionFromTop(lastKnownPosition, 0);
 			}
 		});
@@ -267,16 +165,13 @@ private Handler mHandler = new Handler();
 		private int margin;
 		private Bitmap bitmapUnknown;
 		private List<Ring> rings;
-		//private Cursor cursor;
-		
+				
 		public RingsListAdapter(List<Ring> ringsList) {
-			rings = ringsList;
-			//cursor = c;
+			rings = ringsList;			
 			margin = LinphoneUtils.pixelsToDpi(getResources(), 10);
 			bitmapUnknown = BitmapFactory.decodeResource(getResources(), R.drawable.unknown_small);
 		}
-		
-		
+				
 		public int getCount() {
 			if(rings != null)
 				return rings.size();
@@ -285,13 +180,9 @@ private Handler mHandler = new Handler();
 
 		public Object getItem(int position) {
 			if (rings == null || position >= rings.size()) {
-				return null;
-				/*cursor.moveToFirst();
-				if(!cursor.moveToPosition(position))
-					return null;
-				return new Ring(cursor.getString(0),cursor.getString(1),
-						cursor.getLong(2));*/
+				return null;		
 			} 
+			
 			else {
 				return rings.get(position);
 			}
@@ -321,7 +212,7 @@ private Handler mHandler = new Handler();
 			
 			TextView separator = (TextView) view.findViewById(R.id.separator);
 			LinearLayout layout = (LinearLayout) view.findViewById(R.id.layout);
-			Log.d("=== POSITION: "  + position);
+			
 			if (getPositionForSection(getSectionForPosition(position)) != position) {
 				separator.setVisibility(View.GONE);
 				layout.setPadding(0, margin, 0, margin);

@@ -29,7 +29,7 @@
             android:contentDescription="@string/content_description_cancel"
             android:visibility="gone"
             android:id="@+id/deleteRing"
-            android:background="@drawable/contact_cancel"
+            android:background="@drawable/contact_delete"
             android:text="@string/button_delete_all"
             android:gravity="center"
             android:paddingTop="20dp"
@@ -177,7 +177,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
 
-				<ImageView
+				<!-- ImageView
 					android:contentDescription="@string/content_description_cancel"
 					android:id="@+id/clearSearchField"
 					android:layout_width="wrap_content"
@@ -187,9 +187,9 @@
 					android:layout_centerVertical="true"
 					android:layout_alignParentRight="true"
 					android:paddingLeft="5dp"
-					android:paddingRight="5dp"/>
+					android:paddingRight="5dp"/-->
 		
-				<EditText
+				<!-- EditText
 					android:textCursorDrawable="@null"
 					android:id="@+id/searchField"
 					android:layout_width="match_parent"
@@ -199,7 +199,7 @@
 					android:gravity="center"
 					android:layout_toLeftOf="@id/clearSearchField"
 					android:paddingRight="5dp"
-					android:inputType="textPersonName"/>
+					android:inputType="textPersonName"/-->
 		
 			</RelativeLayout>
 		    

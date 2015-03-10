@@ -241,7 +241,8 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		if (editOnClick) {
 			editConsumed = true;
 			MainActivity.instance().editContact(contact, sipAddressToAdd);
-		} else {
+		} 
+		else {
 			lastKnownPosition = contactsList.getFirstVisiblePosition();
 			MainActivity.instance().displayContact(contact, onlyDisplayChatAddress);
 		}

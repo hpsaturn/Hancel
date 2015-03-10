@@ -680,13 +680,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			break;
 		case ABOUT:
 			about.setSelected(true);
-			break;
-		/*case ABOUT_INSTEAD_OF_CHAT:
-			aboutChat.setSelected(true);
-			break;
-		case ABOUT_INSTEAD_OF_SETTINGS:
-			aboutSettings.setSelected(true);
-			break;*/
+			break;		
 		case CHAT:
 		case CHATLIST:
 			chat.setSelected(true);
