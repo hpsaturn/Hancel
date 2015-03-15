@@ -86,19 +86,27 @@
         
         <Button
             android:id="@+id/btn_CancelCurrentTrack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"           
             style="@style/inner_app_button"
+            android:layout_width="99dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:text="@string/cancel" />
 
         <Button
             android:id="@+id/btn_ModifyCurrentTrack"
+            style="@style/inner_app_button"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/edit" />
+
+        <Button
+            android:id="@+id/btn_ShareCurrentTrack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/inner_app_button"            
-            android:layout_gravity="right"
-            android:text="@string/edit" />
+            android:layout_gravity="center"
+            android:text="@string/share" />
         
         <TextView
 			android:visibility="invisible"
