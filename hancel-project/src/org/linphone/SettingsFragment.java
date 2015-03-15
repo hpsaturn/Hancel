@@ -63,42 +63,40 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 	private Handler mHandler = new Handler();
 	private TunnelConfig tunnelConfig;
 
-	public SettingsFragment() {
-		super(R.xml.preferences);
+	public SettingsFragment() {		
+		super(R.xml.settings_preferences);
+		Log.d("=== CONSTRUCTOR");
+		getActivity().setTheme(R.style.myTheme);
 		mPrefs = LinphonePreferences.instance();
 	}
 
 	@Override
 	public void onCreate(Bundle bundle) {
+		Log.d("=== ONCREATE");
+		getActivity().setTheme(R.style.myTheme);		
 		super.onCreate(bundle);
-
 		// Init the settings page interface
-		Log.d("=== InitSettings ");
 		initSettings();
-		Log.d("=== Fin de InitSettings ");
 		setListeners();
-		Log.d("=== Fin de InitListeners ");
 		hideSettings();
-		Log.d("=== Fin de HideSettings ");
+		String theme = getActivity().getTheme().toString();
+		if(theme == null){
+			Log.d("=== TEMA ACTUAL ES NULL");	
+		}
+		else
+		Log.d("=== Tema actual: " + theme.length());
 	}
 
 	// Inits the values or the listener on some settings
 	private void initSettings() {
 		//Init accounts on Resume instead of on Create to update the account list when coming back from wizard
-		Log.d("=== Dentro de InitSettings ");
 		initTunnelSettings();
-		Log.d("=== Fin de InitTunnelSettings ");
-		initAudioSettings();
-		Log.d("=== Fin de InitAudioSettings ");
+		initAudioSettings();		
 		initVideoSettings();
-		Log.d("=== Fin de InitVideoSettings ");
 		initCallSettings();
-		Log.d("=== Fin de InitCallSettings ");
 		initNetworkSettings();
-		Log.d("=== Fin de InitNetworkSettings ");
 		initAdvancedSettings();
-		Log.d("=== Fin de InitAdvancedSettings ");
-
+		
 		// Add action on About button
 		findPreference(getString(R.string.menu_about_key)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
@@ -162,7 +160,8 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 		if (!Version.isVideoCapable() || !LinphoneManager.getLcIfManagerNotDestroyedOrNull().isVideoSupported()) {
 			uncheckAndHidePreference(R.string.pref_video_enable_key);
-		} else {
+		} 
+		else {
 			if (!AndroidCameraConfiguration.hasFrontCamera()) {
 				uncheckAndHidePreference(R.string.pref_video_use_front_camera_key);
 			}
@@ -235,8 +234,10 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 	private void setPreferenceDefaultValueAndSummary(int pref, String value) {
 		if(value != null) {
 			EditTextPreference etPref = (EditTextPreference) findPreference(getString(pref));
-			etPref.setText(value);
-			etPref.setSummary(value);
+			if(etPref != null){
+				etPref.setText(value);
+				etPref.setSummary(value);
+			}
 		}
 	}
 
@@ -245,8 +246,10 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		setPreferenceDefaultValueAndSummary(R.string.pref_tunnel_port_key, String.valueOf(mPrefs.getTunnelPort()));
 		ListPreference tunnelModePref = (ListPreference) findPreference(getString(R.string.pref_tunnel_mode_key));
 		String tunnelMode = mPrefs.getTunnelMode();
-		tunnelModePref.setSummary(tunnelMode);
-		tunnelModePref.setValue(tunnelMode);
+		if(tunnelModePref != null){
+			tunnelModePref.setSummary(tunnelMode);
+			tunnelModePref.setValue(tunnelMode);
+		}
 	}
 
 	private void setTunnelPreferencesListener() {
@@ -299,7 +302,8 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 			if (username == null) {
 				account.setTitle(getString(R.string.pref_sipaccount));
-			} else {
+			} 
+			else {
 				account.setTitle(username + "@" + domain);
 			}
 
@@ -406,21 +410,27 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		setListPreferenceValues(pref, entries, values);
 
 		String value = mPrefs.getPreferredVideoSize();
-		pref.setSummary(value);
-		pref.setValue(value);
+		if(pref != null){
+			pref.setSummary(value);
+			pref.setValue(value);
+		}
 	}
 
 	private static void setListPreferenceValues(ListPreference pref, List<CharSequence> entries, List<CharSequence> values) {
 		CharSequence[] contents = new CharSequence[entries.size()];
 		entries.toArray(contents);
-		pref.setEntries(contents);
-		contents = new CharSequence[values.size()];
-		values.toArray(contents);
-		pref.setEntryValues(contents);
+		if(pref != null){
+			pref.setEntries(contents);
+			contents = new CharSequence[values.size()];
+			values.toArray(contents);
+			pref.setEntryValues(contents);
+		}
 	}
 
 	private void initAudioSettings() {
 		PreferenceCategory codecs = (PreferenceCategory) findPreference(getString(R.string.pref_codecs_key));
+		if(codecs == null)
+			return;
 		codecs.removeAll();
 
 		LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
@@ -534,6 +544,10 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		initializePreferredVideoSizePreferences((ListPreference) findPreference(getString(R.string.pref_preferred_video_size_key)));
 
 		PreferenceCategory codecs = (PreferenceCategory) findPreference(getString(R.string.pref_video_codecs_key));
+		
+		if(codecs == null)
+			return;
+		
 		codecs.removeAll();
 
 		LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
@@ -901,6 +915,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onEcCalibrationStatus(final EcCalibratorStatus status, final int delayMs) {
+		getActivity().setTheme(R.style.myTheme);
 		mHandler.post(new Runnable() {
 			public void run() {
 				CheckBoxPreference echoCancellation = (CheckBoxPreference) findPreference(getString(R.string.pref_echo_cancellation_key));
@@ -925,6 +940,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onResume() {
+		getActivity().setTheme(R.style.myTheme);
 		super.onResume();
 
 		initAccounts();

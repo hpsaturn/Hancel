@@ -32,7 +32,6 @@
         android:background="@color/background_app"
         android:layout_above="@+id/btnWrapperContacts"
         android:layout_below="@+id/stepWrapperContacts" >
-
 </ListView>
   <LinearLayout
             android:id="@+id/btnWrapperContacts"

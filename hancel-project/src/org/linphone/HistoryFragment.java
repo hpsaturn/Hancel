@@ -27,6 +27,7 @@ import org.linphone.core.CallDirection;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneCallLog;
 import org.linphone.core.LinphoneCallLog.CallStatus;
+import org.linphone.mediastream.Log;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -94,6 +95,7 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
         ok = (TextView) view.findViewById(R.id.ok);
         ok.setOnClickListener(this);
         
+        Log.d("AQUIIIIIIIIIIIII");
 		return view;
     }
 	
@@ -183,7 +185,8 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 		LinphoneAddress address;
 		if (log.getDirection() == CallDirection.Incoming) {
 			address = log.getFrom();
-		} else {
+		} 
+		else {
 			address = log.getTo();
 		}
 		
@@ -193,11 +196,15 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 		if (displayName == null) {
 			if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
 				displayName = LinphoneUtils.getUsernameFromAddress(sipUri);
-			} else {
+				
+			} 
+			else {
 				displayName = sipUri;
-			}
-		}
-		
+			}			
+		}	
+		displayName = displayName.replace(getResources().getString(
+				R.string.default_account_prefix),"").replace("@","").replace
+				(getResources().getString(R.string.default_domain),"");
 		return displayName;
 	}
 
@@ -323,7 +330,8 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 		
 		if (MainActivity.instance().isAnimationDisabled()) {
 			deleteAll.setVisibility(View.VISIBLE);
-		} else {
+		} 
+		else {
 			Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left_to_right);
 			animation.setAnimationListener(new AnimationListener() {
 				@Override
@@ -391,23 +399,28 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 				address = log.getFrom();
 				if (log.getStatus() == CallStatus.Missed) {
 					callDirection.setImageBitmap(missedCall);
-				} else {
+				} 
+				else {
 					callDirection.setImageBitmap(incomingCall);
 				}
-			} else {
+			} 
+			else {
 				address = log.getTo();
 				callDirection.setImageBitmap(outgoingCall);
 			}
 			
 			LinphoneUtils.findUriPictureOfContactAndSetDisplayName(address, view.getContext().getContentResolver());
-			String sipUri = address.asStringUriOnly();
+			String sipUri = address.asStringUriOnly().replace(getResources().getString(
+					R.string.default_account_prefix),"").replace(getResources().getString(
+					R.string.default_domain),"").replace("@", "");
 			dateAndTime.setText(log.getStartDate() + " " + log.getCallDuration());
 			view.setTag(sipUri);
 			
 			if (isEditMode) {
 				delete.setVisibility(View.VISIBLE);
 				detail.setVisibility(View.GONE);
-			} else {
+			} 
+			else {
 				delete.setVisibility(View.GONE);
 				detail.setVisibility(View.VISIBLE);
 				detail.setOnClickListener(new OnClickListener() {
@@ -419,7 +432,6 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 					}
 				});
 			}
-
 			return view;
 		}
 		
@@ -467,7 +479,9 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 			
 			LinphoneUtils.findUriPictureOfContactAndSetDisplayName(address, view.getContext().getContentResolver());
 			String displayName = getCorrespondentDisplayName(log);
-			String sipUri = address.asStringUriOnly();
+			String sipUri = address.asStringUriOnly().replace(getResources().getString(
+					R.string.default_account_prefix),"").replace(getResources().getString(
+					R.string.default_domain),"").replace("@", "");
 			contact.setText(displayName + " (" + getChildrenCount(groupPosition) + ")");
 			view.setTag(sipUri);
 			

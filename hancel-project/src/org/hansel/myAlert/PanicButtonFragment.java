@@ -51,6 +51,7 @@ public class PanicButtonFragment extends Fragment
 		txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);
 		
 		btnTracking = (Button)v.findViewById(R.id.inicia_TrackId);
+		
 		btnPanico.setOnClickListener(new View.OnClickListener() {						
 			@Override
 			public void onClick(View v) {

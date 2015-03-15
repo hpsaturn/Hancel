@@ -73,9 +73,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 	private String mErrores;
 	private TextView mLoginStatusMessageView;
 	private UsuarioDAO usuarioDao;
-	public static final String LINPHONE_ACCOUNT_PREFIX = "hancel_lp_dummy_";
-	public static final String SP_DOMAIN = "sip.linphone.org";
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -158,11 +156,13 @@ public class Login extends org.holoeverywhere.app.Activity {
 			LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
 
 			LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
-					.createAuthInfo(LINPHONE_ACCOUNT_PREFIX + mUser, 
-							SimpleCrypto.md5(mPasswd).substring(0, 10), null, SP_DOMAIN);
+					.createAuthInfo(getResources().getString(R.string.default_account_prefix) 
+							+ mUser, SimpleCrypto.md5(mPasswd).substring(0, 10), null, 
+							getResources().getString(R.string.default_domain));
 
-			String identity = "sip:" + LINPHONE_ACCOUNT_PREFIX + mUser.toLowerCase() +"@" + SP_DOMAIN;
-			String proxy = "sip:" + SP_DOMAIN;
+			String identity = "sip:" + getResources().getString(R.string.default_account_prefix)
+					+ mUser.toLowerCase() +"@" + getResources().getString(R.string.default_domain);
+			String proxy = "sip:" + getResources().getString(R.string.default_domain);
 			Log.v("=== Usuario que va a autenticar en el SIP: " + identity);
 			LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
 			//proxyAddr.setTransport(TransportType.LinphoneTransportTls);

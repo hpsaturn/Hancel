@@ -345,13 +345,13 @@ public class Registro extends org.holoeverywhere.app.Activity {
 
 				LinphoneAuthInfo lAuthInfo = LinphoneCoreFactory.instance()
 						.createAuthInfo(
-								Login.LINPHONE_ACCOUNT_PREFIX + mUsuario,
-								SimpleCrypto.md5(mPassword).substring(0, 10),
-								null, Login.SP_DOMAIN);
+								getResources().getString(R.string.default_account_prefix) 
+								+ mUsuario, SimpleCrypto.md5(mPassword).substring(0, 10),
+								null, getResources().getString(R.string.default_domain));
 
-				String identity = "sip:" + Login.LINPHONE_ACCOUNT_PREFIX
-						+ mUsuario + "@" + Login.SP_DOMAIN;
-				String proxy = "sip:" + Login.SP_DOMAIN;
+				String identity = "sip:" + getResources().getString(R.string.default_account_prefix)
+						+ mUsuario + "@" + getResources().getString(R.string.default_domain);
+				String proxy = "sip:" + getResources().getString(R.string.default_domain);
 
 				// Log.v("=== Usuario que va a autenticar en el SIP: " +
 				// identity);

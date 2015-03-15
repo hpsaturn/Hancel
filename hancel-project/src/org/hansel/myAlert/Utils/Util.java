@@ -64,7 +64,7 @@ public class Util {
 	
 	public static final int RQS_PANIC =10;
 	public static final String PHONE_NO_SIM ="SinRed";
-	//URL de rrastreo, se debe mejorar el método post
+	
 	public static final String URL_REGISTRO = "http://www.hanselapp.com/xmlrpc/registro.php?";
 	public static final String URL_LOGIN = "http://www.hanselapp.com/xmlrpc/login.php?";
 	public static final String URL_PANICO = "http://www.hanselapp.com/xmlrpc/panico.php?";
@@ -124,7 +124,7 @@ public class Util {
 	            if (addresses != null) {
 	                Address returnedAddress = addresses.get(0);
 	                StringBuilder strReturnedAddress = new StringBuilder(
-	                        "Dirección:\n");
+	                        "DirecciÃ³n:\n");
 	                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
 	                    strReturnedAddress
 	                            .append(returnedAddress.getAddressLine(i)).append(
@@ -136,7 +136,7 @@ public class Util {
 	            }
 	        } catch (IOException e) {
 	            e.printStackTrace();
-	            return "Sin localización Determinada";
+	            return "Sin localizaciÃ³n Determinada";
 	        }
 	    }
 	 public static Vector<String> splitVector(String original, String separator) {

@@ -252,7 +252,7 @@
 	<string name="pref_domain">Domain*</string>
 	<string name="pref_passwd">Password*</string>
 	<string name="pref_username">Username*</string>
-	<string name="pref_sipaccount">SIP Account</string>
+	<string name="pref_sipaccount">Hancel Account</string>
 	<string name="wrong_username">wrong user name</string>
 	<string name="wrong_passwd">wrong password</string>
 	<string name="wrong_domain">Wrong domain</string>
@@ -300,7 +300,7 @@
 	<string name="pref_video_codec_h264_unavailable">Codec disabled, build the app from source code to enable it</string>
 	<string name="pref_video_codec_mpeg4_unavailable">Codec disabled, build the app from source code to enable it</string>
 
-	<string name="pref_sipaccounts">SIP Accounts</string>
+	<string name="pref_sipaccounts">Hancel Accounts</string>
 	<string name="pref_wifi_only">Use wifi only</string>
 	<string name="pref_push_notification">Enable push notifications</string>
 
@@ -330,12 +330,12 @@
 	<string name="conference">Conference</string>
 	<string name="incoming">Incoming call</string>
 	<string name="draft">Draft</string>
-	<string name="new_fast_chat">Enter a SIP address to chat with&#8230;</string>
+	<string name="new_fast_chat">Enter a hancel user name to chat with</string>
 	<string name="no_call_history">No call in your history.</string>
 	<string name="no_missed_call_history">No missed call in your history.</string>
 	<string name="no_contact">No contact in your address book.</string>
 	<string name="no_rings">No rings configured.</string>
-	<string name="no_sip_contact">No SIP contact in your address book.</string>
+	<string name="no_sip_contact">No Hancel contacts in your address book.</string>
 	<string name="no_chat_history">No chat history.</string>
 
 	<string name="call_stats_audio">Audio</string>
@@ -418,7 +418,7 @@
 	<string name="button_cancel">Cancel</string>
 	<string name="button_ok">Okay</string>
 	<string name="button_all_contacts">All</string>
-	<string name="button_sip_contacts">SIP</string>
+	<string name="button_sip_contacts">Hancel</string>
 	<string name="button_add_contact">New contact</string>
 	<string name="button_add_contacts_ring">Add contacts</string>
 	<string name="button_remove_contacts_ring">Remove contacts </string>
@@ -469,12 +469,12 @@
     <string name="pref_remote_provisioning_title">Remote provisioning</string>
 
 	<string name="delete_contact">Delete contact</string>
-	<string name="sip_address">SIP address</string>
+	<string name="sip_address">Hancel user</string>
 	<string name="phone_number">Phone number</string>
 	<string name="contact_first_name">First name</string>
 	<string name="contact_last_name">Last name</string>
 	<string name="ring_name">Ring name</string>
-	<string name="ring_always">Notify always</string>
+	<string name="ring_always">Notify</string>
 
 	<string name="pref_primary_account_title">Primary account</string>
 	<string name="pref_display_name_title">Display name</string>
