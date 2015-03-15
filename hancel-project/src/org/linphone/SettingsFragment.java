@@ -66,25 +66,20 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 	public SettingsFragment() {		
 		super(R.xml.settings_preferences);
 		Log.d("=== CONSTRUCTOR");
-		getActivity().setTheme(R.style.myTheme);
+	//	getActivity().setTheme(R.style.Holo_Theme);
 		mPrefs = LinphonePreferences.instance();
 	}
 
 	@Override
 	public void onCreate(Bundle bundle) {
-		Log.d("=== ONCREATE");
-		getActivity().setTheme(R.style.myTheme);		
+		getActivity().setTheme(R.style.Holo_Theme_Light);
+				
 		super.onCreate(bundle);
 		// Init the settings page interface
 		initSettings();
 		setListeners();
 		hideSettings();
-		String theme = getActivity().getTheme().toString();
-		if(theme == null){
-			Log.d("=== TEMA ACTUAL ES NULL");	
-		}
-		else
-		Log.d("=== Tema actual: " + theme.length());
+		
 	}
 
 	// Inits the values or the listener on some settings
@@ -122,7 +117,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 	private void setListeners() {
 		setTunnelPreferencesListener();
 		setAudioPreferencesListener();
-		setVideoPreferencesListener();
+		//setVideoPreferencesListener();
 		setCallPreferencesListener();
 		setNetworkPreferencesListener();
 		setAdvancedPreferencesListener();
@@ -915,7 +910,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onEcCalibrationStatus(final EcCalibratorStatus status, final int delayMs) {
-		getActivity().setTheme(R.style.myTheme);
+		//getActivity().setTheme(R.style.Holo_Theme_Light);
 		mHandler.post(new Runnable() {
 			public void run() {
 				CheckBoxPreference echoCancellation = (CheckBoxPreference) findPreference(getString(R.string.pref_echo_cancellation_key));
@@ -940,7 +935,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onResume() {
-		getActivity().setTheme(R.style.myTheme);
+		//getActivity().setTheme(R.style.Holo_Theme);
 		super.onResume();
 
 		initAccounts();
