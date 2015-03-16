@@ -73,14 +73,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" 
         android:background="@color/background_app">
-        		
-        <fragment 
-            android:id="@+id/fragmentRastreo" 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            class="org.hansel.myAlert/Rastreo"
-            android:src="@layout/fragment_rastreo"/>
-            
+	
+        <include layout="@layout/fragment_rastreo"/>		
+       
     </LinearLayout>
 
 </LinearLayout>
