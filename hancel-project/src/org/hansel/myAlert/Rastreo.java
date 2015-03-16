@@ -68,6 +68,7 @@ public class Rastreo extends Fragment implements OnClickListener{
 	
 	private Button btnCancelCurrentTrack;
 	private Button btnModifyCurrentTrack;
+	private Button btnShareCurrentTrack;
 	
 	public boolean isTracking()
 	{
@@ -152,8 +153,10 @@ public class Rastreo extends Fragment implements OnClickListener{
 		
 		btnCancelCurrentTrack = (Button)v.findViewById(R.id.btn_CancelCurrentTrack);
 		btnModifyCurrentTrack = (Button)v.findViewById(R.id.btn_ModifyCurrentTrack);
+		btnShareCurrentTrack = (Button)v.findViewById(R.id.btn_ShareCurrentTrack);
 		btnCancelCurrentTrack.setOnClickListener(this);
 		btnModifyCurrentTrack.setOnClickListener(this);
+		btnShareCurrentTrack.setOnClickListener(this);
 		showCurrentTrackInfo(false);
 		
 	 Log.v("=== Buscando el tiempo por defecto para actualizar: " + minutos);
@@ -292,6 +295,21 @@ public class Rastreo extends Fragment implements OnClickListener{
 		} catch (Exception e) {
 		}
 	}
+	   // Method to share either text or URL.
+    private void shareTrace() {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+         
+        share.putExtra(Intent.EXTRA_SUBJECT, "[Hance] Traza de periodista");
+       
+        String h = SimpleCrypto.md5(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
+        
+        share.putExtra(Intent.EXTRA_TEXT, "http://hancel.flip.org.co/hansel/?f=trace&hash="+h);
+        
+        startActivity(Intent.createChooser(share, "Share trace!"));
+    }
+    
 	@Override
 	public void onClick(View v) {
 		//Permite arreglar el bug al no ser notificada esta actividad de que el servicio ya esta en ejecucion,
@@ -314,6 +332,11 @@ public class Rastreo extends Fragment implements OnClickListener{
 			createPasswordDialog((Button) v);	
 			//startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
 			break;
+			
+		case R.id.btn_ShareCurrentTrack:
+			shareTrace();
+			break;
+			
 		case R.id.inicia_TrackId:
 			if(!corriendo)
 			{

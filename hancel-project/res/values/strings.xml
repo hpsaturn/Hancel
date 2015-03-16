@@ -32,7 +32,8 @@
     <string name="chat">Chat</string>  
     <string name="description_chat">Chat cifrado.</string> 
     <string name="cancel">Cancelar</string>
-    <string name="edit">Modificar</string> 
+    <string name="edit">Modificar</string>
+    <string name="share">Compartir</string> 
     <string name="send_picture">Enviar Foto</string>
     <string name="send_message">Enviar</string>
     <string name="content_description_cancel"></string>
