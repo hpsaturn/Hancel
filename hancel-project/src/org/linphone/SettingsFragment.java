@@ -26,6 +26,7 @@ import org.hancel.exceptions.NoInternetException;
 import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
+import org.hansel.myAlert.dataBase.FlipDAO;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -995,15 +996,17 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 						return getResources().getString(R.string.registration_empty);
 					}
 				}				
-				Log.d("=== Ingresando en el Change. Todo Ok y llegaron los nros " + numbers.join(","));
+				FlipDAO flipDao = new FlipDAO(getActivity().getApplicationContext());
+				flipDao.open();
+				flipDao.createOrUpdateKey(getResources().getString(
+					R.string.contacts_flip), numbers.join(","));
+				
 				return getResources().getString(R.string.registration_ok);				
 			}
 			catch(JSONException e){
-				Log.d("=== Excepción obteniendo JSON " + e.getMessage());
 				return getResources().getString(R.string.registration_fail);
 			}
 			catch (NoInternetException e){
-				Log.d("=== Excepción en conexión a Intenet " + e.getMessage());
 				return getResources().getString(R.string.registration_fail);
 			}			
 		}

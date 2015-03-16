@@ -185,7 +185,7 @@ public class Util {
 	 public static int getTrackingMinutes(Context context)
 	 {
 		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-	        String res =  prefs.getString("pref_key_intervalo","5");
+	        String res =  prefs.getString("pref_key_intervalo","3");
 	        int minutos;
 	        try
 			{

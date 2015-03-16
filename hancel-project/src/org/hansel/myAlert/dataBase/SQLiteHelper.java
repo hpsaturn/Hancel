@@ -56,6 +56,7 @@ public class SQLiteHelper{
 			db.execSQL(DBConstants.sqlTablaTrack);
 			db.execSQL(DBConstants.sqlRingsTable);
 			db.execSQL(DBConstants.sqlContactsRingsTable);
+			db.execSQL(DBConstants.sqlFlipTable);
 			insertarDemo(db);
 		}
 		@Override

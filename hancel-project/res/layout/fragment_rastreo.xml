@@ -6,22 +6,22 @@
     android:orientation="horizontal" >
 
     <Button
-        android:id="@+id/inicia_TrackId"
+        android:id="@+id/iniciaTrackId"
         style="@style/inner_app_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/program_tracking"
-        android:visibility="gone" />
+        android:layout_marginTop="16dp"        
+        android:visibility="visible"
+        android:text="@string/program_tracking"/>
 
     
    <LinearLayout android:layout_width="match_parent" 
        android:layout_height="wrap_content"
        android:orientation="vertical"
-       android:id="@+id/layout_CurrentTrack"
-       android:visibility="visible"
+       android:id="@+id/layoutCurrentTrack"
+       android:visibility="gone"
        >
        
     <LinearLayout
@@ -33,7 +33,7 @@
      	
         <ImageView
             android:contentDescription="@string/content_description_contact_picture"
-	        android:id="@+id/icon_track"
+	        android:id="@+id/iconTrack"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_horizontal"
@@ -41,22 +41,16 @@
 	        android:scaleType="centerInside"
 	        android:src="@drawable/tracking" />
 
-        <!-- TextView
-            style="@style/TextoCabecera"
-            android:layout_marginTop="5dp"
-            android:text="@string/current_track_info"
-            android:textColor="@color/orange_hancel"
-            android:textAppearance="?android:attr/textAppearanceMedium" /-->
-
+       
         <LinearLayout
-            android:id="@+id/traking_Date"
+            android:id="@+id/trakingDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="5dp" >
 
             <TextView
-                android:id="@+id/txt_UltimaAlerta"
+                android:id="@+id/txtUltimaAlerta"
                 style="@style/TextoInstruccion"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -67,7 +61,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout_BtnCancelTrack"
+        android:id="@+id/layoutBtnCancelTrack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -76,7 +70,7 @@
 
         <TextView
 			android:visibility="invisible"
-			android:id="@+id/blank_10"
+			android:id="@+id/blank10"
 			android:paddingTop="20dp"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -85,28 +79,28 @@
 			android:layout_weight="1"/>
         
         <Button
-            android:id="@+id/btn_CancelCurrentTrack"
+            android:id="@+id/btnCancelCurrentTrack"
             style="@style/inner_app_button"
             android:layout_width="99dp"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:text="@string/cancel" />
+            android:text="@string/cancel"/>
 
         <Button
-            android:id="@+id/btn_ModifyCurrentTrack"
+            android:id="@+id/btnModifyCurrentTrack"
             style="@style/inner_app_button"
             android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/edit" />
+            android:text="@string/edit"/>
 
         <Button
-            android:id="@+id/btn_ShareCurrentTrack"
+            android:id="@+id/btnShareCurrentTrack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/inner_app_button"            
             android:layout_gravity="center"
-            android:text="@string/share" />
+            android:text="@string/share"/>
         
         <TextView
 			android:visibility="invisible"

@@ -279,7 +279,8 @@ public class LinphoneManager implements LinphoneCoreListener {
 	}
 
 	public static synchronized final LinphoneManager getInstance() {
-		if (instance != null) return instance;
+		if (instance != null) 
+			return instance;
 
 		if (sExited) {
 			throw new RuntimeException("Linphone Manager was already destroyed. "

@@ -69,18 +69,17 @@
     </RelativeLayout>
 
     <LinearLayout
-        style="@style/panelAcciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F5F5F5"
-        android:orientation="vertical" >
-		
-        <!-- include layout="@layout/fragment_rastreo" /-->
-        <fragment android:id="@+id/fragmentRastreo" 
+        android:orientation="vertical" 
+        android:background="@color/background_app">
+        		
+        <fragment 
+            android:id="@+id/fragmentRastreo" 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             class="org.hansel.myAlert/Rastreo"
-             tools:layout="@layout/fragment_rastreo"/>
+            android:src="@layout/fragment_rastreo"/>
             
     </LinearLayout>
 

@@ -16,6 +16,8 @@ zenyagami@gmail.com
  */
 
 
+import static android.content.Intent.ACTION_MAIN;
+
 import java.util.Calendar;
 
 import org.hancel.exceptions.NoInternetException;
@@ -78,8 +80,9 @@ public class Login extends org.holoeverywhere.app.Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
-
-
+		
+		startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
+		
 		//buscamos si quedo en un paso del registro y no termino
 		int step= PreferenciasHancel.getCurrentWizardStep(getApplicationContext());
 		switch (step) {
@@ -110,7 +113,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 			startActivity(i);
 			finish();
 		}
-
+			
 		user = (EditText)findViewById(R.id.txtUser);
 		passwd = (EditText) findViewById(R.id.txtPassword);
 
@@ -118,11 +121,9 @@ public class Login extends org.holoeverywhere.app.Activity {
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				AttempLogin();
-				Log.v("=== Usuario ya creado. Se va a autenticar en el SIP");
-				spAuth();
-				//username = user.getText().toString();//"asly"; //aslan2"andres.calderon";//
-				//password = SimpleCrypto.md5(passwd.getText().toString());//"Joshua123"; //Joshua2123"ccm3mm5";//			
+				AttempLogin();											
+				SpAuth spAuth = new SpAuth();
+				spAuth.run();		
 			}
 		});
 
@@ -150,47 +151,9 @@ public class Login extends org.holoeverywhere.app.Activity {
 
 	}
 
-	private void spAuth(){
-		//Registering in Linphone Server
-		try{
-			LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
+	
 
-			LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
-					.createAuthInfo(getResources().getString(R.string.default_account_prefix) 
-							+ mUser, SimpleCrypto.md5(mPasswd).substring(0, 10), null, 
-							getResources().getString(R.string.default_domain));
-
-			String identity = "sip:" + getResources().getString(R.string.default_account_prefix)
-					+ mUser.toLowerCase() +"@" + getResources().getString(R.string.default_domain);
-			String proxy = "sip:" + getResources().getString(R.string.default_domain);
-			Log.v("=== Usuario que va a autenticar en el SIP: " + identity);
-			LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
-			//proxyAddr.setTransport(TransportType.LinphoneTransportTls);
-			proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
-			LinphoneProxyConfig proxycon = lc.createProxyConfig(identity, proxyAddr.asStringUriOnly(), proxyAddr.asStringUriOnly(), true);
-
-			lc.addProxyConfig(proxycon);
-			lc.setDefaultProxyConfig(proxycon);
-
-			LinphoneProxyConfig lDefaultProxyConfig = lc.getDefaultProxyConfig();
-			if (lDefaultProxyConfig != null) {			
-				lDefaultProxyConfig.setDialEscapePlus(false);
-			} 
-			else if (LinphoneService.isReady()) {
-				//LinphoneService.instance().registrationState(lc, lDefaultProxyConfig, RegistrationState.RegistrationNone, null);
-			}
-
-			lc.addAuthInfo(lAuthInfo);
-
-		} 
-		catch(LinphoneCoreException e)
-		{
-			Log.v(e.getMessage());
-		}
-	}
-
-	private void AttempLogin()
-	{
+	private void AttempLogin(){
 		if(mAuthTask!=null){		
 			return;
 		}
@@ -317,7 +280,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 						usuarioDao.close();
 					}
 					else{
-						mErrores=result.optString("descripcion");
+						mErrores = result.optString("descripcion");
 						return false;
 					}										
 				} catch (Exception e) {
@@ -360,4 +323,47 @@ public class Login extends org.holoeverywhere.app.Activity {
 		}
 
 	}
+	
+	private class SpAuth implements Runnable{
+		@Override
+		public void run() {					
+			try{	
+					
+					LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
+							.createAuthInfo(getResources().getString(R.string.default_account_prefix) 
+									+ mUser, SimpleCrypto.md5(mPasswd).substring(0, 10), null, 
+									getResources().getString(R.string.default_domain));
+		
+					String identity = "sip:" + getResources().getString(R.string.default_account_prefix)
+							+ mUser.toLowerCase() +"@" + getResources().getString(R.string.default_domain);
+					String proxy = "sip:" + getResources().getString(R.string.default_domain);
+					Log.v("=== Usuario que va a autenticar en el SIP: " + identity);
+					LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
+					//proxyAddr.setTransport(TransportType.LinphoneTransportTls);
+					proxyAddr.setTransport(TransportType.LinphoneTransportUdp);								
+					
+					LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
+					LinphoneProxyConfig proxycon = lc.createProxyConfig(identity, proxyAddr.asStringUriOnly(), proxyAddr.asStringUriOnly(), true);
+		
+					lc.addProxyConfig(proxycon);
+					lc.setDefaultProxyConfig(proxycon);
+		
+					LinphoneProxyConfig lDefaultProxyConfig = lc.getDefaultProxyConfig();
+					if (lDefaultProxyConfig != null) {			
+						lDefaultProxyConfig.setDialEscapePlus(false);
+					} 
+					else if (LinphoneService.isReady()) {
+						//LinphoneService.instance().registrationState(lc, lDefaultProxyConfig, RegistrationState.RegistrationNone, null);
+					}
+		
+					lc.addAuthInfo(lAuthInfo);
+		
+				} 
+				catch(LinphoneCoreException e)
+				{
+					Log.v(e.getMessage());
+				} 
+			}
+		}
+	
 }

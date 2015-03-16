@@ -24,6 +24,7 @@ import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.ContactoDAO;
+import org.hansel.myAlert.dataBase.FlipDAO;
 import org.hansel.myAlert.dataBase.RingDAO;
 import org.linphone.LinphoneManager;
 import org.linphone.compatibility.Compatibility;
@@ -122,46 +123,68 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 				mapa = " Loc. Aprox: " + "http://maps.google.com/?q=" + Lat+ "," + Long + "\n";
 
 			}
-			// String direccion = Util.geoCodeMyLocation(Lat, Long,
-			// getActivity());
-			
 			RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
+					.getContext());			
+			FlipDAO flipDao = new FlipDAO(LinphoneManager.getInstance()
 					.getContext());
+			
+			List<String> numbers = new ArrayList<String>();			
+			flipDao.open();
+			Cursor fc = flipDao.getSettingsValueByKey(getResources().getString(
+					R.string.contacts_flip));
+			
+			if(fc != null && fc.getCount() > 0){
+				fc.moveToFirst();
+				String nums = fc.getString(1);
+				if(nums != null && nums.length() > 0){
+					String[] s = nums.split(",");
+					for(int i = 0; i < s.length; i++){
+						numbers.add(s[i].replace('"', ' ').trim());
+						Log.v("=== Numero FLIP:" + numbers);
+					}
+				}
+			}
+			flipDao.close();
 			ringDao.open();
 			Cursor c = ringDao.getNotificationContactsId();
 			
 			if(c != null && c.getCount()>0){				
-				c.moveToFirst();
-				List<String> numbers = new ArrayList<String>();
-				
+				c.moveToFirst();				
 				for(int i= 0; i< c.getCount(); i++){
 					List<String> contactNumbers = Compatibility.extractContactNumbers(c.getString(0),
 							getContentResolver());
 					if(contactNumbers != null && contactNumbers.size() > 0)
 						numbers.addAll(contactNumbers);
 					c.moveToNext();
-				}
-				
+				}										
+			}
+			
+			if(numbers.size() == 0){
+				Toast.makeText(getApplicationContext(), 
+						"No hay numeros configurados para enviar la alarma", 
+						Toast.LENGTH_SHORT).show();
+			}	
+			else{
+				Log.v("=== Numero de mensajes a enviar: " + numbers.size());
 				SharedPreferences preferencias = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 				String message = preferencias.getString("pref_key_custom_msg","Ayuda");
 				
 				for(int i = 0; i < numbers.size(); i++){
 					try{
-						String number =  numbers.get(i).replaceAll("\\D+", "");	
+						
+						String number =  numbers.get(i).replaceAll("\\D+", "");
+						Log.v("=== Numero : " + number);
 						if(number != null && number.length() > 0){
 							Log.v("=== Enviando SMS a : " + number);
-							enviarSMS(number, message + mapa + " Power: " + getNivelBateria() + "%");
+							enviarSMS(number, message + mapa + " Bateria: " + getNivelBateria() + "%");
 						}
 					}
 					catch (Exception ex) {
 						Log.v("Ocurrio un Error al enviar SMS. Excepcion: " + 
 								ex.getMessage());
 					}
-				}				
+				}	
 			}
-			else{
-				//TODO: mensaje que no hay numeros a quienes enviar mensaje
-			}			
 			try{
 				HttpUtils.sendPanic(PreferenciasHancel.getDeviceId(getApplicationContext()),
 					String.valueOf(PreferenciasHancel.getUserId(getApplicationContext())),

@@ -6,6 +6,7 @@ public class DBConstants {
 	public static final String TABLE_CONTACTS = "T_CONTACTO";
 	public static final String TABLE_RINGS = "T_RINGS"; 
 	public static final String TABLE_CONTACS_RINGS = "T_CONTACTS_RINGS";
+	public static final String TABLE_FLIP_SETTINGS = "T_FLIP_SETTINGS";
 	public static final String DATABASE_NAME ="hancel-db";
 	public static final String KEY_ID = "_id";
 	public static final String FECHA = "fecha";
@@ -28,4 +29,6 @@ public class DBConstants {
 	public static final String sqlTablaTrack = "CREATE TABLE T_TRACK (_id INTEGER PRIMARY KEY NOT NULL ,androidId INTEGER NOT NULL, fecha TEXT)";
 	public static final String sqlRingsTable = "CREATE TABLE T_RINGS (_id INTEGER PRIMARY KEY NOT NULL, name TEXT, notify INTEGER, always INTEGER)";
 	public static final String sqlContactsRingsTable = "CREATE TABLE T_CONTACTS_RINGS (_ID_RING INTEGER, _ID_CONTACT INTEGER, PRIMARY KEY (_ID_RING, _ID_CONTACT), FOREIGN KEY(_ID_RING) REFERENCES T_RINGS(_ID))";
+	public static final String sqlFlipTable = "CREATE TABLE " + TABLE_FLIP_SETTINGS + "(_KEY TEXT, VALUE TEXT, PRIMARY KEY (_KEY))";
+
 }

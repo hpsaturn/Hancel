@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Created by Javier Mejia @zenyagami
 zenyagami@gmail.com
-	*/
+ */
 
 
 
@@ -57,39 +57,41 @@ public class Rastreo extends Fragment implements OnClickListener{
 	private static final int RQS_1 = 12;
 	private Button btnTracking;
 	private UsuarioDAO usuarioDao;
-//	private TimePickerDialog timePickerDialog;
 	private  AlarmManager alarmManager;
 	private TrackDAO track;
 	private final int REQUEST_CODE = 0;
 	private View currentTrackInfo;
 	private TextView txtCurrentTrackInfo;
 	private TrackDate trackDate;
-	//private boolean okButtonPressed;
-	
 	private Button btnCancelCurrentTrack;
 	private Button btnModifyCurrentTrack;
 	private Button btnShareCurrentTrack;
-	
-	public boolean isTracking()
-	{
+
+	public boolean isTracking(){
 		return corriendo;
 	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		  alarmManager = (AlarmManager)getActivity().getSystemService(Activity.ALARM_SERVICE);
-		  track = new TrackDAO(getActivity().getApplicationContext());
-		  track.open();
-	}
-	
-	private void showCurrentTrackInfo(boolean showTrackInfo)
-	{
-		currentTrackInfo.setVisibility(showTrackInfo ? View.VISIBLE : View.GONE );
-		btnTracking.setVisibility(showTrackInfo? View.GONE : View.VISIBLE);
+		alarmManager = (AlarmManager)getActivity().getSystemService(Activity.ALARM_SERVICE);
+		track = new TrackDAO(getActivity().getApplicationContext());
+		track.open();
 	}
 
-	public void panicButtonPressed()
-	{
+	private void showCurrentTrackInfo(boolean showTrackInfo){
+		Log.v("=== ShowTrackInfo " + showTrackInfo);
+		if(showTrackInfo){
+			currentTrackInfo.setVisibility(View.VISIBLE);
+			btnTracking.setVisibility(View.GONE);
+		}
+		else{
+			currentTrackInfo.setVisibility(View.GONE);
+			btnTracking.setVisibility(View.VISIBLE);
+		}
+	}
+
+	public void panicButtonPressed(){
 		//se presiona bot�n de panico, cancelamos "servicio" si aun no esta corriendo y cancelamos la alarma
 		showCurrentTrackInfo(false);
 		//cancelamos la alarma antes de ejecutar el servicio por el bot�n de p�nico
@@ -102,11 +104,11 @@ public class Rastreo extends Fragment implements OnClickListener{
 		corriendo = true;
 		setupButtonText();		
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data!=null){
-			
+
 			/*
 			//cancelamos la alarma anterios en caso que se modificque
 			alarmManager.cancel(Util.getServicePendingIntent(getActivity()));
@@ -122,69 +124,69 @@ public class Rastreo extends Fragment implements OnClickListener{
 			cancelAlarms();
 			PreferenciasHancel.setReminderCount(getActivity(), 0);
 			trackDate = (TrackDate) data.getExtras().get(TrackDialog.TRACK_EXTRA);
-			 alarmManager.set(AlarmManager.RTC_WAKEUP, trackDate.getStartTimeTrack().getTimeInMillis(), Util.getReminderPendingIntennt(getActivity()));
-			 Log.v("Finalizando en: "+ new Date(trackDate.getEndTimeTrack().getTimeInMillis()) );
-			 alarmManager.set(AlarmManager.RTC_WAKEUP, trackDate.getEndTimeTrack().getTimeInMillis(), Util.getStopSchedulePendingIntentWithExtra(getActivity()));
+			alarmManager.set(AlarmManager.RTC_WAKEUP, trackDate.getStartTimeTrack().getTimeInMillis(), Util.getReminderPendingIntennt(getActivity()));
+			Log.v("Finalizando en: "+ new Date(trackDate.getEndTimeTrack().getTimeInMillis()) );
+			alarmManager.set(AlarmManager.RTC_WAKEUP, trackDate.getEndTimeTrack().getTimeInMillis(), Util.getStopSchedulePendingIntentWithExtra(getActivity()));
 			//guardamos inicio de alarma
-			 PreferenciasHancel.setAlarmStartDate(getActivity(), trackDate.getEndTimeTrack().getTimeInMillis());
-			 showCurrentTrackInfo(true);
-			 txtCurrentTrackInfo.setText(Util.getSimpleDateFormatTrack(trackDate.getStartTimeTrack()) );
-			 
+			PreferenciasHancel.setAlarmStartDate(getActivity(), trackDate.getEndTimeTrack().getTimeInMillis());
+			showCurrentTrackInfo(true);
+			txtCurrentTrackInfo.setText(Util.getSimpleDateFormatTrack(trackDate.getStartTimeTrack()) );
+
 		}else
 		{
 			super.onActivityResult(requestCode, resultCode, data);
 		}
-		
+
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		View v = inflater.inflate(R.layout.fragment_rastreo, container,false);
-		btnTracking = (Button)v.findViewById(R.id.inicia_TrackId);
+		btnTracking = (Button)v.findViewById(R.id.iniciaTrackId);
 		usuarioDao = new UsuarioDAO(getActivity().getApplicationContext());
 		usuarioDao.open();
 		//convertimos a entero el valor
 		minutos = Util.getTrackingMinutes(getActivity().getApplicationContext());
 		//minutos =4;
 		//Layouts para ocultar o mostrar dependiendo de la alerta
-		currentTrackInfo = v.findViewById(R.id.layout_CurrentTrack);
-		txtCurrentTrackInfo = (TextView)v.findViewById(R.id.txt_UltimaAlerta);
-		
-		btnCancelCurrentTrack = (Button)v.findViewById(R.id.btn_CancelCurrentTrack);
-		btnModifyCurrentTrack = (Button)v.findViewById(R.id.btn_ModifyCurrentTrack);
-		btnShareCurrentTrack = (Button)v.findViewById(R.id.btn_ShareCurrentTrack);
+		currentTrackInfo = v.findViewById(R.id.layoutCurrentTrack);
+		txtCurrentTrackInfo = (TextView)v.findViewById(R.id.txtUltimaAlerta);
+
+		btnCancelCurrentTrack = (Button)v.findViewById(R.id.btnCancelCurrentTrack);
+		btnModifyCurrentTrack = (Button)v.findViewById(R.id.btnModifyCurrentTrack);
+		btnShareCurrentTrack = (Button)v.findViewById(R.id.btnShareCurrentTrack);
 		btnCancelCurrentTrack.setOnClickListener(this);
 		btnModifyCurrentTrack.setOnClickListener(this);
 		btnShareCurrentTrack.setOnClickListener(this);
-		showCurrentTrackInfo(false);
-		
-	 Log.v("=== Buscando el tiempo por defecto para actualizar: " + minutos);
-	if(savedInstanceState!=null)
-	{
-		corriendo = savedInstanceState.getBoolean("run");
-		if(corriendo)
+		showCurrentTrackInfo(false); 
+
+		Log.v("=== Buscando el tiempo por defecto para actualizar: " + minutos);
+		if(savedInstanceState!=null)
 		{
-			btnTracking.setText(STOP_TRACK);
-		}else
-		{
-			btnTracking.setText(START_TRACK);
+			corriendo = savedInstanceState.getBoolean("run");
+			if(corriendo)
+			{
+				btnTracking.setText(STOP_TRACK);
+			}else
+			{
+				btnTracking.setText(START_TRACK);
+			}
 		}
+
+		btnTracking.setOnClickListener(this); 
+
+		return v;
 	}
-	
-	btnTracking.setOnClickListener(this); 
-			 
-	return v;
+
+	private PendingIntent getPendingAlarm()
+	{
+		Intent intent = new Intent(getActivity().getApplicationContext()
+				, AlarmReceiver.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), RQS_1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		return pendingIntent;
 	}
-	  
-	  private PendingIntent getPendingAlarm()
-	  {
-		  Intent intent = new Intent(getActivity().getApplicationContext()
-				  , AlarmReceiver.class);
-		  PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), RQS_1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-		  return pendingIntent;
-	  }
-	  
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -201,80 +203,80 @@ public class Rastreo extends Fragment implements OnClickListener{
 			}
 			txtCurrentTrackInfo.setText(Util.getSimpleDateFormatTrack(alarmTime) );
 		}
-		
+
 		corriendo =Util.isMyServiceRunning(getActivity().getApplicationContext()); 
 		setupButtonText();
-		
+
 	}
-	
+
 	private void setupButtonText() {
 		if(corriendo)
 		{
 			showCurrentTrackInfo(false);
 			btnTracking.setText(STOP_TRACK);
-			
+
 		}else
 		{
 			btnTracking.setText(START_TRACK);
 		}
 	}
 	protected void createPasswordDialog(final Button btnPanico) {
-	    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());                 
-	    alert.setTitle("Contraseña para cancelar...");  
-	    alert.setMessage("Contraseña:");                
+		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());                 
+		alert.setTitle("Contraseña para cancelar...");  
+		alert.setMessage("Contraseña:");                
 
-	     // Set an EditText view to get user input   
-	     final EditText input = new EditText(getActivity());
-	     input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-	     alert.setView(input);
+		// Set an EditText view to get user input   
+		final EditText input = new EditText(getActivity());
+		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		alert.setView(input);
 
-	        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
-	        public void onClick(DialogInterface dialog, int whichButton) {  
-	            String value = input.getText().toString();
-	            String crypto = SimpleCrypto.md5(value);	  
-	            
-	            boolean isOK = usuarioDao.getPassword(crypto);	           	          
-	            
-	            if(isOK && btnPanico.getId()== R.id.inicia_TrackId ){
-		        	Log.v("Detener Rastreo");
-		        	alarmManager.cancel(getPendingAlarm());
-		        	btnPanico.setText(START_TRACK);
-		        	Util.setRunningService(getActivity().getApplicationContext(), false);
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
+			public void onClick(DialogInterface dialog, int whichButton) {  
+				String value = input.getText().toString();
+				String crypto = SimpleCrypto.md5(value);	  
+
+				boolean isOK = usuarioDao.getPassword(crypto);	           	          
+
+				if(isOK && btnPanico.getId()== R.id.iniciaTrackId ){
+					Log.v("Detener Rastreo");
+					alarmManager.cancel(getPendingAlarm());
+					btnPanico.setText(START_TRACK);
+					Util.setRunningService(getActivity().getApplicationContext(), false);
 					getActivity().stopService(new Intent(getActivity().getApplicationContext()
 							,LocationManagement.class));
 					alarmManager.cancel(Util.getPendingAlarmPanicButton(getActivity().getApplicationContext()));
 					corriendo = false;
-					
-		            Toast.makeText(getActivity(), "Rastreo Detenido", Toast.LENGTH_SHORT).show();
-		            PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
-		            return;                  
-	           }
-	           else if(isOK && btnPanico.getId() == R.id.btn_CancelCurrentTrack ){
-	       			//cancelamos alarma para iniciar servicio
-	       			//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
-	       			cancelAlarms();
-	       			Toast.makeText(getActivity(), "Programación de Rastreo Cancelado", Toast.LENGTH_SHORT).show();
-	       			showCurrentTrackInfo(false);
-	       			 PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
-	           }
-	           else if(isOK && btnPanico.getId()==R.id.btn_ModifyCurrentTrack){
-	        	   startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
-	           }
-	            else{
-	        	   Toast.makeText(getActivity(), "Contraseña Incorrecta", 
-	        			   Toast.LENGTH_SHORT).show();
-	        	   return;
-	           }
-	        }
-	        });  
 
-	        alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+					Toast.makeText(getActivity(), "Rastreo Detenido", Toast.LENGTH_SHORT).show();
+					PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
+					return;                  
+				}
+				else if(isOK && btnPanico.getId() == R.id.btnCancelCurrentTrack ){
+					//cancelamos alarma para iniciar servicio
+					//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
+					cancelAlarms();
+					Toast.makeText(getActivity(), "Programación de Rastreo Cancelado", Toast.LENGTH_SHORT).show();
+					showCurrentTrackInfo(false);
+					PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
+				}
+				else if(isOK && btnPanico.getId()==R.id.btnModifyCurrentTrack){
+					startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
+				}
+				else{
+					Toast.makeText(getActivity(), "Contraseña Incorrecta", 
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+			}
+		});  
 
-	            public void onClick(DialogInterface dialog, int which) {
-	                return;   
-	            }
-	        });
-	       alert.show();
+		alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int which) {
+				return;   
+			}
+		});
+		alert.show();
 	}
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -295,21 +297,21 @@ public class Rastreo extends Fragment implements OnClickListener{
 		} catch (Exception e) {
 		}
 	}
-	   // Method to share either text or URL.
-    private void shareTrace() {
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-         
-        share.putExtra(Intent.EXTRA_SUBJECT, "[Hance] Traza de periodista");
-       
-        String h = SimpleCrypto.md5(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
-        
-        share.putExtra(Intent.EXTRA_TEXT, "http://hancel.flip.org.co/hansel/?f=trace&hash="+h);
-        
-        startActivity(Intent.createChooser(share, "Share trace!"));
-    }
-    
+	// Method to share either text or URL.
+	private void shareTrace() {
+		Intent share = new Intent(android.content.Intent.ACTION_SEND);
+		share.setType("text/plain");
+		share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+		share.putExtra(Intent.EXTRA_SUBJECT, "[Hance] Traza de periodista");
+
+		String h = SimpleCrypto.md5(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
+
+		share.putExtra(Intent.EXTRA_TEXT, "http://hancel.flip.org.co/hansel/?f=trace&hash="+h);
+
+		startActivity(Intent.createChooser(share, "Share trace!"));
+	}
+
 	@Override
 	public void onClick(View v) {
 		//Permite arreglar el bug al no ser notificada esta actividad de que el servicio ya esta en ejecucion,
@@ -319,30 +321,29 @@ public class Rastreo extends Fragment implements OnClickListener{
 			return;
 		}
 		switch (v.getId()) {
-		case R.id.btn_CancelCurrentTrack:
+		case R.id.btnCancelCurrentTrack:
 			//cancelamos alarma para iniciar servicio
 			//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
-		
+
 			/*cancelAlarms();
 			Toast.makeText(getActivity(), "Programaci�n de Rastreo Cancelado", Toast.LENGTH_SHORT).show();
 			showCurrentTrackInfo(false);
 			 PreferenciasHancel.setAlarmStartDate(getActivity(), 0);*/
 			//break;
-		case R.id.btn_ModifyCurrentTrack:
+		case R.id.btnModifyCurrentTrack:
 			createPasswordDialog((Button) v);	
 			//startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
 			break;
-			
-		case R.id.btn_ShareCurrentTrack:
+
+		case R.id.btnShareCurrentTrack:
 			shareTrace();
 			break;
-			
-		case R.id.inicia_TrackId:
-			if(!corriendo)
-			{
+
+		case R.id.iniciaTrackId:
+			if(!corriendo){
 				startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
-			}else
-			{
+			}
+			else{
 				//si detenemos rastreo iniciamos un dialogo pidiendo password:
 				createPasswordDialog(btnTracking);
 			}
@@ -351,10 +352,11 @@ public class Rastreo extends Fragment implements OnClickListener{
 			break;
 		}
 	}
+	
+	
 	private void cancelAlarms() {
 		alarmManager.cancel(Util.getReminderPendingIntennt(getActivity()));
 		alarmManager.cancel(Util.getStopSchedulePendingIntentWithExtra(getActivity()));
-		
 	}
-		
+
 }

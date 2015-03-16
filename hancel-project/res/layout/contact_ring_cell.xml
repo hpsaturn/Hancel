@@ -16,59 +16,55 @@
         android:textColor="@android:color/white"
         android:layout_marginBottom="10dp"
         android:textStyle="bold" />
-    
+
     <RelativeLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="40dp"
-    	android:orientation="horizontal">
-    	
-        <TextView 
-		    android:id="@+id/contactId"
-		    android:lines="1"
-		    android:visibility="invisible"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_toRightOf="@id/icon"
-		    android:layout_centerVertical="true"
-		    android:textAppearance="?android:attr/textAppearanceLarge"
-		    android:textColor="@color/text_contrast"
-		    android:layout_marginLeft="5dp" />
-	    
-	    <ImageView
-	        android:id="@+id/icon"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignBottom="@+id/name"
-	        android:layout_alignParentLeft="true"
-	        android:layout_marginLeft="10dp"
-	        android:adjustViewBounds="true"
-	        android:contentDescription="@string/content_description_contact_picture"
-	        android:scaleType="centerInside"
-	        android:src="@drawable/unknown_small" />
-		    
-		<TextView 
-		    android:id="@+id/name"
-		    android:lines="1"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_toRightOf="@id/icon"
-		    android:layout_centerVertical="true"
-		    android:textSize="14sp"		    
-		    android:textColor="@color/text_contrast"
-		    android:layout_marginLeft="5dp" />		
-				
-		<CheckBox 
-		    android:id="@+id/chooseFriend"
-		    android:visibility="visible"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-		    android:layout_centerVertical="true"
-		    android:gravity="right"
-		    android:background="@color/background_header"		    
-	        android:adjustViewBounds="true"
-	        android:layout_marginRight="15dp"/>
-	
-	</RelativeLayout>
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/chooseFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:background="@color/background_header"
+            android:gravity="left"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/chooseFriend"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="45dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/content_description_contact_picture"
+            android:scaleType="centerInside"
+            android:src="@drawable/unknown_small" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/icon"
+            android:lines="2"
+            android:textColor="@color/text_contrast"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/contactId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/text_contrast"
+            android:visibility="invisible" />
+    </RelativeLayout>
     
 </LinearLayout>

@@ -38,7 +38,7 @@ import android.widget.Toast;
 public class PanicButtonFragment extends Fragment 
 {
 	private TextView txtLastPanic;
-	private Button btnTracking;
+	//private Button btnTracking;
 	private static final String STOP_TRACK = "Detener";
 	
 	@Override
@@ -48,9 +48,8 @@ public class PanicButtonFragment extends Fragment
 		//habilitamos wifi para tratar de tener una mejor localización	
 		View v = inflater.inflate(R.layout.fragment_panic, container,false);
 		Button btnPanico = (Button)v.findViewById(R.id.btnPanic);
-		txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);
-		
-		btnTracking = (Button)v.findViewById(R.id.inicia_TrackId);
+		txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);		
+		//btnTracking = (Button)v.findViewById(R.id.inicia_TrackId);
 		
 		btnPanico.setOnClickListener(new View.OnClickListener() {						
 			@Override
@@ -58,7 +57,7 @@ public class PanicButtonFragment extends Fragment
 				
 				//Arregla el bug en el que al iniciar el servicio, no notifica a la Actividad de que
 				//ya se estaa ejecutando, entonces no se puede detener inmediatamente.
-				btnTracking.setText(STOP_TRACK);
+				//btnTracking.setText(STOP_TRACK);
 				
 				AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
 				alt_bld.setMessage("Desea enviar la alerta?")
@@ -68,7 +67,7 @@ public class PanicButtonFragment extends Fragment
 						getActivity().startService(new Intent(getActivity(),SendPanicService.class));
 						Toast.makeText(getActivity().getApplicationContext(), "Alerta enviada"
 								, Toast.LENGTH_SHORT).show();
-						btnTracking.setText(STOP_TRACK);
+						//btnTracking.setText(STOP_TRACK);
 					}
 				})
 				.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -100,8 +99,7 @@ public class PanicButtonFragment extends Fragment
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		try
-		{
+		try{
 			ActivaRadios();
 		}catch(Exception ex)
 		{

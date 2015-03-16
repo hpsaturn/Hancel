@@ -26,7 +26,7 @@ import android.widget.Toast;
 public class ServicioLeeBotonEncendido extends Service {
 	
 	/**
-	 * Declaraci—n de variables
+	 * Declaraciï¿½n de variables
 	 */
 	private String TAG = "ServicioGeolocalizacion";
 	public static MainActivity login;
@@ -70,7 +70,7 @@ public class ServicioLeeBotonEncendido extends Service {
 					resultReceiver = intent.getParcelableExtra("receiver");
 					// revisamos si la pantalla esta prendida o apagada y contamos el numero de click al boton de apagado
 					boolean screenOn = intent.getBooleanExtra("screen_state", false);
-					// si damos m‡s de 4 click al boton de apagado se activa la alarma
+					// si damos mï¿½s de 4 click al boton de apagado se activa la alarma
 					if (countStart >= 4) {
 						Log.i(TAG, "mas de 4");
 						countStart = -1;
@@ -129,7 +129,7 @@ public class ServicioLeeBotonEncendido extends Service {
 	 */
    public void vibrar() {
 		Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-		v.vibrate(3000);        
+		v.vibrate(2000);        
 	}
   
 
