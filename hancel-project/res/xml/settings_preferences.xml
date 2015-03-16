@@ -28,7 +28,7 @@
 	 
 	 </PreferenceCategory>   
     
-    <PreferenceCategory
+    <!-- PreferenceCategory
         android:title="@string/pref_tunnel"
         android:key="@string/pref_tunnel_key">
 
@@ -279,5 +279,5 @@
 			android:summary="@string/pref_auto_accept_friends_desc"/>
 
 	</PreferenceCategory>
-
+	-->
 </PreferenceScreen>

@@ -83,20 +83,19 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		// Init the settings page interface
 		initSettings();		
 		setListeners();
-		hideSettings();
-		
+		///hideSettings();		
 	}
 
 	// Inits the values or the listener on some settings
 	private void initSettings() {
 		//Init accounts on Resume instead of on Create to update the account list when coming back from wizard
 		initFlipSettings();
-		initTunnelSettings();
-		initAudioSettings();		
-		initVideoSettings();
-		initCallSettings();
-		initNetworkSettings();
-		initAdvancedSettings();
+		//initTunnelSettings();
+		//initAudioSettings();		
+		//initVideoSettings();
+		//initCallSettings();
+		//initNetworkSettings();
+		//initAdvancedSettings();
 		
 		// Add action on About button
 		findPreference(getString(R.string.menu_about_key)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -121,13 +120,13 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	// Sets listener for each preference to update the matching value in linphonecore
 	private void setListeners() {
-		setTunnelPreferencesListener();
+		//setTunnelPreferencesListener();
 		setFlipPreferencesListener();
-		setAudioPreferencesListener();
+		//setAudioPreferencesListener();
 		//setVideoPreferencesListener();
-		setCallPreferencesListener();
-		setNetworkPreferencesListener();
-		setAdvancedPreferencesListener();
+		//setCallPreferencesListener();
+		//setNetworkPreferencesListener();
+		//setAdvancedPreferencesListener();
 	}
 
 	// Read the values set in resources and hides the settings accordingly

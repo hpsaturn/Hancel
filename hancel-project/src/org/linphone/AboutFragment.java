@@ -54,9 +54,9 @@ public class AboutFragment extends Fragment implements OnClickListener {
 			Log.e(e, "cannot get version name");
 		}
 
-		View issue = view.findViewById(R.id.exit);
+		/*View issue = view.findViewById(R.id.exit);
 		issue.setOnClickListener(this);
-		issue.setVisibility(View.VISIBLE);
+		issue.setVisibility(View.VISIBLE);*/
 		
 		return view;
 	}
@@ -76,13 +76,13 @@ public class AboutFragment extends Fragment implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
-		if (MainActivity.isInstanciated()) {
+		/*if (MainActivity.isInstanciated()) {
 
 			if (getResources().getBoolean(R.bool.enable_log_collect)) {
 				LinphoneUtils.collectLogs(MainActivity.instance(), getString(R.string.about_bugreport_email));
 			} else {
 				MainActivity.instance().exit();
 			}
-		}
+		}*/
 	}
 }
