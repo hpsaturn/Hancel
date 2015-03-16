@@ -22,8 +22,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hancel.exceptions.NoInternetException;
+import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.linphone.LinphoneManager.EcCalibrationListener;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneCore;
@@ -43,6 +48,7 @@ import org.linphone.ui.LedPreference;
 import org.linphone.ui.PreferencesListFragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.CheckBoxPreference;
@@ -53,6 +59,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.widget.Toast;
 
 /**
  * @author Sylvain Berfini
@@ -64,19 +71,16 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 	private TunnelConfig tunnelConfig;
 
 	public SettingsFragment() {		
-		super(R.xml.settings_preferences);
-		Log.d("=== CONSTRUCTOR");
-	//	getActivity().setTheme(R.style.Holo_Theme);
+		super(R.xml.settings_preferences);		
 		mPrefs = LinphonePreferences.instance();
 	}
 
 	@Override
 	public void onCreate(Bundle bundle) {
-		getActivity().setTheme(R.style.Holo_Theme_Light);
-				
+		getActivity().setTheme(R.style.Holo_Theme_Light);			
 		super.onCreate(bundle);
 		// Init the settings page interface
-		initSettings();
+		initSettings();		
 		setListeners();
 		hideSettings();
 		
@@ -85,6 +89,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 	// Inits the values or the listener on some settings
 	private void initSettings() {
 		//Init accounts on Resume instead of on Create to update the account list when coming back from wizard
+		initFlipSettings();
 		initTunnelSettings();
 		initAudioSettings();		
 		initVideoSettings();
@@ -116,6 +121,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 	// Sets listener for each preference to update the matching value in linphonecore
 	private void setListeners() {
 		setTunnelPreferencesListener();
+		setFlipPreferencesListener();
 		setAudioPreferencesListener();
 		//setVideoPreferencesListener();
 		setCallPreferencesListener();
@@ -241,10 +247,29 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		setPreferenceDefaultValueAndSummary(R.string.pref_tunnel_port_key, String.valueOf(mPrefs.getTunnelPort()));
 		ListPreference tunnelModePref = (ListPreference) findPreference(getString(R.string.pref_tunnel_mode_key));
 		String tunnelMode = mPrefs.getTunnelMode();
+		
 		if(tunnelModePref != null){
 			tunnelModePref.setSummary(tunnelMode);
 			tunnelModePref.setValue(tunnelMode);
 		}
+	}
+	
+	private void initFlipSettings() {
+		setPreferenceDefaultValueAndSummary(R.string.pref_journalists_code_key,"");	
+		/*setPreferenceDefaultValueAndSummary(R.string.pref_journalists_survey_key,
+				getString(R.string.pref_journalists_survey_value));	*/
+	}
+
+	private void setFlipPreferencesListener() {
+		findPreference(getString(R.string.pref_journalists_code_key))
+			.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				ActivationCodeTask activationTask = new ActivationCodeTask();
+				activationTask.execute(newValue.toString());				
+				return true;				
+			}
+		});
 	}
 
 	private void setTunnelPreferencesListener() {
@@ -426,6 +451,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		PreferenceCategory codecs = (PreferenceCategory) findPreference(getString(R.string.pref_codecs_key));
 		if(codecs == null)
 			return;
+		
 		codecs.removeAll();
 
 		LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
@@ -470,7 +496,8 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		bitrateLimit.setSummary(String.valueOf(mPrefs.getCodecBitrateLimit()));
 		bitrateLimit.setValue(String.valueOf(mPrefs.getCodecBitrateLimit()));
 	}
-
+	
+	
 	private void setAudioPreferencesListener() {
 		findPreference(getString(R.string.pref_echo_cancellation_key)).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
@@ -946,6 +973,45 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
 				MainActivity.instance().hideStatusBar();
 			}
+		}
+	}
+	
+	
+	public class ActivationCodeTask extends AsyncTask<String, String, String>{
+		@Override
+		protected String doInBackground(String... params) {
+			try{
+				JSONArray numbers = null;
+				JSONObject response = HttpUtils.sendActivationCode(params[0]);
+				String ok = (String)response.get("resultado");
+				
+				if(!ok.equalsIgnoreCase("OK")){
+					return getResources().getString(R.string.registration_fail);				
+				}
+				else{
+					JSONObject desc = (JSONObject)response.get("descripcion");
+					numbers = desc.getJSONArray("numbers");						
+					if(numbers == null || numbers.length() == 0){	
+						return getResources().getString(R.string.registration_empty);
+					}
+				}				
+				Log.d("=== Ingresando en el Change. Todo Ok y llegaron los nros " + numbers.join(","));
+				return getResources().getString(R.string.registration_ok);				
+			}
+			catch(JSONException e){
+				Log.d("=== Excepción obteniendo JSON " + e.getMessage());
+				return getResources().getString(R.string.registration_fail);
+			}
+			catch (NoInternetException e){
+				Log.d("=== Excepción en conexión a Intenet " + e.getMessage());
+				return getResources().getString(R.string.registration_fail);
+			}			
+		}
+		
+		@Override
+		protected void onPostExecute(String result){
+			Toast.makeText(getActivity().getApplicationContext(), result, 
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 }

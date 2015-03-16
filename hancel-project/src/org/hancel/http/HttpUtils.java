@@ -38,23 +38,30 @@ public class HttpUtils {
 	//private static String URL_BASE = "http://www.hanselapp.com/wp-3/sisweb.php?";
 	private static String URL_BASE = "http://hancel.flip.org.co/hansel/?";
 	 
-	public static JSONObject requestHttp(String url, List<NameValuePair> params, String method)
-	 {
+	public static JSONObject requestHttp(String url, List<NameValuePair> params, String method){
 	        return request(url,params,method);
 	 }
+	
     public static JSONObject request(String url, List<NameValuePair> params, String method){
 
       JSONObject response;
           try {
+        	  Log.v("=== En request, Antes del execute");
               response = execute(url, params, method);
-              if(response!=null)
+              Log.v("=== En request, Despues del execute");
+           if(response!=null)
                   return response;
-          } catch (IOException e) {
+          } 
+          catch (IOException e) {
               Log.v("Error al obtener los datos de la URL");
               e.printStackTrace();
-          } catch (JSONException e) {
+          } 
+          catch (JSONException e) {
+        	  Log.v("Error al obtener JSON " + e.getCause());
               e.printStackTrace();
-          }catch (Exception e) {
+          }
+          catch (Exception e) {
+        	  Log.v("Error general " + e.getCause());
 			e.printStackTrace();
 		}
 
@@ -67,14 +74,23 @@ public class HttpUtils {
 
         if(method.equals("GET")){
             url = new URL(base+getQuery(params));
+            Log.v("=== En execute, La URL es: " + url.getPath());
+            Log.v("=== En execute, Antes de abrir conexion");
             urlConnection = (HttpURLConnection) url.openConnection();
+            Log.v("=== En execute, Despues de abrir conexion");
         }
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             Scanner s = new Scanner(in).useDelimiter("\\A");
             String parseString =  s.hasNext()?s.next():"";
             in.close();
-            return new JSONObject(parseString);
+            JSONObject jObject = new JSONObject(parseString);
+            if(jObject == null)
+            	Log.v("=== En execute,JObject es Nulo");
+            else{
+            	Log.v("=== En execute,JObject NO es Nulo " + jObject.getString("resultado"));
+            }
+            return jObject;
         }
         finally {
             urlConnection.disconnect();
@@ -120,15 +136,14 @@ public class HttpUtils {
 		 return result;			 
 	}
 
-	public static JSONObject SendActivationCode(String user, String password, String code ) throws NoInternetException
+	public static JSONObject sendActivationCode(String code ) throws NoInternetException
 	{
 		 ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
-		 values.add(new BasicNameValuePair("f","activation"));
-		 values.add(new BasicNameValuePair("strUsr",user));
-		 values.add(new BasicNameValuePair("strPass",password));
+		 values.add(new BasicNameValuePair("f","activation"));		 
 		 values.add(new BasicNameValuePair("activation_code",code));
 		 
-		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
+		 JSONObject result = requestHttp(URL_BASE, values, "GET");
+		 
 		 if(result == null){
 			 throw new NoInternetException("Error en petición al server");
 		 }
@@ -145,21 +160,19 @@ public class HttpUtils {
 		 ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
 		 values.add(new BasicNameValuePair("f","tracking"));
 		 values.add(new BasicNameValuePair("androidId",androidId));
-		 values.add(new BasicNameValuePair("idDevice",idDevice));
-		
+		 values.add(new BasicNameValuePair("idDevice",idDevice));		
 		 values.add(new BasicNameValuePair("idUsuario",idUsuario));
 		 values.add(new BasicNameValuePair("latitude",latitude));
 		 values.add(new BasicNameValuePair("longitude",longitude));
 		 values.add(new BasicNameValuePair("bateria",bateria));
-		 JSONObject result = requestHttp(URL_BASE, values, "GET");
-		 if(result==null)
-		 {
-			 throw new NoInternetException("Error en petici�n al server");
-		 }
-		 return result;
-		
 		 
+		 JSONObject result = requestHttp(URL_BASE, values, "GET");
+		 if(result == null){
+			 throw new NoInternetException("Error en petición al server");
+		 }
+		 return result;			
 	}
+	
 	public static JSONObject sendPanic(String idDevice,String idUsuario,String latitude,String longitude,String bateria,String emailsIds
 			,String ongList) throws NoInternetException
 	{

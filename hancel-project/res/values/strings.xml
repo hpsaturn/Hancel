@@ -540,4 +540,12 @@
     <string name="no_contacts_ring">Rings must have at least one contact</string> 
     <string name="ring_not_modified">The ring was not modified</string>
     <string name="ring_without_name">The ring must have a name</string>
+    <string name="pref_journalists">Periodistas</string>
+    <string name="pref_journalists_summary">Function for journalists</string>
+    <string name="pref_journalists_code">Código de activación Flip</string>
+    <string name="pref_journalists_survey">Evalue su riesgo</string>
+    <string name="registration_fail">Código de activación no válido</string>
+    <string name="registration_empty">Registro exitoso pero sin números de contacto. Comuniquese con la FLIP</string>
+    <string name="registration_ok">Registro exitoso.</string>
+    
 </resources>
