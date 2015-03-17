@@ -53,7 +53,7 @@ public class EditRingFragment extends Fragment {
 	private View view;
 	private TextView ok,addContacts, deleteRing;
 	private EditText ringName;
-	private CheckBox ringDefault;
+	private CheckBox ringNotify;
 	private LayoutInflater inflater;
 	private ListView contactsList;
 	private boolean isNewRing = true;
@@ -105,7 +105,7 @@ public class EditRingFragment extends Fragment {
 		});
 		
 		ringName = (EditText) view.findViewById(R.id.ringName);
-		ringDefault = (CheckBox) view.findViewById(R.id.ringDefault);
+		ringNotify = (CheckBox) view.findViewById(R.id.ringNotify);
 		
 		contactsList = (ListView) view.findViewById(R.id.ringContactsList);        
                               		
@@ -115,7 +115,7 @@ public class EditRingFragment extends Fragment {
 			public void onClick(View v) {
 				if (isNewRing) {
 					boolean areAllFielsEmpty = true;
-					if (ringName != null && ringDefault !=null && !ringName.equals("")) {
+					if (ringName != null && ringNotify !=null && !ringName.equals("")) {
 						areAllFielsEmpty = false;
 					}
 					if(idContacts == null || idContacts.size() == 0){
@@ -123,7 +123,8 @@ public class EditRingFragment extends Fragment {
 					}
 						
 					if (areAllFielsEmpty) {
-						Toast.makeText(getActivity(), "Rings must have at least one contact", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "Rings must have at least one contact", 
+								Toast.LENGTH_SHORT).show();
 						//getFragmentManager().popBackStackImmediate();
 						return;					
 					}
@@ -173,15 +174,15 @@ public class EditRingFragment extends Fragment {
 			
 		if (!isNewRing) {
 			String rn = ring.getName();			
-			Long rd = ring.getAlways();
+			Long rd = ring.getNotify();
 			
 			if (rn != null) 
 				ringName.setText(rn);
 			
 			if (rd != null && rd == 1)
-				ringDefault.setChecked(true);
+				ringNotify.setChecked(true);
 			else 
-				ringDefault.setChecked(false);
+				ringNotify.setChecked(false);
 				
 			addContacts = (TextView) view.findViewById(R.id.newContact);
 			addContacts.setOnClickListener(new OnClickListener(){
@@ -263,7 +264,7 @@ public class EditRingFragment extends Fragment {
         RingDAO ringDao = new RingDAO(LinphoneService.instance()
         		.getApplicationContext());  
         ringDao.open();
-        ringID = ringDao.addRing(ringName.getText().toString(),ringDefault
+        ringID = ringDao.addRing(ringName.getText().toString(),ringNotify
         		.isChecked());
         Iterator<String> it = idContacts.iterator();        
         while( it.hasNext() ){        	
@@ -285,7 +286,7 @@ public class EditRingFragment extends Fragment {
 					.getContext());
 			ringDao.open();
 			long result = ringDao.updateRing(String.valueOf(ring.getId()), 
-				ringName.getText().toString(),ringDefault.isChecked(),idContacts);
+				ringName.getText().toString(),ringNotify.isChecked(),idContacts);
 			ringDao.close();
 			
 			if(result == -1)
@@ -327,6 +328,9 @@ public class EditRingFragment extends Fragment {
 				}			
 				in = in.substring(0,in.length()-1);				
 			}
+			else{
+				in = idContacts.get(0);
+			}
 			searchCursor = Compatibility.getContactsInCursor(getActivity()
 					.getContentResolver(), in);
 		}
@@ -341,7 +345,8 @@ public class EditRingFragment extends Fragment {
 			Contact c = Compatibility.getContact(getActivity()
 				.getContentResolver(), searchCursor, i);
 			contactsRing.add(new ContactRing(c.getID(), c.getName(), 
-					c.getPhotoUri(), c.getPhoto(), !isNewRing));				
+					c.getPhotoUri(), c.getPhoto(), !isNewRing));
+			
 		}
 				
 		contactsList.setAdapter(new RingsContactsListAdapter(contactsRing));

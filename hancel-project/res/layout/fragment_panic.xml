@@ -16,9 +16,9 @@
         <TextView
             android:id="@+id/textView2"
             style="@style/TextoCabecera"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="5dp"
             android:text="@string/ultima"
-            android:textColor="#FF7B1E"
+            android:textColor="@color/orange_hancel"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="7dp" >
+            android:layout_marginBottom="5dp" >
 
             <TextView
                 android:id="@+id/txtLastPanic"
@@ -34,6 +34,24 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="15 - Abril - 08:30"
+                android:textColor="#FFFFFF"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ringsAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp" >
+
+            <TextView
+                android:id="@+id/txtNumRings"
+                style="@style/TextoInstruccion"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=""
                 android:textColor="#FFFFFF"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 

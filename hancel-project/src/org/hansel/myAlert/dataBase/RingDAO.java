@@ -66,20 +66,19 @@ public class RingDAO extends SQLiteHelper {
 				whereArgs) > 0;
 	}
 	
-	public long addRing(String name, boolean always){
-		int alwaysNotify = always==true?1:0;
+	public long addRing(String name, boolean notify){
+		int ringNotify = notify==true?1:0;
 		ContentValues newValues = new ContentValues();
 		newValues.put("name", name);
-		newValues.put("always", String.valueOf(alwaysNotify));
-		newValues.put("notify", 0);
+		newValues.put("notify", String.valueOf(ringNotify));		
 		return super.mDb.insert(DBConstants.TABLE_RINGS, null, newValues);		
 	}
 	
-	public long updateRing(String id, String name, boolean always, List<String> contacts){
+	public long updateRing(String id, String name, boolean notify, List<String> contacts){
 		int result = -1;
 		ContentValues values = new ContentValues();
 		values.put("NAME", name);
-		values.put("ALWAYS", always==true?1:0);
+		values.put("NOTIFY",notify==true?1:0);
 		
 		String whereClause = "_ID = " + id;
 		super.mDb.beginTransaction();
@@ -129,7 +128,7 @@ public class RingDAO extends SQLiteHelper {
 	public Cursor getNotificationContactsId(){		
 		Cursor c = super.mDb.rawQuery("select _ID_CONTACT from " + 
 				DBConstants.TABLE_RINGS + "," + DBConstants.TABLE_CONTACS_RINGS 
-				+ " where always = 1 or notify = 1 and _ID_RING = _ID", null);
+				+ " where notify = 1 and _ID_RING = _ID", null);
 		return c;				
 	}
 }

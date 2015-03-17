@@ -494,7 +494,8 @@ public class StatusFragment extends Fragment {
 		};
 		mTimer.scheduleAtFixedRate(mTask, 0, 1000);
 	}
-	
+
+	//ANDYYY
 	class AccountsListAdapter extends BaseAdapter {
 		private List<CheckBox> checkboxes;
 		

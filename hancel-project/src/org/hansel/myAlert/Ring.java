@@ -10,7 +10,7 @@ public class Ring implements Serializable{
 	private static final long serialVersionUID = -2188411347965052790L;
 	private String id;
 	private String name;
-	private long always;
+	private long notify;
 	private List<Contact> contacs;
 	
 	
@@ -18,10 +18,10 @@ public class Ring implements Serializable{
 		id = null;
 		name = null;
 	}
-	public Ring(String id, String name, long always){
+	public Ring(String id, String name, long notify){
 		this.id = id;
 		this.name = name;
-		this.always = always;
+		this.notify = notify;
 	}
 	public String getId() {
 		return id;
@@ -35,11 +35,11 @@ public class Ring implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public long getAlways() {
-		return always;
+	public long getNotify() {
+		return notify;
 	}
-	public void setAlways(long always) {
-		this.always = always;
+	public void setNotify(long notify) {
+		this.notify = notify;
 	}
 	public List<Contact> getContacs() {
 		return contacs;

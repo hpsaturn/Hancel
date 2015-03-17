@@ -30,6 +30,16 @@
 			android:scaleType="centerCrop"
 			android:adjustViewBounds="true"
 			android:layout_weight="1"/>
+	    
+	    <TextView
+			android:visibility="invisible"
+			android:paddingTop="20dp"
+			android:id="@+id/space3"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:scaleType="centerCrop"
+			android:adjustViewBounds="true"
+			android:layout_weight="1"/>
 		<!-- TextView
 			android:contentDescription="@string/content_description_all_rings"
 			android:id="@+id/allRings"
@@ -49,7 +59,7 @@
 		<TextView
 			android:contentDescription="@string/content_description_add_ring"
 			android:id="@+id/newRing"
-			android:background="@drawable/contacts_add_contact"
+			android:background="@drawable/rings_add_ring"
 			android:text="@string/button_add_ring"
 			android:gravity="center"
 			android:paddingTop="20dp"

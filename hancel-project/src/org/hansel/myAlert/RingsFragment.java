@@ -121,7 +121,8 @@ private Handler mHandler = new Handler();
 	
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		Ring ring = (Ring) adapter.getItemAtPosition(position);		
+		Ring ring = (Ring) adapter.getItemAtPosition(position);	
+		Log.d("=== Anillo seleccionado: " + ring.getNotify());
 		MainActivity.instance().editRing(ring);
 		
 	}
@@ -169,7 +170,8 @@ private Handler mHandler = new Handler();
 		public RingsListAdapter(List<Ring> ringsList) {
 			rings = ringsList;			
 			margin = LinphoneUtils.pixelsToDpi(getResources(), 10);
-			bitmapUnknown = BitmapFactory.decodeResource(getResources(), R.drawable.unknown_small);
+			bitmapUnknown = BitmapFactory.decodeResource(getResources(), 
+					R.drawable.community);
 		}
 				
 		public int getCount() {
