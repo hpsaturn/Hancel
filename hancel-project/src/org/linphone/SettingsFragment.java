@@ -78,7 +78,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onCreate(Bundle bundle) {
-		getActivity().setTheme(R.style.Holo_Theme_Light);			
+		getActivity().setTheme(R.style.AppBaseTheme);			
 		super.onCreate(bundle);
 		// Init the settings page interface
 		initSettings();		

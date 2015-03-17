@@ -102,6 +102,8 @@
 				    style="@style/inputText"
 				    android:layout_width="fill_parent"
 				    android:layout_height="wrap_content"
+				    android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
 				    android:layout_marginBottom="5dp"
 				    android:singleLine="true" />
 				
@@ -121,6 +123,8 @@
 					android:layout_height="wrap_content"
 					android:layout_marginTop="0dp"
 					android:layout_marginBottom="5dp"
+					android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
 					android:password="true"
 					android:singleLine="true" />
 				
@@ -139,6 +143,8 @@
 					android:layout_marginTop="0dp"
 					android:layout_marginBottom="5dp"
 					android:password="true"
+					android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
 					android:singleLine="true" />
 				
 				<!-- Email Label -->
@@ -156,6 +162,8 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="10dp"
+					android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
 					android:singleLine="true" />
 				
 				<!-- Register Button -->
