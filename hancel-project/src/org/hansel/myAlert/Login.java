@@ -355,7 +355,9 @@ public class Login extends org.holoeverywhere.app.Activity {
 					else if (LinphoneService.isReady()) {
 						//LinphoneService.instance().registrationState(lc, lDefaultProxyConfig, RegistrationState.RegistrationNone, null);
 					}
-
+					
+					Thread.sleep(5000);
+					
 					LinphoneAuthInfo[] authInfosList = lc.getAuthInfosList();
 					if(authInfosList!=null)
 					{
@@ -371,6 +373,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 				{
 					Log.v(e.getMessage());
 				} 
+			catch(InterruptedException e){}
 			}
 		}
 	

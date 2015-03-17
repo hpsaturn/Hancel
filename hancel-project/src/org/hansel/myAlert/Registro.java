@@ -265,9 +265,9 @@ public class Registro extends org.holoeverywhere.app.Activity {
 								mEmail);
 
 						if (idUsr != 0) {
-							Log.v("=== Usuario se esta creando (Registro). Se va a autenticar en el SIP");
-							// Thread.sleep(20000);
+							Log.v("=== Usuario se esta creando (Registro). Se va a autenticar en el SIP");							
 							spAuth();
+							
 							return true;
 						}
 					} else if (result.optString("resultado").equals("error")) {
@@ -371,12 +371,14 @@ public class Registro extends org.holoeverywhere.app.Activity {
 						.getDefaultProxyConfig();
 				if (lDefaultProxyConfig != null) {
 					lDefaultProxyConfig.setDialEscapePlus(false);
-				} else if (LinphoneService.isReady()) {
+				} 
+				else if (LinphoneService.isReady()) {
 					// LinphoneService.instance().registrationState(lc,
 					// lDefaultProxyConfig, RegistrationState.RegistrationNone,
 					// null);
 				}
-
+				Thread.sleep(5000);
+				
 				LinphoneAuthInfo[] authInfosList = lc.getAuthInfosList();
 				if(authInfosList!=null)
 				{
@@ -391,6 +393,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			} catch (LinphoneCoreException e) {
 				Log.v(e.getMessage());
 			}
+			catch(InterruptedException e){}
 		}
 	}
 
