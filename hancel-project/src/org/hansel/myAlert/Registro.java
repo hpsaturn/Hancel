@@ -358,8 +358,8 @@ public class Registro extends org.holoeverywhere.app.Activity {
 
 				LinphoneAddress proxyAddr = LinphoneCoreFactory.instance()
 						.createLinphoneAddress(proxy);
-				// proxyAddr.setTransport(TransportType.LinphoneTransportTls);
-				proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
+				proxyAddr.setTransport(TransportType.LinphoneTransportTls);
+				//proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
 				LinphoneProxyConfig proxycon = lc.createProxyConfig(identity,
 						proxyAddr.asStringUriOnly(),
 						proxyAddr.asStringUriOnly(), true);
