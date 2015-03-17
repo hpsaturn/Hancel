@@ -58,11 +58,11 @@ public class PreferenciasHancel {
 		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
 		 return prefs.getString(PREF_GENERAL_PANIC_ALERT, "Sin Alertas");
 	 }
-	public static long getAlarmPreferenceInMilis(Context context)
-	{
+	
+	public static long getAlarmPreferenceInMilis(Context context){
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 		int intervalo = Integer.valueOf(sp.getString("pref_key_intervalo_recordatorio","2"));
-		return intervalo*3600000; // 3 600 000 = 1 hora
+		return intervalo * 3600000; // 3 600 000 = 1 hora
 	}
 	public static void setUserId(Context context,int id)
 	 {

@@ -325,13 +325,18 @@ public class Util {
 			return trackID;
 			
 	   }
-	   public static PendingIntent getReminderPendingIntennt(Context context)
-	   {
+	   
+	   /**
+	    * Recordatorio de notificacion de que todo esta bien
+	    * @param context
+	    * @return
+	    */
+	   public static PendingIntent getReminderPendingIntennt(Context context){
 		   Intent i = new Intent(context,ReminderService.class);
 		   PendingIntent pi =  PendingIntent.getService(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-		   return pi;
-		   
+		   return pi;		  
 	   }
+	   
 	   public static PendingIntent getStopSchedulePendingIntentWithExtra(Context context)
 	   {
 		   Intent i = new Intent(context,StopScheduleActivity.class);

@@ -57,6 +57,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 	private LocationClient mLocationClient;
 	private ContactoDAO contactoDao;
 	private ejecutaPanico mTask;
+	private String result;
 	
 	///
 	
@@ -160,15 +161,13 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			}
 			
 			if(numbers.size() == 0){
-				Toast.makeText(getApplicationContext(), 
-						"No hay numeros configurados para enviar la alarma", 
-						Toast.LENGTH_SHORT).show();
-			}	
+				result = "No se encontraron anillos configurados"; 
+			}
 			else{
 				Log.v("=== Numero de mensajes a enviar: " + numbers.size());
 				SharedPreferences preferencias = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 				String message = preferencias.getString("pref_key_custom_msg","Ayuda");
-				
+				int fails = 0;
 				for(int i = 0; i < numbers.size(); i++){
 					try{
 						
@@ -182,8 +181,15 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 					catch (Exception ex) {
 						Log.v("Ocurrio un Error al enviar SMS. Excepcion: " + 
 								ex.getMessage());
+						fails += 1;
 					}
-				}	
+				}
+				if(fails == numbers.size()){
+					result = "Los numeros de contacto a notificar no son validos";
+				}
+				else{
+					result = "OK";
+				}
 			}
 			try{
 				HttpUtils.sendPanic(PreferenciasHancel.getDeviceId(getApplicationContext()),
@@ -199,48 +205,28 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			return null;
 		}
 
-		/*
-		private String getContactById(String photoId) {
-			StringBuilder lista = new StringBuilder();
-			Cursor cur1 = getApplicationContext().getContentResolver().query(
-					ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-					ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
-					new String[] { photoId }, null);
-			while (cur1.moveToNext()) {
-				String email = cur1
-						.getString(cur1
-								.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-				if (email != null && email.length() != 0) {
-					lista.append(email);
-					lista.append(",");
-				}
-			}
-			cur1.close();
-			return lista.toString();
-		}
-		*/
+		
 		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-			// iniciamos rastreo
-			// mostramos el fragmento de programaci�n de rastreo como "detener"
-			/*
-			 * Rastreo rastreo = (Rastreo)
-			 * getApplicationContext().getSupportFragmentManager
-			 * ().findFragmentById(R.id.fragmentRastreo); if(rastreo!=null) {
-			 * rastreo.panicButtonPressed(); }
-			 */
-			// cancelamos alarma
+		protected void onPostExecute(Void r) {
+			super.onPostExecute(r);			
+			// Cancelamos alarma
 			cancelAlarms();
 			if (!Util.isMyServiceRunning(getApplicationContext())) {
 				Util.inicarServicio(getApplicationContext());
 			}
-			// mostramos la fecha de la ultima vez que se corrio el p�nico y
-			// guardamos la nueva fecha
-			String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar
-					.getInstance());
-			PreferenciasHancel.setLastPanicAlert(getApplicationContext(),
-					currentDateandTime);
+			// Muestra la fecha de la ultima vez que se corrio el panico y
+			// guarda la nueva fecha si el resultado del envio de SMS fue OK
+			if(result.equalsIgnoreCase("OK")){
+				String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar
+						.getInstance());
+				PreferenciasHancel.setLastPanicAlert(getApplicationContext(),
+						currentDateandTime);
+				Toast.makeText(getApplicationContext(),"Contactos notificados. " +
+						"Inicia función de rastreo.", Toast.LENGTH_LONG).show();
+			}
+			else{
+				Toast.makeText(getApplicationContext(),result, Toast.LENGTH_LONG).show();
+			}
 			stopSelf();
 		}
 	}
@@ -282,31 +268,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 
 	}
 
-	/*
-	private ArrayList<ContactInfo> getSqliteContacts() {
-		ArrayList<ContactInfo> userInfo = new ArrayList<ContactInfo>();
-		contactoDao = new ContactoDAO(getApplicationContext());
-		contactoDao.open();
-		Cursor c = contactoDao.getList();
-		if (c != null) {
-			while (c.moveToNext()) {
-				int id = c.getInt(1);
-				String phones = c.getString(2);
-				String photoId = c.getString(3);
-				ContactInfo ci = new ContactInfo("", String.valueOf(id));
-				ci.setContactNumbers(phones);
-				ci.setPhotoId(photoId);
-				userInfo.add(ci);
-			}
-		}
-		try {
-			c.close();
-		} catch (Exception ex) {
-		}
-		contactoDao.close();
-		return userInfo;
-	}
-	*/
+	
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
 		// TODO Auto-generated method stub
@@ -323,7 +285,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 
 	@Override
 	public void onDisconnected() {
-		// TODO Auto-generated method stub
+		
 
 	}
 

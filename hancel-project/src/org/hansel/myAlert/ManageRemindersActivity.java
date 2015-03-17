@@ -32,25 +32,33 @@ public class ManageRemindersActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//usuario dio clic a la notificación reseteamos contador
+		//Reset a la alarma de notificaciÃ³n
 		PreferenciasHancel.setReminderCount(getApplicationContext(), 0);
-		 AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-		 am.cancel(Util.getReminderPendingIntennt(getApplicationContext()));
-		//cancelamos la alarma de recordatorio del servicio de 3 minutos
+		
+		//Cancela los intentos de notificacion de todo esta bien que esten pendientes
+		AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+		am.cancel(Util.getReminderPendingIntennt(getApplicationContext()));
+		
+		//Cancela la alarma de notificacion de todo esta bien que se lanza cada 3 minutos
 		//iniciamos una alarma cada 2.4,5, horas para preguntar de nuevo
-		 //nueva alarma dentro de X horas
-		 //detenenmos servicio de alarma
+		//nueva alarma dentro de X horas
+		//detenenmos servicio de alarma
 		 Intent cancelAlarmSound = new Intent(ReminderService.CANCEL_ALARM_BROADCAST);
 		 sendBroadcast(cancelAlarmSound);
 		 
-		 long due = System.currentTimeMillis() +PreferenciasHancel.getAlarmPreferenceInMilis(getApplicationContext());
-		 // long due = System.currentTimeMillis() + (60000*2); // 10 minutos de prueba
-	        Log.v("User clic siguiente actualización " + new Date(due));
-	        am.set(AlarmManager.RTC_WAKEUP, due, Util.getReminderPendingIntennt(getApplicationContext()));
+		 //Obtiene el intervalo de tiempo en el cual se enviaran las notificaciones
+		 //La configuracion lo tiene a 2 horas
+		 long due = System.currentTimeMillis() + PreferenciasHancel
+				 .getAlarmPreferenceInMilis(getApplicationContext());
+		 
+		 //Inicializa en alarm Manager para que el recordatorio de Todo esta bien se lance
+		 //como notificacion de alarma
+	     am.set(AlarmManager.RTC_WAKEUP, due, Util.getReminderPendingIntennt(getApplicationContext()));
 	    	NotificationManager notificationManager = (NotificationManager) 
-					  getSystemService(NOTIFICATION_SERVICE); 
+					  getSystemService(NOTIFICATION_SERVICE);
+	    	
+	    //Detiene el servicio de recordatorio de todo esta bien	
 		notificationManager.cancel(ReminderService.NOTIFICATION_ID);
-		 finish();
+		finish();
 	}
-
 }
