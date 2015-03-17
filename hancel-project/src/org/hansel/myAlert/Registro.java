@@ -240,7 +240,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 				String IMEI = Util.getIMEI(getApplicationContext());
 				String id = SimpleCrypto.md5(String.valueOf(Calendar
 						.getInstance().getTimeInMillis()));
-				String crypto = SimpleCrypto.md5(mPassword).substring(0, 10);
+				String crypto = SimpleCrypto.md5(mPassword);
 				JSONObject result = HttpUtils.Register(id, mUsuario, crypto,
 						mEmail, "", IMEI);
 
@@ -377,6 +377,15 @@ public class Registro extends org.holoeverywhere.app.Activity {
 					// null);
 				}
 
+				LinphoneAuthInfo[] authInfosList = lc.getAuthInfosList();
+				if(authInfosList!=null)
+				{
+					for(int i=0; i<authInfosList.length; i++)
+					{
+						lc.removeAuthInfo(authInfosList[i]);
+					}
+				}
+				
 				lc.addAuthInfo(lAuthInfo);
 
 			} catch (LinphoneCoreException e) {

@@ -355,9 +355,17 @@ public class Login extends org.holoeverywhere.app.Activity {
 					else if (LinphoneService.isReady()) {
 						//LinphoneService.instance().registrationState(lc, lDefaultProxyConfig, RegistrationState.RegistrationNone, null);
 					}
-		
-					lc.addAuthInfo(lAuthInfo);
-		
+
+					LinphoneAuthInfo[] authInfosList = lc.getAuthInfosList();
+					if(authInfosList!=null)
+					{
+						for(int i=0; i<authInfosList.length; i++)
+						{
+							lc.removeAuthInfo(authInfosList[i]);
+						}
+					}
+					
+					lc.addAuthInfo(lAuthInfo);		
 				} 
 				catch(LinphoneCoreException e)
 				{
