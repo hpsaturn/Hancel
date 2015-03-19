@@ -107,6 +107,16 @@ public class EditRingFragment extends Fragment {
 		ringName = (EditText) view.findViewById(R.id.ringName);
 		ringNotify = (CheckBox) view.findViewById(R.id.ringNotify);
 		
+		final float scale = getResources().getDisplayMetrics().density;
+		Log.d("=== Density : " + scale);
+		if(scale <= 1.5f){			
+			ringNotify.setPadding(ringNotify.getPaddingLeft() + 
+					(int)(24.0f * scale),
+					ringNotify.getPaddingTop(),
+					ringNotify.getPaddingRight(),
+					ringNotify.getPaddingBottom());
+		}
+		
 		contactsList = (ListView) view.findViewById(R.id.ringContactsList);        
                               		
 		ok = (TextView) view.findViewById(R.id.ok);
@@ -387,8 +397,6 @@ public class EditRingFragment extends Fragment {
 	
 	
 	
-	
-	
 	class RingsContactsListAdapter extends BaseAdapter implements SectionIndexer {
 		private int margin;
 		private Bitmap bitmapUnknown;
@@ -429,11 +437,22 @@ public class EditRingFragment extends Fragment {
 			} 
 			else {
 				convertView= inflater.inflate(R.layout.contact_ring_cell, parent, false);					
-				holder = new ViewHolder();
+				holder = new ViewHolder();	
+				
+				holder.selected = (CheckBox) convertView.findViewById(R.id.chooseFriend);
 				holder.contactName = (TextView) convertView.findViewById(R.id.name);
 				holder.contactId = (TextView) convertView.findViewById(R.id.contactId);
-				holder.selected = (CheckBox) convertView.findViewById(R.id.chooseFriend);
-				//holder.icon = (ImageView) convertView.findViewById(R.id.icon);
+				
+				final float scale = getResources().getDisplayMetrics().density;
+				if(scale <= 1.5f){
+					Log.d("=== Density : " + scale);
+					holder.selected.setPadding(holder.selected.getPaddingLeft() + 
+							(int)(26.0f * scale),
+							holder.selected.getPaddingTop(),
+							holder.selected.getPaddingRight(),
+							holder.selected.getPaddingBottom());
+				}
+				holder.icon = (ImageView) convertView.findViewById(R.id.icon);
 				convertView.setTag(holder);
 			   
 				holder.selected.setOnClickListener(new View.OnClickListener() { 
@@ -458,7 +477,7 @@ public class EditRingFragment extends Fragment {
 			holder.contactName.setText(cr.getContactName());
 			holder.selected.setChecked(cr.isSelected());
 			holder.selected.setTag(cr);
-			/*holder.icon.setImageBitmap(bitmapUnknown);
+			holder.icon.setImageBitmap(bitmapUnknown);
 			 
 			if (cr.getPhoto() != null) {
 				holder.icon.setImageBitmap(cr.getPhoto());
@@ -468,7 +487,7 @@ public class EditRingFragment extends Fragment {
 			} 
 			else {
 				holder.icon.setImageBitmap(bitmapUnknown);
-			}*/
+			}
 			
 			TextView separator = (TextView) convertView.findViewById(R.id.separator);
 			LinearLayout layout = (LinearLayout) convertView.findViewById(R.id.layout);
@@ -512,11 +531,12 @@ public class EditRingFragment extends Fragment {
 		}
 
 		
-		private class ViewHolder {			   
-			   TextView contactId;
-			   TextView contactName;
-			   CheckBox selected;
-			   ImageView icon;
+		private class ViewHolder {
+			CheckBox selected;
+			ImageView icon;
+			TextView contactName;
+			TextView contactId;
+			   
 		}
 	}
 		

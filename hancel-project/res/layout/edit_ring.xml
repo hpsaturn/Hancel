@@ -91,8 +91,9 @@
 		            android:layout_height="wrap_content"
 		            android:gravity="left"
 		            android:hint="@string/ring_always"
+		            android:lines="2"
 		            android:paddingLeft="5dp"
-		            android:textColor="@color/text_contrast"
+		            android:background="@color/background_header"
 		            android:textCursorDrawable="@null" />
 
 		    </LinearLayout>

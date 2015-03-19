@@ -19,40 +19,41 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="40dp"
         android:orientation="horizontal" >
-
+        
         <CheckBox
             android:id="@+id/chooseFriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:adjustViewBounds="true"
+            android:layout_marginLeft="10dp"            
+            android:paddingLeft="3dp"
             android:background="@color/background_header"
-            android:gravity="left"
+            android:textCursorDrawable="@null"
             android:visibility="visible" />
-
-        <!-- ImageView
+        
+        <ImageView
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/chooseFriend"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="45dp"
-            android:adjustViewBounds="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/chooseFriend"
+            android:layout_marginLeft="5dp"
             android:contentDescription="@string/content_description_contact_picture"
             android:scaleType="centerInside"
-            android:src="@drawable/unknown_small" /-->
-
+            android:adjustViewBounds="true"
+            android:src="@drawable/unknown_small"/>
+            
+        
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/chooseFriend"
+            android:layout_toRightOf="@id/icon"
+            android:paddingLeft="5dp"
             android:lines="2"
             android:textColor="@color/text_contrast"
             android:textSize="14sp" />
@@ -65,6 +66,9 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/text_contrast"
             android:visibility="invisible"/>
+        
+         
+         
     </RelativeLayout>
     
 </LinearLayout>
