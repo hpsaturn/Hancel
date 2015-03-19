@@ -24,8 +24,10 @@ import java.util.List;
 
 import org.hancel.exceptions.NoInternetException;
 import org.hancel.http.HttpUtils;
+import org.hansel.myAlert.Login;
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
+import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.FlipDAO;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,7 +80,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onCreate(Bundle bundle) {
-		getActivity().setTheme(R.style.Holo_Theme);			
+		getActivity().setTheme(R.style.myTheme_Preference);			
 		super.onCreate(bundle);
 		// Init the settings page interface
 		initSettings();		
@@ -108,14 +110,34 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 				return false;
 			}
 		});
-		findPreference(getString(R.string.setup_key)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		
+		//Action for Hancel logout
+		findPreference(getString(R.string.pref_key_logout)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		@Override
+		public boolean onPreferenceClick(Preference preference) {
+			if (MainActivity.isInstanciated()) {
+				Util.setLoginOkInPreferences(MainActivity.instance()
+						.getApplicationContext(), false);
+				Intent i = new Intent(MainActivity.instance()
+						.getApplicationContext(),Login.class);
+				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK 
+						| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				MainActivity.instance().getApplicationContext().startActivity(i);
+				
+				getActivity().finish();				
+				return true;
+			}
+			return false;
+		}
+	});
+		/*findPreference(getString(R.string.setup_key)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				Intent intent = new Intent(LinphoneService.instance(), SetupActivity.class);
 	        	startActivityForResult(intent, WIZARD_INTENT);
 	        	return true;
 			}
-		});
+		});*/
 	}
 
 	// Sets listener for each preference to update the matching value in linphonecore
@@ -271,6 +293,8 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 			}
 		});
 	}
+	
+	
 
 	private void setTunnelPreferencesListener() {
 		findPreference(getString(R.string.pref_tunnel_host_key)).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -966,7 +990,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		//getActivity().setTheme(R.style.Holo_Theme);
 		super.onResume();
 
-		initAccounts();
+		//initAccounts();
 
 		if (MainActivity.isInstanciated()) {
 			MainActivity.instance().selectMenu(FragmentsAvailable.SETTINGS);

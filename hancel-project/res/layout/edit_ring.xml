@@ -93,7 +93,7 @@
 		            android:hint="@string/ring_always"
 		            android:lines="2"
 		            android:paddingLeft="5dp"
-		            android:background="@color/background_header"
+		            android:background="@color/text_contrast"
 		            android:textCursorDrawable="@null" />
 
 		    </LinearLayout>

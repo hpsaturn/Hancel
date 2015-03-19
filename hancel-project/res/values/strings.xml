@@ -549,6 +549,12 @@
     <string name="registration_fail">Código de activación no válido</string>
     <string name="registration_empty">Registro exitoso pero sin números de contacto. Comuniquese con la FLIP</string>
     <string name="registration_ok">Registro exitoso.</string>
-    
+    <string name="pref_summary_logout">Cerrar la sesion Hancel</string>
+    <string name="pref_title_logout">Salir</string>
+    <string name="pref_title_pssw">Cambiar contraseña</string>
+    <string name="pref_summary_about">Acerca de Hancel</string>
+    <string name="activación">Registre su código FLIP</string>
+    <string name="pref_summary_flip_code_ok">Actualmente registrado</string>
+    <string name="pref_summary_flip_code_none">Código FLIP no registrado</string>
     
 </resources>

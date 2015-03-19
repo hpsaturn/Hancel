@@ -325,9 +325,11 @@ public class LinphoneManager implements LinphoneCoreListener {
 			mListenerDispatcher.tryingNewOutgoingCallButWrongDestinationAddress();
 			return;
 		}
+		
 		lAddress.setDisplayName(displayName);
 
-		boolean isLowBandwidthConnection = !LinphoneUtils.isHightBandwidthConnection(LinphoneService.instance().getApplicationContext());
+		boolean isLowBandwidthConnection = !LinphoneUtils.isHightBandwidthConnection
+				(LinphoneService.instance().getApplicationContext());
 
 		if (mLc.isNetworkReachable()) {
 			try {
@@ -339,10 +341,9 @@ public class LinphoneManager implements LinphoneCoreListener {
 							isLowBandwidthConnection);
 				} 
 				else {
-					CallManager.getInstance().inviteAddress(lAddress, false, isLowBandwidthConnection);
+					CallManager.getInstance().inviteAddress(lAddress, false, 
+							isLowBandwidthConnection);
 				}
-
-
 			} catch (LinphoneCoreException e) {
 				mListenerDispatcher.tryingNewOutgoingCallButCannotGetCallParameters();
 				return;
