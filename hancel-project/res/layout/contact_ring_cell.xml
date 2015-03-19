@@ -19,7 +19,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="fill_parent"
         android:orientation="horizontal" >
 
         <CheckBox
@@ -34,7 +34,7 @@
             android:gravity="left"
             android:visibility="visible" />
 
-        <ImageView
+        <!-- ImageView
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,15 +44,15 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/content_description_contact_picture"
             android:scaleType="centerInside"
-            android:src="@drawable/unknown_small" />
+            android:src="@drawable/unknown_small" /-->
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toRightOf="@id/icon"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/chooseFriend"
             android:lines="2"
             android:textColor="@color/text_contrast"
             android:textSize="14sp" />
@@ -64,7 +64,7 @@
             android:layout_centerVertical="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/text_contrast"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
     </RelativeLayout>
     
 </LinearLayout>

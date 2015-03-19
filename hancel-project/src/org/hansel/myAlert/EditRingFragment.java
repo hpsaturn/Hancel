@@ -433,7 +433,7 @@ public class EditRingFragment extends Fragment {
 				holder.contactName = (TextView) convertView.findViewById(R.id.name);
 				holder.contactId = (TextView) convertView.findViewById(R.id.contactId);
 				holder.selected = (CheckBox) convertView.findViewById(R.id.chooseFriend);
-				holder.icon = (ImageView) convertView.findViewById(R.id.icon);
+				//holder.icon = (ImageView) convertView.findViewById(R.id.icon);
 				convertView.setTag(holder);
 			   
 				holder.selected.setOnClickListener(new View.OnClickListener() { 
@@ -458,7 +458,7 @@ public class EditRingFragment extends Fragment {
 			holder.contactName.setText(cr.getContactName());
 			holder.selected.setChecked(cr.isSelected());
 			holder.selected.setTag(cr);
-			holder.icon.setImageBitmap(bitmapUnknown);
+			/*holder.icon.setImageBitmap(bitmapUnknown);
 			 
 			if (cr.getPhoto() != null) {
 				holder.icon.setImageBitmap(cr.getPhoto());
@@ -468,7 +468,7 @@ public class EditRingFragment extends Fragment {
 			} 
 			else {
 				holder.icon.setImageBitmap(bitmapUnknown);
-			}
+			}*/
 			
 			TextView separator = (TextView) convertView.findViewById(R.id.separator);
 			LinearLayout layout = (LinearLayout) convertView.findViewById(R.id.layout);

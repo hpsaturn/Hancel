@@ -116,7 +116,8 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			mPassword = vPassword.getText().toString().trim();
 			mPasswordConfirm = vPasswordConfirm.getText().toString().trim();
 			mEmail = vEmail.getText().toString().trim();
-		} catch (NullPointerException e) {
+		} 
+		catch (NullPointerException e) {
 			vUsuario.setError(getString(R.string.invalid_empty));
 			focusView = vUsuario;
 			cancel = true;
@@ -305,12 +306,15 @@ public class Registro extends org.holoeverywhere.app.Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			showProgress(false);
-
+			
 			if (success) {
 				// mostramos el Intent
 				// pasamos al siguiente paso
-				Intent i = new Intent(getApplicationContext(),
+				/*Intent i = new Intent(getApplicationContext(),
 						ConfigContactsActivity.class);
+				i.putExtra("registro", true);*/
+				Intent i = new Intent(getApplicationContext(),
+						MainActivity.class);
 				i.putExtra("registro", true);
 				/*
 				 * Intent i = new
@@ -320,7 +324,8 @@ public class Registro extends org.holoeverywhere.app.Activity {
 				 * Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				 */
 				startActivity(i);
-			} else {
+			} 
+			else {
 				errores.setVisibility(View.VISIBLE);
 				findViewById(R.id.actions1).setVisibility(View.VISIBLE);
 				errores.setText(mErrores);
