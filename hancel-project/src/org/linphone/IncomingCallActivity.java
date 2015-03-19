@@ -115,7 +115,10 @@ public class IncomingCallActivity extends Activity implements LinphoneOnCallStat
 		mNameView.setText(address.getDisplayName());
 		if (getResources().getBoolean(R.bool.only_display_username_if_unknown)) {
 			mNumberView.setText(address.getUserName());
-		} else {
+		} 
+		else {
+			String numberView  = address.asStringUriOnly().replace(getResources()
+					.getString(R.string.default_account_prefix), "");
 			mNumberView.setText(address.asStringUriOnly());
 		}
 	}

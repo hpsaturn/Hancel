@@ -349,9 +349,11 @@ public class LinphonePreferences {
 
 				if (transport.equals(getString(R.string.pref_transport_udp_key))) {
 					proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
-				} else if (transport.equals(getString(R.string.pref_transport_tcp_key))) {
+				} 
+				else if (transport.equals(getString(R.string.pref_transport_tcp_key))) {
 					proxyAddr.setTransport(TransportType.LinphoneTransportTcp);
-				} else if (transport.equals(getString(R.string.pref_transport_tls_key))) {
+				} 
+				else if (transport.equals(getString(R.string.pref_transport_tls_key))) {
 					proxyAddr.setTransport(TransportType.LinphoneTransportTls);
 				}
 

@@ -316,7 +316,8 @@ public class LinphoneManager implements LinphoneCoreListener {
 			}
 			LinphoneProxyConfig lpc = mLc.getDefaultProxyConfig();
 
-			if (mR.getBoolean(R.bool.forbid_self_call) && lpc!=null && lAddress.asStringUriOnly().equals(lpc.getIdentity())) {
+			if (mR.getBoolean(R.bool.forbid_self_call) && lpc!=null && 
+					lAddress.asStringUriOnly().equals(lpc.getIdentity())) {
 				mListenerDispatcher.tryingNewOutgoingCallButWrongDestinationAddress();
 				return;
 			}
@@ -333,8 +334,11 @@ public class LinphoneManager implements LinphoneCoreListener {
 				if (Version.isVideoCapable()) {
 					boolean prefVideoEnable = mPrefs.isVideoEnabled();
 					boolean prefInitiateWithVideo = mPrefs.shouldInitiateVideoCall();
-					CallManager.getInstance().inviteAddress(lAddress, prefVideoEnable && prefInitiateWithVideo, isLowBandwidthConnection);
-				} else {
+					CallManager.getInstance().inviteAddress(lAddress, 
+							prefVideoEnable && prefInitiateWithVideo, 
+							isLowBandwidthConnection);
+				} 
+				else {
 					CallManager.getInstance().inviteAddress(lAddress, false, isLowBandwidthConnection);
 				}
 
@@ -343,9 +347,12 @@ public class LinphoneManager implements LinphoneCoreListener {
 				mListenerDispatcher.tryingNewOutgoingCallButCannotGetCallParameters();
 				return;
 			}
-		} else if (MainActivity.isInstanciated()) {
-			MainActivity.instance().displayCustomToast(getString(R.string.error_network_unreachable), Toast.LENGTH_LONG);
-		} else {
+		} 
+		else if (MainActivity.isInstanciated()) {
+			MainActivity.instance().displayCustomToast(getString(R.string
+					.error_network_unreachable), Toast.LENGTH_LONG);
+		} 
+		else {
 			Log.e("Error: " + getString(R.string.error_network_unreachable));
 		}
 	}

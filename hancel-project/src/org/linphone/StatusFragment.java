@@ -369,15 +369,18 @@ public class StatusFragment extends Fragment {
 
 			if (isVideoEnabled) {
 				background.setVisibility(View.GONE);
-			} else {
+			} 
+			else {
 				background.setVisibility(View.VISIBLE);
 			}
 			
 			if (mediaEncryption == MediaEncryption.SRTP || (mediaEncryption == MediaEncryption.ZRTP && call.isAuthenticationTokenVerified())) {
 				encryption.setImageResource(R.drawable.security_ok);
-			} else if (mediaEncryption == MediaEncryption.ZRTP && !call.isAuthenticationTokenVerified()) {
+			} 
+			else if (mediaEncryption == MediaEncryption.ZRTP && !call.isAuthenticationTokenVerified()) {
 				encryption.setImageResource(R.drawable.security_pending);
-			} else {
+			} 
+			else {
 				encryption.setImageResource(R.drawable.security_ko);
 			}
 			

@@ -254,14 +254,16 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 		try {
 			sms.sendTextMessage(telefono, null, mensaje, null, null);
 			Log.v("Mensaje enviado a " + telefono);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 				Log.v(e.getMessage());
 			try {
 				ArrayList<String> parts = sms.divideMessage(mensaje);
 				sms.sendMultipartTextMessage(telefono, null, parts, null, null);
 				Log.v("Mensaje enviado en partes " + telefono);
-			} catch (Exception i) {
-				Log.v("Error al mandar , falla al envio de SMS");
+			} 
+			catch (Exception i) {
+				Log.v("Error al enviar , falla al envio de SMS");
 				e.printStackTrace();
 			}
 		}

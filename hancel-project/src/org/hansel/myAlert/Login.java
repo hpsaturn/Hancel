@@ -30,6 +30,7 @@ import org.hansel.myAlert.WelcomeInfo.ScreenSlidePageAdapter;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
 import org.json.JSONObject;
 
+import org.linphone.LinphonePreferences;
 import org.linphone.LinphoneService;
 import org.linphone.LinphoneManager;
 import org.linphone.core.LinphoneAuthInfo;
@@ -84,6 +85,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 		startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
 		
 		//buscamos si quedo en un paso del registro y no termino
+		/*
 		int step= PreferenciasHancel.getCurrentWizardStep(getApplicationContext());
 		switch (step) {
 		case Util.REGISTRO_PASO_2:
@@ -105,7 +107,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 		default:
 			break;
 		}
-
+	*/
 		if(PreferenciasHancel.getLoginOk(getApplicationContext())){
 			Intent i = new Intent(getApplicationContext(),MainActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK 
@@ -332,12 +334,13 @@ public class Login extends org.holoeverywhere.app.Activity {
 					LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
 							.createAuthInfo(getResources().getString(R.string.default_account_prefix) 
 									+ mUser, SimpleCrypto.md5(mPasswd).substring(0, 10), null, 
-									getResources().getString(R.string.default_domain));
-		
+									getResources().getString(R.string.default_domain));										
+					
 					String identity = "sip:" + getResources().getString(R.string.default_account_prefix)
 							+ mUser.toLowerCase() +"@" + getResources().getString(R.string.default_domain);
+					
 					String proxy = "sip:" + getResources().getString(R.string.default_domain);
-					Log.v("=== Usuario que va a autenticar en el SIP: " + identity);
+					
 					LinphoneAddress proxyAddr = LinphoneCoreFactory.instance().createLinphoneAddress(proxy);
 					proxyAddr.setTransport(TransportType.LinphoneTransportTls);
 					//proxyAddr.setTransport(TransportType.LinphoneTransportUdp);								

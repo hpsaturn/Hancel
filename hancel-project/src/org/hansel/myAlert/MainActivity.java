@@ -33,6 +33,7 @@ import org.linphone.core.LinphoneAddress.TransportType;
 import org.linphone.core.LinphoneCall.State;
 import org.linphone.core.LinphoneCallLog.CallStatus;
 import org.linphone.core.LinphoneChatMessage;
+import org.linphone.core.LinphoneCore.MediaEncryption;
 import org.linphone.core.LinphoneCore.RegistrationState;
 import org.linphone.core.CallDirection;
 import org.linphone.core.LinphoneAuthInfo;
@@ -164,7 +165,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if(!isGooglePlayServicesAvailable()){
 			finish();
 		}
-
+				
 		//Setting the main content view and default frame 
 		setContentView(R.layout.tabs);
 
@@ -188,7 +189,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		instance = this;
 		fragmentsHistory = new ArrayList <FragmentsAvailable>();
 		currentFragment = nextFragment = FragmentsAvailable.PANIC;
-		fragmentsHistory.add(currentFragment);	
+		fragmentsHistory.add(currentFragment);
+		
+		LinphonePreferences.instance().setMediaEncryption(MediaEncryption.SRTP);
 	}
 
 

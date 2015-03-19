@@ -342,6 +342,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			try {
 				LinphoneCore lc = LinphoneManager
 						.getLcIfManagerNotDestroyedOrNull();
+				
 
 				LinphoneAuthInfo lAuthInfo = LinphoneCoreFactory.instance()
 						.createAuthInfo(
@@ -355,7 +356,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 
 				// Log.v("=== Usuario que va a autenticar en el SIP: " +
 				// identity);
-
+					
 				LinphoneAddress proxyAddr = LinphoneCoreFactory.instance()
 						.createLinphoneAddress(proxy);
 				proxyAddr.setTransport(TransportType.LinphoneTransportTls);
@@ -363,14 +364,15 @@ public class Registro extends org.holoeverywhere.app.Activity {
 				LinphoneProxyConfig proxycon = lc.createProxyConfig(identity,
 						proxyAddr.asStringUriOnly(),
 						proxyAddr.asStringUriOnly(), true);
-
+				
 				lc.addProxyConfig(proxycon);
 				lc.setDefaultProxyConfig(proxycon);
-
+				
 				LinphoneProxyConfig lDefaultProxyConfig = lc
 						.getDefaultProxyConfig();
 				if (lDefaultProxyConfig != null) {
 					lDefaultProxyConfig.setDialEscapePlus(false);
+					
 				} 
 				else if (LinphoneService.isReady()) {
 					// LinphoneService.instance().registrationState(lc,

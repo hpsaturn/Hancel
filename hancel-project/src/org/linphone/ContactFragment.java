@@ -53,7 +53,6 @@ public class ContactFragment extends Fragment implements OnClickListener {
 		public void onClick(View v) {
 			if (MainActivity.isInstanciated()) {
 				String callId = v.getTag().toString();
-				Log.v("=== llamando a: " + callId);
 				MainActivity.instance().setAddresGoToDialerAndCall(
 						callId, contact.getName(), 
 						contact.getPhotoUri());

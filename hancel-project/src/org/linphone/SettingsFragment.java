@@ -78,7 +78,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onCreate(Bundle bundle) {
-		getActivity().setTheme(R.style.AppBaseTheme);			
+		getActivity().setTheme(R.style.Holo_Theme);			
 		super.onCreate(bundle);
 		// Init the settings page interface
 		initSettings();		
@@ -396,7 +396,8 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		boolean hasSrtp = lc.mediaEncryptionSupported(MediaEncryption.SRTP);
 		if (!hasSrtp && !hasZrtp) {
 			pref.setEnabled(false);
-		} else {
+		} 
+		else {
 			if (hasSrtp){
 				entries.add(getString(R.string.media_encryption_srtp));
 				values.add(getString(R.string.pref_media_encryption_key_srtp));
