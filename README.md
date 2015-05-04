@@ -1,7 +1,6 @@
 Hancel es una aplicación móvil para protección personal. Permite enviar notificaciones a redes de contactos (anillos de seguridad) en caso de peligro, realizar llamadas utilizando VoIP y enviar SMS cifrados ente clientes Hancel. 
 
 # Características de Hancel
-
 Puede utilizarse por profesionales o activistas como herramienta de protección personal al realizar trabajos de campo en zonas de peligro. En el caso de los periodistas, puede utilizarse para proteger la libertad de expresión al presentarse un caso de ataque contra su integridad personal. 
 
 Hancel cuenta con las siguientes carácterísticas y tipos de alerta:
