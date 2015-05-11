@@ -32,6 +32,7 @@ import org.hansel.myAlert.dataBase.FlipDAO;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.InCallActivity.AcceptCallUpdateDialog;
 import org.linphone.LinphoneManager.EcCalibrationListener;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneCore;
@@ -50,6 +51,10 @@ import org.linphone.setup.SetupActivity;
 import org.linphone.ui.LedPreference;
 import org.linphone.ui.PreferencesListFragment;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -62,6 +67,13 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
 /**
@@ -116,15 +128,12 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
 			if (MainActivity.isInstanciated()) {
-				Util.setLoginOkInPreferences(MainActivity.instance()
-						.getApplicationContext(), false);
-				Intent i = new Intent(MainActivity.instance()
-						.getApplicationContext(),Login.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK 
-						| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				MainActivity.instance().getApplicationContext().startActivity(i);
-				
-				getActivity().finish();				
+				//AcceptLogoutDialog logoutDialog = new AcceptLogoutDialog();
+				FragmentManager fm = MainActivity.instance().getSupportFragmentManager();
+				//logoutDialog.show(fm, "Salir de Hancel");
+				DialogFragment newFragment = LogoutDialogFragment.newInstance(
+			            R.string.logout_desc);
+			    newFragment.show(getFragmentManager(), "dialog");
 				return true;
 			}
 			return false;
@@ -1041,4 +1050,82 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 					Toast.LENGTH_SHORT).show();
 		}
 	}
+	
+	public static class LogoutDialogFragment extends DialogFragment {
+
+		public static LogoutDialogFragment newInstance(int title) {
+			LogoutDialogFragment frag = new LogoutDialogFragment();
+	        Bundle args = new Bundle();
+	        args.putInt("title", title);
+	        frag.setArguments(args);
+	        return frag;
+	    }
+
+	    @Override
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        int title = getArguments().getInt("title");
+
+	        return new AlertDialog.Builder(getActivity())
+	                //.setIcon(R.drawable.alert_dialog_icon)
+	                .setTitle(title)
+	                .setPositiveButton(R.string.logout,
+	                    new DialogInterface.OnClickListener() {
+	                        public void onClick(DialogInterface dialog, int whichButton) {
+	                        	Log.d("Hancel sing out");
+	        			    	Util.setLoginOkInPreferences(MainActivity.instance()
+	        							.getApplicationContext(), false);											
+	        					getActivity().finish();
+	                        }
+	                    }
+	                )
+	                .setNegativeButton(R.string.cancel,
+	                    new DialogInterface.OnClickListener() {
+	                        public void onClick(DialogInterface dialog, int whichButton) {
+	                            
+	                        }
+	                    }
+	                )
+	                .create();
+	    }
+	}
+/*	
+	@SuppressLint("ValidFragment")
+	class AcceptLogoutDialog extends DialogFragment {
+
+	    public AcceptLogoutDialog() {
+	        // Empty constructor required for DialogFragment
+	    }
+
+	    @Override
+	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	        View view = inflater.inflate(R.layout.logout_dialog, container);
+
+	        getDialog().setTitle(R.string.logout_title);
+	        
+	        Button yes = (Button) view.findViewById(R.id.yes);
+	        yes.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+			    	Log.d("Hancel sing out");
+			    	Util.setLoginOkInPreferences(MainActivity.instance()
+							.getApplicationContext(), false);											
+					getActivity().finish();
+				}
+			});
+	        
+	        
+	        
+	        Button no = (Button) view.findViewById(R.id.no);
+	        no.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+			    	Log.d("No Hancel sing out");
+			    	this.dismiss();
+			    	
+				}
+			});
+	        
+	        return view;
+	    }
+	}*/
 }

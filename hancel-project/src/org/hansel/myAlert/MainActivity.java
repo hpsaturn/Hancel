@@ -193,7 +193,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		
 		LinphonePreferences.instance().setMediaEncryption(MediaEncryption.SRTP);
 	}
-
+	
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
@@ -1248,7 +1248,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if (getResources().getBoolean(R.bool.use_android_native_contact_edit_interface)) {
 			Intent intent = Compatibility.prepareAddContactIntent(displayName, sipUri);
 			startActivity(intent);
-		} else {
+		} 
+		else {
 			Bundle extras = new Bundle();
 			extras.putSerializable("NewSipAdress", sipUri);
 			changeCurrentFragment(FragmentsAvailable.EDIT_CONTACT, extras);
@@ -1380,8 +1381,16 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			mOrientationHelper.disable();
 			mOrientationHelper = null;
 		}
+		
+		LinphoneManager.getInstance().changeStatusToOffline();
 
+		Intent lp = new Intent(MainActivity.instance()
+				.getApplicationContext(),LinphoneService.class);
+		LinphoneService.instance().	
+		stopService(lp);
+		
 		instance = null;
+		
 		super.onDestroy();
 
 		unbindDrawables(findViewById(R.id.topLayout));
