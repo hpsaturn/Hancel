@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <Preference
-	    android:title="@string/menu_about"
-	    android:key="@string/menu_about_key"/>
-
-    <PreferenceCategory
+   
+    <!-- PreferenceCategory
         android:title="@string/pref_sipaccounts"        
 	    android:key="@string/pref_sipaccounts_key">
 	    	    
 		<Preference
 		    android:title="@string/setup_title"
-		    android:key="@string/setup_key"/>
-	</PreferenceCategory>	
+		    android:key="@string/setup_key"/-->
+		
+		<Preference 
+            android:key="@string/pref_key_logout"
+            android:summary="@string/pref_summary_logout"
+            android:title="@string/pref_title_logout" />
+		
+		<Preference 
+            android:key="@string/pref_key_pssw"
+            android:title="@string/pref_title_pssw" />
+		
+	<!-- /PreferenceCategory-->	
 
-     <PreferenceCategory
+     <!-- PreferenceCategory
 		    android:title="@string/pref_journalists"
-		    android:summary="@string/pref_journalists_summary">
+		    android:summary="@string/pref_journalists_summary"-->
 		    
 	        <EditTextPreference
 				android:title="@string/pref_journalists_code"
+				android:summary="@string/pref_summary_flip_code_none"
 				android:key="@string/pref_journalists_code_key"/>
 	        
-	        <!-- EditTextPreference
-				android:title="@string/pref_journalists_survey"						
-				android:key="@string/pref_journalists_survey_key"/-->
+	        
+	        <!-- Preference
+				android:title="@string/pref_journalists_survey"									
+				android:key="@string/pref_journalists_survey_key"-->
 	 
-	 </PreferenceCategory>   
+	 <!--/PreferenceCategory-->   
     
     <!-- PreferenceCategory
         android:title="@string/pref_tunnel"
@@ -280,4 +288,8 @@
 
 	</PreferenceCategory>
 	-->
+	<Preference
+	    android:title="@string/menu_about"
+	    android:summary="@string/pref_summary_about"
+	    android:key="@string/menu_about_key"/>
 </PreferenceScreen>

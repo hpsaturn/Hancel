@@ -133,6 +133,7 @@
 	<string name="pref_journalists_code_key">pref_journalists_code_key</string>
 	<string name="pref_journalists_survey_key">pref_journalists_code_key</string>
 	<string name="pref_journalists_survey_value">http://redpatodos.co</string>
+	<string name="pref_key_logout">pref_key_logout</string>
 	<string name="contacts_flip">contacts_flip</string>
-	
+	<string name="pref_key_pssw">pref_key_pssw</string>
 </resources>
