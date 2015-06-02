@@ -53,8 +53,8 @@ public class HistoryDetailFragment extends Fragment implements OnClickListener {
 		sipUri = getArguments().getString("SipUri");
 		displayName = getArguments().getString("DisplayName");
 		pictureUri = getArguments().getString("PictureUri");
-		hancelName = sipUri.replace(getResources().getString(R.string
-				.default_account_prefix),"").replace("@","").replace
+		hancelName = sipUri/*.replace(getResources().getString(R.string
+				.default_account_prefix),"")*/.replace("@","").replace
 				(getResources().getString(R.string.default_domain),"").replace("sip:", "hancel:");
 		String status = getArguments().getString("CallStatus");
 		String callTime = getArguments().getString("CallTime");
@@ -93,8 +93,8 @@ public class HistoryDetailFragment extends Fragment implements OnClickListener {
 	private void displayHistory(String status, String callTime, String callDate) {		
 		//contactName.setText(displayName == null ? hancelName : displayName);
 		
-		if(displayName != null && !displayName.contains(getResources().getString(
-				R.string.default_account_prefix))){
+		if(displayName != null /*&& !displayName.contains(getResources().getString(
+				R.string.default_account_prefix))*/){
 			contactName.setText(displayName);
 		}
 		else{
@@ -139,8 +139,8 @@ public class HistoryDetailFragment extends Fragment implements OnClickListener {
 		
 		if (displayName == null && getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
 			displayName = LinphoneUtils.getUsernameFromAddress(sipUri);
-			displayName = displayName.replace(getResources().getString(
-					R.string.default_account_prefix),"");
+			/*displayName = displayName.replace(getResources().getString(
+					R.string.default_account_prefix),""); */
 		}
 
 		this.sipUri = sipUri;

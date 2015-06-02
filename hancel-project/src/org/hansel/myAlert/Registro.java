@@ -56,8 +56,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class Registro extends org.holoeverywhere.app.Activity {
 
-	private EditText vUsuario, vPassword, vPasswordConfirm, vEmail;
-	private String mUsuario, mPassword, mPasswordConfirm, mEmail, mErrores;
+	private EditText vUsuario, vPassword, vPasswordConfirm, vEmail, vEmailConfirm;
+	private String mUsuario, mPassword, mPasswordConfirm, mEmail, mEmailConfirm, mErrores;
 	private UserCreateTask mAuthTask;
 	private View mLoginFormView, mLoginStatusView;
 	private TextView mLoginStatusMessageView, errores;
@@ -73,6 +73,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 		vPassword = (EditText) findViewById(R.id.reg_password2);
 		vPasswordConfirm = (EditText) findViewById(R.id.reg_password);
 		vEmail = (EditText) findViewById(R.id.reg_email);
+		vEmailConfirm = (EditText) findViewById(R.id.reg_email_confirm);
 		errores = (TextView) findViewById(R.id.err_registro);
 		Button btnCreate = (Button) findViewById(R.id.btnRegister);
 		btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +117,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			mPassword = vPassword.getText().toString().trim();
 			mPasswordConfirm = vPasswordConfirm.getText().toString().trim();
 			mEmail = vEmail.getText().toString().trim();
+			mEmailConfirm = vEmailConfirm.getText().toString().trim();
 		} 
 		catch (NullPointerException e) {
 			vUsuario.setError(getString(R.string.invalid_empty));
@@ -145,6 +147,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			focusView = vPassword;
 			cancel = true;
 		}
+		
 		if (TextUtils.isEmpty(mEmail)) {
 			vEmail.setError(getString(R.string.error_field_required));
 			focusView = vEmail;
@@ -152,6 +155,22 @@ public class Registro extends org.holoeverywhere.app.Activity {
 		} else if (!mEmail.contains("@")) {
 			vEmail.setError(getString(R.string.invalid_email));
 			focusView = vEmail;
+			cancel = true;
+		}
+		
+		if (TextUtils.isEmpty(mEmailConfirm)) {
+			vEmailConfirm.setError(getString(R.string.error_field_required));
+			focusView = vEmailConfirm;
+			cancel = true;
+		} else if (!mEmailConfirm.contains("@")) {
+			vEmailConfirm.setError(getString(R.string.invalid_email));
+			focusView = vEmailConfirm;
+			cancel = true;
+		}
+		
+		if (mEmailConfirm.compareTo(mEmail) != 0) {
+			vEmailConfirm.setError(getString(R.string.error_email_confirm));
+			focusView = vEmailConfirm;
 			cancel = true;
 		}
 
@@ -351,12 +370,12 @@ public class Registro extends org.holoeverywhere.app.Activity {
 
 				LinphoneAuthInfo lAuthInfo = LinphoneCoreFactory.instance()
 						.createAuthInfo(
-								getResources().getString(R.string.default_account_prefix) 
-								+ mUsuario, SimpleCrypto.md5(mPassword).substring(0, 10),
+								/*getResources().getString(R.string.default_account_prefix) 
+								+*/ mUsuario, SimpleCrypto.md5(mPassword).substring(0, 10),
 								null, getResources().getString(R.string.default_domain));
 
-				String identity = "sip:" + getResources().getString(R.string.default_account_prefix)
-						+ mUsuario + "@" + getResources().getString(R.string.default_domain);
+				String identity = "sip:" + /*getResources().getString(R.string.default_account_prefix)
+						+*/ mUsuario + "@" + getResources().getString(R.string.default_domain);
 				String proxy = "sip:" + getResources().getString(R.string.default_domain);
 
 				// Log.v("=== Usuario que va a autenticar en el SIP: " +

@@ -88,6 +88,7 @@
 				android:paddingLeft="10dp"
 				android:paddingRight="10dp"
 				android:paddingTop="10dp"
+				android:scrollbars="vertical"
             	>	
 				
 				<TextView
@@ -158,6 +159,25 @@
 				
 				<EditText
 					android:id="@+id/reg_email"
+					style="@style/inputText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="10dp"
+					android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
+					android:singleLine="true" />
+				
+				<!-- Confirm Email Label -->
+				
+				<TextView
+					style="@style/labelText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textColor="#000000"
+					android:text="@string/EmailConfirm" />
+				
+				<EditText
+					android:id="@+id/reg_email_confirm"
 					style="@style/inputText"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"

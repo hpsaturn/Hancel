@@ -35,6 +35,12 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * Fragment to show all rings created.
+ * 
+ * @author izel
+ */
+
 public class RingsFragment extends Fragment implements OnClickListener, OnItemClickListener {
 
 private Handler mHandler = new Handler();
@@ -62,11 +68,9 @@ private Handler mHandler = new Handler();
 		mInflater = inflater;
         View view = inflater.inflate(R.layout.rings_list, container, false);
                
-        noRings = (TextView) view.findViewById(R.id.noRings);
-        
+        noRings = (TextView) view.findViewById(R.id.noRings);        
         ringsList = (ListView) view.findViewById(R.id.ringsList);        
-        ringsList.setOnItemClickListener(this);
-                         
+        ringsList.setOnItemClickListener(this);                         
         newRing = (TextView) view.findViewById(R.id.newRing);
         newRing.setOnClickListener(this);
         

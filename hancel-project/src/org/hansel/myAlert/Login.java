@@ -332,12 +332,12 @@ public class Login extends org.holoeverywhere.app.Activity {
 			try{	
 					
 					LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
-							.createAuthInfo(getResources().getString(R.string.default_account_prefix) 
-									+ mUser, SimpleCrypto.md5(mPasswd).substring(0, 10), null, 
-									getResources().getString(R.string.default_domain));										
+							.createAuthInfo(/*getResources().getString(R.string.default_account_prefix) 
+									+ */ mUser, SimpleCrypto.md5(mPasswd).substring(0, 10), null, 
+									getResources().getString(R.string.default_domain));									
 					
-					String identity = "sip:" + getResources().getString(R.string.default_account_prefix)
-							+ mUser.toLowerCase() +"@" + getResources().getString(R.string.default_domain);
+					String identity = "sip:" + /*getResources().getString(R.string.default_account_prefix)
+							+ */ mUser.toLowerCase() +"@" + getResources().getString(R.string.default_domain);
 					
 					String proxy = "sip:" + getResources().getString(R.string.default_domain);
 					

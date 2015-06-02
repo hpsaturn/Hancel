@@ -9,6 +9,7 @@
     <string name="Ingresar">Ingresar</string>
     <string name="errores">errores</string>
     <string name="Email">Email</string>
+    <string name="EmailConfirm">Confirmar Email</string>
     <string name="crearcuenta">Crear Nueva Cuenta</string>
     <string name="Alerta">Alerta</string>
     <string name="Continuar">Continuar</string>

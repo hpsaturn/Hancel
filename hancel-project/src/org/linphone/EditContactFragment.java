@@ -13,7 +13,6 @@ import org.linphone.ui.AvatarWithShadow;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -57,8 +56,8 @@ public class EditContactFragment extends Fragment {
 				contact = (Contact) getArguments().getSerializable("Contact");
 				isNewContact = false;
 				contactID = Integer.parseInt(contact.getID());
-				contact.refresh(getActivity().getContentResolver(), 
-						getResources().getString(R.string.default_account_prefix));
+				contact.refresh(getActivity().getContentResolver());/*, 
+						getResources().getString(R.string.default_account_prefix));*/
 			}
 			if (getArguments().getString("NewSipAdress") != null) {
 				newSipOrNumberToAdd = getArguments().getString("NewSipAdress");
@@ -264,8 +263,8 @@ public class EditContactFragment extends Fragment {
 				firstSipAddressIndex = controls.getChildCount();
 			}
 			numberOrAddress = numberOrAddress.replace("sip:", "")
-					.replace(getResources().getString(
-							R.string.default_account_prefix),"").replace(
+					/*.replace(getResources().getString(
+							R.string.default_account_prefix),"")*/.replace(
 									getResources().getString(
 											R.string.default_domain),"").replace("@", ""); 
 			Log.d("=== NumberOrAddress a mostrar: " + numberOrAddress);			
@@ -558,7 +557,7 @@ public class EditContactFragment extends Fragment {
 		
 		public void delete() {
 			if (isSipAddress) {
-				String fullOldNumberOrAddress = getResources().getString(R.string.default_account_prefix) +
+				String fullOldNumberOrAddress = /*getResources().getString(R.string.default_account_prefix) +*/
 						oldNumberOrAddress + "@" + getResources().getString(R.string.default_domain);
 				Compatibility.deleteSipAddressFromContact(ops, fullOldNumberOrAddress, String.valueOf(contactID));
 			} 
@@ -585,10 +584,10 @@ public class EditContactFragment extends Fragment {
 					if (newNumberOrAddress.startsWith("sip:"))
 						newNumberOrAddress = newNumberOrAddress.substring(4);
 					
-					if (!newNumberOrAddress.startsWith(getResources().getString(R.string.default_account_prefix))){
+					/*if (!newNumberOrAddress.startsWith(getResources().getString(R.string.default_account_prefix))){
 						newNumberOrAddress = getResources().getString(R.string.default_account_prefix)
 							+ newNumberOrAddress;
-					}
+					}*/
 					
 					if(!newNumberOrAddress.contains("@")){
 						newNumberOrAddress = newNumberOrAddress 
@@ -616,11 +615,11 @@ public class EditContactFragment extends Fragment {
 					if (newNumberOrAddress.startsWith("sip:"))
 						newNumberOrAddress = newNumberOrAddress.substring(4);
 					
-					if (!newNumberOrAddress.startsWith(getResources().getString(R.string
+					/*if (!newNumberOrAddress.startsWith(getResources().getString(R.string
 							.default_account_prefix))){
 						newNumberOrAddress = getResources().getString(R.string
 							.default_account_prefix) + newNumberOrAddress;
-					}
+					}*/
 					
 					if(!newNumberOrAddress.contains("@"))
 						newNumberOrAddress =  newNumberOrAddress 
@@ -699,17 +698,17 @@ public class EditContactFragment extends Fragment {
 				if (newNumberOrAddress.startsWith("sip:"))
 					newNumberOrAddress = newNumberOrAddress.substring(4);
 				
-				if(!newNumberOrAddress.startsWith(getResources().getString(R.string.default_account_prefix)))
+				/*if(!newNumberOrAddress.startsWith(getResources().getString(R.string.default_account_prefix)))
 					newNumberOrAddress =  getResources().getString(R.string.default_account_prefix) + 
-						newNumberOrAddress;
+						newNumberOrAddress;*/
 				
 				if(!newNumberOrAddress.contains("@")){
 					newNumberOrAddress = newNumberOrAddress + "@" + getResources().getString(
 								R.string.default_domain);
 				}
 				
-				oldNumberOrAddress = getResources().getString(R.string
-						.default_account_prefix) + oldNumberOrAddress +
+				oldNumberOrAddress = /*getResources().getString(R.string
+						.default_account_prefix) + */oldNumberOrAddress +
 						"@" + getResources().getString(R.string.default_domain);
 				
 				Log.d("=== Update new newNumberOrAddress: " + newNumberOrAddress);

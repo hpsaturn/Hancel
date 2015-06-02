@@ -405,12 +405,12 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 			if (displayName == null) {
 				if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
 					hancelName = LinphoneUtils.getUsernameFromAddress(sipUri)
-							.replace(getResources().getString(R.string.default_account_prefix),"");
+							/*.replace(getResources().getString(R.string.default_account_prefix),"")*/;
 					contact.setText(hancelName);
 				} 
 				else {
-					hancelName = sipUri.replace(getResources().getString(R.string
-							.default_account_prefix),"").replace("@","").replace
+					hancelName = sipUri/*.replace(getResources().getString(R.string
+							.default_account_prefix),"")*/.replace("@","").replace
 							(getResources().getString(R.string.default_domain),"");
 					contact.setText(hancelName);//setText(sipUri);					
 				}
@@ -418,14 +418,14 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 			else {
 				if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(address.getDisplayName())) {
 					hancelName = LinphoneUtils.getUsernameFromAddress(address.getDisplayName()); 
-					hancelName = hancelName.replace(getResources().getString(R.string
-							.default_account_prefix),"").replace("@","").replace
+					hancelName = hancelName/*.replace(getResources().getString(R.string
+							.default_account_prefix),"")*/.replace("@","").replace
 							(getResources().getString(R.string.default_domain),"").replace("sip:", "hancel:");
 					contact.setText(hancelName);//LinphoneUtils.getUsernameFromAddress(address.getDisplayName()));					
 				} 
 				else {
-					hancelName = displayName.replace(getResources().getString(R.string
-							.default_account_prefix),"").replace("@","").replace
+					hancelName = displayName/*.replace(getResources().getString(R.string
+							.default_account_prefix),"")*/.replace("@","").replace
 							(getResources().getString(R.string.default_domain),"").replace("sip:", "hancel:");
 					contact.setText(displayName);					
 				}

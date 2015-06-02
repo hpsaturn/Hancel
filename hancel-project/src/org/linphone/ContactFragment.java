@@ -88,8 +88,8 @@ public class ContactFragment extends Fragment implements OnClickListener {
 	
 	public void changeDisplayedContact(Contact newContact) {
 		contact = newContact;
-		contact.refresh(getActivity().getContentResolver(), getResources()
-				.getString(R.string.default_account_prefix));
+		contact.refresh(getActivity().getContentResolver());/*, getResources()
+				.getString(R.string.default_account_prefix));*/
 		displayContact(inflater, view);
 	}
 	
@@ -117,8 +117,8 @@ public class ContactFragment extends Fragment implements OnClickListener {
 			if (numberOrAddress.startsWith("sip:")) {
 				//displayednumberOrAddress = displayednumberOrAddress.replace("sip:", "");
 				displayednumberOrAddress = displayednumberOrAddress.replace("sip:", "")
-						.replace(getResources().getString(
-								R.string.default_account_prefix),"").replace(
+						/*.replace(getResources().getString(
+								R.string.default_account_prefix),"")*/.replace(
 										getResources().getString(
 												R.string.default_domain),"").replace("@", ""); 
 				Log.v("=== NumberOrAddress a mostrar en Contacto: " + displayednumberOrAddress);			
@@ -148,8 +148,8 @@ public class ContactFragment extends Fragment implements OnClickListener {
 				/*if (!displayednumberOrAddress.startsWith("sip:")) {
 					numberOrAddress = "sip:" + displayednumberOrAddress;
 				}*/
-				if (!numberOrAddress.startsWith("sip:" + getResources().getString(R.string.default_account_prefix))) {
-					numberOrAddress = "sip:" + getResources().getString(R.string.default_account_prefix)
+				if (!numberOrAddress.startsWith("sip:" ))/*+ getResources().getString(R.string.default_account_prefix)))*/ {
+					numberOrAddress = "sip:" // + getResources().getString(R.string.default_account_prefix)
 							+ numberOrAddress;
 				}
 				Log.v("=== LPC numberOrAddress: " + numberOrAddress);
@@ -217,8 +217,8 @@ public class ContactFragment extends Fragment implements OnClickListener {
 			}
 		}
 		
-		contact.refresh(getActivity().getContentResolver(), getResources().
-				getString(R.string.default_account_prefix));
+		contact.refresh(getActivity().getContentResolver());/*, getResources().
+				getString(R.string.default_account_prefix)); */
 		if (contact.getName() == null || contact.getName().equals("")) {
 			//Contact has been deleted, return
 			MainActivity.instance().displayContacts(false);

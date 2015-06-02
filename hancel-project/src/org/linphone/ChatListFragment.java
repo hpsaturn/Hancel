@@ -241,7 +241,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 						return;
 					}
 					//TODO test					
-					sipUri = getResources().getString(R.string.default_account_prefix) + 
+					sipUri = /*getResources().getString(R.string.default_account_prefix) + */
 							sipUri + "@" + LinphoneManager.getLc()
 							.getDefaultProxyConfig().getDomain();
 					Log.d("=== SipUri " + sipUri);
@@ -426,9 +426,9 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			} 
 			else if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(contact)) {
 				contact = LinphoneUtils.getUsernameFromAddress(contact);
-				contact = contact.replace(getResources()
+				contact = contact/*.replace(getResources()
 						.getString(R.string.default_account_prefix),"")
-						.replace("@","").replace(getResources().getString(R.string.default_domain), "");
+						*/.replace("@","").replace(getResources().getString(R.string.default_domain), "");
 				Log.d("=== CONTACT: " + contact);
 			} 
 			

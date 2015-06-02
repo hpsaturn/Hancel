@@ -207,11 +207,9 @@ public class HttpUtils {
 		 values.add(new BasicNameValuePair("verDroid", String.valueOf(Build.VERSION.SDK_INT)));
 		 
 		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
-		 if(result==null)
-		 {
+		 if(result==null){
 			 throw new NoInternetException("Error en petición al server");
 		 }
-		 return result;
-		 
+		 return result;		 
 	}
 }

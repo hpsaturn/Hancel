@@ -117,9 +117,9 @@ public class IncomingCallActivity extends Activity implements LinphoneOnCallStat
 			mNumberView.setText(address.getUserName());
 		} 
 		else {
-			String numberView  = address.asStringUriOnly().replace(getResources()
-					.getString(R.string.default_account_prefix), "");
-			mNumberView.setText(address.asStringUriOnly());
+			String numberView  = address.asStringUriOnly();/*.replace(getResources()
+					.getString(R.string.default_account_prefix), "");*/
+			mNumberView.setText(numberView );
 		}
 	}
 	

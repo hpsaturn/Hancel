@@ -1165,7 +1165,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 						if (contact == null)
 							continue;
 
-						contact.refresh(getContentResolver(), getResources().getString(R.string.default_account_prefix));
+						contact.refresh(getContentResolver());/*, getResources().getString(R.string.default_account_prefix));*/
 						if (!isContactPresenceDisabled) {
 							searchFriendAndAddToContact(contact);
 						}

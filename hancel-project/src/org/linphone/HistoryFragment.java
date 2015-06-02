@@ -202,8 +202,8 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 				displayName = sipUri;
 			}			
 		}	
-		displayName = displayName.replace(getResources().getString(
-				R.string.default_account_prefix),"").replace("@","").replace
+		displayName = displayName/*.replace(getResources().getString(
+				R.string.default_account_prefix),"")*/.replace("@","").replace
 				(getResources().getString(R.string.default_domain),"");
 		return displayName;
 	}
@@ -410,8 +410,8 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 			}
 			
 			LinphoneUtils.findUriPictureOfContactAndSetDisplayName(address, view.getContext().getContentResolver());
-			String sipUri = address.asStringUriOnly().replace(getResources().getString(
-					R.string.default_account_prefix),"").replace(getResources().getString(
+			String sipUri = address.asStringUriOnly()/*.replace(getResources().getString(
+					R.string.default_account_prefix),"")*/.replace(getResources().getString(
 					R.string.default_domain),"").replace("@", "");
 			dateAndTime.setText(log.getStartDate() + " " + log.getCallDuration());
 			view.setTag(sipUri);
@@ -479,8 +479,8 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 			
 			LinphoneUtils.findUriPictureOfContactAndSetDisplayName(address, view.getContext().getContentResolver());
 			String displayName = getCorrespondentDisplayName(log);
-			String sipUri = address.asStringUriOnly().replace(getResources().getString(
-					R.string.default_account_prefix),"").replace(getResources().getString(
+			String sipUri = address.asStringUriOnly()/*.replace(getResources().getString(
+					R.string.default_account_prefix),"")*/.replace(getResources().getString(
 					R.string.default_domain),"").replace("@", "");
 			contact.setText(displayName + " (" + getChildrenCount(groupPosition) + ")");
 			view.setTag(sipUri);

@@ -371,8 +371,8 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 	}
 
 	private void displayChatHeader(String displayName, String pictureUri) {
-		String hancelName = sipUri.replace(getResources().getString(R.string
-				.default_account_prefix),"").replace("@","").replace
+		String hancelName = sipUri/*.replace(getResources().getString(R.string
+				.default_account_prefix),"")*/.replace("@","").replace
 				(getResources().getString(R.string.default_domain),"").replace("sip","");
 		
 		if (displayName == null && getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
