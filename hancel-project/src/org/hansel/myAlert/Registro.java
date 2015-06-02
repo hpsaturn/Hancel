@@ -152,7 +152,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			vEmail.setError(getString(R.string.error_field_required));
 			focusView = vEmail;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
+		}else if (!mEmail.contains("@")) {
 			vEmail.setError(getString(R.string.invalid_email));
 			focusView = vEmail;
 			cancel = true;
@@ -177,14 +177,20 @@ public class Registro extends org.holoeverywhere.app.Activity {
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
+			vPassword.setText("");
+			vPasswordConfirm.setText("");
+			vEmailConfirm.setText("");
+			vEmail.setText("");
 			focusView.requestFocus();
-		} else {
+		} 
+		else {
 			// hidding keyboard
 			try {
 				((InputMethodManager) this
 						.getSystemService(Context.INPUT_METHOD_SERVICE))
 						.hideSoftInputFromWindow(vPassword.getWindowToken(), 0);
-			} catch (Exception ex) {
+			} 
+			catch (Exception ex) {
 				Log.v("Error al esconder teclado: " + ex.getMessage());
 			}
 			// Show a progress spinner, and kick off a background task to
