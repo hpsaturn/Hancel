@@ -15,8 +15,9 @@
 
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:windowBackground">@drawable/background</item>
-		<item name="android:textSize">14sp</item>        
-        <item name="android:textColor">@color/blue_hancel</item>        
+		<item name="android:textSize">16sp</item>        
+		<item name="android:textColor">#ff0000</item>       
+		
     </style>
 
     <style name="MyTabPageIndicator" parent="Widget.TabPageIndicator">
@@ -101,12 +102,8 @@
         <item name="android:minHeight">48dp</item>
     </style>
     
-    <style name="myTheme.Preference">
-        <item name="android:background">@color/blue_hancel</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:padding">5dp</item>
-        <item name="android:minHeight">48dp</item>
+    <style name="myTheme.Preference" parent="@style/Holo.Theme">        
+        <item name="android:textColor">@color/background_header</item>        
     </style>
     
     

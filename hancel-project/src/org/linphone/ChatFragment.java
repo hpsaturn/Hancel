@@ -173,8 +173,9 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 					pickImage();
 				}
 			});
-        } else {
-        	sendImage.setEnabled(false);
+        } 
+        else {
+        	sendImage.setVisibility(View.INVISIBLE);
         }
   
         cancelUpload = (ImageView) view.findViewById(R.id.cancelUpload);

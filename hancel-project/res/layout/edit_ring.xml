@@ -30,7 +30,7 @@
             android:visibility="gone"
             android:id="@+id/deleteRing"
             android:background="@drawable/contact_delete"
-            android:text="@string/button_delete_all"
+            android:text="@string/button_delete_ring"
             android:gravity="center"
             android:paddingTop="20dp"
             android:textColor="@drawable/text_button"
@@ -44,7 +44,7 @@
             android:contentDescription="@string/content_description_validate"
             android:id="@+id/ok"
             android:background="@drawable/contact_ok"
-            android:text="@string/button_ok"
+            android:text="@string/button_ok_ring"
             android:gravity="center"
             android:enabled="false"
             android:paddingTop="20dp"
@@ -93,7 +93,7 @@
 		            android:hint="@string/ring_always"
 		            android:lines="2"
 		            android:paddingLeft="5dp"
-		            android:background="@color/background_header"
+		            android:background="@color/text_contrast"
 		            android:textCursorDrawable="@null" />
 
 		    </LinearLayout>
