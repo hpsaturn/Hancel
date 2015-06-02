@@ -1,60 +1,42 @@
 import zmq
 import time
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-
+import mechanize
 
 port = "5556"
 context = zmq.Context()
 socket = context.socket(zmq.PAIR)
 socket.connect("tcp://localhost:%s" % port)
 
-driver = webdriver.Chrome()
-
-def select_by_string(string, timeout):
-        try:
-            element = WebDriverWait(driver, timeout).until(
-                EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '" + string + "')]"))
-            )
-            if element:
-                return element
-            return None
-        except:
-            return None
-
 while True:
-	driver.get("http://www.linphone.org/free-sip-service.html")
 	account = socket.recv_json()
-	print(str(account))
 
+	request = mechanize.Request('http://www.linphone.org/free-sip-service.html')
+	response = mechanize.urlopen(request)	     
+	forms = mechanize.ParseResponse(response, backwards_compat=False)	     
+	response.close()
 
-	values = {'desired-login': account['user'].lower(),
-        	'password2':str(account['passwd'])[0:10],
-	        'confirm': str(account['passwd'])[0:10],
-	        'email':  account['email'].lower(),
-		'firstname':'Fulano',
-		'name':'de tal',
-	}
-	print("values")
-	print(str(values))
+	form = forms[0]
 
+	form['desired-login'] = account['user'].lower()
+	form['password2'] = str(account['passwd'])[0:10]
+	form['confirm'] = str(account['passwd'])[0:10]
+	form['email'] = account['email'].lower()
+	form['firstname'] = 'Fulano'
+	form['name'] ='de tal'
 
-	for k,v in values.items():
-		elem = driver.find_element_by_name(k)
-		elem.send_keys(v)
-		time.sleep(0.1)
-		#element_text = elem.text
-		#element_attribute_value = elem.get_attribute('value')
-		#print("element_text=" % element_text )
-		#print("element_attribute_value=" % element_attribute_value )
+	request2 = form.click() # mechanize.Request object
+	try:
+	   response2 = mechanize.urlopen(request2)
+	except mechanize.HTTPError, response2:
+	   pass
+	
+	r = response2.read()
+	
+	response2.close()
 
-		
-	driver.find_element_by_name("validate").click()
-
-	if select_by_string("A confirmation link has been sent to your email address", 4):
-		print("OK")
+	if "A confirmation link has been sent to your email address" in r:
+		socket.send_string("submitted")
+	elif "This username already exists." in r:
+		socket.send_string("duplicated")
 	else:
-		print("ERROR")
-
-
-	socket.send_string("submitted")
+		socket.send_string("submitted")
