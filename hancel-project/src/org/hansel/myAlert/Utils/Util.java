@@ -212,6 +212,7 @@ public class Util {
 				  , intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		  return pendingIntent;
 	  }
+	  
 	 public static boolean isMyServiceRunning(Context context) {
 		    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 		    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {

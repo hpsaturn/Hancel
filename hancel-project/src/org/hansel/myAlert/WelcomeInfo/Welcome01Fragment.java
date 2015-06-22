@@ -43,24 +43,24 @@ public class Welcome01Fragment extends Fragment {
 		ImageView icono = (ImageView) rootView.findViewById(R.id.imageView1);
 		
 		switch (number) {
-		case 0:
-			texto.setText("Hancel crea un puente entre periodistas y organizaciones dedicadas a proteger la libertad de expresión.");
+		case 0:			
+			texto.setText(getResources().getString(R.string.slide0));
 			icono.setImageResource(R.drawable.icono1);
 			break;
 		case 1:
-			texto.setText("Es posible programar Hancel para que acompañe al usuario durante coberturas de riesgo y envíe alertas automáticas si el periodista no atiende notificaciones. ");
+			texto.setText(getResources().getString(R.string.slide1));
 			icono.setImageResource(R.drawable.icono5);
 			break;
 		case 2:
-			texto.setText("Hancel lanza una alerta de emergencia a contactos de confianza con la ubicación exacta del GPS del teléfono. ");
+			texto.setText(getResources().getString(R.string.slide2));
 			icono.setImageResource(R.drawable.icono4);
 			break;
 		case 3:
-			texto.setText("Hancel crea una comunidad de organizaciones e individuos de confianza de manera instantánea al emitir una alerta. ");
+			texto.setText(getResources().getString(R.string.slide3));
 			icono.setImageResource(R.drawable.icono3);
 			break;
 		case 4:
-			texto.setText("Hancel le da herramientas a los periodistas para que tengan mayor control de su propia seguridad.");
+			texto.setText(getResources().getString(R.string.slide4));
 			icono.setImageResource(R.drawable.icono2);
 			break;
 		default:

@@ -136,7 +136,7 @@ public class WizardConfirmFragment extends Fragment {
 			{	
 				String mEmail="";
 				String id = SimpleCrypto.md5(String.valueOf(Calendar.getInstance().getTimeInMillis()));
-				JSONObject result=  HttpUtils.Register(id, username, SimpleCrypto.md5(mPassword), mEmail,"", IMEI);
+				JSONObject result=  HttpUtils.Register(username, SimpleCrypto.md5(mPassword), mEmail);
 				try {
 					 
 					 if(result.optString("resultado").equals("ok"))

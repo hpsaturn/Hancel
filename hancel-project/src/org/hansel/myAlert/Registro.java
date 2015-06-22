@@ -16,6 +16,7 @@ package org.hansel.myAlert;
  zenyagami@gmail.com
  */
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.Log.Log;
@@ -23,6 +24,8 @@ import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.SimpleCrypto;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
+import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.app.Application;
 import org.json.JSONObject;
 import org.linphone.LinphoneManager;
 import org.linphone.LinphoneService;
@@ -38,7 +41,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -50,7 +55,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.actionbarsherlock.view.MenuItem;
 
@@ -58,14 +63,13 @@ public class Registro extends org.holoeverywhere.app.Activity {
 
 	private EditText vUsuario, vPassword, vPasswordConfirm, vEmail, vEmailConfirm;
 	private String mUsuario, mPassword, mPasswordConfirm, mEmail, mEmailConfirm, mErrores;
-	private UserCreateTask mAuthTask;
+	private RegistrationTask mAuthTask;
 	private View mLoginFormView, mLoginStatusView;
 	private TextView mLoginStatusMessageView, errores;
 	private UsuarioDAO usuarioDAO;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.registro_layout);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,14 +82,13 @@ public class Registro extends org.holoeverywhere.app.Activity {
 		Button btnCreate = (Button) findViewById(R.id.btnRegister);
 		btnCreate.setOnClickListener(new View.OnClickListener() {
 
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+			public void onClick(View v) {		
 				AttempCreate();
 			}
 		});
+		
 		Button btnCancelar = (Button) findViewById(R.id.btnCancelar);
 		btnCancelar.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(Registro.this, Login.class);
@@ -108,7 +111,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 		if (mAuthTask != null) {
 			return;
 		}
-
+		
 		boolean cancel = false;
 		View focusView = null;
 
@@ -179,28 +182,37 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			// form field with an error.
 			vPassword.setText("");
 			vPasswordConfirm.setText("");
-			vEmailConfirm.setText("");
-			vEmail.setText("");
+			vEmailConfirm.setText("");			
 			focusView.requestFocus();
 		} 
 		else {
 			// hidding keyboard
 			try {
 				((InputMethodManager) this
-						.getSystemService(Context.INPUT_METHOD_SERVICE))
-						.hideSoftInputFromWindow(vPassword.getWindowToken(), 0);
+					.getSystemService(Context.INPUT_METHOD_SERVICE))
+					.hideSoftInputFromWindow(vPassword.getWindowToken(), 0);
 			} 
 			catch (Exception ex) {
 				Log.v("Error al esconder teclado: " + ex.getMessage());
+			}			
+			mAuthTask  = new RegistrationTask();
+			try {
+				if(mAuthTask.execute().get()){	
+					AlertDialog.Builder alert = new AlertDialog.Builder(this);                 
+					alert.setTitle("Confirmacion de registro");  
+					alert.setMessage("Se envió un mensaje de confirmacion de registro a su correo. Haga clic en el enlace para activar su cuenta");                
+					alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {  
+					public void onClick(DialogInterface dialog, int whichButton) {
+						finish();
+					}});
+					alert.show();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
 			}
-			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-
-			mAuthTask = new UserCreateTask();
-			mAuthTask.execute((Void) null);
-		}
-
+		}			
 	}
 
 	@Override
@@ -253,69 +265,68 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
+			
 	}
-
+	
+	
+	/**
+	 * RegistrationTask
+	 * Task for SIP server (Linphone) registration
+	 * @author izel
+	 */
 	@SuppressLint("DefaultLocale")
-	public class UserCreateTask extends AsyncTask<Void, Void, Boolean> {
-
+	public class RegistrationTask extends AsyncTask<Void, Void, Boolean> {			
 		@Override
-		protected Boolean doInBackground(Void... arg0) {
-			// conexion a la BD para obtener Login.
-
-			try {
-				String IMEI = Util.getIMEI(getApplicationContext());
-				String id = SimpleCrypto.md5(String.valueOf(Calendar
-						.getInstance().getTimeInMillis()));
-				String crypto = SimpleCrypto.md5(mPassword);
-				JSONObject result = HttpUtils.Register(id, mUsuario, crypto,
-						mEmail, "", IMEI);
-
-				try {
-
-					if (result.optString("resultado").equals("ok")) {
-						// parseamos data del ID
-						JSONObject jObject = result
-								.getJSONObject("descripcion");
-						int androidId = Integer.parseInt(jObject
-								.getString("usr-id"));
-
-						PreferenciasHancel.setDeviceId(getApplicationContext(),
-								id);
-						PreferenciasHancel.setUserId(getApplicationContext(),
-								androidId);
-						Util.insertNewTrackId(getApplicationContext(), 0);
-						Util.setLoginOkInPreferences(getApplicationContext(),
-								true);
-
-						int idUsr = (int) usuarioDAO.Insertar(mUsuario, crypto,
-								mEmail);
-
-						if (idUsr != 0) {
-							Log.v("=== Usuario se esta creando (Registro). Se va a autenticar en el SIP");							
-							spAuth();
-							
-							return true;
-						}
-					} else if (result.optString("resultado").equals("error")) {
-						JSONObject jObject = result
-								.getJSONObject("descripcion");
-						mErrores = jObject.getString("usuario");
-						// buscamos el error:
-						return false;
-					}
-
-				} catch (Exception e) {
-					Log.v("Error al parsear Json: " + result);
-					mErrores = "Error al obtener los datos";
-					return false;
-				}
-
-				return false;
-			} catch (Exception ex) {
+		protected Boolean doInBackground(Void...v) {		
+			JSONObject result = null;
+			String id = null, crypto = null;
+			
+			//Sending request
+			try {								
+				id = SimpleCrypto.md5(String.valueOf(Calendar.getInstance()
+						.getTimeInMillis()));
+				crypto = SimpleCrypto.md5(mPassword);
+				result = HttpUtils.Register(mUsuario,crypto,mEmail);
+			} 
+			catch (Exception ex) {
 				mErrores = "Error al intentar la conexión";
+				errores.setVisibility(View.VISIBLE);
 				Log.v("Error login: " + ex.getMessage());
-			}
-			return false;
+				return false;
+			}	
+			
+			//Handling response
+			try {				
+				if (result.optString("resultado").equals("ok")) {
+					JSONObject jObject = result.getJSONObject("descripcion");
+					int androidId = Integer.parseInt(jObject.getString("usr-id"));
+					PreferenciasHancel.setDeviceId(getApplicationContext(),id);
+					PreferenciasHancel.setUserId(getApplicationContext(),androidId);						
+					Util.insertNewTrackId(getApplicationContext(), 0);						
+					Util.setLoginOkInPreferences(getApplicationContext(),false);
+					int idUsr = (int) usuarioDAO.Insertar(mUsuario,crypto, mEmail);
+					usuarioDAO.close();
+					if (idUsr != 0) {						
+						return true;
+					}
+				} 
+				else{
+					JSONObject jObject = result.getJSONObject("descripcion");
+					String msg = jObject.getString("msg");
+					if(msg.equalsIgnoreCase("duplicated")){
+						mErrores = "El usuario ya se encuentra en uso. Intente con uno diferente";
+					}
+					else{
+						mErrores = "Error estableciendo comunicación con el servicor. Intente después";
+					}					
+				}
+				return false;
+			} 
+			catch (Exception e) {
+				Log.v("Error al parsear JSON: " + result);
+				mErrores = "Error al obtener los datos";
+				return false;
+			}							
 		}
 
 		@Override
@@ -323,6 +334,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			super.onPreExecute();
 			showProgress(true);
 			findViewById(R.id.actions1).setVisibility(View.GONE);
+			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			mErrores = "";
 			errores.setVisibility(View.GONE);
 		}
@@ -331,32 +343,10 @@ public class Registro extends org.holoeverywhere.app.Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			showProgress(false);
-			
-			if (success) {
-				// mostramos el Intent
-				// pasamos al siguiente paso
-				/*Intent i = new Intent(getApplicationContext(),
-						ConfigContactsActivity.class);
-				i.putExtra("registro", true);*/
-				Intent i = new Intent(getApplicationContext(),
-						MainActivity.class);
-				i.putExtra("registro", true);
-				/*
-				 * Intent i = new
-				 * Intent(getApplicationContext(),MainActivity.class);
-				 * i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
-				 * Intent.FLAG_ACTIVITY_NEW_TASK |
-				 * Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				 */
-				startActivity(i);
-			} 
-			else {
+			if(!success){
+				errores.setText(mErrores);
 				errores.setVisibility(View.VISIBLE);
 				findViewById(R.id.actions1).setVisibility(View.VISIBLE);
-				errores.setText(mErrores);
-				Toast.makeText(getApplicationContext(),
-						"Error en login:\n" + mErrores, Toast.LENGTH_SHORT)
-						.show();
 			}
 		}
 
@@ -365,68 +355,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			mAuthTask = null;
 			findViewById(R.id.actions1).setVisibility(View.VISIBLE);
 			showProgress(false);
-		}
-
-		private void spAuth() {
-			// Registering in Linphone Server
-			try {
-				LinphoneCore lc = LinphoneManager
-						.getLcIfManagerNotDestroyedOrNull();
-				
-
-				LinphoneAuthInfo lAuthInfo = LinphoneCoreFactory.instance()
-						.createAuthInfo(
-								/*getResources().getString(R.string.default_account_prefix) 
-								+*/ mUsuario, SimpleCrypto.md5(mPassword).substring(0, 10),
-								null, getResources().getString(R.string.default_domain));
-
-				String identity = "sip:" + /*getResources().getString(R.string.default_account_prefix)
-						+*/ mUsuario + "@" + getResources().getString(R.string.default_domain);
-				String proxy = "sip:" + getResources().getString(R.string.default_domain);
-
-				// Log.v("=== Usuario que va a autenticar en el SIP: " +
-				// identity);
-					
-				LinphoneAddress proxyAddr = LinphoneCoreFactory.instance()
-						.createLinphoneAddress(proxy);
-				proxyAddr.setTransport(TransportType.LinphoneTransportTls);
-				//proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
-				LinphoneProxyConfig proxycon = lc.createProxyConfig(identity,
-						proxyAddr.asStringUriOnly(),
-						proxyAddr.asStringUriOnly(), true);
-				
-				lc.addProxyConfig(proxycon);
-				lc.setDefaultProxyConfig(proxycon);
-				
-				LinphoneProxyConfig lDefaultProxyConfig = lc
-						.getDefaultProxyConfig();
-				if (lDefaultProxyConfig != null) {
-					lDefaultProxyConfig.setDialEscapePlus(false);
-					
-				} 
-				else if (LinphoneService.isReady()) {
-					// LinphoneService.instance().registrationState(lc,
-					// lDefaultProxyConfig, RegistrationState.RegistrationNone,
-					// null);
-				}
-				Thread.sleep(5000);
-				
-				LinphoneAuthInfo[] authInfosList = lc.getAuthInfosList();
-				if(authInfosList!=null)
-				{
-					for(int i=0; i<authInfosList.length; i++)
-					{
-						lc.removeAuthInfo(authInfosList[i]);
-					}
-				}
-				
-				lc.addAuthInfo(lAuthInfo);
-
-			} catch (LinphoneCoreException e) {
-				Log.v(e.getMessage());
-			}
-			catch(InterruptedException e){}
-		}
-	}
+		}		
+	}	
 
 }

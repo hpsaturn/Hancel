@@ -171,7 +171,8 @@ public class StatusFragment extends Fragment {
 				callStats.setVisibility(View.VISIBLE);
 				LinphoneCall call = LinphoneManager.getLc().getCurrentCall();
 				initCallStatsRefresher(call, callStats);
-			} else if (!isInCall) {
+			} 
+			else if (!isInCall) {
 				sliderContentAccounts.setVisibility(View.VISIBLE);
 				AccountsListAdapter adapter = new AccountsListAdapter();
 				sliderContentAccounts.setAdapter(adapter);
@@ -228,7 +229,9 @@ public class StatusFragment extends Fragment {
 	private int getStatusIconResource(LinphoneCore.RegistrationState state, boolean isDefaultAccount) {
 		try {
 			LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
-			boolean defaultAccountConnected = (isDefaultAccount && lc != null && lc.getDefaultProxyConfig() != null && lc.getDefaultProxyConfig().isRegistered()) || !isDefaultAccount;
+			boolean defaultAccountConnected = (isDefaultAccount && lc != null &&
+					lc.getDefaultProxyConfig() != null && 
+					lc.getDefaultProxyConfig().isRegistered()) || !isDefaultAccount;
 			if (state == RegistrationState.RegistrationOk && defaultAccountConnected) {
 				return R.drawable.led_connected;
 			} else if (state == RegistrationState.RegistrationProgress) {
@@ -568,7 +571,8 @@ public class StatusFragment extends Fragment {
 			View view = null;			
 			if (convertView != null) {
 				view = convertView;
-			} else {
+			} 
+			else {
 				view = LayoutInflater.from(getActivity()).inflate(R.layout.accounts, parent, false);
 			}
 
@@ -609,12 +613,14 @@ public class StatusFragment extends Fragment {
 			// Force led if account is disabled
 			if (!LinphonePreferences.instance().isAccountEnabled(accountIndex)) {
 				status.setImageResource(getStatusIconResource(RegistrationState.RegistrationNone, false));
-			} else {
+			} 
+			else {
 				if (LinphonePreferences.instance().getDefaultAccountIndex() == accountIndex) {
 					isDefault.setChecked(true);
 					isDefault.setEnabled(false);
 					status.setImageResource(getStatusIconResource(lpc.getState(), true));
-				} else {
+				} 
+				else {
 					status.setImageResource(getStatusIconResource(lpc.getState(), false));
 				}
 			}

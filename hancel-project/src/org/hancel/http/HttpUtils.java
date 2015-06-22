@@ -120,14 +120,13 @@ public class HttpUtils {
         return result.toString();
     }
 	
-	public static JSONObject Login(String user, String password,String id_device) throws NoInternetException
+	public static JSONObject Login(String user, String password) throws NoInternetException
 	{
 		 ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
 		 values.add(new BasicNameValuePair("f","login"));
 		 values.add(new BasicNameValuePair("strUsr",user));
 		 values.add(new BasicNameValuePair("strPass",password));
-		 values.add(new BasicNameValuePair("id_device",id_device));
-		 
+		 		 
 		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
 		 if(result==null)
 		 {
@@ -192,20 +191,14 @@ public class HttpUtils {
 		 return result;
 		 
 	}	
-	public static JSONObject Register(String id_device, String usuario,
-			String password,String email,String emailAmigo,
-			String IMEI) throws NoInternetException
+	public static JSONObject Register(String usuario, String password,String email) throws NoInternetException
 	{
 		 ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
-		 values.add(new BasicNameValuePair("f","registro"));
-		 values.add(new BasicNameValuePair("idDevice",id_device));
+		 values.add(new BasicNameValuePair("f","registro"));	
 		 values.add(new BasicNameValuePair("usuario",usuario));
 		 values.add(new BasicNameValuePair("password",password));
-		 values.add(new BasicNameValuePair("email",email));
-		 values.add(new BasicNameValuePair("mailsAmigos",emailAmigo));
-		 values.add(new BasicNameValuePair("imei",IMEI));
-		 values.add(new BasicNameValuePair("verDroid", String.valueOf(Build.VERSION.SDK_INT)));
-		 
+		 values.add(new BasicNameValuePair("email",email));		 		 
+		 		 
 		 JSONObject result =  requestHttp(URL_BASE, values, "GET");
 		 if(result==null){
 			 throw new NoInternetException("Error en petición al server");

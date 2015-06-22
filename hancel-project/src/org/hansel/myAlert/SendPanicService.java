@@ -37,6 +37,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -54,13 +55,10 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 
 public class SendPanicService extends Service implements GooglePlayServicesClient.ConnectionCallbacks,GooglePlayServicesClient.OnConnectionFailedListener {
-	private LocationClient mLocationClient;
-	private ContactoDAO contactoDao;
+	private LocationClient mLocationClient;	
 	private ejecutaPanico mTask;
 	private String result;
-	
-	///
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -72,7 +70,6 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 		mLocationClient = new LocationClient(getApplicationContext()
 				.getApplicationContext(), this, this);
 		mLocationClient.connect();
-
 	}
 
 	/* (non-Javadoc)
@@ -90,14 +87,42 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 	}
 
 	public Location getLocation() {
-
 		Location loc = null;
+		int attempts = 0;
+		
+		try {			
+			while(!mLocationClient.isConnected() && attempts < 10){
+				Thread.sleep(1000);			
+				attempts ++;
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		if (mLocationClient != null && mLocationClient.isConnected()) {
 			loc = mLocationClient.getLastLocation();
 		}
+		
 		if (loc == null) {
 			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			loc = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+			Criteria req = new Criteria();
+			req.setAccuracy(Criteria.ACCURACY_FINE);
+			req.setHorizontalAccuracy(Criteria.ACCURACY_MEDIUM);
+			List<String> providersList = locationManager.getProviders(req,false);
+			int i = 0;
+			
+			while(!locationManager.isProviderEnabled(providersList.get(i)) && 
+					i < providersList.size()){
+				i++;
+			}
+			
+			if(i < providersList.size())
+				loc = locationManager.getLastKnownLocation(providersList.get(i));			
+			
+			if(loc != null){						
+				Log.v("=== LAT: " + loc.getLatitude());
+				Log.v("=== LON: " + loc.getLongitude());
+			}
 		}
 		return loc;
 	}
@@ -111,7 +136,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			Log.v("Iniciando Panico");
+			Log.v("=== Iniciando Panico");
 			Location loc = getLocation();
 
 			double Lat = 0;
@@ -152,7 +177,8 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			if(c != null && c.getCount()>0){				
 				c.moveToFirst();				
 				for(int i= 0; i< c.getCount(); i++){
-					List<String> contactNumbers = Compatibility.extractContactNumbers(c.getString(0),
+					List<String> contactNumbers = Compatibility
+							.extractContactNumbers(c.getString(0),
 							getContentResolver());
 					if(contactNumbers != null && contactNumbers.size() > 0)
 						numbers.addAll(contactNumbers);
@@ -175,7 +201,8 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 						Log.v("=== Numero : " + number);
 						if(number != null && number.length() > 0){
 							Log.v("=== Enviando SMS a : " + number);
-							enviarSMS(number, message + mapa + " Bateria: " + getNivelBateria() + "%");
+							enviarSMS(number, message + mapa + " Bateria: " + 
+							getNivelBateria() + "%");
 						}
 					}
 					catch (Exception ex) {
@@ -253,17 +280,17 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 		SmsManager sms = SmsManager.getDefault();
 		try {
 			sms.sendTextMessage(telefono, null, mensaje, null, null);
-			Log.v("Mensaje enviado a " + telefono);
+			Log.v("=== Mensaje enviado a " + telefono);
 		} 
 		catch (Exception e) {
 				Log.v(e.getMessage());
 			try {
 				ArrayList<String> parts = sms.divideMessage(mensaje);
 				sms.sendMultipartTextMessage(telefono, null, parts, null, null);
-				Log.v("Mensaje enviado en partes " + telefono);
+				Log.v("=== Mensaje enviado en partes " + telefono);
 			} 
 			catch (Exception i) {
-				Log.v("Error al enviar , falla al envio de SMS");
+				Log.v("=== Error al enviar , falla al envio de SMS");
 				e.printStackTrace();
 			}
 		}

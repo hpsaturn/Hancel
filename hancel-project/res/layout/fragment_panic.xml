@@ -79,7 +79,6 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@drawable/panicbutton"
-            android:text="@string/Alerta"
             android:textColor="@color/blue_hancel"
             android:textSize="40sp"
             android:textStyle="bold" />

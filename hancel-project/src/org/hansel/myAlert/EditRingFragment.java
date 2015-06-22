@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hansel.myAlert.Utils.ContactRing;
+//import org.hansel.myAlert.Utils.ContactRing;
 import org.hansel.myAlert.dataBase.RingDAO;
 import org.linphone.Contact;
 import org.linphone.LinphoneManager;
@@ -222,19 +222,17 @@ public class EditRingFragment extends Fragment {
 		else{ 
 			MainActivity.instance().prepareContactsInBackground();						
 		}	
-		
-		//searchContacts("");
-		
+				
 		contactsList.setOnItemClickListener(new OnItemClickListener() {
 			 public void onItemClick(AdapterView<?> adapter, View view,
 					  int position, long id) {
 				 Log.d("=== Selecciono/deselecciono Contacto");
-				 ContactRing contactRing = (ContactRing) adapter.getItemAtPosition(position);
+				 Contact contactRing = (Contact) adapter.getItemAtPosition(position);
 				 				
 				 if(contactRing.isSelected())
-					idContacts.add(contactRing.getContactId());
+					idContacts.add(contactRing.getID());
 				else
-					idContacts.remove(contactRing.getContactId());				 			
+					idContacts.remove(contactRing.getID());				 			
 			}
 		});
 		ringName.requestFocus();
@@ -453,12 +451,12 @@ public class EditRingFragment extends Fragment {
 					public void onClick(View v) {
 						Log.d("=== Seleccionado/Deseleccionado Objeto ===");
 						CheckBox cb = (CheckBox) v ; 
-						ContactRing cr = (ContactRing)cb.getTag(); 
+						Contact cr = (Contact)cb.getTag(); 
 						cr.setSelected(cb.isChecked());						
 				        if(cr.isSelected())
-				        	idContacts.add(cr.getContactId());				        
+				        	idContacts.add(cr.getID());				        
 				        else{
-				        	idContacts.remove(cr.getContactId());
+				        	idContacts.remove(cr.getID());
 				        }
 				        Log.d("=== Estado de idContacts: " + idContacts.toString());
 					}    

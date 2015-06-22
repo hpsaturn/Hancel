@@ -72,6 +72,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		View v = inflater.inflate(R.layout.fragment_panic, container,false);
 		Button btnPanico = (Button)v.findViewById(R.id.btnPanic);
 		txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);		
+		
 		btnPanico.setOnClickListener(new View.OnClickListener() {						
 			@Override
 			public void onClick(View v) {
@@ -80,9 +81,9 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				.setCancelable(false)
 				.setPositiveButton("Si", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						getActivity().startService(new Intent(getActivity(),SendPanicService.class));
-						/*Toast.makeText(getActivity().getApplicationContext(), "Alerta enviada. "
-								, Toast.LENGTH_SHORT).show();*/
+						getActivity().startService(new Intent(getActivity(),
+								SendPanicService.class));
+						
 						btnTracking.setText(STOP_TRACK);
 						btnTracking.setVisibility(View.VISIBLE);
 						trackInfo.setVisibility(View.VISIBLE);
@@ -91,8 +92,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				})
 				.setNegativeButton("No", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-						
+						dialog.cancel();					
 					}
 				});
 
@@ -280,7 +280,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			break;
 		case R.id.iniciaTrackId:
 			if(!corriendo){
-				startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );				
+				startActivityForResult(new Intent(getActivity(), 
+						TrackDialog.class),REQUEST_CODE );				
 			}
 			else{				
 				createPasswordDialog(btnTracking);
