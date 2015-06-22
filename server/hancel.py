@@ -1,16 +1,15 @@
-import zmq
 import redis
 import json
 import uuid
 import time
 import hashlib
 import random
+import mechanize
+
 from flask import Flask, session, request, render_template
 import smtplib
 from email.mime.text import MIMEText
 
-
-linphone_prefix = "hancel_lp_dummy_"
 
 app = Flask(__name__)
 app.secret_key = 'F12Zr47j\3yX R~X@H!jmM]Lwf/,?KT'
@@ -24,71 +23,72 @@ def contains(x, y):
             return False
     return True
 
+def linphone_sip_register(account):
+        request = mechanize.Request('http://www.linphone.org/free-sip-service.html')
+        response = mechanize.urlopen(request)
+        forms = mechanize.ParseResponse(response, backwards_compat=False)
+        response.close()
+
+        form = forms[0]
+
+        form['desired-login'] = account['user'].lower()
+        form['password2'] = str(account['passwd'])[0:10]
+        form['confirm'] = str(account['passwd'])[0:10]
+        form['email'] = account['email'].lower()
+        form['firstname'] = ''
+        form['name'] =''
+
+        request2 = form.click() # mechanize.Request object
+        try:
+           response2 = mechanize.urlopen(request2)
+        except mechanize.HTTPError, response2:
+           pass
+
+        r = response2.read()
+
+        response2.close()
+
+        if "A confirmation link has been sent to your email address" in r:
+                res="submitted"
+        elif "This username already exists." in r:
+                res="duplicated"
+        else:
+                res="undefined error"
+
+	return res
+
 
 def register(args):
-    if not contains(args, ['idDevice', 'usuario', 'password', 'email', 'mailsAmigos', 'imei', 'verDroid']):
+    if not contains(args, ['usuario', 'password', 'email']):
         return {'resultado': 'error',
                 'descripcion': 'argumentos insuficientes'}
 
     user = args['usuario']
     password = args['password']
-    print("register.... %s" % str(args))
 
-    if r.hget('users', user) is None:
-        r.hset('users', user, password)
-        r.hset('idDevice', user, args['idDevice'])
-        r.hset('email', user, args['email'])
-        r.hset('mailsAmigos', user, args['mailsAmigos'])
-        r.hset('imei', user, args['imei'])
-        r.hset('verDroid', user, args['verDroid'])
+    print(" register : %s " % (user))
+
+    sip_account = {'user':user, 'passwd': password, 'email':args['email']} 
     
-        port = "5556"
-        context = zmq.Context()
-        socket = context.socket(zmq.PAIR)
-        socket.bind("tcp://*:%s" % port)
+    res = linphone_sip_register(sip_account)
 
-        sip_account = {'user':str(linphone_prefix+user), 'passwd': password} 
-        socket.send_json(sip_account)
-        msg = socket.recv()
-
-        print(msg)
-        socket.close()
-
-        description ={"email":"ok",
-                      "usuario":"usuario no existe",
-                      "usr-id":str(r.incr('sesion-seq')),
-                      "envio-mail":"se envio un mail con sus datos de registro"}
-
+    if res is "submitted":
+        description = {"usr-id":str(r.incr('sesion-seq'))}
         return {'resultado': 'ok','descripcion': description}
-
-    return {'resultado': 'error',
-            'descripcion': {'usuario': 'usuario duplicado'}}
+    else:
+        return {'resultado': 'error',
+               'descripcion': {'msg': res}}
 
 
 def login(args):
-    if not contains(args, ['strUsr', 'strPass', 'id_device']):
-        return {'resultado': 'error',
-                'descripcion': 'argumentos insuficientes'}
+#    if not contains(args, ['strUsr', 'strPass']):
+#        return {'resultado': 'error',
+#                'descripcion': 'argumentos insuficientes'}
 
-    user = args['strUsr']
-    password = args['strPass']
-    if r.hget('users', user) is None:
-        return {'resultado': 'error',
-                'descripcion': 'usuario no valido'}
-    else:
-        print( 'password = %s %s' % (r.hget('users', user), password) )
-        if r.hget('users', user).decode("utf-8") != password:
-            return {'resultado': 'error',
-                    'descripcion': 'password invalido'}
-        else:
-            session['Login'] = True
-            session['id-tracking'] = str(r.incr('track-seq'))
-            description ={"usuario":"ok",
-                          "usr-id":str(r.incr('sesion-seq')),
-                          "id-tracking":"0"}
+    description ={"usr-id":str(r.incr('sesion-seq'))}
 
-            return {'resultado': 'ok',
-                    'descripcion': description}
+    return {'resultado': 'ok',
+            'descripcion': description}
 
 
 def tracking(args):
@@ -141,7 +141,7 @@ def activation(args):
     if args['activation_code'] in r.smembers('flip_codes'):
         r.srem('flip_codes', args['activation_code'])
         description ={"code":"ok",
-                      "numbers":"3002753666"}
+                      "numbers":["3002753666","3015036470"]}
                        
         return {'resultado': 'ok',
                 'descripcion': description}
@@ -156,6 +156,21 @@ def gen_code(args):
     res = {'activation_code':code}
     return res
 
+def center(v):
+    cx=0.0;
+    cy=0.0;
+
+    if len(v):
+      for p in v:
+         cx=cx+p[0]
+         cy=cy+p[1]
+      cx = cx / float(len(v))
+      cy = cy / float(len(v))
+    return [cx,cy]
+
+    
+   
+
 def show_trace(args):
     if not contains(args, ['hash']):
         return {'resultado': 'error',
@@ -165,11 +180,11 @@ def show_trace(args):
     trace = []
     for p in r.smembers('trace_'+trace_id):
       p=json.loads(str(p.decode()).replace("'",'"'))
-      trace.append( [float(p['lon']), float(p['lat']) ] )
+      trace.append( [float(p['lon']), float(p['lat']), float(p['time']) ] )
 
-#      trace.append( [float(p['lon'])+random.uniform(0, 0.1),float(p['lat'])+random.uniform(0, 0.1) ] )
-    
-    return render_template('trace.html', trace=str(trace)  )
+    trace = sorted(trace, key=lambda trace: trace[2])
+
+    return render_template('trace.html', trace=str(trace), center=center(trace)  )
 
 
 hansel_methods = {
@@ -183,7 +198,7 @@ hansel_methods = {
 }
 
 
-@app.route('/hansel/', methods=['GET'])
+@app.route('/', methods=['GET'])
 def hansel():
     if 'f' in request.args:
         f = request.args['f']
