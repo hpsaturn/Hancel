@@ -1,0 +1,370 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Manifest Merging:
+-----------------
+Your project uses libraries that provide manifests, and your Eclipse
+project did not explicitly turn on manifest merging. In Android Gradle
+projects, manifests are always merged (meaning that contents from your
+libraries' manifests will be merged into the app manifest. If you had
+manually copied contents from library manifests into your app manifest
+you may need to remove these for the app to build correctly.
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+From Login:
+* .gitignore
+* LICENSE
+* LibreriasExternas/
+* LibreriasExternas/GPlayServices/
+* LibreriasExternas/GPlayServices/.project
+* LibreriasExternas/GPlayServices/.settings/
+* LibreriasExternas/GPlayServices/.settings/org.eclipse.jdt.core.prefs
+* LibreriasExternas/GPlayServices/AndroidManifest.xml
+* LibreriasExternas/GPlayServices/README.txt
+* LibreriasExternas/GPlayServices/libs/
+* LibreriasExternas/GPlayServices/libs/google-play-services.jar
+* LibreriasExternas/GPlayServices/libs/google-play-services.jar.properties
+* LibreriasExternas/GPlayServices/project.properties
+* LibreriasExternas/GPlayServices/res/
+* LibreriasExternas/GPlayServices/res/color/
+* LibreriasExternas/GPlayServices/res/color/common_signin_btn_text_dark.xml
+* LibreriasExternas/GPlayServices/res/color/common_signin_btn_text_light.xml
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_disabled_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_disabled_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_disabled_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_disabled_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_normal_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_normal_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_pressed_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_icon_pressed_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_disabled_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_disabled_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_disabled_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_disabled_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_normal_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_normal_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_pressed_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-hdpi/common_signin_btn_text_pressed_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_disabled_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_disabled_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_disabled_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_disabled_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_normal_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_normal_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_pressed_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_icon_pressed_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_disabled_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_disabled_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_disabled_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_disabled_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_normal_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_normal_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_pressed_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-mdpi/common_signin_btn_text_pressed_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_disabled_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_disabled_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_disabled_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_disabled_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_normal_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_normal_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_pressed_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_icon_pressed_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_disabled_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_disabled_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_disabled_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_disabled_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_focus_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_focus_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_normal_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_normal_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_pressed_dark.9.png
+* LibreriasExternas/GPlayServices/res/drawable-xhdpi/common_signin_btn_text_pressed_light.9.png
+* LibreriasExternas/GPlayServices/res/drawable/
+* LibreriasExternas/GPlayServices/res/drawable/common_signin_btn_icon_dark.xml
+* LibreriasExternas/GPlayServices/res/drawable/common_signin_btn_icon_light.xml
+* LibreriasExternas/GPlayServices/res/drawable/common_signin_btn_text_dark.xml
+* LibreriasExternas/GPlayServices/res/drawable/common_signin_btn_text_light.xml
+* LibreriasExternas/GPlayServices/res/values-af/
+* LibreriasExternas/GPlayServices/res/values-af/strings.xml
+* LibreriasExternas/GPlayServices/res/values-am/
+* LibreriasExternas/GPlayServices/res/values-am/strings.xml
+* LibreriasExternas/GPlayServices/res/values-ar/
+* LibreriasExternas/GPlayServices/res/values-ar/strings.xml
+* LibreriasExternas/GPlayServices/res/values-be/
+* LibreriasExternas/GPlayServices/res/values-be/strings.xml
+* LibreriasExternas/GPlayServices/res/values-bg/
+* LibreriasExternas/GPlayServices/res/values-bg/strings.xml
+* LibreriasExternas/GPlayServices/res/values-ca/
+* LibreriasExternas/GPlayServices/res/values-ca/strings.xml
+* LibreriasExternas/GPlayServices/res/values-cs/
+* LibreriasExternas/GPlayServices/res/values-cs/strings.xml
+* LibreriasExternas/GPlayServices/res/values-da/
+* LibreriasExternas/GPlayServices/res/values-da/strings.xml
+* LibreriasExternas/GPlayServices/res/values-de/
+* LibreriasExternas/GPlayServices/res/values-de/strings.xml
+* LibreriasExternas/GPlayServices/res/values-el/
+* LibreriasExternas/GPlayServices/res/values-el/strings.xml
+* LibreriasExternas/GPlayServices/res/values-en-rGB/
+* LibreriasExternas/GPlayServices/res/values-en-rGB/strings.xml
+* LibreriasExternas/GPlayServices/res/values-es-rUS/
+* LibreriasExternas/GPlayServices/res/values-es-rUS/strings.xml
+* LibreriasExternas/GPlayServices/res/values-es/
+* LibreriasExternas/GPlayServices/res/values-es/strings.xml
+* LibreriasExternas/GPlayServices/res/values-et/
+* LibreriasExternas/GPlayServices/res/values-et/strings.xml
+* LibreriasExternas/GPlayServices/res/values-fa/
+* LibreriasExternas/GPlayServices/res/values-fa/strings.xml
+* LibreriasExternas/GPlayServices/res/values-fi/
+* LibreriasExternas/GPlayServices/res/values-fi/strings.xml
+* LibreriasExternas/GPlayServices/res/values-fr/
+* LibreriasExternas/GPlayServices/res/values-fr/strings.xml
+* LibreriasExternas/GPlayServices/res/values-hi/
+* LibreriasExternas/GPlayServices/res/values-hi/strings.xml
+* LibreriasExternas/GPlayServices/res/values-hr/
+* LibreriasExternas/GPlayServices/res/values-hr/strings.xml
+* LibreriasExternas/GPlayServices/res/values-hu/
+* LibreriasExternas/GPlayServices/res/values-hu/strings.xml
+* LibreriasExternas/GPlayServices/res/values-in/
+* LibreriasExternas/GPlayServices/res/values-in/strings.xml
+* LibreriasExternas/GPlayServices/res/values-it/
+* LibreriasExternas/GPlayServices/res/values-it/strings.xml
+* LibreriasExternas/GPlayServices/res/values-iw/
+* LibreriasExternas/GPlayServices/res/values-iw/strings.xml
+* LibreriasExternas/GPlayServices/res/values-ja/
+* LibreriasExternas/GPlayServices/res/values-ja/strings.xml
+* LibreriasExternas/GPlayServices/res/values-ko/
+* LibreriasExternas/GPlayServices/res/values-ko/strings.xml
+* LibreriasExternas/GPlayServices/res/values-lt/
+* LibreriasExternas/GPlayServices/res/values-lt/strings.xml
+* LibreriasExternas/GPlayServices/res/values-lv/
+* LibreriasExternas/GPlayServices/res/values-lv/strings.xml
+* LibreriasExternas/GPlayServices/res/values-ms/
+* LibreriasExternas/GPlayServices/res/values-ms/strings.xml
+* LibreriasExternas/GPlayServices/res/values-nb/
+* LibreriasExternas/GPlayServices/res/values-nb/strings.xml
+* LibreriasExternas/GPlayServices/res/values-nl/
+* LibreriasExternas/GPlayServices/res/values-nl/strings.xml
+* LibreriasExternas/GPlayServices/res/values-pl/
+* LibreriasExternas/GPlayServices/res/values-pl/strings.xml
+* LibreriasExternas/GPlayServices/res/values-pt-rBR/
+* LibreriasExternas/GPlayServices/res/values-pt-rBR/strings.xml
+* LibreriasExternas/GPlayServices/res/values-pt-rPT/
+* LibreriasExternas/GPlayServices/res/values-pt-rPT/strings.xml
+* LibreriasExternas/GPlayServices/res/values-pt/
+* LibreriasExternas/GPlayServices/res/values-pt/strings.xml
+* LibreriasExternas/GPlayServices/res/values-ro/
+* LibreriasExternas/GPlayServices/res/values-ro/strings.xml
+* LibreriasExternas/GPlayServices/res/values-ru/
+* LibreriasExternas/GPlayServices/res/values-ru/strings.xml
+* LibreriasExternas/GPlayServices/res/values-sk/
+* LibreriasExternas/GPlayServices/res/values-sk/strings.xml
+* LibreriasExternas/GPlayServices/res/values-sl/
+* LibreriasExternas/GPlayServices/res/values-sl/strings.xml
+* LibreriasExternas/GPlayServices/res/values-sr/
+* LibreriasExternas/GPlayServices/res/values-sr/strings.xml
+* LibreriasExternas/GPlayServices/res/values-sv/
+* LibreriasExternas/GPlayServices/res/values-sv/strings.xml
+* LibreriasExternas/GPlayServices/res/values-sw/
+* LibreriasExternas/GPlayServices/res/values-sw/strings.xml
+* LibreriasExternas/GPlayServices/res/values-th/
+* LibreriasExternas/GPlayServices/res/values-th/strings.xml
+* LibreriasExternas/GPlayServices/res/values-tl/
+* LibreriasExternas/GPlayServices/res/values-tl/strings.xml
+* LibreriasExternas/GPlayServices/res/values-tr/
+* LibreriasExternas/GPlayServices/res/values-tr/strings.xml
+* LibreriasExternas/GPlayServices/res/values-uk/
+* LibreriasExternas/GPlayServices/res/values-uk/strings.xml
+* LibreriasExternas/GPlayServices/res/values-vi/
+* LibreriasExternas/GPlayServices/res/values-vi/strings.xml
+* LibreriasExternas/GPlayServices/res/values-zh-rCN/
+* LibreriasExternas/GPlayServices/res/values-zh-rCN/strings.xml
+* LibreriasExternas/GPlayServices/res/values-zh-rTW/
+* LibreriasExternas/GPlayServices/res/values-zh-rTW/strings.xml
+* LibreriasExternas/GPlayServices/res/values-zu/
+* LibreriasExternas/GPlayServices/res/values-zu/strings.xml
+* LibreriasExternas/GPlayServices/res/values/
+* LibreriasExternas/GPlayServices/res/values/colors.xml
+* LibreriasExternas/GPlayServices/res/values/maps_attrs.xml
+* LibreriasExternas/GPlayServices/res/values/strings.xml
+* LibreriasExternas/GPlayServices/src/
+* LibreriasExternas/GPlayServices/src/android/
+* LibreriasExternas/GPlayServices/src/android/UnusedStub.java
+* LibreriasExternas/PageView4.2/
+* LibreriasExternas/PageView4.2/.project
+* LibreriasExternas/PageView4.2/.settings/
+* LibreriasExternas/PageView4.2/.settings/org.eclipse.jdt.core.prefs
+* LibreriasExternas/PageView4.2/AndroidManifest.xml
+* LibreriasExternas/PageView4.2/libs/
+* LibreriasExternas/PageView4.2/libs/android-support-v4.jar
+* LibreriasExternas/PageView4.2/lint.xml
+* LibreriasExternas/PageView4.2/pom.xml
+* LibreriasExternas/PageView4.2/project.properties
+* LibreriasExternas/PageView4.2/res/
+* LibreriasExternas/PageView4.2/res/color/
+* LibreriasExternas/PageView4.2/res/color/vpi__dark_theme.xml
+* LibreriasExternas/PageView4.2/res/color/vpi__light_theme.xml
+* LibreriasExternas/PageView4.2/res/drawable-hdpi/
+* LibreriasExternas/PageView4.2/res/drawable-hdpi/vpi__tab_selected_focused_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-hdpi/vpi__tab_selected_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-hdpi/vpi__tab_selected_pressed_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-hdpi/vpi__tab_unselected_focused_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-hdpi/vpi__tab_unselected_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-hdpi/vpi__tab_unselected_pressed_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-mdpi/
+* LibreriasExternas/PageView4.2/res/drawable-mdpi/vpi__tab_selected_focused_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-mdpi/vpi__tab_selected_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-mdpi/vpi__tab_selected_pressed_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-mdpi/vpi__tab_unselected_focused_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-mdpi/vpi__tab_unselected_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-mdpi/vpi__tab_unselected_pressed_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-xhdpi/
+* LibreriasExternas/PageView4.2/res/drawable-xhdpi/vpi__tab_selected_focused_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-xhdpi/vpi__tab_selected_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-xhdpi/vpi__tab_selected_pressed_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-xhdpi/vpi__tab_unselected_focused_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-xhdpi/vpi__tab_unselected_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable-xhdpi/vpi__tab_unselected_pressed_holo.9.png
+* LibreriasExternas/PageView4.2/res/drawable/
+* LibreriasExternas/PageView4.2/res/drawable/vpi__tab_indicator.xml
+* LibreriasExternas/PageView4.2/res/values/
+* LibreriasExternas/PageView4.2/res/values/vpi__attrs.xml
+* LibreriasExternas/PageView4.2/res/values/vpi__colors.xml
+* LibreriasExternas/PageView4.2/res/values/vpi__defaults.xml
+* LibreriasExternas/PageView4.2/res/values/vpi__styles.xml
+* LibreriasExternas/PageView4.2/src/
+* LibreriasExternas/PageView4.2/src/com/
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/CirclePageIndicator.java
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/IconPageIndicator.java
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/IconPagerAdapter.java
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/IcsLinearLayout.java
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/LinePageIndicator.java
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/PageIndicator.java
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/TabPageIndicator.java
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/TitlePageIndicator.java
+* LibreriasExternas/PageView4.2/src/com/viewpagerindicator/UnderlinePageIndicator.java
+* README.md
+* ic_launcher-web.png
+* proguard-project.txt
+From PageView4.2:
+* pom.xml
+From library:
+* build.gradle
+* pom.xml
+* resbuilder/
+* resbuilder/attrs.json
+* resbuilder/dialogs.json
+* resbuilder/format.sh
+* resbuilder/strings.json
+* resbuilder/styles.json
+* resbuilder/text.json
+* resbuilder/themes-core.json
+* resbuilder/themes-large.json
+* resbuilder/themes-v11.json
+* resbuilder/themes-v7.json
+From preferences:
+* build.gradle
+* pom.xml
+* proguard-project.txt
+* resbuilder/
+* resbuilder/attrs.json
+* resbuilder/strings.json
+* resbuilder/styles-sw720dp.json
+* resbuilder/styles.json
+* resbuilder/themes.json
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:20.0.0
+gcm.jar => com.google.android.gms:play-services:+
+
+Replaced Libraries with Dependencies:
+-------------------------------------
+The importer recognized the following library projects as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the source files in your project were of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the library replacement in the import wizard and try
+again:
+
+GPlayServices => [com.google.android.gms:play-services:+]
+actionbarsherlock =>
+    com.actionbarsherlock:actionbarsherlock:4.4.0@aar
+    com.android.support:support-v4:20.0.0
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+In PageView4.2:
+* AndroidManifest.xml => pageView42/src/main/AndroidManifest.xml
+* lint.xml => pageView42/lint.xml
+* res/ => pageView42/src/main/res/
+* src/ => pageView42/src/main/java/
+In library:
+* AndroidManifest.xml => library/src/main/AndroidManifest.xml
+* libs/acra-4.5.0.jar => library/libs/acra-4.5.0.jar
+* libs/apache-mime4j-core-0.7.2.jar => library/libs/apache-mime4j-core-0.7.2.jar
+* libs/httpclient-4.3.1.jar => library/libs/httpclient-4.3.1.jar
+* libs/httpcore-4.3.jar => library/libs/httpcore-4.3.jar
+* libs/httpmime-4.3.1.jar => library/libs/httpmime-4.3.1.jar
+* lint.xml => library/lint.xml
+* res/ => library/src/main/res/
+* src/ => library/src/main/java/
+In preferences:
+* AndroidManifest.xml => preferences/src/main/AndroidManifest.xml
+* res/ => preferences/src/main/res/
+* src/ => preferences/src/main/java/
+In Login:
+* AndroidManifest.xml => login/src/main/AndroidManifest.xml
+* libs/aXMLRPC_v1.7.2.jar => login/libs/aXMLRPC_v1.7.2.jar
+* libs/armeabi-v7a/liblinphone-armeabi-v7a.so => login/src/main/jniLibs/armeabi-v7a/liblinphone-armeabi-v7a.so
+* libs/armeabi/liblinphone-armeabi.so => login/src/main/jniLibs/armeabi/liblinphone-armeabi.so
+* libs/google-play-services.jar => login/libs/google-play-services.jar
+* libs/liblinphone.jar => login/libs/liblinphone.jar
+* res/ => login/src/main/res/
+* src/ => login/src/main/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

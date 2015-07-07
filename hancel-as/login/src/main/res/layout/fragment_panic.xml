@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/panicScreenRoot"
+    android:layout_width="match_parent"
+    android:orientation="vertical" 
+    android:layout_height="wrap_content"
+    android:background="@color/background_app">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_header"
+        android:orientation="vertical" >
+       
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/TextoCabecera"
+            android:layout_marginTop="5dp"
+            android:text="@string/ultima"
+            android:textColor="@color/orange_hancel"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <LinearLayout
+            android:id="@+id/datePanic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp" >
+
+            <TextView
+                android:id="@+id/txtLastPanic"
+                style="@style/TextoInstruccion"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="15 - Abril - 08:30"
+                android:textColor="#FFFFFF"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ringsAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp" >
+
+            <TextView
+                android:id="@+id/txtNumRings"
+                style="@style/TextoInstruccion"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+                android:textColor="#FFFFFF"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/separador" />
+
+    <RelativeLayout
+        android:id="@+id/trakingRelativePanel"
+        android:layout_width="wrap_content"
+        android:layout_height="0dip"
+        android:layout_gravity="center"        
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/btnPanic"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/panicbutton"
+            android:textColor="@color/blue_hancel"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:background="@color/background_app">
+
+        <include layout="@layout/fragment_rastreo" />
+       
+    </LinearLayout>
+
+</LinearLayout>
