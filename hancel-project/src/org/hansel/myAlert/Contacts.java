@@ -162,21 +162,17 @@ public class Contacts {
 	 
 	 
 	
-	 public int getGroupId(int pos)
-	 {
-		 if(pos==0)
-		 {
+	 public int getGroupId(int pos){
+		 if(pos==0){
 			 return 0;
 		 }
-		 else
-		 {
+		 else{
 			 return Integer.valueOf(groupsid[pos-1]) ;
 		 }
 	 }
 	
 	 
-	 public HashMap<String,ContactInfo> getContactList()
-	 {
+	 public HashMap<String,ContactInfo> getContactList(){
 		// ArrayList<String> arr = new  ArrayList<String>();
 		 contactInfo = new HashMap<String, ContactInfo>();
 		 Cursor cursor = getContacts();
@@ -198,8 +194,8 @@ public class Contacts {
 		return contactInfo;
 		 
 	 }
-	 private Cursor getPhoneNumbersFromContactCursor(String ContactId)
-	 {
+	 
+	 private Cursor getPhoneNumbersFromContactCursor(String ContactId){
 		 String[] whereArgs = new String[] { ContactId };
 		 Cursor cursor = context.getContentResolver().query(
                  ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -210,13 +206,11 @@ public class Contacts {
 		 return cursor;
 	 }
 	 	
-	 public ArrayList<String> getPhoneNumbersFromContact(String contactId)
-	 {
+	 public ArrayList<String> getPhoneNumbersFromContact(String contactId){
 		 ArrayList<String> data = new ArrayList<String>();
 		 ArrayList<String> duplicates = new ArrayList<String>();
 		 Cursor cursor = getPhoneNumbersFromContactCursor(contactId);
-		 if(cursor!=null)
-		 {
+		 if(cursor!=null){
 			 while (cursor.moveToNext()) {
 				 String phone = cursor.getString(cursor
 				          .getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
@@ -225,8 +219,7 @@ public class Contacts {
 				 String phoneTmp = phone;
 				 phoneTmp = phone.replace("-", "").replace("(", "").replace(")","").trim();
 	
-				 if(!duplicates.contains(phoneTmp))
-				 {
+				 if(!duplicates.contains(phoneTmp)){
 					 duplicates.add(phoneTmp);
 					 data.add(phone);
 				 }
@@ -236,20 +229,18 @@ public class Contacts {
 		return data;
 		 
 	 }
-	 public  String getPrimaryNumber(String ContactId)
-	 {
+	 
+	 public  String getPrimaryNumber(String ContactId){
 		 String phone="";
 		 Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 				 null, ContactsContract.CommonDataKinds.Phone.IS_SUPER_PRIMARY + "= ? AND " +ContactsContract.CommonDataKinds.Phone.CONTACT_ID +"=?" , 
 				 new String[] { "0",ContactId},
 				 null);
-		 if(cursor.moveToNext())
-		 {
-			 
+		 if(cursor.moveToNext()){			 
 			 phone= cursor.getString(cursor
 			          .getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
-		 }else
-		 {
+		 }
+		 else{
 			 cursor = getPhoneNumbersFromContactCursor(ContactId);
 			 if(cursor!=null)
 			 {
@@ -311,7 +302,8 @@ public class Contacts {
 	                options.inSampleSize = Math.round(height / thumbSize);
 	            }
 	            newHeight = Math.round(thumbSize * height / width);
-	        } else {
+	        } 
+	        else {
 	            if (sampleDown) {
 	                options.inSampleSize = Math.round(width / thumbSize);
 	            }
@@ -333,7 +325,8 @@ public class Contacts {
 	        // Bitmap scaled to new height and width
 	        return Bitmap.createScaledBitmap(contactBitmap, newWidth, newHeight, true);
 	    }
-	   @SuppressLint("NewApi")
+	   
+	@SuppressLint("NewApi")
 	public static Bitmap loadContactPhoto(Context context, Uri contactUri,
 	    		BitmapFactory.Options options) {
 		  // Log.v("LoadcontactPhoto");
@@ -359,6 +352,4 @@ public class Contacts {
 	        }
 	        return stream != null ? BitmapFactory.decodeStream(stream, null, options) : null;
 	    }
-
-
 }

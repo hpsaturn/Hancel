@@ -127,9 +127,8 @@ public class EditRingFragment extends Fragment {
 					}
 						
 					if (areAllFielsEmpty) {
-						Toast.makeText(getActivity(), "Rings must have at least one contact", 
+						Toast.makeText(getActivity(), R.string.ring_contacts_error, 
 								Toast.LENGTH_SHORT).show();
-						//getFragmentManager().popBackStackImmediate();
 						return;					
 					}
 					else{
@@ -180,7 +179,6 @@ public class EditRingFragment extends Fragment {
 		addContacts.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Log.d("=== Adicionar más contactos");
 				Log.d("=== Contactos actuales: " + idContacts.toString());
 				searchNotIncludedContacts();					
 			}
@@ -197,16 +195,7 @@ public class EditRingFragment extends Fragment {
 				ringNotify.setChecked(true);
 			else 
 				ringNotify.setChecked(false);
-				
-			/*addContacts = (TextView) view.findViewById(R.id.newContact);
-			addContacts.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View v) {
-					Log.d("=== Adicionar más contactos");
-					Log.d("=== Contactos actuales: " + idContacts.toString());
-					searchNotIncludedContacts();					
-				}
-			} );*/
+							
 			deleteRing = (TextView) view.findViewById(R.id.deleteRing);
 			deleteRing.setVisibility(View.VISIBLE);
 			deleteRing.setOnClickListener(new OnClickListener(){
@@ -337,10 +326,7 @@ public class EditRingFragment extends Fragment {
 			Contact c = Compatibility.getContact(getActivity()
 				.getContentResolver(), searchCursor, i);
 			c.setSelected(!isNewRing);
-			contactsRing.add(c);
-			/*contactsRing.add(new ContactRing(c.getID(), c.getName(), 
-					c.getPhotoUri(), c.getPhoto(), !isNewRing));*/
-			
+			contactsRing.add(c);					
 		}
 				
 		contactsList.setAdapter(new RingsContactsListAdapter(contactsRing));

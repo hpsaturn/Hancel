@@ -66,7 +66,6 @@ public class StatusFragment extends Fragment {
 	private ListView sliderContentAccounts;
 	private TableLayout callStats;
 	private SlidingDrawer drawer;
-//	private LinearLayout allAccountsLed;
 	private Runnable mCallQualityUpdater;
 	private boolean isInCall, isAttached = false;
 	private Timer mTimer;
@@ -82,7 +81,6 @@ public class StatusFragment extends Fragment {
 		callQuality = (ImageView) view.findViewById(R.id.callQuality);
 		encryption = (ImageView) view.findViewById(R.id.encryption);
 		background = (ImageView) view.findViewById(R.id.background);
-//		allAccountsLed = (LinearLayout) view.findViewById(R.id.moreStatusLed);
 		callStats = (TableLayout) view.findViewById(R.id.callStats);
 		
 		drawer = (SlidingDrawer) view.findViewById(R.id.statusBar);
@@ -208,24 +206,7 @@ public class StatusFragment extends Fragment {
 			}
 		});
 	}
-	
-//	private void setMiniLedsForEachAccount() {
-//		if (allAccountsLed == null)
-//			return;
-//		
-//		if (LinphoneManager.isInstanciated() && LinphoneManager.getLc() != null) {
-//			allAccountsLed.removeAllViews();
-//			for (LinphoneProxyConfig lpc : LinphoneManager.getLc().getProxyConfigList()) {
-//				ImageView led = new ImageView(getActivity());
-//				LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-//				led.setLayoutParams(params);
-//				led.setAdjustViewBounds(true);
-//				led.setImageResource(getStatusIconResource(lpc.getState(), false));
-//				allAccountsLed.addView(led);
-//			}
-//		}
-//	}
-	
+
 	private int getStatusIconResource(LinphoneCore.RegistrationState state, boolean isDefaultAccount) {
 		try {
 			LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
@@ -501,7 +482,6 @@ public class StatusFragment extends Fragment {
 		mTimer.scheduleAtFixedRate(mTask, 0, 1000);
 	}
 
-	//ANDYYY
 	class AccountsListAdapter extends BaseAdapter {
 		private List<CheckBox> checkboxes;
 		

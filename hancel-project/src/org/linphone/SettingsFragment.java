@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.hancel.exceptions.NoInternetException;
 import org.hancel.http.HttpUtils;
-import org.hansel.myAlert.Login;
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.hansel.myAlert.Utils.Util;
@@ -47,15 +46,11 @@ import org.linphone.core.TunnelConfig;
 import org.linphone.mediastream.Log;
 import org.linphone.mediastream.Version;
 import org.linphone.mediastream.video.capture.hwconf.AndroidCameraConfiguration;
-import org.linphone.setup.SetupActivity;
 import org.linphone.ui.LedPreference;
 import org.linphone.ui.PreferencesListFragment;
-
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -69,18 +64,13 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.Toast;
 
 /**
  * @author Sylvain Berfini
  */
 public class SettingsFragment extends PreferencesListFragment implements EcCalibrationListener {
-	private static final int WIZARD_INTENT = 1;
+	//private static final int WIZARD_INTENT = 1;
 	private LinphonePreferences mPrefs;
 	private Handler mHandler = new Handler();
 	private TunnelConfig tunnelConfig;
@@ -128,9 +118,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
 			if (MainActivity.isInstanciated()) {
-				//AcceptLogoutDialog logoutDialog = new AcceptLogoutDialog();
 				FragmentManager fm = MainActivity.instance().getSupportFragmentManager();
-				//logoutDialog.show(fm, "Salir de Hancel");
 				DialogFragment newFragment = LogoutDialogFragment.newInstance(
 			            R.string.logout_desc);
 			    newFragment.show(getFragmentManager(), "dialog");

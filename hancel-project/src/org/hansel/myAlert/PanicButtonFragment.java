@@ -50,8 +50,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PanicButtonFragment extends Fragment implements OnClickListener{	
-	private static final String STOP_TRACK = "Detener Rastreo";
-	private static final String START_TRACK = "Programar Rastreo";
 	private static final int RQS_1 = 12;
 	private final int REQUEST_CODE = 0;
 	private boolean corriendo=false;
@@ -84,7 +82,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 						getActivity().startService(new Intent(getActivity(),
 								SendPanicService.class));
 						
-						btnTracking.setText(STOP_TRACK);
+						btnTracking.setText(getString(R.string.stop_tracking));
 						btnTracking.setVisibility(View.VISIBLE);
 						trackInfo.setVisibility(View.VISIBLE);
 						trackingOptions.setVisibility(View.GONE);												
@@ -123,13 +121,13 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			corriendo = savedInstanceState.getBoolean("run");
 			if(corriendo){
 				Log.v("=== Traking esta corriendo");
-				btnTracking.setText(STOP_TRACK);
+				btnTracking.setText(getString(R.string.stop_tracking));
 				trackInfo.setVisibility(View.VISIBLE);
 				trackingOptions.setVisibility(View.GONE);
 			}
 			else{
 				Log.v("=== Tracking no esta corriendo");				
-				btnTracking.setText(START_TRACK);
+				btnTracking.setText(getString(R.string.start_tracking));
 				trackInfo.setVisibility(View.GONE);
 				trackingOptions.setVisibility(View.GONE);
 			}
@@ -265,7 +263,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 	@Override //RASTREO
 	public void onClick(View v) {
-		if (btnTracking.getText() == STOP_TRACK) {
+		if (btnTracking.getText() == getString(R.string.stop_tracking)) {
 			Log.v("=== Boton con texto Detener");
 			createPasswordDialog(btnTracking);
 			return;
@@ -321,7 +319,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				if(isOK && btnPanico.getId()== R.id.iniciaTrackId ){
 					Log.v("Detener Rastreo");
 					alarmManager.cancel(getPendingAlarm());
-					btnPanico.setText(START_TRACK);
+					btnPanico.setText(getString(R.string.start_tracking));
 					trackInfo.setVisibility(View.GONE);
 					trackingOptions.setVisibility(View.GONE);
 					Util.setRunningService(getActivity().getApplicationContext(), false);
@@ -367,13 +365,14 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		Log.v("=== En setupButtonText");
 		if(corriendo){
 			Log.v("=== SetupButtonText");
-			//showtrackingOptions(false);
-			btnTracking.setText(STOP_TRACK);
+			//showtrackingOptions(true);
+			btnTracking.setText(getString(R.string.stop_tracking));
 			//trackInfo.setVisibility(View.VISIBLE);
 			//trackingOptions.setVisibility(View.GONE);
 		}
 		else{
-			btnTracking.setText(START_TRACK);
+			btnTracking.setText(getString(R.string.start_tracking));
+			//showtrackingOptions(false);
 			//trackInfo.setVisibility(View.GONE);
 			//trackingOptions.setVisibility(View.GONE);
 		}
@@ -384,9 +383,10 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		Intent share = new Intent(android.content.Intent.ACTION_SEND);
 		share.setType("text/plain");
 		share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-		share.putExtra(Intent.EXTRA_SUBJECT, "[Hance] Traza de periodista");
+		share.putExtra(Intent.EXTRA_SUBJECT, "[Traza Hancel] ");
+		Log.v(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
 		String h = SimpleCrypto.md5(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
-		share.putExtra(Intent.EXTRA_TEXT, "http://hancel.flip.org.co/hansel/?f=trace&hash="+h);
+		share.putExtra(Intent.EXTRA_TEXT, "http://hancel.flip.org.co/hansel/?f=trace&hash=" + h);
 		startActivity(Intent.createChooser(share, "Share trace!"));
 	}
 	
@@ -394,6 +394,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	private void cancelAlarms() {
 		alarmManager.cancel(Util.getReminderPendingIntennt(getActivity()));
 		alarmManager.cancel(Util.getStopSchedulePendingIntentWithExtra(getActivity()));
+		showtrackingOptions(false);
 	}
 	
 	//Rastreo

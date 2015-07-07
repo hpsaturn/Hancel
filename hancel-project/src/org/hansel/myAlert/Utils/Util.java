@@ -312,18 +312,18 @@ public class Util {
 	   public static void insertNewTrackId(Context context,int id)
 	   {
 		   TrackDAO track = new TrackDAO(context);
-			  track.open();
-			 track.InsertaNewId(null,id);
-			  track.close();
+		   track.open();
+		   track.InsertaNewId(null,id);
+		   track.close();
 	   }
 	   public static int getLastTrackId(Context context)
 	   {
 		   TrackDAO track;
-			 track = new TrackDAO(context.getApplicationContext());
-			  track.open();
-			int trackID=(int) track.Insertar("algo");
-			track.close();
-			return trackID;
+		   track = new TrackDAO(context.getApplicationContext());
+		   track.open();
+		   int trackID=(int) track.Insertar("algo");
+		   track.close();
+		   return trackID;
 			
 	   }
 	   

@@ -18,9 +18,12 @@ zenyagami@gmail.com
 
 import static android.content.Intent.ACTION_MAIN;
 
+import java.util.Calendar;
+
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.SimpleCrypto;
+import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.WelcomeInfo.ScreenSlidePageAdapter;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
 import org.linphone.LinphoneManager;
@@ -38,16 +41,12 @@ import org.linphone.core.LinphoneProxyConfig;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -100,12 +99,17 @@ public class Login extends org.holoeverywhere.app.Activity {
 					usuarioDAO.open();
 					usuarioDAO.Insertar(mUser,crypto,"");
 					usuarioDAO.close();
-					launchMainActivity();
+					Util.setLoginOkInPreferences(getApplicationContext(), true);					
+					PreferenciasHancel.setUserId(getApplicationContext(), 
+							(int)Calendar.getInstance().getTimeInMillis());
+					Util.insertNewTrackId(getApplicationContext(), 0);	
+					launchMainActivity();	
 					finish();
 				}
 				else{
 					errores.setText(mErrores);
 					errores.setVisibility(View.VISIBLE);
+					Util.setLoginOkInPreferences(getApplicationContext(), false);
 				}
 			}
 		});
@@ -114,6 +118,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 		txt.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(), Registro.class);
+				Util.setLoginOkInPreferences(getApplicationContext(), false);
 				startActivity(i);
 			}
 		});
@@ -272,7 +277,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 				return false;
 			}
 			if(proxycon.getState() != RegistrationState.RegistrationOk){
-				mErrores = "No se pudo establecer comunicación con el servidor SIP";					
+				mErrores = getString(R.string.login_SIP_unavailable);					
 				return false;
 			}			
 			return true;		
@@ -305,8 +310,7 @@ public class Login extends org.holoeverywhere.app.Activity {
 			|Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		showProgress(false);			
 		startActivity(i);		
-		Log.v("=== Lanzando Main Activity");
-		finish();
+		Log.v("=== Lanzando Main Activity");				
 	}
 	
 	/*

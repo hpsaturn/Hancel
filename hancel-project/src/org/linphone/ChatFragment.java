@@ -618,8 +618,9 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 		boolean isNetworkReachable = lc == null ? false : lc.isNetworkReachable();
 		
 		if (chatRoom != null && messageToSend != null && messageToSend.length() > 0 
-				&& isNetworkReachable) {			
-			LinphoneChatMessage chatMessage = chatRoom.createLinphoneChatMessage(messageToSend,sipUri,State.Delivered, 300,false,false);
+				&& isNetworkReachable) {	
+			Log.i("=== URI que enviara el mensaje de chat: " + sipUri);
+			LinphoneChatMessage chatMessage = chatRoom.createLinphoneChatMessage(messageToSend,sipUri,State.InProgress, 300,false,false);
 			Log.i("==textMessage: " + chatMessage.getText());
 			chatRoom.sendMessage(messageToSend);//chatMessage, this);
 			

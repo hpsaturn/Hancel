@@ -155,7 +155,7 @@ public class HttpUtils {
 			,String longitude
 			,String bateria) throws NoInternetException
 	{
-
+		Log.v("**** Send Track");
 		 ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
 		 values.add(new BasicNameValuePair("f","tracking"));
 		 values.add(new BasicNameValuePair("androidId",androidId));

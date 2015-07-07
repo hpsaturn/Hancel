@@ -146,7 +146,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			if (loc != null) {
 				Lat = loc.getLatitude();
 				Long = loc.getLongitude();
-				mapa = " Loc. Aprox: " + "http://maps.google.com/?q=" + Lat+ "," + Long + "\n";
+				mapa = getString(R.string.tracking_loc_aprox) + "http://maps.google.com/?q=" + Lat+ "," + Long + "\n";
 
 			}
 			RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
@@ -187,12 +187,13 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 			}
 			
 			if(numbers.size() == 0){
-				result = "No se encontraron anillos configurados"; 
+				result = getString(R.string.no_configured_rings); 
 			}
 			else{
 				Log.v("=== Numero de mensajes a enviar: " + numbers.size());
 				SharedPreferences preferencias = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-				String message = preferencias.getString("pref_key_custom_msg","Ayuda");
+				String message = preferencias.getString("pref_key_custom_msg",
+						getString(R.string.tracking_help));
 				int fails = 0;
 				for(int i = 0; i < numbers.size(); i++){
 					try{
@@ -201,7 +202,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 						Log.v("=== Numero : " + number);
 						if(number != null && number.length() > 0){
 							Log.v("=== Enviando SMS a : " + number);
-							enviarSMS(number, message + mapa + " Bateria: " + 
+							enviarSMS(number, message + mapa + getString(R.string.tracking_battery_level) + 
 							getNivelBateria() + "%");
 						}
 					}
@@ -212,7 +213,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 					}
 				}
 				if(fails == numbers.size()){
-					result = "Los numeros de contacto a notificar no son validos";
+					result = getString(R.string.tracking_invalid_contac_numbers);
 				}
 				else{
 					result = "OK";
@@ -248,8 +249,8 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 						.getInstance());
 				PreferenciasHancel.setLastPanicAlert(getApplicationContext(),
 						currentDateandTime);
-				Toast.makeText(getApplicationContext(),"Contactos notificados. " +
-						"Inicia función de rastreo.", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),getString(R.string.tracking_launched), 
+						Toast.LENGTH_LONG).show();
 			}
 			else{
 				Toast.makeText(getApplicationContext(),result, Toast.LENGTH_LONG).show();
@@ -296,12 +297,10 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 		}
 
 	}
-
 	
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -327,9 +326,5 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 		Intent i = new ContextWrapper(this).registerReceiver(null,
 				new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		return   i.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-	}
-	
-	
-	
-    
+	}    
 }

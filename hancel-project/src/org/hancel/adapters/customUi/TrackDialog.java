@@ -18,8 +18,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import org.hansel.myAlert.R;
+import org.hansel.myAlert.Log.Log;
+import org.hansel.myAlert.Utils.PreferenciasHancel;
+import org.hansel.myAlert.Utils.SimpleCrypto;
+import org.hansel.myAlert.Utils.Util;
 
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
@@ -215,12 +220,16 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 		case R.id.btnAceptDateTrack:
 			long timeMilis  = trackDate.getStartTimeTrack().getTimeInMillis() + (ONE_MINUTE_IN_MILLIS * 10);
 			Calendar stop = Calendar.getInstance();
-			stop.setTimeInMillis(timeMilis);
-			
+			stop.setTimeInMillis(timeMilis);			
+						
 		   if(trackDate.getEndTimeTrack().compareTo(stop)!=1  || trackDate.getEndDateTrack().compareTo(stop) !=1 ){
 			   Toast.makeText(getApplicationContext(), "La hora para detener debe  ser mayor a los minutos configurados", Toast.LENGTH_SHORT).show();
 			   return;
 		   }
+		   int trackId = (int )(Math.random() * 99999 + 1);
+		   PreferenciasHancel.setUserId(getApplicationContext(),trackId);
+		   Log.v("=== userID en TrackDialog " + PreferenciasHancel.getUserId(getApplicationContext()));
+		   
 			setupResult();
 			break;
 		case R.id.btnCancelDateTrack:

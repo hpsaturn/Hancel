@@ -62,7 +62,7 @@ public class ReminderService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		//obtenemos el "número de intentos"
+		//obtenemos el "nï¿½mero de intentos"
 		getApplicationContext().registerReceiver(alarmReceiver, new IntentFilter(CANCEL_ALARM_BROADCAST));
 		int count = PreferenciasHancel.getReminderCount(getApplicationContext());
 		count++;
@@ -83,7 +83,7 @@ public class ReminderService extends Service {
 			 stopSelf();
 		}else
 		{
-			//mandamos una alerta de notificación
+			//mandamos una alerta de notificaciï¿½n
 			showNotifciation();
 			playSound();
 			 mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -99,7 +99,7 @@ public class ReminderService extends Service {
 			};
 			han.postDelayed(run, 1000*10);
 			
-			//alarma para "regresar" en caso que el usuario no de "click" en la notificación
+			//alarma para "regresar" en caso que el usuario no de "click" en la notificaciï¿½n
 			 AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 		        long due = System.currentTimeMillis() + (60000*3); // 3 minutos
 		        Log.v("Scheduling next update at " + new Date(due));
@@ -110,8 +110,7 @@ public class ReminderService extends Service {
 	}
 
 	protected void cancelAlarm() {
-		if(mMediaPlayer!=null && mMediaPlayer.isPlaying())
-		{
+		if(mMediaPlayer!=null && mMediaPlayer.isPlaying()){
 			mMediaPlayer.stop();
 		}
 		if(mVibrator!=null) mVibrator.cancel();
@@ -134,8 +133,7 @@ public class ReminderService extends Service {
 	            System.out.println("Error tocando alarma");
 	        }
 	}
-	private void Vibra()
-	{
+	private void Vibra(){
 		int dot = 200;      // Length of a Morse Code "dot" in milliseconds
     	int dash = 500;     // Length of a Morse Code "dash" in milliseconds
     	int short_gap = 200;    // Length of Gap Between dots/dashes

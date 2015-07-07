@@ -20,22 +20,10 @@ import java.util.concurrent.ExecutionException;
 
 import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.Log.Log;
-import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.SimpleCrypto;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.Application;
 import org.json.JSONObject;
-import org.linphone.LinphoneManager;
-import org.linphone.LinphoneService;
-import org.linphone.core.LinphoneAddress;
-import org.linphone.core.LinphoneAuthInfo;
-import org.linphone.core.LinphoneCore;
-import org.linphone.core.LinphoneCoreException;
-import org.linphone.core.LinphoneCoreFactory;
-import org.linphone.core.LinphoneProxyConfig;
-import org.linphone.core.LinphoneAddress.TransportType;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -56,7 +44,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
 import com.actionbarsherlock.view.MenuItem;
 
 public class Registro extends org.holoeverywhere.app.Activity {
@@ -71,6 +58,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Util.setLoginOkInPreferences(getApplicationContext(), false);
 		setContentView(R.layout.registro_layout);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		vUsuario = (EditText) findViewById(R.id.reg_fullname);
@@ -199,9 +187,10 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			try {
 				if(mAuthTask.execute().get()){	
 					AlertDialog.Builder alert = new AlertDialog.Builder(this);                 
-					alert.setTitle("Confirmacion de registro");  
-					alert.setMessage("Se envió un mensaje de confirmacion de registro a su correo. Haga clic en el enlace para activar su cuenta");                
-					alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {  
+					alert.setTitle(getText(R.string.registration_confirm));  
+					alert.setMessage(getString(R.string.registration_confirm_msg));                
+					alert.setPositiveButton(getString(R.string.registration_accept), 
+							new DialogInterface.OnClickListener() {  
 					public void onClick(DialogInterface dialog, int whichButton) {
 						finish();
 					}});
@@ -289,7 +278,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 				result = HttpUtils.Register(mUsuario,crypto,mEmail);
 			} 
 			catch (Exception ex) {
-				mErrores = "Error al intentar la conexión";
+				mErrores = getString(R.string.registration_hancel_unavailable);
 				errores.setVisibility(View.VISIBLE);
 				Log.v("Error login: " + ex.getMessage());
 				return false;
@@ -298,12 +287,8 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			//Handling response
 			try {				
 				if (result.optString("resultado").equals("ok")) {
-					JSONObject jObject = result.getJSONObject("descripcion");
-					int androidId = Integer.parseInt(jObject.getString("usr-id"));
-					PreferenciasHancel.setDeviceId(getApplicationContext(),id);
-					PreferenciasHancel.setUserId(getApplicationContext(),androidId);						
-					Util.insertNewTrackId(getApplicationContext(), 0);						
-					Util.setLoginOkInPreferences(getApplicationContext(),false);
+					JSONObject jObject = result.getJSONObject("descripcion");					
+					Util.setLoginOkInPreferences(getApplicationContext(),false);												
 					int idUsr = (int) usuarioDAO.Insertar(mUsuario,crypto, mEmail);
 					usuarioDAO.close();
 					if (idUsr != 0) {						
@@ -314,17 +299,17 @@ public class Registro extends org.holoeverywhere.app.Activity {
 					JSONObject jObject = result.getJSONObject("descripcion");
 					String msg = jObject.getString("msg");
 					if(msg.equalsIgnoreCase("duplicated")){
-						mErrores = "El usuario ya se encuentra en uso. Intente con uno diferente";
+						mErrores = getString(R.string.registration_username_used);
 					}
 					else{
-						mErrores = "Error estableciendo comunicación con el servicor. Intente después";
+						mErrores = getString(R.string.registration_hancel_unavailable);
 					}					
 				}
 				return false;
 			} 
 			catch (Exception e) {
 				Log.v("Error al parsear JSON: " + result);
-				mErrores = "Error al obtener los datos";
+				mErrores = getString(R.string.registration_hancel_data_error);
 				return false;
 			}							
 		}

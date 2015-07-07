@@ -507,4 +507,32 @@
     <string name="activación">Registre su código FLIP</string>
     <string name="pref_summary_flip_code_ok">Actualmente registrado</string>
     <string name="pref_summary_flip_code_none">Código FLIP no registrado</string>
+    
+    <!-- Nuevos Strings -->
+    <string name="history_outgoing">Realizadas</string>
+    <string name="history_incoming">Ingresadas</string>
+    <string name="history_missed">Perdidas</string>
+    <string name="login_SIP_unavailable">No fué posible establecer conexión con el servidor SIP.</string>
+    <string name="registration_confirm">Confirmación de registro</string>
+    <string name="registration_confirm_msg">Se envió un mensaje de confirmacion de registro a su correo. Haga clic en el enlace para activar su cuenta</string>
+    <string name="registration_accept">Aceptar</string>
+    <string name="registration_hancel_unavailable">No fué posible establecer conexión con el servidor Hancel.</string>
+    <string name="registration_username_used">El usuario ingresado ya se encuentra en uso. Ingrese uno diferente.</string>
+    <string name="registration_hancel_data_error">Error  leyendo información desde el servidor Hancel.</string>
+    <string name="alarm_cancel_password">Ingrese su contraseña para cancelar</string>
+    <string name="tracking_stopped">Rastreo detenido</string>
+    <string name="alarm_accept">Aceptar</string>
+    <string name="ring_contacts_error">El anillo debe tener al menos un contacto</string>
+    <string name="no_configured_rings">No se encontraron anillos configurados</string>
+    <string name="stop_tracking">Detener rastreo</string>
+    <string name="start_tracking">Programar rastreo</string>
+    <string name="tracking_launched">Contactos notificados. Inicia función de rastreo</string>
+    <string name="tracking_invalid_contac_numbers">Los números de contacto a notificar no son válidos</string>
+    <string name="tracking_battery_level">Nivel de batería:</string>
+    <string name="tracking_loc_aprox">Localización Aproximada:</string>
+    <string name="alert_sent">Alerta enviada</string>
+    <string name="tracking_help">¡Ayuda! </string>
+    <string name="tracking_finished">Rastreo finalizado.</string>
+    <string name="tracking_thanks">Gracias por utilizar Hancel</string>
+    
    </resources>

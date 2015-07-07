@@ -74,7 +74,7 @@
 	<bool name="use_linphonecore_ringing">false</bool>
 	
 	<!-- This settings handle the behavior of the view waiting for the remote provisioning configuration to be done -->
-	<bool name="display_sms_remote_provisioning_activity">false</bool>
+	<bool name="display_sms_remote_provisioning_activity">false</bool> <!-- eliminar -->
 	<bool name="forbid_app_usage_until_remote_provisioning_completed">false</bool>
 	<bool name="display_confirmation_popup_after_first_configuration">false</bool>
 	
@@ -88,6 +88,7 @@
 	<string name="about_bugreport_email">linphone-android@belledonne-communications.com</string>
 	<string name="temp_photo_name">linphone-android-photo-temp.jpg</string>
 	<string name="temp_photo_name_with_date">linphone-android-photo-%s.jpg</string>
+	
 	
 	<bool name="enable_call_notification">true</bool>
 </resources>

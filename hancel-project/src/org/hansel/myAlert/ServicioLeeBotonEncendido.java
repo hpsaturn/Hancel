@@ -78,7 +78,8 @@ public class ServicioLeeBotonEncendido extends Service {
 						// activamos el mensaje de auxilio
 						isSendMesagge=true;
 						getApplicationContext().startService(new Intent(getApplicationContext(),SendPanicService.class));
-						Toast.makeText(getApplicationContext().getApplicationContext(), "Alerta enviada", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext().getApplicationContext(), 
+								getString(R.string.alert_sent),Toast.LENGTH_SHORT).show();
 						vibrar();
 					} else {
 						countStart += 1;

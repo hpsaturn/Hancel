@@ -34,14 +34,13 @@ public class StopScheduleActivity extends Activity{
 		 AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 		 am.cancel(Util.getReminderPendingIntennt(getApplicationContext()));
 		 PreferenciasHancel.setAlarmStartDate(getApplicationContext(), 0);
-			//ya se termino el tiempo de la programación cancelamos alarma y salimos
-			Log.v("Fin de la programación");
+			//ya se termino el tiempo de la programaciï¿½n cancelamos alarma y salimos
+			Log.v("Fin de la programaciï¿½n");
 			 NotificationCompat.Builder mBuilder =
 					    new NotificationCompat.Builder(this)
 					    .setSmallIcon(R.drawable.ic_launcher)
-					    .setContentTitle("Rastreo Finalizado")
-					    .setContentText("Gracias por usar Hancel")
-					    ;
+					    .setContentTitle(getString(R.string.tracking_finished))
+					    .setContentText(getString(R.string.tracking_thanks));					    
 			
 				Notification notif = mBuilder.build();
 				notif.flags =  Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
