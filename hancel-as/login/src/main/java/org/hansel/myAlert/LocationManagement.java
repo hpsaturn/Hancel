@@ -15,19 +15,6 @@ Created by Javier Mejia @zenyagami
 zenyagami@gmail.com
 	*/
 
-import java.util.List;
-
-import org.hancel.http.HttpUtils;
-import org.hansel.myAlert.Log.Log;
-import org.hansel.myAlert.Utils.PreferenciasHancel;
-import org.hansel.myAlert.Utils.Util;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -37,65 +24,73 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-//import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 
-public class LocationManagement  extends 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-Service implements GooglePlayServicesClient.ConnectionCallbacks,
-GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
+import org.hancel.http.HttpUtils;
+import org.hansel.myAlert.Log.Log;
+import org.hansel.myAlert.Utils.PreferenciasHancel;
+import org.hansel.myAlert.Utils.Util;
 
-	 	private boolean mLocationTracking = true;
-	 	private boolean mDisableTracking = false;
-	    private LocationManager mLocationManager;
-	    private static final int TWO_MINUTES = 1000 * 60 * 5;
-	    protected Location mLocation;
-	    private final Handler handler = new Handler();
-	    private int minutos=5;
-	    private TelephonyManager tMgr;
-	    private long trackId;	  
-	    private LocationRequest mLocationRequest;
-	    private LocationClient mLocationClient;
-	 
-	    public LocationManagement(){
-			
-	 }
+public class LocationManagement extends Service implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
-    public void setMinutos(int tiempo){
-    	this.minutos=tiempo;
+    public static final String TAG = LocationManagement.class.getSimpleName();
+
+    private boolean mLocationTracking = true;
+    private boolean mDisableTracking = false;
+    private LocationManager mLocationManager;
+    private static final int TWO_MINUTES = 1000 * 60 * 5;
+    protected Location mLocation;
+    private final Handler handler = new Handler();
+    private int minutos = 5;
+    private TelephonyManager tMgr;
+    private long trackId;
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+
+    public LocationManagement() {
+
     }
-    
+
+    public void setMinutos(int tiempo) {
+        this.minutos = tiempo;
+    }
+
     private final Runnable getData = new Runnable() {
         public void run() {
             getDataFrame();
         }
     };
-	 
+
     private void getDataFrame() {
-    	Log.v("=== Inicia Handler de Rastreo");
-        final boolean gpsEnabled = mLocationManager
-                .isProviderEnabled(LocationManager.GPS_PROVIDER);
-        
-        if(mLocationTracking && !mDisableTracking) {
+        Log.v("=== Inicia Handler de Rastreo");
+
+        final boolean gpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        if (mLocationTracking && !mDisableTracking) {
             if (!gpsEnabled && isGPSToggleable()) {
                 enableGPS();
             }
             mLocationTracking = true;
         }
-       
+
         new conexionWS().execute();
-        handler.postDelayed(getData, 1000*60*minutos); 
+        handler.postDelayed(getData, 1000 * 60 * minutos);
         
         /*
         * ID android
@@ -106,123 +101,52 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
         * 
         */
     }
-    
-    
-    private void getLocation(){    	
-		int attempts = 0;
-		
-		try {			
-			while(!mLocationClient.isConnected() && attempts < 10){
-				Thread.sleep(1000);			
-				attempts ++;
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		if (mLocationClient != null && mLocationClient.isConnected()) {
-			mLocation = mLocationClient.getLastLocation();
-		}
-		
-		if (mLocation == null) {
-			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			Criteria req = new Criteria();
-			req.setAccuracy(Criteria.ACCURACY_FINE);
-			req.setHorizontalAccuracy(Criteria.ACCURACY_MEDIUM);
-			List<String> providersList = locationManager.getProviders(req,false);
-			int i = 0;
-			
-			while(!locationManager.isProviderEnabled(providersList.get(i)) && 
-					i < providersList.size()){
-				i++;
-			}
-			
-			if(i < providersList.size())
-				mLocation = locationManager.getLastKnownLocation(providersList.get(i));			
-			
-			if(mLocation != null){						
-				Log.v("=== LAT: " + mLocation.getLatitude());
-				Log.v("=== LON: " + mLocation.getLongitude());
-				Log.v(""+  "     http://maps.google.com/?q="+mLocation.getLatitude() + ","
-	        			+ mLocation.getLongitude());
-			}
-		}
-		
-    	/*
-    	
-    	
-    	
-    	if (mLocationClient!=null && mLocationClient.isConnected() && 
-    			isBetterLocation(mLocationClient.getLastLocation(), mLocation)){
-        	mLocation = mLocationClient.getLastLocation();
+
+
+    private void getLocation() {
+        int attempts = 0;
+
+        try {
+            while (!mGoogleApiClient.isConnected() && attempts < 10) {
+                Thread.sleep(1000);
+                attempts++;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-    	else{
-        	mLocation = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
-        
-        if(mLocation!=null){
-        	Log.v(""+  "     http://maps.google.com/?q="+mLocation.getLatitude() + ","
-        			+ mLocation.getLongitude());
-        }
-    	else{
-    		Log.v(""+  "     http://maps.google.com/?q="+mLocation.getLatitude() + ","
-        			+ mLocation.getLongitude());
-    		/*
-    		try{
-	    		Log.v("=== Error tomando el GPS vamos a hacerlo por celdas ");
-				String posicionCeldas = tMgr.getCellLocation().toString().replace("[", "").replace("]", "");
-				System.out.println("----Por celdas" + posicionCeldas);
-				
-				try{
-					if(!posicionCeldas.equals("")){
-						Vector<String> celdas = Util.splitVector(posicionCeldas, ",");
-						Double Latitud = Double.valueOf(celdas.get(3));
-						Double longitud = Double.valueOf( celdas.get(4));
-						escribe("Celdas: http://maps.google.com/?q="+Latitud+","+longitud);
-				
-					}
-				}catch (ArrayIndexOutOfBoundsException a) {
-					// TODO: handle exception
-					System.out.println("=== No se encontro tampoco por las celdas -> " + a.getMessage());
-				}catch (Exception e) {
-					Log.v("Error usando Celdas:"+e.getMessage());
-				}
-    		}catch(Exception ex){
-    			Log.v("Error obteniendo celdas:"+ex.getMessage());
-    		}
-		}*/
+
     }
-    
+
     public void stopGPS() {
-    	Log.v("Detenmos Rastreo");
+        Log.v("Detenmos Rastreo");
         //mLocationManager.removeUpdates(this);
-   
+
     }
+
     public void startGPS(String provider) {
-    	//escribe("inicia rastreo StartGps: " + provider);
-    	Log.v("Buscando provider"+provider);
-       // mLocationManager.requestLocationUpdates(provider, NORMAL_INTERVAL,NORMAL_DISTANCE , this);
+        //escribe("inicia rastreo StartGps: " + provider);
+        Log.v("Buscando provider" + provider);
+        // mLocationManager.requestLocationUpdates(provider, NORMAL_INTERVAL,NORMAL_DISTANCE , this);
     }
 
     public void disableTracking() {
-    	// If the client is connected
-        if (mLocationClient.isConnected()) {
-            mLocationClient.removeLocationUpdates(this);
+        // If the client is connected
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
         }
-        /*
-         * After disconnect() is called, the client is
-         * considered "dead".
-         */
-        mLocationClient.disconnect();
-    	
-    	
+
         mDisableTracking = true;
         handler.removeCallbacks(getData);
         stopGPS();
     }
-    
+
+    @Deprecated
     private boolean isGPSToggleable() {
-    	
+
         PackageManager pacman = getApplication().getPackageManager();
         PackageInfo pacInfo = null;
         Log.v("=== Intenamos ver si se puede activar GPS");
@@ -243,8 +167,10 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
         }
         return false;
     }
+
+    @Deprecated
     private void enableGPS() {
-    	Log.v("=== Intentamos Activar el GPS(no funciona en todas las versiones) ");
+        Log.v("=== Intentamos Activar el GPS(no funciona en todas las versiones) ");
         String provider = Settings.Secure.getString(getApplication().getContentResolver(),
                 Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
@@ -257,9 +183,10 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
             getApplication().sendBroadcast(poke);
         }
     }
-    
+
+    @Deprecated
     protected boolean isBetterLocation(Location location,
-        Location currentBestLocation) {
+                                       Location currentBestLocation) {
         if (currentBestLocation == null) {
             return true;
         }
@@ -271,8 +198,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
         if (isSignificantlyNewer) {
             return true;
-        } 
-        else if (isSignificantlyOlder) {
+        } else if (isSignificantlyOlder) {
             return false;
         }
 
@@ -286,148 +212,179 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
         if (isMoreAccurate) {
             return true;
-        } 
-        else if (isNewer && !isLessAccurate) {
+        } else if (isNewer && !isLessAccurate) {
             return true;
-        } 
-        else if (isNewer && !isSignificantlyLessAccurate
+        } else if (isNewer && !isSignificantlyLessAccurate
                 && isFromSameProvider) {
             return true;
         }
         return false;
     }
-    /** Checks whether two providers are the same */
+
+    /**
+     * Checks whether two providers are the same
+     */
     private boolean isSameProvider(String provider1, String provider2) {
         if (provider1 == null) {
             return provider2 == null;
         }
         return provider1.equals(provider2);
     }
-    
-    public void StartTracking(){
-    	handler.post(getData);
+
+    public void StartTracking() {
+        handler.post(getData);
     }
 
-	@Override
-	public void onLocationChanged(Location location) {
-		Log.v("On Loc Change");
-		
-		if(location!=null){
-	        String geoCodedLocation;
-	        geoCodedLocation = Util.geoCodeMyLocation(location.getLatitude(),
-	                location.getLongitude(),getApplicationContext());
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.v("On Loc Change");
 
-	        if (isBetterLocation(location, mLocation) && Geocoder.isPresent()) {
-	            try {
-	            
-	            	//enviamos al servidor el mensaje de reastreo
-	            	Log.v("Cambio de Localizacion: "+geoCodedLocation);
-	            }catch (IllegalArgumentException e) {
-	            
-	            }
-	            mLocation = location;
-	        }
-		}
-	}
-	
-	@Override
-	public IBinder onBind(Intent arg0) {
-		return null;
-	}
-	@Override
+        if (location != null) {
+            String geoCodedLocation;
+            geoCodedLocation = Util.geoCodeMyLocation(location.getLatitude(), location.getLongitude(), getApplicationContext());
+
+            if (isBetterLocation(location, mLocation) && Geocoder.isPresent()) {
+                try {
+
+                    //enviamos al servidor el mensaje de reastreo
+                    Log.v("Cambio de Localizacion: " + geoCodedLocation);
+                } catch (IllegalArgumentException e) {
+
+                }
+                mLocation = location;
+            }
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return null;
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-		tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-		 mLocationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-		 showNotification();
-		
-		minutos = intent.getIntExtra("minutos", 5);
-		long UpdateInterval =  ( minutos *60)*1000 -(4000) ; //inicia actualizacion 20 segundos antes de obtener nuestros datos
-		long fastUpdate  = UpdateInterval - (60*1000); // actualiza el fast a la mitad de tiempo
-		
-		//trackId = intent.getIntExtra("track", 0);
-		
-		trackId = PreferenciasHancel.getUserId(getApplicationContext());
-		//new google PLay service api
-		mLocationRequest = LocationRequest.create();
-		mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-		mLocationRequest.setInterval(UpdateInterval);
-		mLocationRequest.setFastestInterval(fastUpdate);
-		mLocationClient = new LocationClient(this, this, this);
-		mLocationClient.connect();
-		handler.post(getData);		
-		//indicador si el servicio esta iniciado,nos servir� si se reinicia el dispositivo
-		//o alg�n otro metodo de inicio
-		 return(START_STICKY);
+
+        tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+        showNotification();
+
+        minutos = intent.getIntExtra("minutos", 5);
+        handler.post(getData);
+
+        startLocationService();
+
+        //indicador si el servicio esta iniciado,nos servir� si se reinicia el dispositivo
+        //o alg�n otro metodo de inicio
+        return (START_STICKY);
     }
-	@Override
-	public void onDestroy()
-	{
-		disableTracking();
-		stopForeground(true);
-	}
-	
-	 private void showNotification()
-	 {
-		 Intent i=new Intent(this, MainActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		    i.addCategory(Intent.CATEGORY_LAUNCHER);
-			
-			PendingIntent pi=PendingIntent.getActivity(this, 0,
-			                         i, 0);
-			
-		 NotificationCompat.Builder mBuilder =
-				    new NotificationCompat.Builder(this)
-				    .setSmallIcon(R.drawable.ic_launcher)
-				    .setContentTitle(getResources().getString(R.string.app_name))
-				    .setContentText("Hansel Running")
-				    .setContentIntent(pi)
-				    ;
-		
-			Notification notif = mBuilder.build();
-			notif.flags = Notification.FLAG_NO_CLEAR;   
-		startForeground(1337, notif);
-	 }
-	 
-	 private class conexionWS extends AsyncTask<Void, Void, Void>
-	 {
 
-		@Override
-		protected Void doInBackground(Void... params) {
-		
-			try {
-				getLocation();
-				Log.v("=== userID en Location: " + trackId);
-				HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
-						, String.valueOf(trackId)
-						, String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
-						, String.valueOf(mLocation.getLatitude())
-						, String.valueOf(mLocation.getLongitude()) 
-						, String.valueOf(Util.getBatteryLevel(getApplicationContext())));
-			} catch (Exception e) {
-			}
-			return null;
-		}		
-	 }
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+        mGoogleApiClient.connect();
 
-	@Override
-	public void onConnectionFailed(ConnectionResult arg0) {
-		if(mLocationClient!=null)
-		{
-			mLocationClient.connect();
-		}
-	}
+    }
 
-	@Override
-	public void onConnected(Bundle arg0) {
-		mLocationClient.requestLocationUpdates(mLocationRequest,  this);
-	}
+    @Override
+    public void onDestroy() {
+        disableTracking();
+        stopForeground(true);
+    }
 
-	@Override
-	public void onDisconnected() {
-		if(mLocationClient!=null)
-		{
-			mLocationClient.connect();
-		}
-	}
+    private void showNotification() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        PendingIntent pi = PendingIntent.getActivity(this, 0,
+                i, 0);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle(getResources().getString(R.string.app_name))
+                        .setContentText("Hansel Running")
+                        .setContentIntent(pi);
+
+        Notification notif = mBuilder.build();
+        notif.flags = Notification.FLAG_NO_CLEAR;
+        startForeground(1337, notif);
+    }
+
+    private class conexionWS extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                getLocation();
+                Log.v("=== userID en Location: " + trackId);
+                HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
+                        , String.valueOf(trackId)
+                        , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
+                        , String.valueOf(mLocation.getLatitude())
+                        , String.valueOf(mLocation.getLongitude())
+                        , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
+            } catch (Exception e) {
+            }
+            return null;
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult arg0) {
+        Log.v("[Home] LocationService: onConnectionFailed");
+    }
+
+    @Override
+    public void onConnected(Bundle arg0) {
+
+        Log.v("[Home] LocationService: onConnected");
+
+        mLocationRequest = LocationRequest.create();
+        setupLocationForMap();
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+//		mLocationClient.requestLocationUpdates(mLocationRequest, this);
+
+    }
+
+    private void startLocationService() {
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+    }
+
+    private void resumeLocationService() {
+        mGoogleApiClient.connect();
+    }
+
+    private void stopLocationService() {
+        mGoogleApiClient.disconnect();
+    }
+
+    private void setupLocationForMap() {
+        Log.v("LocationService: setup for map");
+
+        long UpdateInterval = (minutos * 60) * 1000 - (4000); //inicia actualizacion 20 segundos antes de obtener nuestros datos
+        long fastUpdate = UpdateInterval - (60 * 1000); // actualiza el fast a la mitad de tiempo
+
+        trackId = PreferenciasHancel.getUserId(getApplicationContext());
+        //new google PLay service api
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setInterval(UpdateInterval);
+        mLocationRequest.setFastestInterval(fastUpdate);
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
 }
 
