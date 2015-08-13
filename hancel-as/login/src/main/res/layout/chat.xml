@@ -150,7 +150,7 @@
 		android:layout_height="match_parent"
 		android:divider="@android:color/white"
 		android:stackFromBottom="true"
-		android:cacheColorHint="@color/holo_orange_dark"
+		android:cacheColorHint="@color/orange_hancel"
 		android:dividerHeight="1dp"
 		android:layout_above="@id/remoteComposing"
 		android:layout_below="@id/header"/>

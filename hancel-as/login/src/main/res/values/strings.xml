@@ -534,5 +534,6 @@
     <string name="tracking_help">¡Ayuda! </string>
     <string name="tracking_finished">Rastreo finalizado.</string>
     <string name="tracking_thanks">Gracias por utilizar Hancel</string>
-    
-   </resources>
+    <string name="program_tracking">programa rastreo</string>
+
+</resources>

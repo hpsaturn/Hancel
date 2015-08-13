@@ -45,6 +45,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -62,8 +63,7 @@ import com.viewpagerindicator.CirclePageIndicator;
  * @author Javier Mejia, izel
  *
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class Login extends org.holoeverywhere.app.Activity {
+public class Login extends FragmentActivity {
 
 	private String mUser, mPasswd, mErrores;
 	private EditText user, passwd;

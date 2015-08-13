@@ -10,13 +10,14 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 
 
-public class FinalizarRegistroActivity extends org.holoeverywhere.app.Activity implements OnClickListener{
+public class FinalizarRegistroActivity extends FragmentActivity implements OnClickListener{
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onBackPressed()

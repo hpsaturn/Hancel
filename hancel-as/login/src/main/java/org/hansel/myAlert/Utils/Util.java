@@ -37,6 +37,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import org.hansel.myAlert.ContactInfo;
@@ -46,14 +47,12 @@ import org.hansel.myAlert.ReminderService;
 import org.hansel.myAlert.StopScheduleActivity;
 import org.hansel.myAlert.dataBase.TrackDAO;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
-import org.holoeverywhere.preference.PreferenceManager;
-import org.holoeverywhere.preference.SharedPreferences;
-import org.holoeverywhere.preference.SharedPreferences.Editor;
 
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 
 public class Util {
@@ -156,8 +155,8 @@ public class Util {
 	 public static void setLoginOkInPreferences(Context  context,boolean status)
 	 {
 		
-		 SharedPreferences preferencias=    PreferenceManager.wrap(context, Util.PREF_SESSION, Context.MODE_PRIVATE);
-		    Editor editor=preferencias.edit();    				   
+		 SharedPreferences preferencias=    PreferenceManager.getDefaultSharedPreferences(context);
+		    SharedPreferences.Editor editor=preferencias.edit();
 		    	editor.putBoolean(Util.PREF_GET_LOGIN_OK,status);				   
 		        editor.commit();
 		    
@@ -236,26 +235,26 @@ public class Util {
 	 }
 	 public static boolean getRunningService(Context context)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context, Util.PREF_SESSION, Context.MODE_PRIVATE);
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 	     return prefs.getBoolean(Util.PREF_GET_SERVICE_OK,false);
 	 }
 	 public static void setRunningService(Context context,boolean value)
 	 {
 		 
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_SESSION,Context.MODE_PRIVATE);
-		 Editor ed = prefs.edit();
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		 SharedPreferences.Editor ed = prefs.edit();
 		 ed.putBoolean(Util.PREF_GET_SERVICE_OK, value);
 		 ed.commit();
 	 }
 	 public static int getLastTrack(Context context)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_SESSION,Context.MODE_PRIVATE);
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 	     return prefs.getInt(Util.PREF_GET_LAST_TRACK_OK,0);
 	 }
 	 public static void setLastTrack(Context context,int value)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_SESSION,Context.MODE_PRIVATE);
-		 Editor ed = prefs.edit();
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		 SharedPreferences.Editor ed = prefs.edit();
 		 ed.putInt(Util.PREF_GET_LAST_TRACK_OK, value);
 		 ed.commit();
 	 }

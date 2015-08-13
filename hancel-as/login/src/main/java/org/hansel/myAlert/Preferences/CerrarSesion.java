@@ -20,9 +20,10 @@ import org.hansel.myAlert.Utils.Util;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.preference.DialogPreference;
 import android.util.AttributeSet;
 
-public class CerrarSesion extends org.holoeverywhere.preference.DialogPreference{
+public class CerrarSesion extends DialogPreference {
 	  @Override
 	public void onClick(DialogInterface dialog, int which) {
 		super.onClick(dialog, which);

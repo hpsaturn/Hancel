@@ -1,10 +1,10 @@
 package org.hansel.myAlert;
 
-import org.holoeverywhere.LayoutInflater;
 
 import com.actionbarsherlock.view.ActionProvider;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 
 

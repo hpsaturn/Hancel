@@ -3,8 +3,10 @@ package org.hansel.myAlert;
 
 import android.os.Bundle;
 
+import com.actionbarsherlock.app.SherlockActivity;
 
-public class AlarmReceiver extends org.holoeverywhere.app.Activity{
+
+public class AlarmReceiver extends SherlockActivity{
 	
 	@Override
 	protected void onStart() {
@@ -15,7 +17,7 @@ public class AlarmReceiver extends org.holoeverywhere.app.Activity{
 		super.onCreate(savedInstanceState);
 		
 		AlarmFragment alarm = new AlarmFragment();
-		alarm.show(getSupportFragmentManager(), "AlarmHansel");
+		alarm.show();
 	}
 	@Override
 	protected void onDestroy() {

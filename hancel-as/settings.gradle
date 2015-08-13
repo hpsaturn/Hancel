@@ -1,4 +1,2 @@
 include ':pageView42'
-include ':library'
-include ':preferences'
 include ':login'

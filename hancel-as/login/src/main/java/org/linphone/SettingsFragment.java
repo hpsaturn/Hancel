@@ -82,7 +82,7 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onCreate(Bundle bundle) {
-		getActivity().setTheme(R.style.myTheme_Preference);			
+//		getActivity().setTheme(R.style.myTheme_Preference);
 		super.onCreate(bundle);
 		// Init the settings page interface
 		initSettings();		

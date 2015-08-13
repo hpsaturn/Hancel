@@ -90,7 +90,7 @@ public class AlarmFragment extends DialogFragment   {
 				dot, short_gap, dot, short_gap, dot,    // s
 				long_gap
 		};
-		mVibrator.vibrate(pattern,0);
+		mVibrator.vibrate(pattern, 0);
 	}
 	
 	@Override
@@ -180,4 +180,7 @@ public class AlarmFragment extends DialogFragment   {
 	}
 
 
+	public void show() {
+		getDialog().show();
+	}
 }

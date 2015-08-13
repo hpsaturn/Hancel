@@ -21,11 +21,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import org.hansel.myAlert.Log.Log;
-import org.holoeverywhere.preference.PreferenceManager;
-import org.holoeverywhere.preference.SharedPreferences;
-import org.holoeverywhere.preference.SharedPreferences.Editor;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class PreferenciasHancel {
 	
@@ -43,19 +42,19 @@ public class PreferenciasHancel {
 	public static boolean getLoginOk(Context context)
 	{
 		
-		SharedPreferences prefe1=PreferenceManager.wrap(context, Util.PREF_SESSION, Context.MODE_PRIVATE);
+		SharedPreferences prefe1= PreferenceManager.getDefaultSharedPreferences(context);
 		return prefe1.getBoolean(Util.PREF_GET_LOGIN_OK,false);
 	}
 	public static void setLastPanicAlert(Context context,String time)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
-		 Editor ed = prefs.edit();
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		 SharedPreferences.Editor ed = prefs.edit();
 		 ed.putString(PREF_GENERAL_PANIC_ALERT, time);
 		 ed.commit();
 	 }
 	public static String getLastPanicAlert(Context context)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		 return prefs.getString(PREF_GENERAL_PANIC_ALERT, "Sin Alertas");
 	 }
 	
@@ -66,64 +65,64 @@ public class PreferenciasHancel {
 	}
 	public static void setUserId(Context context,int id)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
-		 Editor ed = prefs.edit();
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		 SharedPreferences.Editor ed = prefs.edit();
 		 ed.putInt(PREF_GENERAL_USER_ID, id);
 		 ed.commit();
 	 }
 	public static int getUserId(Context context)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		 return prefs.getInt(PREF_GENERAL_USER_ID, 0);
 	 }
 
 	public static void setSelectedOng(Context context,String ongCsv)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
-		 Editor ed = prefs.edit();
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		 SharedPreferences.Editor ed = prefs.edit();
 		 ed.putString(PREF_GENERAL_ONG, ongCsv);
 		 ed.commit();
 	 }
 	public static String getSelectedOng(Context context)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		 return prefs.getString(PREF_GENERAL_ONG, "");
 	 }
 	public static void setReminderCount(Context context,int count)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
-		 Editor ed = prefs.edit();
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		 SharedPreferences.Editor ed = prefs.edit();
 		 ed.putInt(PREF_GENERAL_REMINDER_COUNT, count);
 		 ed.commit();
 	 }
 	public static int getReminderCount(Context context)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		 return prefs.getInt(PREF_GENERAL_REMINDER_COUNT, 0);
 	 }
 	public static void setAlarmStartDate(Context context,long dateInMilis)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
-		 Editor ed = prefs.edit();
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		 SharedPreferences.Editor ed = prefs.edit();
 		 ed.putLong(PREF_GENERAL_ALARM_START, dateInMilis);
 		 ed.commit();
 	 }
 	public static long getAlarmStartDate(Context context)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		 return prefs.getLong(PREF_GENERAL_ALARM_START, 0);
 	 }
 	
 	public static void setCurrentWizardStep(Context context,int step)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
-		 Editor ed = prefs.edit();
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		 SharedPreferences.Editor ed = prefs.edit();
 		 ed.putInt(PREF_GENERAL_WIZARD_STEP, step);
 		 ed.commit();
 	 }
 	public static int getCurrentWizardStep(Context context)
 	 {
-		 SharedPreferences prefs = PreferenceManager.wrap(context,PREF_GENERAL,Context.MODE_PRIVATE);
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		 return prefs.getInt(PREF_GENERAL_WIZARD_STEP, Util.REGISTRO_PASO_1);
 	 }
 	

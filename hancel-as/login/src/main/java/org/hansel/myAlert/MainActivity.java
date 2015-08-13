@@ -12,64 +12,32 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 Created by Javier Mejia @zenyagami
 zenyagami@gmail.com
  */
-import static android.content.Intent.ACTION_MAIN;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
-
-import org.hansel.myAlert.Log.Log;
-import org.hansel.myAlert.Utils.SimpleCrypto;
-
-import org.holoeverywhere.app.Activity;
-import org.linphone.LinphoneManager.AddressType;
-import org.linphone.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
-import org.linphone.compatibility.Compatibility;
-import org.linphone.core.LinphoneAddress;
-import org.linphone.core.LinphoneCall;
-import org.linphone.core.LinphoneAddress.TransportType;
-import org.linphone.core.LinphoneCall.State;
-import org.linphone.core.LinphoneCallLog.CallStatus;
-import org.linphone.core.LinphoneChatMessage;
-import org.linphone.core.LinphoneCore.MediaEncryption;
-import org.linphone.core.LinphoneCore.RegistrationState;
-import org.linphone.core.CallDirection;
-import org.linphone.core.LinphoneAuthInfo;
-import org.linphone.core.LinphoneCallLog;
-import org.linphone.core.LinphoneCore;
-import org.linphone.core.LinphoneCoreException;
-import org.linphone.core.LinphoneCoreFactory;
-import org.linphone.core.LinphoneFriend;
-import org.linphone.core.LinphoneProxyConfig;
-import org.linphone.ui.AddressText;
-
-import android.net.Uri;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.Fragment.SavedState;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.Fragment.SavedState;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -82,6 +50,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import org.hansel.myAlert.Log.Log;
 import org.linphone.AboutFragment;
 import org.linphone.AccountPreferencesFragment;
 import org.linphone.ChatFragment;
@@ -98,19 +67,44 @@ import org.linphone.HistoryFragment;
 import org.linphone.HistorySimpleFragment;
 import org.linphone.InCallActivity;
 import org.linphone.IncomingCallActivity;
-
 import org.linphone.LinphoneManager;
+import org.linphone.LinphoneManager.AddressType;
 import org.linphone.LinphonePreferences;
 import org.linphone.LinphoneService;
-import org.linphone.SettingsFragment;
-import org.linphone.StatusFragment;
-
+import org.linphone.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnMessageReceivedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnRegistrationStateChangedListener;
 import org.linphone.LinphoneUtils;
+import org.linphone.SettingsFragment;
+import org.linphone.StatusFragment;
+import org.linphone.compatibility.Compatibility;
+import org.linphone.core.CallDirection;
+import org.linphone.core.LinphoneAddress;
+import org.linphone.core.LinphoneAuthInfo;
+import org.linphone.core.LinphoneCall;
+import org.linphone.core.LinphoneCall.State;
+import org.linphone.core.LinphoneCallLog;
+import org.linphone.core.LinphoneCallLog.CallStatus;
+import org.linphone.core.LinphoneChatMessage;
+import org.linphone.core.LinphoneCore;
+import org.linphone.core.LinphoneCore.MediaEncryption;
+import org.linphone.core.LinphoneCore.RegistrationState;
+import org.linphone.core.LinphoneCoreException;
+import org.linphone.core.LinphoneCoreFactory;
+import org.linphone.core.LinphoneFriend;
+import org.linphone.core.LinphoneProxyConfig;
+import org.linphone.ui.AddressText;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
+
+import static android.content.Intent.ACTION_MAIN;
 
 
-public class MainActivity extends Activity implements 
+public class MainActivity extends FragmentActivity implements
 OnClickListener, ContactPicked, LinphoneOnCallStateChangedListener,
 LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 

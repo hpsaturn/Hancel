@@ -17,9 +17,6 @@ zenyagami@gmail.com
 import java.util.Calendar;
 
 import org.hansel.myAlert.R;
-import org.holoeverywhere.widget.CalendarView;
-import org.holoeverywhere.widget.CalendarView.OnDateChangeListener;
-import org.holoeverywhere.widget.LinearLayout;
 
 
 import android.content.Context;
@@ -27,8 +24,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CalendarView;
+import android.widget.LinearLayout;
 
-public class PickCalendar extends org.holoeverywhere.app.Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+
+public class PickCalendar extends SherlockActivity {
 	private Calendar currentDate = Calendar.getInstance();
 	private final View.OnClickListener mActionBarListener = new View.OnClickListener() {
 	    @Override
@@ -76,7 +77,7 @@ public class PickCalendar extends org.holoeverywhere.app.Activity {
 		    getSupportActionBar().setCustomView(actionBarButtons);
 		    CalendarView calendar = (CalendarView)findViewById(R.id.calendarWeight);
 		    
-		    calendar.setOnDateChangeListener(new OnDateChangeListener() {
+		    calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 			@Override
 			public void onSelectedDayChange(CalendarView view, int year, int month,
 					int dayOfMonth) {
