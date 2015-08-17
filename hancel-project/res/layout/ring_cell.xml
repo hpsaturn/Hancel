@@ -6,7 +6,8 @@
     android:background="@drawable/list_selector"
     android:gravity="center_vertical"
     android:orientation="vertical" >
-
+    
+    
     <TextView
         android:id="@+id/separator"
         android:layout_width="match_parent"
@@ -45,18 +46,24 @@
             android:textSize="14sp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/text_contrast" />
+        
+        <TextView
+            android:id="@+id/ringId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
 
-        <ImageView
-            android:id="@+id/friendStatus"
+       <CheckBox
+            android:id="@+id/chooseRing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/led_connected"
-            android:visibility="gone" />
+            android:layout_marginRight="15dp"            
+            android:paddingLeft="3dp"            
+            android:button="@drawable/checkbox"
+            android:visibility="visible" />
+       
     </RelativeLayout>
 
 </LinearLayout>

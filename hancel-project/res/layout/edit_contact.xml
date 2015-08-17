@@ -30,7 +30,7 @@
         <TextView 
             android:contentDescription="@string/content_description_cancel"
             android:id="@+id/deleteContact"
-            android:background="@drawable/contact_cancel"
+            android:background="@drawable/contact_delete"
             android:text="@string/button_delete_all"
             android:gravity="center"
             android:paddingTop="20dp"
@@ -69,43 +69,82 @@
 		    android:orientation="vertical" >
     
 		    <LinearLayout 
-			    android:layout_width="wrap_content"
+			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 			    android:paddingTop="20dp"
 		        android:paddingLeft="10dp"
 		        android:paddingRight="10dp"
-			    android:gravity="center_vertical"
+			    android:gravity="center"
 			    android:orientation="horizontal">
 		        
 		        <org.linphone.ui.AvatarWithShadow
 				    android:id="@+id/contactPicture"
 				    android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
+				    android:layout_gravity="center"
 				    linphone:picture="@drawable/unknown_small" />
+			</LinearLayout>
 			        
-		        <LinearLayout
+		    <LinearLayout
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
-			        android:orientation="vertical">			        			       
+			        android:paddingLeft="10dp"
+		        	android:paddingRight="10dp"
+		        	android:paddingTop="10dp"
+			        android:orientation="horizontal">		
+			        		                			      
+			        <TextView
+			        	style="@style/labelText" 
+			        	android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			        	android:layout_gravity="center_vertical"
+			        	android:text="@string/contact_first_name"
+				        />
 			        
+			        <Space 
+			            android:layout_width="10dp"
+			    		android:layout_height="wrap_content"			            
+			            /> 
+        	
 			        <EditText
             			android:textCursorDrawable="@null"
 				        android:id="@+id/contactFirstName"
 				        android:layout_width="match_parent"
 				        android:layout_height="wrap_content"
-				        android:hint="@string/contact_first_name"
 				        android:textColor="@color/text_contrast"
 				        android:background="@drawable/chat_fast_address_background"
 				        android:gravity="left"
 				        android:paddingRight="5dp"
 				        android:inputType="textPersonName|textCapWords"/>
+			   
+			</LinearLayout>
 			        
-			        <EditText
+			<LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:paddingLeft="10dp"
+		        	android:paddingRight="10dp"
+			        android:orientation="horizontal">
+			        
+			    <TextView
+			        	style="@style/labelText" 
+			        	android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			        	android:layout_gravity="center_vertical"
+			        	android:text="@string/contact_last_name"
+				        />
+			    
+			        
+			        <Space 
+			            android:layout_width="10dp"
+			    		android:layout_height="wrap_content"			            
+			            /> 
+		    	
+		    	<EditText
             			android:textCursorDrawable="@null"
 				        android:id="@+id/contactLastName"
 				        android:layout_width="match_parent"
 				        android:layout_height="wrap_content"
-				        android:hint="@string/contact_last_name"
 				        android:textColor="@color/text_contrast"
 				        android:background="@drawable/chat_fast_address_background"
 				        android:gravity="left"
@@ -114,7 +153,7 @@
 		            
 		        </LinearLayout>
 		        
-		    </LinearLayout>
+		    
 		        
 		    <TableLayout
 		        android:id="@+id/controls"

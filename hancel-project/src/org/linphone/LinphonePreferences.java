@@ -689,13 +689,13 @@ public class LinphonePreferences {
 		if (proxyCfg != null)
 			getLc().removeProxyConfig(proxyCfg);
 		
-		if (getLc().getProxyConfigList().length == 0 && MainActivity.isInstanciated()) {
+		/*if (getLc().getProxyConfigList().length == 0 && MainActivity.isInstanciated()) {
 			MainActivity.instance().getStatusFragment().registrationStateChanged(RegistrationState.RegistrationNone);
 		} 
-		else {
+		else {*/
 			resetDefaultProxyConfig();
 			getLc().refreshRegisters();
-		}
+		//}
 	}
 	// End of accounts settings
 

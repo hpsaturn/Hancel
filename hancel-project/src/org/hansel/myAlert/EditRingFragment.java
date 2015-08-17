@@ -175,7 +175,7 @@ public class EditRingFragment extends Fragment {
 			}
 		});
 		
-		addContacts = (TextView) view.findViewById(R.id.newContact);
+		addContacts = (TextView) view.findViewById(R.id.searchContacts);
 		addContacts.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {

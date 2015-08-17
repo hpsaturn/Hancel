@@ -21,10 +21,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class Welcome01Fragment extends Fragment {
+public class WelcomeFragment extends Fragment {
 
 	private int number;
 	
@@ -37,31 +37,50 @@ public class Welcome01Fragment extends Fragment {
 			Bundle savedInstanceState) {
 		
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
-                org.hansel.myAlert.R.layout.bienvenida01, container, false);
-
-		TextView texto = (TextView) rootView.findViewById(R.id.textView1);
-		ImageView icono = (ImageView) rootView.findViewById(R.id.imageView1);
+                org.hansel.myAlert.R.layout.welcome, container, false);			
 		
+		TextView texto = (TextView) rootView.findViewById(R.id.textView1);	
+		RelativeLayout layout = (RelativeLayout)rootView.findViewById(R.id.bigImage);
 		switch (number) {
 		case 0:			
 			texto.setText(getResources().getString(R.string.slide0));
-			icono.setImageResource(R.drawable.icono1);
+			//icono.setImageResource(R.drawable.slide0);
+			layout.setBackgroundResource(R.drawable.slide0);
 			break;
 		case 1:
 			texto.setText(getResources().getString(R.string.slide1));
-			icono.setImageResource(R.drawable.icono5);
+			//icono.setImageResource(R.drawable.slide1);
+			layout.setBackgroundResource(R.drawable.slide1);
 			break;
 		case 2:
 			texto.setText(getResources().getString(R.string.slide2));
-			icono.setImageResource(R.drawable.icono4);
+			//icono.setImageResource(R.drawable.icono2);
+			layout.setBackgroundResource(R.drawable.slide2);
 			break;
 		case 3:
 			texto.setText(getResources().getString(R.string.slide3));
-			icono.setImageResource(R.drawable.icono3);
+			//icono.setImageResource(R.drawable.icono1);
+			layout.setBackgroundResource(R.drawable.slide3);
 			break;
 		case 4:
 			texto.setText(getResources().getString(R.string.slide4));
-			icono.setImageResource(R.drawable.icono2);
+			//icono.setImageResource(R.drawable.icono2);
+			layout.setBackgroundResource(R.drawable.slide4);
+			break;
+		case 5:
+			texto.setText(getResources().getString(R.string.slide5));
+			//icono.setImageResource(R.drawable.icono3);
+			layout.setBackgroundResource(R.drawable.slide5);
+			break;
+		case 6:
+			texto.setText(getResources().getString(R.string.slide6));
+			//icono.setImageResource(R.drawable.icono3);
+			layout.setBackgroundResource(R.drawable.slide5);
+			break;
+		case 7:
+			texto.setText(getResources().getString(R.string.slide7));
+			//icono.setImageResource(R.drawable.icono3);
+			layout.setBackgroundResource(R.drawable.slide7);
 			break;
 		default:
 			break;
