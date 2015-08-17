@@ -1,39 +1,43 @@
 package org.hansel.myAlert;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
+import android.widget.Toast;
 
 import org.hansel.myAlert.dataBase.RingDAO;
+import org.linphone.Contact;
 import org.linphone.FragmentsAvailable;
 import org.linphone.LinphoneManager;
 import org.linphone.LinphoneService;
 import org.linphone.LinphoneUtils;
-import org.linphone.compatibility.Compatibility;
 import org.linphone.mediastream.Log;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AlphabetIndexer;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * Fragment to show all rings created.
@@ -47,10 +51,11 @@ private Handler mHandler = new Handler();
 	
 	private LayoutInflater mInflater;
 	private ListView ringsList;
-	private TextView newRing, noRings;
+	private TextView newRing, noRings, save, selectTxt;
 	private int lastKnownPosition;
-	private AlphabetIndexer indexer;;
+	private AlphabetIndexer indexer;
 	private Cursor searchCursor;
+	private HashMap<String,Long> editedRings;
 
 	private static RingsFragment instance;
 	
@@ -67,12 +72,39 @@ private Handler mHandler = new Handler();
         Bundle savedInstanceState) {
 		mInflater = inflater;
         View view = inflater.inflate(R.layout.rings_list, container, false);
-               
-        noRings = (TextView) view.findViewById(R.id.noRings);        
-        ringsList = (ListView) view.findViewById(R.id.ringsList);        
-        ringsList.setOnItemClickListener(this);                         
+        
+        editedRings = new HashMap<String,Long>();
+        
+        noRings = (TextView) view.findViewById(R.id.noRings);  
+        selectTxt= (TextView) view.findViewById(R.id.selectTxt);                        
+        
         newRing = (TextView) view.findViewById(R.id.newRing);
         newRing.setOnClickListener(this);
+        
+        save = (TextView) view.findViewById(R.id.ok);
+        save.setOnClickListener(this);
+                
+        ringsList = (ListView) view.findViewById(R.id.ringsList);   
+        newRing.setOnClickListener(this);
+        /*ringsList.setOnItemClickListener(new OnItemClickListener() {
+			 public void onItemClick(AdapterView<?> adapter, View view,
+					  int position, long id) {				 
+				 Ring r = (Ring) adapter.getItemAtPosition(position);
+				 Log.d("=== Selecciono/deselecciono Anillo: " + r.getNotify());
+				 				 
+				 save.setVisibility(View.VISIBLE);
+				 
+				 if(r.getNotify() == 1){
+					 editedRings.put(r.getId(), new Long(0));
+					 ringsList.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.background_app));
+				 }
+				 else{
+					 editedRings.put(r.getId(), new Long(1));
+					 ringsList.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.blue_light));
+				 }
+				 			 			
+			}
+		});*/
         
         changeRingsAdapter();
                                            
@@ -86,7 +118,10 @@ private Handler mHandler = new Handler();
 		if (id == R.id.newRing) {
 			//editConsumed = true;			
 			MainActivity.instance().addRing();
-		} 		
+		} 	
+		if(id == R.id.ok){
+			updateRings();
+		}
 	}
 	
 	private void changeRingsAdapter() {		
@@ -112,6 +147,7 @@ private Handler mHandler = new Handler();
 			indexer = new AlphabetIndexer(ringsCursor, 1, 
 					" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			ringsList.setAdapter(new RingsListAdapter(allRings));
+			selectTxt.setVisibility(View.VISIBLE);
 			noRings.setVisibility(View.GONE);
 			ringsList.setVisibility(View.VISIBLE);
 			
@@ -119,6 +155,7 @@ private Handler mHandler = new Handler();
 		}
 		else {
 			noRings.setVisibility(View.VISIBLE);
+			selectTxt.setVisibility(View.GONE);
 			ringsList.setVisibility(View.GONE);
 		} 
 	}
@@ -166,16 +203,50 @@ private Handler mHandler = new Handler();
 		});
 	}
 	
+	
+	private void updateRings() {
+		if (editedRings == null || editedRings.isEmpty()) 
+			return;
+			
+		RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
+					.getContext());
+		ringDao.open();
+		
+		Iterator<String> it = editedRings.keySet().iterator();
+		String id= null;
+		long result = -1;
+		while(it.hasNext()){
+			id = it.next();
+			result = ringDao.updateNotification(id, editedRings.get(id)==1?true:false);
+		}
+		
+		ringDao.close();
+			
+		if(result == -1){
+				 Toast.makeText(getActivity(), getResources().getString(
+						 R.string.ring_not_modified),Toast.LENGTH_SHORT).show();
+		}
+		else{
+			Toast.makeText(getActivity(), getResources().getString(
+					 R.string.ring_without_name), Toast.LENGTH_SHORT).show();
+		}	
+	}
+	
+	
 	class RingsListAdapter extends BaseAdapter implements SectionIndexer {
 		private int margin;
 		private Bitmap bitmapUnknown;
 		private List<Ring> rings;
 				
-		public RingsListAdapter(List<Ring> ringsList) {
-			rings = ringsList;			
+		public RingsListAdapter(List<Ring> ringsLst) {
+			rings = ringsLst;			
 			margin = LinphoneUtils.pixelsToDpi(getResources(), 10);
 			bitmapUnknown = BitmapFactory.decodeResource(getResources(), 
 					R.drawable.community);
+			
+			ArrayList<View> touchables = new ArrayList<View>();
+	        touchables.add(selectTxt);	        
+	        ringsList.addTouchables(touchables);
 		}
 				
 		public int getCount() {
@@ -201,18 +272,43 @@ private Handler mHandler = new Handler();
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view = null;
 			Ring ring = null;
+			ViewHolder holder = new ViewHolder();
+			
 			do {
 				ring = (Ring) getItem(position);
 			} 
 			while (ring == null);
 			
 			if (convertView != null) {
-				view = convertView;
-			} 
+				holder = (ViewHolder) convertView.getTag();
+			}  
 			else {
-				view = mInflater.inflate(R.layout.ring_cell, parent, false);
+				view = mInflater.inflate(R.layout.ring_cell, parent, false);	
+				ring = rings.get(position);
+				
+				holder.selected = (CheckBox) view.findViewById(R.id.chooseRing);
+				holder.selected.setTag(ring);
+				holder.ringName = (TextView) view.findViewById(R.id.name);
+				holder.ringId = (TextView) view.findViewById(R.id.ringId);
+				holder.icon = (ImageView) view.findViewById(R.id.icon);
+				holder.icon.setImageBitmap(bitmapUnknown);
+				
+				holder.selected.setOnClickListener(new View.OnClickListener() { 
+					public void onClick(View v) {
+						Log.d("=== Seleccionado/Deseleccionado Objeto ===");
+						CheckBox cb = (CheckBox) v; 
+						Ring r = (Ring)cb.getTag();
+						
+						if(cb.isChecked())					
+							r.setNotify(1);				        
+				        else
+				        	r.setNotify(0); 
+						editedRings.put(r.getId(), r.getNotify());
+					}    
+				});
 			}
 			
+			ring = rings.get(position);
 			TextView name = (TextView) view.findViewById(R.id.name);
 			name.setText(ring.getName());
 			
@@ -228,13 +324,15 @@ private Handler mHandler = new Handler();
 				separator.setText(String.valueOf(ring.getName().charAt(0)));
 				layout.setPadding(0, 0, 0, margin);
 			}
-			
-			ImageView icon = (ImageView) view.findViewById(R.id.icon);
-			icon.setImageBitmap(bitmapUnknown);
-						
+									
+			if (ring != null && ring.getNotify() == 1)
+				holder.selected.setChecked(true);
+			else
+				holder.selected.setChecked(false);
+				
 			return view;
 		}
-
+				
 		@Override
 		public int getPositionForSection(int section) {
 			return indexer.getPositionForSection(section);
@@ -248,6 +346,14 @@ private Handler mHandler = new Handler();
 		@Override
 		public Object[] getSections() {
 			return indexer.getSections();
+		}
+		
+		private class ViewHolder {
+			CheckBox selected;
+			ImageView icon;
+			TextView ringName;
+			TextView ringId;
+			   
 		}
 	}
 }

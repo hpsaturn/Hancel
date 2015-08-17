@@ -27,13 +27,13 @@ public class ScreenSlidePageAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public Fragment getItem(int arg0) {
 		
-		Welcome01Fragment w = new Welcome01Fragment();
+		WelcomeFragment w = new WelcomeFragment();
 		w.setNumber(arg0);
 		return w;
 	}
 	@Override
 	public int getCount() {
-		return 5;
+		return 8;
 	}
 
 }

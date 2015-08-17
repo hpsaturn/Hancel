@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Hack to adjust perfectly on every screen the bottom of the fragment with the curved menu -->
+    
 
-    <LinearLayout
+    <!--LinearLayout
         android:id="@+id/mark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:orientation="horizontal" >
     
 		<ImageView
@@ -64,7 +65,7 @@
 		    android:src="@drawable/mark"
 		    android:visibility="invisible" />
         
-    </LinearLayout>
+    </LinearLayout-->
     
     <FrameLayout
         android:layout_width="match_parent"
@@ -73,18 +74,18 @@
         android:layout_alignParentTop="true">
 
         <LinearLayout
-            android:id="@+id/fragmentContainer"
+            android:id="@+id/activityContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingTop="40dp" />
+            android:orientation="horizontal"/>
 
-        <fragment
+        <!-- fragment
             android:id="@+id/status"
             android:name="org.linphone.StatusFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/status" />
+            android:visibility="invisible"
+            tools:layout="@layout/status"/-->
         
     </FrameLayout>
 
@@ -93,6 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="invisible"
         android:orientation="horizontal">
 		
         
@@ -115,7 +117,7 @@
                 android:textSize="20sp"
                 android:visibility="gone" />
         </RelativeLayout>
-		<include layout="@layout/menu_about_button" />
+		<!-- include layout="@layout/menu_about_button" -->
         <include layout="@layout/menu_contact_button" />
         
         
@@ -155,19 +157,18 @@
         
         <include layout="@layout/menu_rings_button" />
 
-        <include layout="@layout/menu_settings_button" /> 
+        <!-- include layout="@layout/menu_settings_button" /--> 
         
         <!-- include layout="@layout/menu_about_settings_button" /-->
         
     </LinearLayout>
     
     <LinearLayout
-        android:id="@+id/fragmentContainer2"
+        android:id="@+id/activityContainer2"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        
+        android:orientation="vertical">        
     </LinearLayout>
 
 </RelativeLayout>

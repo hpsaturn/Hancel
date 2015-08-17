@@ -58,7 +58,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	private AlarmManager alarmManager;
 	private TrackDAO track;	
 	private View trackingOptions, trackInfo;
-	private TextView txttrackingOptions, txtLastPanic;
+	private TextView txttrackingOptions;//, txtLastPanic;
 	private TrackDate trackDate;
 	private Button btnTracking, btnCancelCurrentTrack, btnModifyCurrentTrack, btnShareCurrentTrack;
 
@@ -68,16 +68,17 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 		//WIFI	
 		View v = inflater.inflate(R.layout.fragment_panic, container,false);
-		Button btnPanico = (Button)v.findViewById(R.id.btnPanic);
-		txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);		
+		Button btnPanico = (Button)v.findViewById(R.id.btnAlert);
+		//txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);		
 		
 		btnPanico.setOnClickListener(new View.OnClickListener() {						
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
-				alt_bld.setMessage("Desea enviar la alerta?")
+				alt_bld.setMessage(getResources().getString(R.string.tracking_send_alert))
 				.setCancelable(false)
-				.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+				.setPositiveButton(getResources().getString(R.string.tracking_send_alert_yes), 
+						new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						getActivity().startService(new Intent(getActivity(),
 								SendPanicService.class));
@@ -88,7 +89,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 						trackingOptions.setVisibility(View.GONE);												
 					}
 				})
-				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				.setNegativeButton(getResources().getString(R.string.tracking_send_alert_no), 
+						new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();					
 					}
@@ -140,7 +142,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onResume() {
 		super.onResume();
-		txtLastPanic.setText(PreferenciasHancel.getLastPanicAlert(getActivity().getApplicationContext()));
+		//txtLastPanic.setText(PreferenciasHancel.getLastPanicAlert(getActivity().getApplicationContext()));
 		
 		//RASTREO
 		long time = PreferenciasHancel.getAlarmStartDate(getActivity());
@@ -301,15 +303,15 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	//RASTREO
 	protected void createPasswordDialog(final Button btnPanico) {
 		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());                 
-		alert.setTitle("Ingrese su contraseña para cancelar");  
-		alert.setMessage("Contraseña:");                
+		alert.setTitle(getResources().getString(R.string.tracking_cancel_password));  
+		alert.setMessage(getResources().getString(R.string.tracking_password));                
 
 		// Set an EditText view to get user input   
 		final EditText input = new EditText(getActivity());
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		alert.setView(input);
 
-		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
+		alert.setPositiveButton(getResources().getString(R.string.tracking_cancel_ok), new DialogInterface.OnClickListener() {  
 			public void onClick(DialogInterface dialog, int whichButton) {  
 				String value = input.getText().toString();
 				String crypto = SimpleCrypto.md5(value);	  
@@ -328,7 +330,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					alarmManager.cancel(Util.getPendingAlarmPanicButton(getActivity().getApplicationContext()));
 					corriendo = false;
 
-					Toast.makeText(getActivity(), "Rastreo Detenido", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_stopped), 
+							Toast.LENGTH_SHORT).show();
 					PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
 					return;                  
 				}
@@ -336,7 +339,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					//cancelamos alarma para iniciar servicio
 					//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
 					cancelAlarms();
-					Toast.makeText(getActivity(), "Programación de Rastreo Cancelado", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_stopped), 
+							Toast.LENGTH_SHORT).show();
 					showtrackingOptions(false);
 					PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
 				}
@@ -344,7 +348,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
 				}
 				else{
-					Toast.makeText(getActivity(), "Contraseña Incorrecta", 
+					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_wrong_password), 
 							Toast.LENGTH_SHORT).show();
 					return;
 				}

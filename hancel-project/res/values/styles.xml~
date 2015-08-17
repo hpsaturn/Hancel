@@ -165,6 +165,9 @@
         <item name="android:layout_height">180dp</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="LogoBienvenida">
+        <item name="android:gravity">center</item>
+    </style>
     
     <style name="myCirclePageIndicator">
     	<item name="fillColor">@color/orange_hancel</item>

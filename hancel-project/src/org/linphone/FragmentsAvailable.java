@@ -22,15 +22,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 public enum FragmentsAvailable {
 	UNKNOW,	
-	/*DIALER,*/
+	LOGIN,
+	REGISTRATION,
+	WELCOME,
+	START,
 	HISTORY,
 	HISTORY_DETAIL,
 	CONTACTS,
 	CONTACT,
 	EDIT_CONTACT,
 	ABOUT,
-	//ABOUT_INSTEAD_OF_SETTINGS,
-	//ABOUT_INSTEAD_OF_CHAT,
 	ACCOUNT_SETTINGS,
 	SETTINGS,
 	CHATLIST,
@@ -51,6 +52,9 @@ public enum FragmentsAvailable {
 
 	public boolean isRightOf(FragmentsAvailable fragment) {
 		switch (this) {
+		case START:
+			return START.isRightOf(fragment) || fragment == START;
+			
 		case HISTORY:
 			return fragment == UNKNOW;
 
@@ -76,14 +80,16 @@ public enum FragmentsAvailable {
 		case CHAT:
 			return CHATLIST.isRightOf(fragment) || fragment == CHATLIST;
 			
-		//case ABOUT_INSTEAD_OF_SETTINGS:
+		case REGISTRATION:
+			return REGISTRATION.isRightOf(fragment) || fragment == REGISTRATION;	
+				
 		case SETTINGS:
 			return CHATLIST.isRightOf(fragment) || fragment == CHATLIST; // || fragment == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT;
 		
 		case ABOUT:
 		case ACCOUNT_SETTINGS:
 			return SETTINGS.isRightOf(fragment) || fragment == SETTINGS;
-			
+		
 		default:
 			return false;
 		}

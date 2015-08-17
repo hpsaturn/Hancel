@@ -4,7 +4,7 @@
     <string name="Usuario">Usuario</string>
     <string name="Contrasenia">Contraseña</string>
     <string name="Contrasenia2">Confirmar contraseña</string>
-    <string name="Registrarme">Registrarme</string>
+    <string name="registration">Registrarme</string>
     <string name="Ingresar">Ingresar</string>
     <string name="errores">Errores</string>
     <string name="Email">Email</string>
@@ -20,7 +20,7 @@
     <string name="ingreseONGS">Seleccione las organizaciones a las que se enviarán alertas</string>
     <string name="ingreseContactos">Es necesario seleccionar al menos un usuario (o más) al que se le enviarán alertas</string>
     <string name="finRegistro"> Ha concluido su registro en Hancel. Pulse Continuar para empezar a utilizar Hancel</string>
-    <string name="bienvenido">Bienvenido a Hancel</string>
+    <string name="welcomeHancel">Bienvenido a Hancel</string>
     <string name="ultima">Última alerta</string>
     <string name="programarrastreo">Programar rastreo</string>
     <string name="current_track_info">Rastreo programado para:</string>
@@ -45,11 +45,14 @@
     <string name="image_picker_title">Seleccione la fuente</string>
     <string name="network_unavailable">Sin conexion a Internet</string>
     <string name="login_failed">Nombre de usuario y/o contraseña incorrectos</string>
-    <string name="slide0">Cree anillos de contactos para alertarlos de situaciones de peligro.</string>
-    <string name="slide1">Active la traza de Hancel para alertar a sus contactos sobre su posición GPS en situaciones de peligro</string>
-    <string name="slide2">Realice llamadas de voz IP utilizando su plan de datos o redes WIFI</string>
-    <string name="slide3">Habla con tus contactos de forma segura. Sus mensajes viajan cifrados</string>
-    <string name="slide4">Su actividad queda registrada de forma anónima en la nube</string>
+    <string name="slide0">Crea anillos con tus contactos y alertarlos cuando estes en peligro</string>
+    <string name="slide1">Comparte tu ubicación en zonas peligrosas usando la función rastreo</string>
+    <string name="slide2">Usa el botón de alerta sí afrontas situaciones de peligro inevitabe</string>
+    <string name="slide3">Llama a usuarios Hancel usando tu plan de datos o red WIFI</string>
+    <string name="slide4">Chatea con otros usuarios Hancel. Todos tus mensajes serán cifrados</string>
+    <string name="slide5"><b>Ten en cuenta: </b>Hancel envía las notificaciones como mensaje de texto</string>
+    <string name="slide6"><b>Ten en cuenta: </b>Hancel envía las notificaciones como mensaje de texto</string>
+    <string name="slide7"><b>Ten en cuenta: </b>Hancel envía las notificaciones como mensaje de texto</string>
     <string name="pref_disable_account">Deshabilitar</string>
     <string name="pref_tunnel">Túnel</string>
     <string name="pref_tunnel_host">Nombre del host </string>
@@ -94,7 +97,7 @@
     <string name="mutemic_button_txt">Silenciar</string>
     <string name="speaker_button_txt">Altavoz</string>
     <string name="bluetooth_button_txt">Bluetooth</string>
-    <string name="CancelButtonText">Cancelar</string>
+    <string name="cancelButtonText">Cancelar</string>
     <string name="AddCallButtonText">Añadir llamada</string>
     <string name="TransferCallButtonText">Transferir llamada</string>
     <string name="conf_admin_choice_enter">Ingresar a conferencia telefónica</string>
@@ -388,12 +391,12 @@
     <string name="button_new_chat">Nueva conversación</string>
     <string name="button_edit">Editar</string>
     <string name="button_cancel">Cancelar</string>
-    <string name="button_ok">Ok</string>
-    <string name="button_ok_ring">Guardar anillo</string>
+    <string name="button_ok">Guardar</string>
+    <string name="button_ok_ring">Guardar</string>
     <string name="button_all_contacts">Todos</string>
     <string name="button_sip_contacts">Hancel</string>
-    <string name="button_add_contact">Nuevo contacto</string>
-    <string name="button_add_contacts_ring">Añadir contactos</string>
+    <string name="button_add_contact"><u>+Agregar contactos al anillo</u></string>
+    <string name="button_add_contacts_ring">+Agregar contactos al anillo</string>
     <string name="button_remove_contacts_ring">Eliminar contactos</string>
     <string name="button_add_ring">Nuevo anillo</string>
     <string name="button_all_rings">Todos los anillos</string>
@@ -443,8 +446,8 @@
     <string name="phone_number">Número de teléfono</string>
     <string name="contact_first_name">Nombre</string>
     <string name="contact_last_name">Apellido</string>
-    <string name="ring_name">Nombre del anillo</string>
-    <string name="ring_always">Notificar</string>
+    <string name="ring_name">Nombre</string>
+    <string name="ring_always">Recibir notificaciones</string>
     <string name="ring_test">--------</string>
     <string name="pref_primary_account_title">Cuenta primaria</string>
     <string name="pref_display_name_title">Nombre de visualización </string>
@@ -534,5 +537,21 @@
     <string name="tracking_help">¡Ayuda! </string>
     <string name="tracking_finished">Rastreo finalizado.</string>
     <string name="tracking_thanks">Gracias por utilizar Hancel</string>
-    
+    <string name="tracking_send_alert">¿Desea enviar la alerta?</string>
+    <string name="tracking_send_alert_yes">Si</string>
+    <string name="tracking_send_alert_no">No</string>
+    <string name="tracking_cancel_password">Ingrese su contraseña para cancelar</string>
+    <string name="tracking_cancel_ok">Ok</string>
+    <string name="tracking_password">Contraseña:</string>
+    <string name="tracking_wrong_password">Contraseña incorrecta</string>
+    <string name="hancel_general_decription">Notifica a tus contactos cuando te encuentres en situaciones de peligro y comunicate de forma más segura.</string>
+    <string name="new_ring">Crear Anillo</string>
+    <string name="do_it_later">Lo haré después ></string>
+    <string name="registration_info">Hemos sincronizado los contactos de tu móvil. <b>Para empezar a usar las alertas</b>, crea un anillo de seguridad con tus contactos cercanos o crea uno nuevo.</string>
+    <string name="loginButtonText">Ingresar</string>
+    <string name="sendAlert">Enviar Alerta</string>
+    <string name="tracking_description">Al activar el rastreo tu teléfono vibrará. Atiende las notificaciones para indicar que estas bien.</string>
+    <string name="panic_button_description">Activa la alerta cuando te encuentres en peligro inminente y tus anillos serán notificados con tu ubicación.</string>
+    <string name="forgotPss"><u>Olvidé la contraseña</u></string>
+    <string name="select_rings_notify">Notificar</string>
    </resources>

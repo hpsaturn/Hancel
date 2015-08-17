@@ -30,8 +30,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"            
             android:paddingLeft="3dp"
-            android:background="@color/background_header"
-            android:textCursorDrawable="@null"
+            android:button="@drawable/checkbox"
             android:visibility="visible" />
         
         <ImageView
@@ -66,9 +65,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/text_contrast"
             android:visibility="invisible"/>
-        
-         
-         
+
     </RelativeLayout>
     
 </LinearLayout>

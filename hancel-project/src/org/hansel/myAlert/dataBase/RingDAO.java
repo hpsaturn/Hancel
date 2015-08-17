@@ -106,6 +106,25 @@ public class RingDAO extends SQLiteHelper {
 		return result;
 	}
 	
+	public long updateNotification(String id, boolean notify){
+		int result = -1;
+		ContentValues values = new ContentValues();
+		values.put("NOTIFY",notify==true?1:0);
+		
+		String whereClause = "_ID = " + id;
+		super.mDb.beginTransaction();
+		try{
+			result = super.mDb.update(DBConstants.TABLE_RINGS, values, whereClause, 
+				null);
+								
+			mDb.setTransactionSuccessful();
+		}
+		finally {
+			mDb.endTransaction();			
+		}
+		return result;
+	}
+	
 	public long deleteRing(String idRing){
 		String whereClause1 = "_ID_RING = " + idRing;
 		String whereClause2 = "_id = " + idRing;

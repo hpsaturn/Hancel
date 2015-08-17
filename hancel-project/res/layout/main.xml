@@ -83,6 +83,7 @@
             android:name="org.linphone.StatusFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             tools:layout="@layout/status" />
         
     </FrameLayout>
@@ -92,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="invisible"
         android:orientation="horizontal">
 
         <RelativeLayout
