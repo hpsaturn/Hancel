@@ -151,12 +151,7 @@
         <activity android:name=".ManageRemindersActivity" />
                 
         <activity android:name=".StopScheduleActivity" />
-                
-        <activity
-            android:name=".FinalizarRegistroActivity"
-            android:theme="@style/AppTheme" >
-        </activity>
-        
+
         <activity
             android:name="org.hancel.customclass.PickCalendar"
             android:theme="@style/AppTheme" >

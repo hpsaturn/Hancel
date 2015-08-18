@@ -36,6 +36,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +47,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.view.MenuItem;
 
-public class Registro extends org.holoeverywhere.app.Activity {
+public class Registro extends FragmentActivity{
 
 	private EditText vUsuario, vPassword, vPasswordConfirm, vEmail, vEmailConfirm;
 	private String mUsuario, mPassword, mPasswordConfirm, mEmail, mEmailConfirm, mErrores;
@@ -60,7 +61,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 		super.onCreate(savedInstanceState);
 		Util.setLoginOkInPreferences(getApplicationContext(), false);
 		setContentView(R.layout.registro_layout);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		vUsuario = (EditText) findViewById(R.id.reg_fullname);
 		vPassword = (EditText) findViewById(R.id.reg_password2);
 		vPasswordConfirm = (EditText) findViewById(R.id.reg_password);
@@ -204,16 +205,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 		}			
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			break;
-		}
-		return super.onOptionsItemSelected(item);
 
-	}
 
 	/**
 	 * Shows the progress UI and hides the login form.
@@ -279,7 +271,7 @@ public class Registro extends org.holoeverywhere.app.Activity {
 			} 
 			catch (Exception ex) {
 				mErrores = getString(R.string.registration_hancel_unavailable);
-				errores.setVisibility(View.VISIBLE);
+			 	errores.setVisibility(View.VISIBLE);
 				Log.v("Error login: " + ex.getMessage());
 				return false;
 			}	
