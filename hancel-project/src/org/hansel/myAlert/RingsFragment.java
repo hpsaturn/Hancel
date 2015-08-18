@@ -165,7 +165,6 @@ private Handler mHandler = new Handler();
 		Ring ring = (Ring) adapter.getItemAtPosition(position);	
 		Log.d("=== Anillo seleccionado: " + ring.getNotify());
 		MainActivity.instance().editRing(ring);
-		
 	}
 	
 	@Override
