@@ -25,7 +25,6 @@ import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.WelcomeInfo.StartFragment;
 
 
-import org.holoeverywhere.app.Activity;
 import org.linphone.LinphoneManager.AddressType;
 import org.linphone.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
 import org.linphone.compatibility.Compatibility;
@@ -46,6 +45,7 @@ import org.linphone.core.LinphoneFriend;
 import org.linphone.core.LinphoneProxyConfig;
 import org.linphone.ui.AddressText;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -59,6 +59,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment.SavedState;
@@ -112,7 +113,7 @@ import org.linphone.LinphoneSimpleListener.LinphoneOnRegistrationStateChangedLis
 import org.linphone.LinphoneUtils;
 
 
-public class MainActivity extends Activity implements 
+public class MainActivity extends FragmentActivity implements
 OnClickListener, ContactPicked, LinphoneOnCallStateChangedListener,
 LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
