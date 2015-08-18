@@ -554,4 +554,8 @@
     <string name="panic_button_description">Activa la alerta cuando te encuentres en peligro inminente y tus anillos serán notificados con tu ubicación.</string>
     <string name="forgotPss"><u>Olvidé la contraseña</u></string>
     <string name="select_rings_notify">Notificar</string>
-   </resources>
+    <string name="bienvenido">Bienvenido</string>
+    <string name="program_tracking">Programas seguimiento</string>
+
+
+</resources>
