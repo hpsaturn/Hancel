@@ -561,4 +561,9 @@
     <string name="userWelcomeTitle">Te damos la bienvenida a Hancel</string>
     <string name="registration_add_contact">Crear contacto</string>
     <string name="registration_add_ring">Crear anillo</string>
+    <string name="delete_ring_no">No</string>
+    <string name="delete_ring_yes">Si</string>
+    <string name="delete_ring_dialog_title">Confirmación de eliminación</string>
+    <string name="delete_ring_message">¿Desea eliminar el anillo?</string>
+    <string name="ring_add_contacts">+<ul>Agregar contactos</ul></string>
 </resources>

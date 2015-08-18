@@ -8,17 +8,14 @@ import java.util.List;
 import android.widget.Toast;
 
 import org.hansel.myAlert.dataBase.RingDAO;
-import org.linphone.Contact;
 import org.linphone.FragmentsAvailable;
 import org.linphone.LinphoneManager;
 import org.linphone.LinphoneService;
 import org.linphone.LinphoneUtils;
-import org.linphone.mediastream.Log;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -26,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AlphabetIndexer;
@@ -35,10 +31,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import android.content.DialogInterface;
+import android.app.AlertDialog;
 /**
  * Fragment to show all rings created.
  * 
@@ -263,31 +260,20 @@ private Handler mHandler = new Handler();
 				holder = (ViewHolder) convertView.getTag();
 			}  
 			else {
-				view = mInflater.inflate(R.layout.ring_cell, parent, false);	
+				view = mInflater.inflate(R.layout.ring_cell, parent, false);
 				ring = rings.get(position);
-				
+
 				holder.selected = (CheckBox) view.findViewById(R.id.chooseRing);
 				holder.selected.setTag(ring);
 				holder.ringName = (TextView) view.findViewById(R.id.name);
 				holder.ringId = (TextView) view.findViewById(R.id.ringId);
 				holder.icon = (ImageView) view.findViewById(R.id.icon);
 				holder.icon.setImageBitmap(bitmapUnknown);
-				
-				holder.selected.setOnClickListener(new View.OnClickListener() { 
-					public void onClick(View v) {
-						Log.d("=== Seleccionado/Deseleccionado Objeto ===");
-						CheckBox cb = (CheckBox) v; 
-						Ring r = (Ring)cb.getTag();
-						
-						if(cb.isChecked())					
-							r.setNotify(1);				        
-				        else
-				        	r.setNotify(0); 
-						editedRings.put(r.getId(), r.getNotify());
-					}    
-				});
+				holder.iconDelete = (TextView) view.findViewById(R.id.iconDelete);
+				//holder.iconDelete.setText(holder.ringId.getText());
+				addListeners(holder);
+
 			}
-			
 			ring = rings.get(position);
 			TextView name = (TextView) view.findViewById(R.id.name);
 			name.setText(ring.getName());
@@ -312,6 +298,44 @@ private Handler mHandler = new Handler();
 				
 			return view;
 		}
+
+		private void addListeners(ViewHolder holder){
+			holder.selected.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					CheckBox cb = (CheckBox) v;
+					Ring r = (Ring) cb.getTag();
+					if (cb.isChecked())
+						r.setNotify(1);
+					else
+						r.setNotify(0);
+					editedRings.put(r.getId(), r.getNotify());
+				}
+			});
+
+			holder.iconDelete.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
+					alt_bld.setMessage(getResources().getString(R.string.delete_ring_message))
+							.setCancelable(false)
+							.setPositiveButton(getResources().getString(R.string.delete_ring_yes),
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int id) {
+
+										}
+									})
+							.setNegativeButton(getResources().getString(R.string.delete_ring_no),
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int id) {
+											dialog.cancel();
+										}
+									});
+
+					AlertDialog alert = alt_bld.create();
+					alert.setTitle(getResources().getString(R.string.delete_ring_dialog_title));
+					alert.show();
+				}
+			});
+		}
 				
 		@Override
 		public int getPositionForSection(int section) {
@@ -333,6 +357,7 @@ private Handler mHandler = new Handler();
 			ImageView icon;
 			TextView ringName;
 			TextView ringId;
+			TextView iconDelete;
 			   
 		}
 	}

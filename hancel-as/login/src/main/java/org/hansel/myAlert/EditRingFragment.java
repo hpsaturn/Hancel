@@ -84,7 +84,6 @@ public class EditRingFragment extends Fragment {
 					}
 				}
 								
-				Log.d("=== Cantidad de contactos en el anillo: " + idContacts.size());
 				ringDao.close();
 			}			
 		}
@@ -201,7 +200,6 @@ public class EditRingFragment extends Fragment {
 			deleteRing.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v) {
-					Log.d("=== Eliminando anillo " + ring.getName());
 					deleteRing();
 					getFragmentManager().popBackStackImmediate();
 				}

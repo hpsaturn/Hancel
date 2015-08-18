@@ -53,6 +53,18 @@
             android:layout_height="wrap_content"
             android:visibility="invisible"/>
 
+        <TextView
+            android:id="@+id/iconDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="60dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/content_description_contact_picture"
+            android:scaleType="centerInside"
+            android:background="@drawable/delete_row_inner" />
+
        <CheckBox
             android:id="@+id/chooseRing"
             android:layout_width="wrap_content"

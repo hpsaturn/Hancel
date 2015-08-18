@@ -65,14 +65,18 @@
 			android:visibility="visible"
 			android:text="@string/edit"/>
 
+
 		<Button
 			android:id="@+id/btnShareCurrentTrack"
 			style="@style/inner_app_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
+			android:layout_width="120dp"
+			android:layout_height="40dp"
 			android:layout_gravity="center"
 			android:layout_marginTop="5dp"
 			android:visibility="visible"
+			android:scaleType="centerCrop"
+			android:adjustViewBounds="true"
+            android:drawableLeft="@drawable/share50"
 			android:text="@string/share"/>
 
 	</GridLayout>

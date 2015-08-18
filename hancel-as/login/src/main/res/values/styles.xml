@@ -134,7 +134,7 @@
 
     <style name="inner_app_button">
         <item name="android:background">#C0C0C0</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/background_header</item>
         <item name="android:textSize">14sp</item>
         <item name="android:padding">5dp</item>
         <item name="android:minHeight">25dp</item>

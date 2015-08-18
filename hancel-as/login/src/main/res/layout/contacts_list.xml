@@ -112,6 +112,7 @@
 			android:cacheColorHint="@color/transparent"
 			android:fastScrollAlwaysVisible="true"
 			android:fastScrollEnabled="true"
+			android:layout_margin="10dp"
 			android:dividerHeight="1dp" />
 
 		<TextView
