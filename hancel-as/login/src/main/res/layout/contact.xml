@@ -33,7 +33,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
 	    android:gravity="center"
-	    android:orientation="horizontal">
+	    android:orientation="vertical">
         
         
         <org.linphone.ui.AvatarWithShadow
@@ -41,13 +41,17 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    linphone:picture="@drawable/ic_contact_picture" />
-	        
+	    <Space 
+		        android:layout_width="wrap_content"
+			    android:layout_height="10dp"
+		        />    
         <TextView
             android:id="@+id/contactName"
             android:paddingLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="User"
 	    	android:textColor="@color/text_contrast" />
         
     </LinearLayout>

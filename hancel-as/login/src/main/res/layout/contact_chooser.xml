@@ -14,7 +14,7 @@
     
     <TextView
 		android:id="@+id/textView1"
-		style="@style/TextoCabecera"
+		style="@style/title"
 		android:text="@string/registro2"
 		android:textAppearance="?android:attr/textAppearanceLarge" />
     

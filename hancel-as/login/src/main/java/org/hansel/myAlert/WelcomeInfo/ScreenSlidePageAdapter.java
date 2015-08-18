@@ -20,21 +20,20 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class ScreenSlidePageAdapter extends FragmentStatePagerAdapter {
 
-
-	public ScreenSlidePageAdapter(FragmentManager fm) {
-		super(fm);
+	public ScreenSlidePageAdapter(FragmentManager fragmentManager){
+		super(fragmentManager);
 	}
-
+	
 	@Override
 	public Fragment getItem(int arg0) {
 		
-		Welcome01Fragment w = new Welcome01Fragment();
+		WelcomeFragment w = new WelcomeFragment();
 		w.setNumber(arg0);
 		return w;
 	}
 	@Override
 	public int getCount() {
-		return 5;
+		return 8;
 	}
 
 }

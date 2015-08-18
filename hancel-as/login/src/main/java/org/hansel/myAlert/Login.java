@@ -45,7 +45,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -63,20 +62,19 @@ import com.viewpagerindicator.CirclePageIndicator;
  * @author Javier Mejia, izel
  *
  */
-public class Login extends FragmentActivity {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class Login extends org.holoeverywhere.app.Activity {
 
 	private String mUser, mPasswd, mErrores;
 	private EditText user, passwd;
 	private TextView errores;
-	private View mLoginFormView, mLoginStatusView;
+	private View  mLoginStatusView; /*, mLoginFormView;*/
 	private TextView mLoginStatusMessageView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.login_layout);		
-		startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.login_layout);				
 				
 		if(PreferenciasHancel.getLoginOk(getApplicationContext())){
 			Intent i = new Intent(getApplicationContext(),MainActivity.class);
@@ -91,7 +89,8 @@ public class Login extends FragmentActivity {
 						
 		Button btnLogin = (Button)findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {							
+			public void onClick(View v) {
+				
 				if(AttempLogin() && isAuthenticated()){					
 					String crypto = SimpleCrypto.md5(mPasswd);
 					UsuarioDAO usuarioDAO = new UsuarioDAO(LinphoneService
@@ -103,8 +102,8 @@ public class Login extends FragmentActivity {
 					PreferenciasHancel.setUserId(getApplicationContext(), 
 							(int)Calendar.getInstance().getTimeInMillis());
 					Util.insertNewTrackId(getApplicationContext(), 0);	
-					launchMainActivity();	
-					finish();
+					//launchMainActivity();	
+					//finish();
 				}
 				else{
 					errores.setText(mErrores);
@@ -114,8 +113,8 @@ public class Login extends FragmentActivity {
 			}
 		});
 
-		TextView txt = (TextView)findViewById(R.id.link_to_register);
-		txt.setOnClickListener(new View.OnClickListener() {
+		Button register = (Button)findViewById(R.id.btnRegister);
+		register.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(), Registro.class);
 				Util.setLoginOkInPreferences(getApplicationContext(), false);
@@ -124,9 +123,9 @@ public class Login extends FragmentActivity {
 		});
 
 		errores =(TextView)findViewById(R.id.tvError);
-		mLoginFormView = findViewById(R.id.login_form1);
-		mLoginStatusView = findViewById(R.id.login_status1);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message1);
+		//mLoginFormView = findViewById(R.id.login_form1);
+		//mLoginStatusView = findViewById(R.id.login_status1);
+		//mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message1);
 
 		ViewPager mpager = (ViewPager) findViewById(R.id.pager);
 		PagerAdapter mpagerAdapter = new ScreenSlidePageAdapter(getSupportFragmentManager());
@@ -204,7 +203,7 @@ public class Login extends FragmentActivity {
 				}
 			});
 
-			mLoginFormView.setVisibility(View.VISIBLE);
+			/*mLoginFormView.setVisibility(View.VISIBLE);
 			mLoginFormView.animate().setDuration(shortAnimTime)
 			.alpha(show ? 0 : 1)
 			.setListener(new AnimatorListenerAdapter() {
@@ -213,12 +212,12 @@ public class Login extends FragmentActivity {
 					mLoginFormView.setVisibility(show ? View.GONE
 							: View.VISIBLE);
 				}
-			});
+			});*/
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+			//mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
 
@@ -226,8 +225,7 @@ public class Login extends FragmentActivity {
 	 * Makes the authentication process in Linphone server.
 	 */
 	private boolean isAuthenticated(){
-		try{	
-			showProgress(true);
+		try{				
 			String mdPass = SimpleCrypto.md5(mPasswd).substring(0, 10);
 			LinphoneAuthInfo lAuthInfo =  LinphoneCoreFactory.instance()
 					.createAuthInfo(mUser, mdPass, null, getResources()
@@ -303,7 +301,7 @@ public class Login extends FragmentActivity {
 	
 	/*
 	 * Starts the MainActivity
-	 */
+	 
 	private void launchMainActivity(){
 		Intent i = new Intent(getApplicationContext(),MainActivity.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK 
