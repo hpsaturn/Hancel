@@ -133,7 +133,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		btnModifyCurrentTrack.setOnClickListener(this);
 		btnShareCurrentTrack.setOnClickListener(this);
 
-		showtrackingOptions(true); //CAMBIAR A FALSE!!
+		showtrackingOptions(false);
 
 		if(savedInstanceState!=null){
 			corriendo = savedInstanceState.getBoolean("run");
