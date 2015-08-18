@@ -690,7 +690,7 @@ public class LinphonePreferences {
 			getLc().removeProxyConfig(proxyCfg);
 		
 		if (getLc().getProxyConfigList().length == 0 && MainActivity.isInstanciated()) {
-			MainActivity.instance().getStatusFragment().registrationStateChanged(RegistrationState.RegistrationNone);
+			//MainActivity.instance().getStatusFragment().registrationStateChanged(RegistrationState.RegistrationNone);
 		} 
 		else {
 			resetDefaultProxyConfig();

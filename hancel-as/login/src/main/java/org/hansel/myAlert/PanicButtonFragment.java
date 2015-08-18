@@ -57,8 +57,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	private UsuarioDAO usuarioDao;
 	private AlarmManager alarmManager;
 	private TrackDAO track;	
-	private View trackingOptions, trackInfo;
-	private TextView txttrackingOptions;//, txtLastPanic;
+	private View trackingOptions, trackInfo, statusTrack;
+	private TextView txttrackingOptions, actionDescription;//, txtLastPanic;
 	private TrackDate trackDate;
 	private Button btnTracking, btnCancelCurrentTrack, btnModifyCurrentTrack, btnShareCurrentTrack;
 
@@ -66,7 +66,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		//WIFI	
 		View v = inflater.inflate(R.layout.fragment_panic, container,false);
 		Button btnPanico = (Button)v.findViewById(R.id.btnAlert);
 		//txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);		
@@ -85,8 +84,13 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 						
 						btnTracking.setText(getString(R.string.stop_tracking));
 						btnTracking.setVisibility(View.VISIBLE);
+
+						actionDescription.setVisibility(View.VISIBLE);
+
 						trackInfo.setVisibility(View.VISIBLE);
-						trackingOptions.setVisibility(View.GONE);												
+						trackingOptions.setVisibility(View.GONE);
+
+
 					}
 				})
 				.setNegativeButton(getResources().getString(R.string.tracking_send_alert_no), 
@@ -102,23 +106,35 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			}
 		});
 		
-		//RASTREO
+		//layout for tracking status show (Progress bar)
+		statusTrack = v.findViewById(R.id.statusTrack);
+
+		//LinkButton to start tracking function
 		btnTracking = (Button)v.findViewById(R.id.iniciaTrackId);
 		usuarioDao = new UsuarioDAO(getActivity().getApplicationContext());
 		usuarioDao.open();
 		minutos = Util.getTrackingMinutes(getActivity().getApplicationContext());
+
+		//Text to describe the Alarm action when is activated
+		actionDescription = (TextView) v.findViewById(R.id.actionDescription);
+
+		//Layout whith tracking Information
 		trackingOptions = v.findViewById(R.id.layoutTrackOptions);
+
+		//Information about the last tracking
 		trackInfo = v.findViewById(R.id.layoutCurrentTrack);
 		txttrackingOptions = (TextView)v.findViewById(R.id.txtUltimaAlerta);
+
+		//Layout tracking Information buttons
 		btnCancelCurrentTrack = (Button)v.findViewById(R.id.btnCancelCurrentTrack);
 		btnModifyCurrentTrack = (Button)v.findViewById(R.id.btnModifyCurrentTrack);
 		btnShareCurrentTrack = (Button)v.findViewById(R.id.btnShareCurrentTrack);
 		btnCancelCurrentTrack.setOnClickListener(this);
 		btnModifyCurrentTrack.setOnClickListener(this);
 		btnShareCurrentTrack.setOnClickListener(this);
-		showtrackingOptions(false); 
 
-		Log.v("=== Buscando el tiempo por defecto para actualizar: " + minutos);
+		showtrackingOptions(true); //CAMBIAR A FALSE!!
+
 		if(savedInstanceState!=null){
 			corriendo = savedInstanceState.getBoolean("run");
 			if(corriendo){
@@ -126,12 +142,14 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				btnTracking.setText(getString(R.string.stop_tracking));
 				trackInfo.setVisibility(View.VISIBLE);
 				trackingOptions.setVisibility(View.GONE);
+				statusTrack.setVisibility(View.VISIBLE);
 			}
 			else{
 				Log.v("=== Tracking no esta corriendo");				
 				btnTracking.setText(getString(R.string.start_tracking));
 				trackInfo.setVisibility(View.GONE);
 				trackingOptions.setVisibility(View.GONE);
+				statusTrack.setVisibility(View.GONE);
 			}
 		}
 		btnTracking.setOnClickListener(this); 	
@@ -144,13 +162,13 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		super.onResume();
 		//txtLastPanic.setText(PreferenciasHancel.getLastPanicAlert(getActivity().getApplicationContext()));
 		
-		//RASTREO
+		//tracking
 		long time = PreferenciasHancel.getAlarmStartDate(getActivity());
 		if(time != 0){
 			Calendar currentTime = Calendar.getInstance();
 			Calendar alarmTime = Calendar.getInstance();
 			alarmTime.setTimeInMillis(time);
-			//comparamos la fecha para saber si ya esta corriendo la alarma
+			//checking date to verify the tracking function is  running
 			if(alarmTime.compareTo(currentTime)!=-1) {
 				showtrackingOptions(true);
 			}
@@ -158,18 +176,18 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		}
 		corriendo = Util.isMyServiceRunning(getActivity().getApplicationContext());
 		Log.v("=== onResume ");
-		setupButtonText();		
-		//REASTREO
+		setupButtonText();
+		//tracking
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//INICIO RASTREO
+		//tracking
 		alarmManager = (AlarmManager)getActivity().getSystemService(Activity.ALARM_SERVICE);
 		track = new TrackDAO(getActivity().getApplicationContext());
 		track.open();
-		//Fin Rastreo
+		//tracking
 		try{
 			ActivaRadios();
 		}
@@ -222,8 +240,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 		setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
 	}
-	
-	//RASTREO
+
+	//tracking
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data!=null){
@@ -251,7 +269,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		super.onPause();
 	}
 
-	@Override  //RASTREO
+	@Override  //tracking
 	public void onDestroy() {
 		super.onDestroy();
 		try {
@@ -292,15 +310,15 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		}
 	}
 	
-	@Override  //RASTREO
+	@Override  //tracking
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if(outState!=null){
 			outState.putBoolean("run", corriendo);
 		}
 	}
-	
-	//RASTREO
+
+	//tracking
 	protected void createPasswordDialog(final Button btnPanico) {
 		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());                 
 		alert.setTitle(getResources().getString(R.string.tracking_cancel_password));  
@@ -382,7 +400,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		}
 	}
 	
-	//RASTREO
+
 	private void shareTrace() {
 		Intent share = new Intent(android.content.Intent.ACTION_SEND);
 		share.setType("text/plain");
@@ -394,14 +412,14 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		startActivity(Intent.createChooser(share, "Share trace!"));
 	}
 	
-	//RASTREO
+
 	private void cancelAlarms() {
 		alarmManager.cancel(Util.getReminderPendingIntennt(getActivity()));
 		alarmManager.cancel(Util.getStopSchedulePendingIntentWithExtra(getActivity()));
 		showtrackingOptions(false);
 	}
 	
-	//Rastreo
+
 	private PendingIntent getPendingAlarm()	{
 		Intent intent = new Intent(getActivity().getApplicationContext()
 				, AlarmReceiver.class);
@@ -409,12 +427,13 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		return pendingIntent;
 	}
 	
-	//RASTREO
+
 	public boolean isTracking(){
+
 		return corriendo;
 	}
 	
-	//RASTREO
+
 	private void showtrackingOptions(boolean showTrackInfo){
 		Log.v("=== ShowTrackInfo " + showTrackInfo);
 		
@@ -426,17 +445,19 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		
 		if(showTrackInfo){			
 			trackingOptions.setVisibility(View.VISIBLE);
+			statusTrack.setVisibility(View.VISIBLE);
 			trackInfo.setVisibility(View.VISIBLE);
 			btnTracking.setVisibility(View.GONE);
 		}
 		else{
 			trackingOptions.setVisibility(View.GONE);
+			statusTrack.setVisibility(View.GONE);
 			trackInfo.setVisibility(View.GONE);
 			btnTracking.setVisibility(View.VISIBLE);
 		}
 	}
 
-	//RASTREO
+
 	public void panicButtonPressed(){
 		//se presiona boton de panico, cancelamos "servicio" si aun no esta corriendo y cancelamos la alarma
 		//showtrackingOptions(false);

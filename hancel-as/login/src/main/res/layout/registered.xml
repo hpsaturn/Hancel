@@ -7,56 +7,87 @@
   	android:background="@drawable/background"
     android:orientation="vertical"
     android:gravity="center">
- 
-   <LinearLayout
-        android:id="@+id/txtWelcome"
-       	android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:orientation="vertical" 
-        android:layout_centerVertical="true">
-       
-		<TextView
-			android:id="@+id/userWelcome"        
-			style="@style/registeredTittle"   	        			        		        	        					  		        		
-			android:text="Asly: Te damos la bienvenida a Hancel"/>	 
-			
-		<TextView
-			android:id="@+id/userWelcomeTxt"        
-			style="@style/registeredTxt"   	        			        		        	        					  		        		
-			android:text="@string/registration_info"/>	  
-			
-   </LinearLayout>
-           	
-   
-	<LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="right"
-            android:layout_alignRight="@+id/txtWelcome"		
-            android:paddingRight="25dp"		
-            android:paddingBottom="25dp"				
-			android:layout_alignParentBottom="true">	
-            	
-	    <Button
-			style="@style/backButton"	
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"								
-			android:text="@string/new_ring"/>
 
-		<Button
-			style="@style/button"	
+	<LinearLayout
+		android:id="@+id/txtWelcome"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:gravity="center_vertical"
+		android:orientation="vertical">
+
+	   <LinearLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:paddingTop="10dp"					
-			android:text="@string/button_add_contact" />
-		
-		<TextView
-		    style="@style/labelText"			
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"			
-			android:paddingTop="15dp"				
-			android:text="@string/do_it_later" />
+			android:orientation="vertical"
+			android:layout_centerVertical="true">
+
+			<TextView
+				android:id="@+id/userWelcome"
+				style="@style/registeredTittle"
+				android:text="@string/userWelcomeTitle"/>
+
+			<TextView
+				android:id="@+id/userWelcomeTxt"
+				style="@style/registeredTxt"
+				android:text="@string/registration_info"/>
+
+	   </LinearLayout>
+
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="20dp" />
+   
+		<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:layout_gravity="right"
+				android:padding="25dp">
+
+			<Button
+				android:layout_width="150dp"
+				android:layout_height="wrap_content"
+				android:background="@drawable/rings_add_ring"
+				android:gravity="center"
+				android:paddingTop="30dp"
+				android:textSize="18sp"
+				android:textColor="@drawable/text_button"
+				android:scaleType="centerCrop"
+				android:adjustViewBounds="true"
+				android:layout_weight="1"
+				android:text="@string/new_ring"/>
+
+			<Space
+				android:layout_width="match_parent"
+				android:layout_height="10dp" />
+
+			<Button
+				android:layout_width="150dp"
+				android:layout_height="wrap_content"
+				android:background="@drawable/contacts_add_contact"
+				android:gravity="center"
+				android:paddingTop="30dp"
+				android:paddingLeft="10dp"
+				android:paddingRight="10dp"
+				android:textSize="18sp"
+				android:textColor="@drawable/text_button"
+				android:scaleType="centerCrop"
+				android:adjustViewBounds="true"
+				android:layout_weight="1"
+				android:text="@string/registration_add_contact" />
+
+			<Space
+				android:layout_width="match_parent"
+				android:layout_height="10dp" />
+
+			<TextView
+				style="@style/linkText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingTop="15dp"
+				android:text="@string/do_it_later" />
+		</LinearLayout>
+
 	</LinearLayout>
-		
+
   </RelativeLayout>

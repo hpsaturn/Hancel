@@ -82,32 +82,33 @@
    <LinearLayout 
 	        android:layout_width="match_parent"
 		    android:layout_height="match_parent"
-		    android:gravity="bottom"		
-		    android:layout_marginBottom="20dp"   		    		  
+		    android:gravity="bottom"
 		    android:orientation="vertical">
 		    
    		<LinearLayout 
 		        android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
-			    android:gravity="center_horizontal"		    		   
-			    android:orientation="horizontal">
-    
+			    android:gravity="center"
+                android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnLogin"
+                style="@style/button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/loginButtonText" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
 		    <Button
 				    android:id="@+id/btnRegistration"
 				    style="@style/backButton"
-				    android:layout_height="wrap_content"
-				    android:layout_width="110dp"
-				    android:layout_gravity="center"      
+				    android:layout_height="match_parent"
+				    android:layout_width="match_parent"
+				    android:layout_gravity="center_horizontal"
 				    android:text="@string/registration" />
-		
-			<Button
-					android:id="@+id/btnLogin"			
-					style="@style/button"
-					android:layout_width="110dp"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"	
-					android:text="@string/loginButtonText" /> 
-		
+
 		</LinearLayout> 
 	</LinearLayout>
 			
