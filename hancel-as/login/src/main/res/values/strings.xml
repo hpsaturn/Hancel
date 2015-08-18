@@ -550,7 +550,9 @@
     <string name="registration_info">Hemos sincronizado los contactos de tu móvil. <b>Para empezar a usar las alertas</b>, crea un anillo de seguridad con tus contactos cercanos o crea uno nuevo.</string>
     <string name="loginButtonText">Ingresar</string>
     <string name="sendAlert">Enviar Alerta</string>
-    <string name="panic_description"><b>¡Alerta activada!</b> Enviaremos tu ubicación como mensaje de texto a tus anillos configurados</string>
+    <string name="panic_sent"><b>¡Alerta activada!</b> Enviaremos tu ubicación como mensaje de texto a tus anillos configurados</string>
+    <string name="tracking_started"><b>Rastreo iniciado.</b> Atiende la notificación en la barra de tareas para indicar que todo esta bien</string>
+    <string name="panic_tracking_description">Envía una <b>Alerta</b> a tus anillos si te encuentras en peligro ó Inicia un <b>Rastreo</b> cuando visites zonas peligrosas y <b>Comparte</b> tu ubicación</string>
     <string name="forgotPss"><u>Olvidé la contraseña</u></string>
     <string name="select_rings_notify">Notificar</string>
     <string name="bienvenido">Bienvenido</string>
@@ -570,6 +572,7 @@
     <string name="hancel_track_window_title">¡Compartir traza!</string>
     <string name="alert_confirmation_title">Confirmación de alerta</string>
     <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %mapa y mi %battery Avisa a los demás o a las autoridades. Vía Hancel APP, aplicación de seguridad</string>
-    <string name="share_trace_message">[ALERTA] Me dirijo hacia un lugar o zona peligrosa. Rastréame en este link %map. Vía Hance APP, aplicación de seguridad</string>
+    <string name="share_trace_message">[ALERTA] Me dirijo hacia un lugar o zona peligrosa. Rastréame en este link %map. Vía Hancel APP, aplicación de seguridad</string>
     <string name="tracking_map_url">http://hancel.flip.org.co/hansel/?f=trace&amp;hash=</string>
+    <string name="ring_delete_ok">Anillo eliminado</string>
 </resources>

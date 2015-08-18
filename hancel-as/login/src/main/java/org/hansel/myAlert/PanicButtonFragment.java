@@ -85,7 +85,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 						btnTracking.setText(getString(R.string.stop_tracking));
 						btnTracking.setVisibility(View.VISIBLE);
 
-						actionDescription.setVisibility(View.VISIBLE);
+						actionDescription.setText(getResources().getString(R.string.panic_sent));
 
 						trackInfo.setVisibility(View.VISIBLE);
 						trackingOptions.setVisibility(View.GONE);
@@ -392,7 +392,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		}
 		else{
 			btnTracking.setText(getString(R.string.start_tracking));
-			//showtrackingOptions(false);
+			showtrackingOptions(false);
 			//trackInfo.setVisibility(View.GONE);
 			//trackingOptions.setVisibility(View.GONE);
 		}
@@ -450,6 +450,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		
 		if(showTrackInfo){			
 			trackingOptions.setVisibility(View.VISIBLE);
+            actionDescription.setText(getString(R.string.tracking_started));
 			statusTrack.setVisibility(View.VISIBLE);
 			trackInfo.setVisibility(View.VISIBLE);
 			btnTracking.setVisibility(View.GONE);
@@ -459,6 +460,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			statusTrack.setVisibility(View.GONE);
 			trackInfo.setVisibility(View.GONE);
 			btnTracking.setVisibility(View.VISIBLE);
+            actionDescription.setText(getString(R.string.panic_tracking_description));
 		}
 	}
 
