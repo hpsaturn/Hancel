@@ -134,7 +134,7 @@
         <!-- -->
         <activity
             android:name="org.hancel.adapters.customUi.TrackDialog"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar" >
         </activity>
         
         <!--<activity-->

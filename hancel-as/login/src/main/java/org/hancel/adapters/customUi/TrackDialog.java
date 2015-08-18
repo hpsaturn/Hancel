@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,9 +43,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class TrackDialog extends SherlockFragmentActivity 
-implements OnClickListener , OnDateSetListener,
+public class TrackDialog extends FragmentActivity  implements OnClickListener , OnDateSetListener,
 OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickListener{
+
 	private static final long ONE_MINUTE_IN_MILLIS=60000;
 	private Button btnStartTrackingDate;
 	private Button btnEndTrackingDate;
@@ -63,6 +64,7 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_track_dialog);
 		btnStartTrackingDate = (Button) findViewById(R.id.btnStartTrackDate);
@@ -86,7 +88,6 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 		btnResetDateTime.setOnClickListener(this);
 		btnCancel.setOnClickListener(this);
 		btnOk.setOnClickListener(this);
-		
 	}
 
 	private void setCurrentDate()
@@ -101,6 +102,7 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 		sdf = getTimeSimpleFormat();
 		btnStartTrackingHour.setText(sdf.format(cal.getTime()));
 	}
+
 	private void setEndingDate()
 	{
 		Calendar cal = Calendar.getInstance();
