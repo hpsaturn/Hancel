@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import org.hansel.myAlert.dataBase.RingDAO;
@@ -81,7 +82,8 @@ private Handler mHandler = new Handler();
         save = (TextView) view.findViewById(R.id.ok);
         save.setOnClickListener(this);
                 
-        ringsList = (ListView) view.findViewById(R.id.ringsList);   
+        ringsList = (ListView) view.findViewById(R.id.ringsList);
+		ringsList.setOnItemClickListener(this);
         newRing.setOnClickListener(this);
 
         changeRingsAdapter();
@@ -136,12 +138,12 @@ private Handler mHandler = new Handler();
 			ringsList.setVisibility(View.GONE);
 		} 
 	}
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		Ring ring = (Ring) adapter.getItemAtPosition(position);	
+		Log.d("RingsFragment","onItemClick: pos"+position);
+		Ring ring = (Ring) adapter.getItemAtPosition(position);
 		MainActivity.instance().editRing(ring);
-		
 	}
 	
 	@Override

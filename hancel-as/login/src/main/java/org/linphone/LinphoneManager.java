@@ -283,8 +283,8 @@ public class LinphoneManager implements LinphoneCoreListener {
 			return instance;
 
 		if (sExited) {
-			throw new RuntimeException("Linphone Manager was already destroyed. "
-					+ "Better use getLcIfManagerNotDestroyed and check returned value");
+//			throw new RuntimeException("Linphone Manager was already destroyed. "
+//					+ "Better use getLcIfManagerNotDestroyed and check returned value");
 		}
 
 		throw new RuntimeException("Linphone Manager should be created before accessed");
