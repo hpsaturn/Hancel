@@ -891,10 +891,9 @@ public class LinphonePreferences {
 	}
 
 	public void setMediaEncryption(MediaEncryption menc) {
-		if (menc == null)
-			return;
-
-		getLc().setMediaEncryption(menc);
+		if (menc == null) return;
+		LinphoneCore lc = getLc();
+		if(lc!=null)lc.setMediaEncryption(menc);
 	}
 
 	public void setPushNotificationEnabled(boolean enable) {
