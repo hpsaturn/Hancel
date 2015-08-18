@@ -21,16 +21,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * @author Sylvain Berfini
  */
 public enum FragmentsAvailable {
-	UNKNOW,	
-	/*DIALER,*/
+	UNKNOW,
+	LOGIN,
+	REGISTRATION,
+	WELCOME,
+	START,
 	HISTORY,
 	HISTORY_DETAIL,
 	CONTACTS,
 	CONTACT,
 	EDIT_CONTACT,
 	ABOUT,
-	//ABOUT_INSTEAD_OF_SETTINGS,
-	//ABOUT_INSTEAD_OF_CHAT,
 	ACCOUNT_SETTINGS,
 	SETTINGS,
 	CHATLIST,
@@ -40,7 +41,7 @@ public enum FragmentsAvailable {
 	EDIT_RING,
 	PANIC,
 	TRAKING;
-	
+
 	public boolean shouldAddToBackStack() {
 		return true;
 	}
@@ -51,60 +52,58 @@ public enum FragmentsAvailable {
 
 	public boolean isRightOf(FragmentsAvailable fragment) {
 		switch (this) {
-		case HISTORY:
-			return fragment == UNKNOW;
+			case START:
+				return START.isRightOf(fragment) || fragment == START;
 
-		case HISTORY_DETAIL:
-			return HISTORY.isRightOf(fragment) || fragment == HISTORY;
-			
-		case CONTACTS:
-			return HISTORY_DETAIL.isRightOf(fragment) || fragment == HISTORY_DETAIL;
-			
-		case CONTACT:
-			return CONTACTS.isRightOf(fragment) || fragment == CONTACTS;
-			
-		case EDIT_CONTACT:
-			return CONTACT.isRightOf(fragment) || fragment == CONTACT;
-			
-		/*TODO test case DIALER:
-			return EDIT_CONTACT.isRightOf(fragment) || fragment == EDIT_CONTACT;*/
-			
-		//case ABOUT_INSTEAD_OF_CHAT:
-		/*TODO test case CHATLIST:
-			return DIALER.isRightOf(fragment) || fragment == DIALER;*/
-			
-		case CHAT:
-			return CHATLIST.isRightOf(fragment) || fragment == CHATLIST;
-			
-		//case ABOUT_INSTEAD_OF_SETTINGS:
-		case SETTINGS:
-			return CHATLIST.isRightOf(fragment) || fragment == CHATLIST; // || fragment == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT;
-		
-		case ABOUT:
-		case ACCOUNT_SETTINGS:
-			return SETTINGS.isRightOf(fragment) || fragment == SETTINGS;
-			
-		default:
-			return false;
+			case HISTORY:
+				return fragment == UNKNOW;
+
+			case HISTORY_DETAIL:
+				return HISTORY.isRightOf(fragment) || fragment == HISTORY;
+
+			case CONTACTS:
+				return HISTORY_DETAIL.isRightOf(fragment) || fragment == HISTORY_DETAIL;
+
+			case CONTACT:
+				return CONTACTS.isRightOf(fragment) || fragment == CONTACTS;
+
+			case EDIT_CONTACT:
+				return CONTACT.isRightOf(fragment) || fragment == CONTACT;
+
+			case CHAT:
+				return CHATLIST.isRightOf(fragment) || fragment == CHATLIST;
+
+			case REGISTRATION:
+				return REGISTRATION.isRightOf(fragment) || fragment == REGISTRATION;
+
+			case SETTINGS:
+				return CHATLIST.isRightOf(fragment) || fragment == CHATLIST; // || fragment == FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT;
+
+			case ABOUT:
+			case ACCOUNT_SETTINGS:
+				return SETTINGS.isRightOf(fragment) || fragment == SETTINGS;
+
+			default:
+				return false;
 		}
 	}
 
 	public boolean shouldAddItselfToTheRightOf(FragmentsAvailable fragment) {
 		switch (this) {
-		case HISTORY_DETAIL:
-			return fragment == HISTORY;
-			
-		case CONTACT:
-			return fragment == CONTACTS;
-			
-		case EDIT_CONTACT:
-			return fragment == CONTACT || fragment == CONTACTS;
-			
-		case CHAT:
-			return fragment == CHATLIST;
-			
-		default:
-			return false;
+			case HISTORY_DETAIL:
+				return fragment == HISTORY;
+
+			case CONTACT:
+				return fragment == CONTACTS;
+
+			case EDIT_CONTACT:
+				return fragment == CONTACT || fragment == CONTACTS;
+
+			case CHAT:
+				return fragment == CHATLIST;
+
+			default:
+				return false;
 		}
 	}
 }
