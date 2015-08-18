@@ -101,7 +101,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				});
 
 				AlertDialog alert = alt_bld.create();
-				alert.setTitle("Confirmación de alerta");
+				alert.setTitle(getResources().getString(R.string.alert_confirmation_title));
 				alert.show();				
 			}
 		});
@@ -175,7 +175,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(alarmTime) );
 		}
 		corriendo = Util.isMyServiceRunning(getActivity().getApplicationContext());
-		Log.v("=== onResume ");
 		setupButtonText();
 		//tracking
 	}
@@ -196,11 +195,11 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			ex.printStackTrace();
 		}
 		Bundle datos = getArguments();
-		if(datos !=null){
+		/*if(datos !=null){
 			if(datos.getBoolean("panico")){
 				//getActivity().moveTaskToBack(true);
 			}
-		}
+		}*/
 	}
 
 	private void ActivaRadios(){	
@@ -284,7 +283,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	@Override //RASTREO
 	public void onClick(View v) {
 		if (btnTracking.getText() == getString(R.string.stop_tracking)) {
-			Log.v("=== Boton con texto Detener");
 			createPasswordDialog(btnTracking);
 			return;
 		}
@@ -405,11 +403,17 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		Intent share = new Intent(android.content.Intent.ACTION_SEND);
 		share.setType("text/plain");
 		share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-		share.putExtra(Intent.EXTRA_SUBJECT, "[Traza Hancel] ");
+		share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.hancel_track_title));
+
 		Log.v(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
-		String h = SimpleCrypto.md5(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
-		share.putExtra(Intent.EXTRA_TEXT, "http://hancel.flip.org.co/hansel/?f=trace&hash=" + h);
-		startActivity(Intent.createChooser(share, "Share trace!"));
+
+		String h = getString(R.string.tracking_map_url) + SimpleCrypto.md5(Integer
+                .toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
+		String message = getString(R.string.share_trace_message).replace("%map", h);
+
+        Log.v("=== Mensaje para traza: " + message);
+		share.putExtra(Intent.EXTRA_TEXT, message);
+		startActivity(Intent.createChooser(share, getString(R.string.hancel_track_window_title)));
 	}
 	
 
@@ -423,7 +427,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	private PendingIntent getPendingAlarm()	{
 		Intent intent = new Intent(getActivity().getApplicationContext()
 				, AlarmReceiver.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), RQS_1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), RQS_1, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
 		return pendingIntent;
 	}
 	
