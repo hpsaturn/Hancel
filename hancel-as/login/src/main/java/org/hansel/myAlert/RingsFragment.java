@@ -86,26 +86,7 @@ private Handler mHandler = new Handler();
                 
         ringsList = (ListView) view.findViewById(R.id.ringsList);   
         newRing.setOnClickListener(this);
-        /*ringsList.setOnItemClickListener(new OnItemClickListener() {
-			 public void onItemClick(AdapterView<?> adapter, View view,
-					  int position, long id) {				 
-				 Ring r = (Ring) adapter.getItemAtPosition(position);
-				 Log.d("=== Selecciono/deselecciono Anillo: " + r.getNotify());
-				 				 
-				 save.setVisibility(View.VISIBLE);
-				 
-				 if(r.getNotify() == 1){
-					 editedRings.put(r.getId(), new Long(0));
-					 ringsList.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.background_app));
-				 }
-				 else{
-					 editedRings.put(r.getId(), new Long(1));
-					 ringsList.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.blue_light));
-				 }
-				 			 			
-			}
-		});*/
-        
+
         changeRingsAdapter();
                                            
 		return view;
@@ -116,7 +97,6 @@ private Handler mHandler = new Handler();
 		int id = v.getId();
 					
 		if (id == R.id.newRing) {
-			//editConsumed = true;			
 			MainActivity.instance().addRing();
 		} 	
 		if(id == R.id.ok){
@@ -163,7 +143,6 @@ private Handler mHandler = new Handler();
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		Ring ring = (Ring) adapter.getItemAtPosition(position);	
-		Log.d("=== Anillo seleccionado: " + ring.getNotify());
 		MainActivity.instance().editRing(ring);
 		
 	}
@@ -196,40 +175,41 @@ private Handler mHandler = new Handler();
 	public void invalidate() {
 		mHandler.post(new Runnable() {
 			@Override
-			public void run() {				
+			public void run() {
 				changeRingsAdapter();
 				ringsList.setSelectionFromTop(lastKnownPosition, 0);
 			}
 		});
 	}
-	
-	
+
+
 	private void updateRings() {
-		if (editedRings == null || editedRings.isEmpty()) 
+		if (editedRings == null || editedRings.isEmpty())
 			return;
-			
+
 		RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
-					.getContext());
+				.getContext());
 		ringDao.open();
-		
+
 		Iterator<String> it = editedRings.keySet().iterator();
 		String id= null;
 		long result = -1;
+
 		while(it.hasNext()){
 			id = it.next();
 			result = ringDao.updateNotification(id, editedRings.get(id)==1?true:false);
 		}
-		
+
 		ringDao.close();
-			
+
 		if(result == -1){
-				 Toast.makeText(getActivity(), getResources().getString(
-						 R.string.ring_not_modified),Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getResources().getString(
+					R.string.ring_not_modified),Toast.LENGTH_LONG).show();
 		}
 		else{
 			Toast.makeText(getActivity(), getResources().getString(
-					 R.string.ring_without_name), Toast.LENGTH_SHORT).show();
-		}	
+					R.string.rings_save_ok), Toast.LENGTH_LONG).show();
+		}
 	}
 	
 	

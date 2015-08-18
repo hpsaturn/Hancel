@@ -5,10 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import android.widget.Toast;
-
 import org.hansel.myAlert.dataBase.RingDAO;
-import org.linphone.Contact;
 import org.linphone.FragmentsAvailable;
 import org.linphone.LinphoneManager;
 import org.linphone.LinphoneService;
@@ -18,7 +15,6 @@ import org.linphone.mediastream.Log;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -26,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AlphabetIndexer;
@@ -35,9 +30,9 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Fragment to show all rings created.
@@ -223,11 +218,11 @@ private Handler mHandler = new Handler();
 			
 		if(result == -1){
 				 Toast.makeText(getActivity(), getResources().getString(
-						 R.string.ring_not_modified),Toast.LENGTH_SHORT).show();
+						 R.string.ring_not_modified),Toast.LENGTH_LONG).show();
 		}
 		else{
 			Toast.makeText(getActivity(), getResources().getString(
-					 R.string.ring_without_name), Toast.LENGTH_SHORT).show();
+					 R.string.rings_save_ok), Toast.LENGTH_LONG).show();
 		}	
 	}
 	
@@ -294,7 +289,6 @@ private Handler mHandler = new Handler();
 				
 				holder.selected.setOnClickListener(new View.OnClickListener() { 
 					public void onClick(View v) {
-						Log.d("=== Seleccionado/Deseleccionado Objeto ===");
 						CheckBox cb = (CheckBox) v; 
 						Ring r = (Ring)cb.getTag();
 						

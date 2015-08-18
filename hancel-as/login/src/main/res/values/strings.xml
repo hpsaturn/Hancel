@@ -395,8 +395,8 @@
     <string name="button_ok_ring">Guardar</string>
     <string name="button_all_contacts">Todos</string>
     <string name="button_sip_contacts">Hancel</string>
-    <string name="button_add_contact"><u>+Agregar contactos al anillo</u></string>
-    <string name="button_add_contacts_ring">+Agregar contactos al anillo</string>
+    <string name="button_add_contact">Agregar</string>
+    <string name="button_add_contacts_ring">+<u>Agregar contactos al anillo</u></string>
     <string name="button_remove_contacts_ring">Eliminar contactos</string>
     <string name="button_add_ring">Nuevo anillo</string>
     <string name="button_all_rings">Todos los anillos</string>
@@ -447,7 +447,7 @@
     <string name="contact_first_name">Nombre</string>
     <string name="contact_last_name">Apellido</string>
     <string name="ring_name">Nombre</string>
-    <string name="ring_always">Recibir notificaciones</string>
+    <string name="ring_always">Notificar</string>
     <string name="ring_test">--------</string>
     <string name="pref_primary_account_title">Cuenta primaria</string>
     <string name="pref_display_name_title">Nombre de visualización </string>
@@ -555,7 +555,10 @@
     <string name="forgotPss"><u>Olvidé la contraseña</u></string>
     <string name="select_rings_notify">Notificar</string>
     <string name="bienvenido">Bienvenido</string>
-    <string name="program_tracking">Programas seguimiento</string>
+    <string name="program_tracking">Programar seguimiento</string>
+    <string name="rings_save_ok">Anillos guardados correctamente</string>
+    <string name="ring_save_ok">Anillo guardados correctamente</string>
+    <string name="multiple_notify">Notificar</string>
 
 
 </resources>

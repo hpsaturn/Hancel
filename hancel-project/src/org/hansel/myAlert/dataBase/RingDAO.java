@@ -2,8 +2,6 @@ package org.hansel.myAlert.dataBase;
 import java.util.Iterator;
 import java.util.List;
 
-import org.linphone.mediastream.Log;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

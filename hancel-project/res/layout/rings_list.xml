@@ -36,7 +36,7 @@
            android:gravity="center"
            android:paddingTop="20dp"
            android:scaleType="centerCrop"
-           android:text="@string/button_ok_ring"
+           android:text="@string/multiple_notify"
            android:textColor="@drawable/text_button" />
                       
     </LinearLayout>
@@ -53,11 +53,13 @@
 			style="@style/descriptionText"
 			android:layout_height="match_parent"
 			android:layout_width="match_parent"
-			android:layout_margin="20dp"
+			android:layout_marginTop="10dp"
+			android:layout_marginRight="25dp"
+			android:layout_marginBottom="5dp"
 			android:layout_weight="1"
-			android:layout_gravity="center_vertical"
+			android:layout_gravity="bottom"
 			android:gravity="right"
-			android:visibility="gone"
+			android:visibility="visible"
 			android:text="@string/select_rings_notify"/>
 		
 	</LinearLayout>
