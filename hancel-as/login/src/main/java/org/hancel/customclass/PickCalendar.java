@@ -22,14 +22,14 @@ import org.hansel.myAlert.R;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 
-import com.actionbarsherlock.app.SherlockActivity;
 
-public class PickCalendar extends SherlockActivity {
+public class PickCalendar extends FragmentActivity{
 	private Calendar currentDate = Calendar.getInstance();
 	private final View.OnClickListener mActionBarListener = new View.OnClickListener() {
 	    @Override
@@ -58,8 +58,8 @@ public class PickCalendar extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pick_calendar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setTitle("Pick Date");
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setTitle("Pick Date");
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		 View actionBarButtons = inflater.inflate(R.layout.edit_event_custom_actionbar, new LinearLayout(this), false);
 
@@ -68,13 +68,13 @@ public class PickCalendar extends SherlockActivity {
 
 		    View doneActionView = actionBarButtons.findViewById(R.id.action_done);
 		    doneActionView.setOnClickListener(mActionBarListener);
-		    getSupportActionBar().setHomeButtonEnabled(false);
-		    getSupportActionBar().setDisplayShowHomeEnabled(false);
-		    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-		    getSupportActionBar().setDisplayShowTitleEnabled(false);
+		    getActionBar().setHomeButtonEnabled(false);
+		    getActionBar().setDisplayShowHomeEnabled(false);
+		    getActionBar().setDisplayHomeAsUpEnabled(false);
+		    getActionBar().setDisplayShowTitleEnabled(false);
 
-		    getSupportActionBar().setDisplayShowCustomEnabled(true);
-		    getSupportActionBar().setCustomView(actionBarButtons);
+		    getActionBar().setDisplayShowCustomEnabled(true);
+		    getActionBar().setCustomView(actionBarButtons);
 		    CalendarView calendar = (CalendarView)findViewById(R.id.calendarWeight);
 		    
 		    calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
