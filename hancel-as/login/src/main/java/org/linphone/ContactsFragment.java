@@ -214,7 +214,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 				contactsList.setAdapter(new ContactsListAdapter(MainActivity.instance().getSIPContacts(), sipContactsCursor));
 			}
 		} else {
-			if (allContactsCursor.getCount() == 0) {
+			if (allContactsCursor!=null&&allContactsCursor.getCount() == 0) {
 				noContact.setVisibility(View.VISIBLE);
 				contactsList.setVisibility(View.GONE);
 			} else {

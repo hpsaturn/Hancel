@@ -14,18 +14,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Created by Javier Mejia @zenyagami
 zenyagami@gmail.com
 	*/
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
-
-import org.hansel.myAlert.R;
-import org.hansel.myAlert.Log.Log;
-import org.hansel.myAlert.Utils.PreferenciasHancel;
-import org.hansel.myAlert.Utils.SimpleCrypto;
-import org.hansel.myAlert.Utils.Util;
-
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.DialogInterface;
@@ -42,10 +30,17 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.hancel.customclass.PickCalendar;
-import org.hancel.customclass.TrackDate;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import org.hancel.customclass.TrackDate;
+import org.hansel.myAlert.Log.Log;
+import org.hansel.myAlert.R;
+import org.hansel.myAlert.Utils.PreferenciasHancel;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class TrackDialog extends SherlockFragmentActivity 
 implements OnClickListener , OnDateSetListener,
@@ -198,13 +193,13 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 		switch (v.getId()) {
 		case R.id.btnStartTrackDate:
 			isDateStart=true;
-			startActivityForResult(new Intent(getApplicationContext(), PickCalendar.class), 0);
-			//showDatePickerDialog(v);
+//			startActivityForResult(new Intent(getApplicationContext(), PickCalendar.class), 0);
+			showDatePickerDialog(v);
 			break;
 		case R.id.btnEndTrackDate:
 			isDateStart=false;
-			startActivityForResult(new Intent(getApplicationContext(), PickCalendar.class), 0);
-			//showDatePickerDialog(v);
+//			startActivityForResult(new Intent(getApplicationContext(), PickCalendar.class), 0);
+			showDatePickerDialog(v);
 			break;
 		case R.id.btnStartTrackHour:
 			isTimeStart=true;
@@ -239,6 +234,8 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 			break;
 		}
 	}
+
+
 
 	private void setupResult() {
 		Intent result = new Intent();
