@@ -312,7 +312,7 @@
     <string name="conference">Conferencia telefónica</string>
     <string name="incoming">Llamada entrante</string>
     <string name="draft">Borrador</string>
-    <string name="new_fast_chat">Ingresar un nombre de usuario de Hancel para hablar con</string>
+    <string name="new_fast_chat">Ingresa el nombre de usuario de Hancel</string>
     <string name="no_call_history">Sin llamadas en su historial</string>
     <string name="no_missed_call_history">Sin llamadas perdidas en su historial</string>
     <string name="no_contact">Sin contactos en su agenda de direcciones</string>
@@ -398,7 +398,7 @@
     <string name="button_add_contact">Agregar</string>
     <string name="button_add_contacts_ring">+<u>Agregar contactos al anillo</u></string>
     <string name="button_remove_contacts_ring">Eliminar contactos</string>
-    <string name="button_add_ring">Nuevo anillo</string>
+    <string name="button_add_ring">Nuevo</string>
     <string name="button_all_rings">Todos los anillos</string>
     <string name="button_all_call">Todos</string>
     <string name="button_missed_call">Perdida</string>
@@ -550,15 +550,15 @@
     <string name="registration_info">Hemos sincronizado los contactos de tu móvil. <b>Para empezar a usar las alertas</b>, crea un anillo de seguridad con tus contactos cercanos o crea uno nuevo.</string>
     <string name="loginButtonText">Ingresar</string>
     <string name="sendAlert">Enviar Alerta</string>
-    <string name="tracking_description">Al activar el rastreo tu teléfono vibrará. Atiende las notificaciones para indicar que estas bien.</string>
-    <string name="panic_button_description">Activa la alerta cuando te encuentres en peligro inminente y tus anillos serán notificados con tu ubicación.</string>
+    <string name="panic_description"><b>¡Alerta activada!</b> Enviaremos tu ubicación como mensaje de texto a tus anillos configurados</string>
     <string name="forgotPss"><u>Olvidé la contraseña</u></string>
     <string name="select_rings_notify">Notificar</string>
     <string name="bienvenido">Bienvenido</string>
-    <string name="program_tracking">Programar seguimiento</string>
+    <string name="program_tracking"><u>Programar rastreo</u></string>
     <string name="rings_save_ok">Anillos guardados correctamente</string>
     <string name="ring_save_ok">Anillo guardados correctamente</string>
     <string name="multiple_notify">Notificar</string>
-
-
+    <string name="userWelcomeTitle">Te damos la bienvenida a Hancel</string>
+    <string name="registration_add_contact">Crear contacto</string>
+    <string name="registration_add_ring">Crear anillo</string>
 </resources>

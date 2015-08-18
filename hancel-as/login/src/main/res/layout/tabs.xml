@@ -7,7 +7,7 @@
 
     
 
-    <!--LinearLayout
+    <LinearLayout
         android:id="@+id/mark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
 		    android:src="@drawable/mark"
 		    android:visibility="invisible" />
         
-    </LinearLayout-->
+    </LinearLayout>
     
     <FrameLayout
         android:layout_width="match_parent"

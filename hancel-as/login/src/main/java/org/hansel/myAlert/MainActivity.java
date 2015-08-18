@@ -862,8 +862,10 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 						missedChats.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.bounce));
 					}
 				} else {
-					missedChats.clearAnimation();
-					missedChats.setVisibility(View.GONE);
+					if(missedChats!=null){
+						missedChats.clearAnimation();
+						missedChats.setVisibility(View.GONE);
+					}
 				}
 			}
 		});

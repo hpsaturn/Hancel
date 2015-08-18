@@ -44,43 +44,27 @@ public class WelcomeFragment extends Fragment {
 		switch (number) {
 		case 0:			
 			texto.setText(getResources().getString(R.string.slide0));
-			//icono.setImageResource(R.drawable.slide0);
 			layout.setBackgroundResource(R.drawable.slide0);
 			break;
 		case 1:
 			texto.setText(getResources().getString(R.string.slide1));
-			//icono.setImageResource(R.drawable.slide1);
 			layout.setBackgroundResource(R.drawable.slide1);
 			break;
 		case 2:
 			texto.setText(getResources().getString(R.string.slide2));
-			//icono.setImageResource(R.drawable.icono2);
 			layout.setBackgroundResource(R.drawable.slide2);
 			break;
 		case 3:
 			texto.setText(getResources().getString(R.string.slide3));
-			//icono.setImageResource(R.drawable.icono1);
 			layout.setBackgroundResource(R.drawable.slide3);
 			break;
 		case 4:
 			texto.setText(getResources().getString(R.string.slide4));
-			//icono.setImageResource(R.drawable.icono2);
 			layout.setBackgroundResource(R.drawable.slide4);
 			break;
 		case 5:
 			texto.setText(getResources().getString(R.string.slide5));
-			//icono.setImageResource(R.drawable.icono3);
 			layout.setBackgroundResource(R.drawable.slide5);
-			break;
-		case 6:
-			texto.setText(getResources().getString(R.string.slide6));
-			//icono.setImageResource(R.drawable.icono3);
-			layout.setBackgroundResource(R.drawable.slide5);
-			break;
-		case 7:
-			texto.setText(getResources().getString(R.string.slide7));
-			//icono.setImageResource(R.drawable.icono3);
-			layout.setBackgroundResource(R.drawable.slide7);
 			break;
 		default:
 			break;

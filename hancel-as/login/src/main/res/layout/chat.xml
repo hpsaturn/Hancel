@@ -58,6 +58,7 @@
 	            android:layout_centerVertical="true"
 	            android:drawableTop="@drawable/chat_send_picture"
 	            android:paddingLeft="10dp"
+				android:visibility="gone"
 	            android:paddingRight="10dp" />
 	        
 	        <TextView
