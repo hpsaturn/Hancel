@@ -17,6 +17,8 @@ package org.hansel.myAlert;
 
 import static android.content.Intent.ACTION_MAIN;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import org.linphone.LinphonePreferences;
 import org.linphone.LinphoneService;
 import org.linphone.mediastream.Log;
@@ -41,6 +43,7 @@ public class HancelLauncherActivity  extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Fabric.with(this, new Crashlytics());
 		
 		// Used to change for the lifetime of the app the name used to tag the logs
 		new Log(getResources().getString(R.string.app_name), !getResources().getBoolean(R.bool.disable_every_log));

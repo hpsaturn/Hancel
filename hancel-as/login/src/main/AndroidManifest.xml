@@ -323,5 +323,8 @@
 		</receiver>		
         <!-- End Linphone receivers -->
         <!-- End Receivers -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="705d080491316d1246380da76789a89a3dd87aa7" />
     </application>
 </manifest>
