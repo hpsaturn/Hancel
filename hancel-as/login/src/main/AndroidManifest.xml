@@ -115,7 +115,7 @@
         <activity
             android:name=".AlarmReceiver"
             android:label="Alarma"
-            android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
+            >
             <intent-filter>
                 <action android:name="org.hansel.MyAlert.AlarmReceiver"/>
                 <category android:name="android.intent.category.DEFAULT"/>                

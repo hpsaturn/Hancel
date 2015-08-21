@@ -1,9 +1,9 @@
 package org.hansel.myAlert;
 
 
-import com.actionbarsherlock.view.ActionProvider;
 
 import android.content.Context;
+import android.support.v4.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 

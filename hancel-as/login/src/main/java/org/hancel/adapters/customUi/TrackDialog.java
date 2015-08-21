@@ -32,8 +32,6 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
 import org.hancel.customclass.TrackDate;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.R;
