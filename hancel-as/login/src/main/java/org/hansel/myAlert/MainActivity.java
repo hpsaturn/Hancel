@@ -21,19 +21,23 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.Fragment.SavedState;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -107,7 +111,7 @@ import java.util.List;
 import static android.content.Intent.ACTION_MAIN;
 
 
-public class MainActivity extends FragmentActivity implements
+public class MainActivity extends AppCompatActivity implements
 OnClickListener, ContactPicked, LinphoneOnCallStateChangedListener,
 LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
@@ -137,6 +141,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 	private Cursor contactCursor, sipContactCursor;
 	private OrientationEventListener mOrientationHelper;
+	private Toolbar toolbar;
 
 
 	public static final boolean isInstanciated() {
@@ -152,19 +157,23 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.tabs);
+
 		prepareContactsInBackground();
 		ServicioLeeBotonEncendido.login = MainActivity.this;
 		startService(new Intent(MainActivity.this, ServicioLeeBotonEncendido.class));
-		startService(new Intent(ACTION_MAIN).setClass(this, 
+		startService(new Intent(ACTION_MAIN).setClass(this,
 				LinphoneService.class));
 
-		super.onCreate(savedInstanceState);
+
+        initActionBar();
 		
 		if(!isGooglePlayServicesAvailable())
 			finish();
 				
-		setContentView(R.layout.tabs);
-		instance = this;		
+		instance = this;
 				
 		if(!PreferenciasHancel.getLoginOk(getApplicationContext())){
 			showStartFragment();			
@@ -172,10 +181,17 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		else
 			showMainFragment();
 	}
-	
-	/*
-	 * Shows the welcome fragment to register or login
-	 */
+
+    private void initActionBar() {
+		toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle(R.string.app_name);
+		setSupportActionBar(toolbar);
+    }
+
+    /*
+     * Shows the welcome fragment to register or login
+     */
 	private void showStartFragment(){				
 		StartFragment start = new StartFragment();	
 		currentFragment = FragmentsAvailable.START;
@@ -629,22 +645,11 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			changeCurrentFragment(FragmentsAvailable.PANIC, null);
 			dialer.setSelected(true);
 		}
-		/*else if (id == R.id.settings) {
-			changeCurrentFragment(FragmentsAvailable.SETTINGS, null);
-			settings.setSelected(true);
-			Log.v("Click en settings");
-		} */
 		else if (id == R.id.rings) {
 			changeCurrentFragment(FragmentsAvailable.RINGS, null);
 			rings.setSelected(true);
 			Log.v("Click en rings");
-		} 
-		/*else if (id == R.id.about) {
-			Bundle b = new Bundle();
-			b.putSerializable("About", FragmentsAvailable.ABOUT);//_INSTEAD_OF_CHAT);
-			changeCurrentFragment(FragmentsAvailable.ABOUT, null);//_INSTEAD_OF_CHAT, b);
-			about.setSelected(true);
-		} */		
+		}
 		else if (id == R.id.chat) {
 			changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
 			chat.setSelected(true);
@@ -679,13 +684,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		case PANIC:
 			dialer.setSelected(true);
 			break;
-		case SETTINGS:
 		case ACCOUNT_SETTINGS:
 			settings.setSelected(true);
 			break;
-		case ABOUT:
-			about.setSelected(true);
-			break;		
 		case CHAT:
 		case CHATLIST:
 			chat.setSelected(true);
@@ -963,7 +964,11 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 	private AcceptNewFriendDialog acceptNewFriendDialog;
 
-	private class LocalOrientationEventListener extends OrientationEventListener {
+    public void hideActionBar() {
+        toolbar.setVisibility(View.GONE);
+    }
+
+    private class LocalOrientationEventListener extends OrientationEventListener {
 		public LocalOrientationEventListener(Context context) {
 			super(context);
 		}
@@ -1525,6 +1530,35 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 		return true;
 	}
+
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+			changeCurrentFragment(FragmentsAvailable.SETTINGS, null);
+			Log.v("Click en settings");
+            return true;
+        }else if (id == R.id.action_about) {
+			Bundle b = new Bundle();
+			b.putSerializable("About", FragmentsAvailable.ABOUT);//_INSTEAD_OF_CHAT);
+			changeCurrentFragment(FragmentsAvailable.ABOUT, null);//_INSTEAD_OF_CHAT, b);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 	
 }
 
@@ -1532,3 +1566,4 @@ interface ContactPicked {
 	void setAddresGoToDialerAndCall(String number, String name, Uri photo);
 	void goToDialer();
 }
+

@@ -1,166 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="match_parent" 
-		android:layout_height="match_parent"
-		android:orientation="vertical"
-	  	android:background="@drawable/background">
-   
-    <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout 
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:gravity="center"
-                  android:orientation="vertical">
-    <ImageView
-        android:contentDescription="@string/content_description_welcome"
-        android:id="@+id/logoHancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo_57x57" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/sv_about"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:text="@string/hancel_app_name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/text_default"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-    
-	<TextView 
-	    android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:text="@string/about_licence" 
-		android:gravity="center" 
-		android:paddingTop="5sp"
-		android:textSize="12sp" 
-		android:textColor="@color/text_contrast"
-		android:id="@+id/AboutText"/>
-	
-	<TextView
-	        android:id="@+id/basedTitle"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:paddingTop="5dp"
-	        android:text="@string/about_based_title"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:textColor="@color/text_default"
-	        android:textSize="15sp"
-	        android:textStyle="bold" />
-		    
-		<ImageView
-		    android:id="@+id/logoLp"
-	        android:contentDescription="@string/content_description_welcome"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:paddingTop="10sp"
-	        android:src="@drawable/logo_linphone_57x57" />					
-	
-	<TextView 
-	    android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:text="@string/about_based_link"
-		android:autoLink="web" 
-		android:gravity="center" 
-		android:textSize="12sp"
-		android:textColor="@color/text_contrast"
-		android:id="@+id/AboutLink"/>
-	
-		<TextView
-	        android:id="@+id/textColaboration"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:paddingTop="5dp"
-	        android:text="@string/about_text_colaboration"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:textColor="@color/text_default"
-	        android:textSize="15sp"
-	        android:textStyle="bold" />
-	
-	
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="85dp"
-	    android:background="@drawable/background"
-	    android:gravity="center"
-	    android:orientation="horizontal" >	
-		
-		<ImageView
-		    android:id="@+id/logoFlip"
-		    android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:adjustViewBounds="true"
-	        android:layout_margin="5dp"
-		    android:contentDescription="@string/content_description_welcome"
-		    android:src="@drawable/ong_3" />
-		    
-		<ImageView
-		    android:id="@+id/logoKarisma"
-	        android:contentDescription="@string/content_description_welcome"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:adjustViewBounds="true"
-	        android:layout_margin="5dp"
-	        android:paddingTop="15sp"
-	        android:src="@drawable/karisma" />
-								
-	</LinearLayout>
-	
-	<TextView
-	        android:id="@+id/surveyTitle"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:paddingTop="5dp"
-	        android:text="@string/about_survey_title"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:textColor="@color/text_default"
-	        android:textSize="15sp"
-	        android:textStyle="bold" />
-	
-	<TextView 
-	    android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:text="@string/about_survey_link"
-		android:autoLink="web" 
-		android:gravity="center" 
-		android:textStyle="bold" 
-		android:textColor="@color/text_contrast"
-		android:id="@+id/AboutSurvey"/>
-	
-		<TextView
-	        android:id="@+id/image_credits"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:paddingTop="10dp"
-	        android:text="@string/image_credits"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:textColor="@color/text_default"
-	        android:textSize="15sp"
-	        android:textStyle="bold" />
-	
-	<TextView 
-	    android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:text="@string/image_credits_value"
-		android:autoLink="web" 
-		android:gravity="left" 
-		android:textSize="12sp"
-		android:lines="8"
-		android:padding="15dp"
-		android:textColor="@color/text_contrast"
-		android:id="@+id/imageCreditsValue"/>
-	
-	<!-- Button android:id="@+id/exit"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/menu_exit"
-		android:visibility="visible"
-		android:layout_marginTop="10sp"/-->
-	</LinearLayout>
-	</ScrollView>
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logoHancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_welcome"
+                android:src="@drawable/logo_57x57" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="@string/hancel_app_name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/text_default"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/AboutText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="5sp"
+                android:text="@string/about_licence"
+                android:textColor="@color/text_contrast"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/basedTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="@string/about_based_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_default"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/logoLp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_welcome"
+                android:paddingTop="10sp"
+                android:src="@drawable/logo_linphone_57x57" />
+
+            <TextView
+                android:id="@+id/AboutLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:gravity="center"
+                android:text="@string/about_based_link"
+                android:textColor="@color/text_contrast"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textColaboration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="@string/about_text_colaboration"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_default"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/logoFlip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/content_description_welcome"
+                    android:src="@drawable/ong_3" />
+
+                <ImageView
+                    android:id="@+id/logoKarisma"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/content_description_welcome"
+                    android:paddingTop="15sp"
+                    android:src="@drawable/karisma" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/surveyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="@string/about_survey_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_default"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/AboutSurvey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:gravity="center"
+                android:text="@string/about_survey_link"
+                android:textColor="@color/text_contrast"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/image_credits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="@string/image_credits"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_default"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/imageCreditsValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:gravity="center_horizontal"
+                android:lines="15"
+                android:padding="15dp"
+                android:text="@string/image_credits_value"
+                android:textColor="@color/text_contrast"
+                android:textSize="14sp" />
+
+            <!-- Button android:id="@+id/exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_exit"
+                android:visibility="visible"
+                android:layout_marginTop="10sp"/-->
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

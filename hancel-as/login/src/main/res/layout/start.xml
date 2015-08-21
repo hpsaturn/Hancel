@@ -48,15 +48,7 @@
 			android:id="@+id/textApp"
 			style="@style/HancelInstruccion"   	        			        		        	        					  		        		
 			android:text="@string/app_name"/>	   
-       
-       <com.viewpagerindicator.CirclePageIndicator
-	        android:id="@+id/pagerIndicator"
-	        style="@style/myCirclePageIndicator"
-	        android:layout_width="fill_parent"		        
-	        android:layout_height="wrap_content"
-	        android:gravity="center"	
-	        android:soundEffectsEnabled="true"	       
-	        android:paddingTop="75dp"/> 
+
    </LinearLayout> 			                           
  
 	<LinearLayout

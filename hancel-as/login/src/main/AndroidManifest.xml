@@ -55,13 +55,16 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+
+        >
    		
         <!-- Activities -->
         <activity
             android:name=".Login"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
+            >
             <intent-filter>
                 <action android:name="org.hansel.MyAlert.Login" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -71,7 +74,7 @@
         <activity
             android:name=".Registro"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
+            >
             <intent-filter>
                 <action android:name="org.hansel.MyAlert.Registro" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -82,7 +85,7 @@
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
+            >
             <intent-filter>
                 <action android:name="org.hansel.MyAlert.MainActivity" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -154,14 +157,15 @@
 
         <activity
             android:name="org.hancel.customclass.PickCalendar"
-            android:theme="@style/AppTheme" >
+            >
         </activity>
         
         <!-- Linphone activities -->
        <activity android:name="org.hansel.myAlert.HancelLauncherActivity"
 		    android:label="@string/app_name"
 		    android:windowSoftInputMode="adjustPan|stateHidden"
-		    android:theme="@style/NoTitle">
+
+           >
 		    <intent-filter>
 		        <action android:name="android.intent.action.MAIN" />
 		        <category android:name="android.intent.category.LAUNCHER" />

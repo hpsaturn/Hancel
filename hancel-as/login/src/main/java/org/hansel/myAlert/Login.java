@@ -55,7 +55,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.viewpagerindicator.CirclePageIndicator;
 
 /**
  * Login.Java
@@ -131,8 +130,6 @@ public class Login extends FragmentActivity {
 		ViewPager mpager = (ViewPager) findViewById(R.id.pager);
 		PagerAdapter mpagerAdapter = new ScreenSlidePageAdapter(getSupportFragmentManager());
 		mpager.setAdapter(mpagerAdapter);
-		CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.pagerIndicator);
-		indicator.setViewPager(mpager);
 	}
 
 	

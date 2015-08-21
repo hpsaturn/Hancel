@@ -85,10 +85,13 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 //		getActivity().setTheme(R.style.myTheme_Preference);
 		super.onCreate(bundle);
 		// Init the settings page interface
-		initSettings();		
+//        ((MainActivity)getActivity()).hideActionBar();
+		initSettings();
 		setListeners();
 		///hideSettings();		
 	}
+
+
 
 	// Inits the values or the listener on some settings
 	private void initSettings() {

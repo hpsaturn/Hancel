@@ -30,6 +30,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 /**
@@ -37,6 +40,8 @@ import android.widget.TextView;
  */
 public class AboutFragment extends Fragment implements OnClickListener {
 	private FragmentsAvailable about = FragmentsAvailable.ABOUT;//_INSTEAD_OF_CHAT;
+	private ScrollView _sv_about;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -53,6 +58,11 @@ public class AboutFragment extends Fragment implements OnClickListener {
 		catch (NameNotFoundException e) {
 			Log.e(e, "cannot get version name");
 		}
+		
+		_sv_about = (ScrollView)view.findViewById(R.id.sv_about);
+		Animation translatebu= AnimationUtils.loadAnimation(getActivity(), R.anim.about);
+		_sv_about.startAnimation(translatebu);
+
 
 		/*View issue = view.findViewById(R.id.exit);
 		issue.setOnClickListener(this);

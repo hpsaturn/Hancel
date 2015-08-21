@@ -11,6 +11,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 repositories {
+    maven { url "http://dl.bintray.com/populov/maven" }
     maven { url 'https://maven.fabric.io/public' }
 }
 
@@ -41,8 +42,7 @@ android {
 }
 
 dependencies {
-    compile project(':pageView42')
-    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile files('libs/aXMLRPC_v1.7.2.jar')
     compile files('libs/liblinphone.jar')
