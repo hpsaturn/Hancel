@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone" >
+                android:visibility="visible" >
 
                 <TextView
                     android:id="@+id/txtTrackStatus"
@@ -51,6 +51,10 @@
 
             </LinearLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,21 +65,26 @@
 
             <Button
                 android:id="@+id/btnAlert"
-                style="@style/alert_button_text"
+                style="@style/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="-17dp"
                 android:layout_marginBottom="10dp"
                 android:visibility="visible"
+                android:textSize="18dp"
+                android:textStyle="bold"
                 android:text="@string/sendAlert"/>
 
             <TextView
                 android:id="@+id/actionDescription"
                 style="@style/TextoInstruccion"
                 android:layout_gravity="fill_horizontal"
-                android:text="@string/panic_description"
-                android:textColor="@color/background_header"/>
+                android:text="@string/panic_tracking_description"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/background_header"
+                android:visibility="visible"/>
 
             <Button
                 android:id="@+id/iniciaTrackId"
@@ -86,6 +95,7 @@
                 android:layout_marginRight="25dp"
                 android:padding="5dp"
                 android:visibility="visible"
+                android:drawableLeft="@drawable/clock"
                 android:text="@string/program_tracking"/>
 
             <include layout="@layout/fragment_rastreo" />

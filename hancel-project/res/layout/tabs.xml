@@ -117,7 +117,7 @@
                 android:textSize="20sp"
                 android:visibility="gone" />
         </RelativeLayout>
-		<!-- include layout="@layout/menu_about_button" -->
+		<include layout="@layout/menu_about_button" />
         <include layout="@layout/menu_contact_button" />
         
         
@@ -157,9 +157,9 @@
         
         <include layout="@layout/menu_rings_button" />
 
-        <!-- include layout="@layout/menu_settings_button" /--> 
+        <include layout="@layout/menu_settings_button" /> 
         
-        <!-- include layout="@layout/menu_about_settings_button" /-->
+        <include layout="@layout/menu_about_settings_button"/>
         
     </LinearLayout>
     

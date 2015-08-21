@@ -531,7 +531,7 @@
     <string name="start_tracking">Programar rastreo</string>
     <string name="tracking_launched">Contactos notificados. Inicia función de rastreo</string>
     <string name="tracking_invalid_contac_numbers">Los números de contacto a notificar no son válidos</string>
-    <string name="tracking_battery_level">Nivel de batería:</string>
+    <string name="tracking_battery_level">nivel de batería </string>
     <string name="tracking_loc_aprox">Localización Aproximada:</string>
     <string name="alert_sent">Alerta enviada</string>
     <string name="tracking_help">¡Ayuda! </string>
@@ -550,7 +550,9 @@
     <string name="registration_info">Hemos sincronizado los contactos de tu móvil. <b>Para empezar a usar las alertas</b>, crea un anillo de seguridad con tus contactos cercanos o crea uno nuevo.</string>
     <string name="loginButtonText">Ingresar</string>
     <string name="sendAlert">Enviar Alerta</string>
-    <string name="panic_description"><b>¡Alerta activada!</b> Enviaremos tu ubicación como mensaje de texto a tus anillos configurados</string>
+    <string name="panic_sent"><b>¡Alerta activada!</b> Enviaremos tu ubicación como mensaje de texto a tus anillos configurados</string>
+    <string name="tracking_started"><b>Rastreo iniciado.</b> Atiende la notificación en la barra de tareas para indicar que todo esta bien</string>
+    <string name="panic_tracking_description"><b>Envía una Alerta</b> a tus anillos si te encuentras en peligro.  <b>Programa un rastreo</b> cuando visites zonas peligrosas</string>
     <string name="forgotPss"><u>Olvidé la contraseña</u></string>
     <string name="select_rings_notify">Notificar</string>
     <string name="bienvenido">Bienvenido</string>
@@ -566,4 +568,11 @@
     <string name="delete_ring_dialog_title">Confirmación de eliminación</string>
     <string name="delete_ring_message">¿Desea eliminar el anillo?</string>
     <string name="ring_add_contacts">+<ul>Agregar contactos</ul></string>
+    <string name="hancel_track_title">[Traza Hancel]</string>
+    <string name="hancel_track_window_title">¡Compartir traza!</string>
+    <string name="alert_confirmation_title">Confirmación de alerta</string>
+    <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %mapa y mi %battery Avisa a los demás o a las autoridades. Vía Hancel APP, aplicación de seguridad</string>
+    <string name="share_trace_message">[ALERTA] Me dirijo hacia un lugar o zona peligrosa. Rastréame en este link %map. Vía Hancel APP, aplicación de seguridad</string>
+    <string name="tracking_map_url">http://hancel.flip.org.co/hansel/?f=trace&amp;hash=</string>
+    <string name="ring_delete_ok">Anillo eliminado</string>
 </resources>

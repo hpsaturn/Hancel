@@ -151,11 +151,13 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {	
+	protected void onCreate(Bundle savedInstanceState) {
+		prepareContactsInBackground();
 		ServicioLeeBotonEncendido.login = MainActivity.this;
-		startService(new Intent(MainActivity.this,ServicioLeeBotonEncendido.class));
+		startService(new Intent(MainActivity.this, ServicioLeeBotonEncendido.class));
 		startService(new Intent(ACTION_MAIN).setClass(this, 
 				LinphoneService.class));
+
 		super.onCreate(savedInstanceState);
 		
 		if(!isGooglePlayServicesAvailable())
@@ -167,8 +169,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if(!PreferenciasHancel.getLoginOk(getApplicationContext())){
 			showStartFragment();			
 		}
-		else			
-			showMainFragment();				
+		else
+			showMainFragment();
 	}
 	
 	/*
@@ -192,7 +194,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		Log.v("onConfigurationChangedMain");
 	}
 	
-	public void showMainFragment(){					
+	public void showMainFragment(){
 		panicPressed = getIntent().getBooleanExtra("panico",false);
 		Bundle data = null;
 
@@ -200,16 +202,13 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			data = new Bundle();
 			data.putBoolean("panico", true);
 		}
-			
-		panicFragment = new PanicButtonFragment();
-		panicFragment.setArguments(data);
-		
+
 		findViewById(R.id.menu).setVisibility(View.VISIBLE);
-		findViewById(R.id.activityContainer2).setVisibility(View.VISIBLE);				
-		
+		findViewById(R.id.activityContainer2).setVisibility(View.VISIBLE);
+
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		panicFragment = new PanicButtonFragment();		
+		panicFragment = new PanicButtonFragment();
 		panicFragment.setArguments(data);
 		fragmentTransaction.replace(R.id.activityContainer, panicFragment);
 		fragmentTransaction.commit();
@@ -219,9 +218,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		fragmentsHistory = new ArrayList <FragmentsAvailable>();
 		currentFragment = nextFragment = FragmentsAvailable.PANIC;
 		fragmentsHistory.add(currentFragment);	
-		
-		
-		
+
 		LinphonePreferences.instance().setMediaEncryption(MediaEncryption.SRTP);
 	}
 
@@ -1332,9 +1329,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		// Remove to avoid duplication of the listeners
 		LinphoneManager.removeListener(this);
 		LinphoneManager.addListener(this);
-				
-		prepareContactsInBackground();
-		
+
 		updateMissedChatCount();
 		displayMissedCalls(LinphoneManager.getLc().getMissedCallsCount());
 		

@@ -71,19 +71,7 @@ public class WelcomeFragment extends Fragment {
 			texto.setText(getResources().getString(R.string.slide5));
 			//icono.setImageResource(R.drawable.icono3);
 			layout.setBackgroundResource(R.drawable.slide5);
-			break;
-		case 6:
-			texto.setText(getResources().getString(R.string.slide6));
-			//icono.setImageResource(R.drawable.icono3);
-			layout.setBackgroundResource(R.drawable.slide5);
-			break;
-		case 7:
-			texto.setText(getResources().getString(R.string.slide7));
-			//icono.setImageResource(R.drawable.icono3);
-			layout.setBackgroundResource(R.drawable.slide7);
-			break;
-		default:
-			break;
+			break;		
 		}
 		
         return rootView;

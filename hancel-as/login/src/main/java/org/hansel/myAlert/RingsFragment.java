@@ -100,6 +100,7 @@ private Handler mHandler = new Handler();
 		} 	
 		if(id == R.id.ok){
 			updateRings();
+            invalidate();
 		}
 	}
 	
@@ -141,7 +142,6 @@ private Handler mHandler = new Handler();
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		Log.d("RingsFragment","onItemClick: pos"+position);
 		Ring ring = (Ring) adapter.getItemAtPosition(position);
 		MainActivity.instance().editRing(ring);
 	}
@@ -216,6 +216,7 @@ private Handler mHandler = new Handler();
 		private int margin;
 		private Bitmap bitmapUnknown;
 		private List<Ring> rings;
+		String idDelete;
 				
 		public RingsListAdapter(List<Ring> ringsLst) {
 			rings = ringsLst;			
@@ -252,7 +253,7 @@ private Handler mHandler = new Handler();
 			View view = null;
 			Ring ring = null;
 			ViewHolder holder = new ViewHolder();
-			
+
 			do {
 				ring = (Ring) getItem(position);
 			} 
@@ -268,14 +269,13 @@ private Handler mHandler = new Handler();
 				holder.selected = (CheckBox) view.findViewById(R.id.chooseRing);
 				holder.selected.setTag(ring);
 				holder.ringName = (TextView) view.findViewById(R.id.name);
-				holder.ringId = (TextView) view.findViewById(R.id.ringId);
 				holder.icon = (ImageView) view.findViewById(R.id.icon);
 				holder.icon.setImageBitmap(bitmapUnknown);
 				holder.iconDelete = (TextView) view.findViewById(R.id.iconDelete);
-				//holder.iconDelete.setText(holder.ringId.getText());
+				holder.iconDelete.setText(ring.getId());
 				addListeners(holder);
-
 			}
+
 			ring = rings.get(position);
 			TextView name = (TextView) view.findViewById(R.id.name);
 			name.setText(ring.getName());
@@ -316,13 +316,20 @@ private Handler mHandler = new Handler();
 
 			holder.iconDelete.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
+					idDelete = String.valueOf(((TextView)v).getText());
 					AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
 					alt_bld.setMessage(getResources().getString(R.string.delete_ring_message))
 							.setCancelable(false)
 							.setPositiveButton(getResources().getString(R.string.delete_ring_yes),
 									new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog, int id) {
-
+											RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
+													.getContext());
+											ringDao.open();
+											ringDao.deleteRing(idDelete);
+                                            invalidate();
+											Toast.makeText(getActivity(), getResources().getString(R.string.ring_delete_ok),
+													Toast.LENGTH_SHORT).show();
 										}
 									})
 							.setNegativeButton(getResources().getString(R.string.delete_ring_no),
@@ -358,7 +365,6 @@ private Handler mHandler = new Handler();
 			CheckBox selected;
 			ImageView icon;
 			TextView ringName;
-			TextView ringId;
 			TextView iconDelete;
 			   
 		}

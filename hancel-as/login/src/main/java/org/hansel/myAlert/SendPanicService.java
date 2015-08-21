@@ -17,6 +17,7 @@ package org.hansel.myAlert;
  */
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -142,13 +143,12 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
 
         @Override
         protected Void doInBackground(Void... params) {
-            Log.v("=== Iniciando Panico");
             Location loc = getLocation();
-
+            Log.v( "=== Ingresando al proceso en Background");
             double Lat = 0;
             double Long = 0;
             String mapa = "";
-            // String direccion="";
+
             if (loc != null) {
                 Lat = loc.getLatitude();
                 Long = loc.getLongitude();
@@ -172,7 +172,6 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
                     String[] s = nums.split(",");
                     for (int i = 0; i < s.length; i++) {
                         numbers.add(s[i].replace('"', ' ').trim());
-                        Log.v("=== Numero FLIP:" + numbers);
                     }
                 }
             }
@@ -194,21 +193,21 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
 
             if (numbers.size() == 0) {
                 result = getString(R.string.no_configured_rings);
-            } else {
+            }
+            else {
                 Log.v("=== Numero de mensajes a enviar: " + numbers.size());
-                SharedPreferences preferencias = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String message = preferencias.getString("pref_key_custom_msg",
-                        getString(R.string.tracking_help));
+                String message = getString(R.string.tracking_SMS_message) ;
                 int fails = 0;
+                message = message.replace("%map", mapa);
+                message = message.replace("%battery", getString(R.string.tracking_battery_level) +
+                                                        getNivelBateria() +"%");
                 for (int i = 0; i < numbers.size(); i++) {
                     try {
 
                         String number = numbers.get(i).replaceAll("\\D+", "");
                         Log.v("=== Numero : " + number);
                         if (number != null && number.length() > 0) {
-                            Log.v("=== Enviando SMS a : " + number);
-                            enviarSMS(number, message + mapa + getString(R.string.tracking_battery_level) +
-                                    getNivelBateria() + "%");
+                            enviarSMS(number, message);
                         }
                     } catch (Exception ex) {
                         Log.v("Ocurrio un Error al enviar SMS. Excepcion: " +
@@ -279,19 +278,14 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
      */
     public void enviarSMS(String telefono, String mensaje) {
         SmsManager sms = SmsManager.getDefault();
+        String sent = "android.telephony.SmsManager.STATUS_ON_ICC_SENT";
+        PendingIntent piSent = PendingIntent.getBroadcast(SendPanicService.this, 0, new Intent(sent), 0);
         try {
-            sms.sendTextMessage(telefono, null, mensaje, null, null);
-            Log.v("=== Mensaje enviado a " + telefono);
+            ArrayList<String> parts = sms.divideMessage(mensaje);
+            sms.sendMultipartTextMessage(telefono, null, parts, null, null);
+            Log.v("=== Mensaje " + mensaje + " enviado a " + telefono);
         } catch (Exception e) {
-            Log.v(e.getMessage());
-            try {
-                ArrayList<String> parts = sms.divideMessage(mensaje);
-                sms.sendMultipartTextMessage(telefono, null, parts, null, null);
-                Log.v("=== Mensaje enviado en partes " + telefono);
-            } catch (Exception i) {
-                Log.v("=== Error al enviar , falla al envio de SMS");
-                e.printStackTrace();
-            }
+            Log.v("=== Error enviando mensaje: " + e.getMessage());
         }
 
     }
