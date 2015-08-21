@@ -54,10 +54,10 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     private boolean mLocationTracking = true;
     private boolean mDisableTracking = false;
     private LocationManager mLocationManager;
-    private static final int TWO_MINUTES = 1000 * 60 * 5;
+    private static final int TWO_MINUTES = 1000 * 60 * 3;
     protected Location mLocation;
     private final Handler handler = new Handler();
-    private int minutos = 5;
+    private int minutos = 3;
     private TelephonyManager tMgr;
     private long trackId;
     private LocationRequest mLocationRequest;
@@ -68,6 +68,7 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     }
 
     public void setMinutos(int tiempo) {
+
         this.minutos = tiempo;
     }
 
@@ -91,15 +92,7 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
 
         new conexionWS().execute();
         handler.postDelayed(getData, 1000 * 60 * minutos);
-        
-        /*
-        * ID android
-        * telefono
-        * lat
-        * long
-        * bat
-        * 
-        */
+
     }
 
 
@@ -267,7 +260,7 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         showNotification();
 
-        minutos = intent.getIntExtra("minutos", 5);
+        minutos = intent.getIntExtra("minutos", minutos);
         handler.post(getData);
 
         startLocationService();
