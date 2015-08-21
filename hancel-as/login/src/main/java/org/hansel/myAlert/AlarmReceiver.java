@@ -4,8 +4,6 @@ package org.hansel.myAlert;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
 
 public class AlarmReceiver extends FragmentActivity{
 	

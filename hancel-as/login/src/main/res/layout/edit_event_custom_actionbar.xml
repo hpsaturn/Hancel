@@ -8,7 +8,7 @@
     <!-- id must match corresponding menu item id -->
     <LinearLayout
         android:id="@+id/action_cancel"
-        style="@style/EditEventCustomActionButton">
+        >
 
         <ImageView
             style="@style/EditEventCustomActionButtonImage"
@@ -23,7 +23,7 @@
     <!-- id must match corresponding menu item id -->
     <LinearLayout
         android:id="@+id/action_done"
-        style="@style/EditEventCustomActionButton">
+        >
 
         <ImageView
             style="@style/EditEventCustomActionButtonImage"
