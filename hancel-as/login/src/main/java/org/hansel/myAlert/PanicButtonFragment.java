@@ -52,8 +52,8 @@ import android.widget.Toast;
 public class PanicButtonFragment extends Fragment implements OnClickListener{	
 	private static final int RQS_1 = 12;
 	private final int REQUEST_CODE = 0;
-	private boolean corriendo=false;
-	private int minutos;	
+	private boolean running=false;
+	private int range;
 	private UsuarioDAO usuarioDao;
 	private AlarmManager alarmManager;
 	private TrackDAO track;	
@@ -79,7 +79,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				.setPositiveButton(getResources().getString(R.string.tracking_send_alert_yes), 
 						new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						getActivity().startService(new Intent(getActivity(),
+                        getActivity().startService(new Intent(getActivity(),
 								SendPanicService.class));
 						
 						btnTracking.setText(getString(R.string.stop_tracking));
@@ -89,8 +89,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 						trackInfo.setVisibility(View.VISIBLE);
 						trackingOptions.setVisibility(View.GONE);
-
-
 					}
 				})
 				.setNegativeButton(getResources().getString(R.string.tracking_send_alert_no), 
@@ -113,7 +111,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		btnTracking = (Button)v.findViewById(R.id.iniciaTrackId);
 		usuarioDao = new UsuarioDAO(getActivity().getApplicationContext());
 		usuarioDao.open();
-		minutos = Util.getTrackingMinutes(getActivity().getApplicationContext());
+		range = Util.getTrackingMinutes(getActivity().getApplicationContext());
 
 		//Text to describe the Alarm action when is activated
 		actionDescription = (TextView) v.findViewById(R.id.actionDescription);
@@ -136,8 +134,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		showtrackingOptions(false);
 
 		if(savedInstanceState!=null){
-			corriendo = savedInstanceState.getBoolean("run");
-			if(corriendo){
+			running = savedInstanceState.getBoolean("run");
+			if(running){
 				Log.v("=== Traking esta corriendo");
 				btnTracking.setText(getString(R.string.stop_tracking));
 				trackInfo.setVisibility(View.VISIBLE);
@@ -174,7 +172,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			}
 			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(alarmTime) );
 		}
-		corriendo = Util.isMyServiceRunning(getActivity().getApplicationContext());
+		running = Util.isMyServiceRunning(getActivity().getApplicationContext());
 		setupButtonText();
 		//tracking
 	}
@@ -222,18 +220,18 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException {
-		final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		final Class conmanClass = Class.forName(conman.getClass().getName());
-		final Field iConnectivityManagerField = conmanClass.getDeclaredField("mService");
-		iConnectivityManagerField.setAccessible(true);
-		final Object iConnectivityManager = iConnectivityManagerField.get(conman);
-		final Class iConnectivityManagerClass =  Class.forName(iConnectivityManager.getClass().getName());
-		@SuppressWarnings("unchecked")
-		final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-		setMobileDataEnabledMethod.setAccessible(true);
-
-		setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
+	private void setMobileDataEnabled(Context context, boolean enabled)
+			throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException,
+					NoSuchMethodException, NoSuchFieldException, InvocationTargetException {
+        final ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final Class<?> conmanClass = Class.forName(conman.getClass().getName());
+        final Field iConnectivityManagerField = conmanClass.getDeclaredField("mService");
+        iConnectivityManagerField.setAccessible(true);
+        final Object iConnectivityManager = iConnectivityManagerField.get(conman);
+        final Class<?> iConnectivityManagerClass =  Class.forName(iConnectivityManager.getClass().getName());
+        final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+        setMobileDataEnabledMethod.setAccessible(true);
+        setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
 	}
 
 	//tracking
@@ -257,9 +255,9 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			super.onActivityResult(requestCode, resultCode, data);
 		}
 
-	}
+    }
 
-	@Override
+    @Override
 	public void onPause() {
 		super.onPause();
 	}
@@ -291,7 +289,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			shareTrace();
 			break;
 		case R.id.iniciaTrackId:
-			if(!corriendo){
+			if(!running){
 				startActivityForResult(new Intent(getActivity(), 
 						TrackDialog.class),REQUEST_CODE );				
 			}
@@ -308,7 +306,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if(outState!=null){
-			outState.putBoolean("run", corriendo);
+			outState.putBoolean("run", running);
 		}
 	}
 
@@ -331,7 +329,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				boolean isOK = usuarioDao.getPassword(crypto);	           	          
 
 				if(isOK && btnPanico.getId()== R.id.iniciaTrackId ){
-					Log.v("Detener Rastreo");
+					Log.v("===Detener Rastreo");
 					alarmManager.cancel(getPendingAlarm());
 					btnPanico.setText(getString(R.string.start_tracking));
 					trackInfo.setVisibility(View.GONE);
@@ -340,7 +338,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					getActivity().stopService(new Intent(getActivity().getApplicationContext()
 							,LocationManagement.class));
 					alarmManager.cancel(Util.getPendingAlarmPanicButton(getActivity().getApplicationContext()));
-					corriendo = false;
+					running = false;
 
 					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_stopped), 
 							Toast.LENGTH_SHORT).show();
@@ -362,24 +360,24 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				else{
 					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_wrong_password), 
 							Toast.LENGTH_SHORT).show();
-					return;
-				}
-			}
-		});  
+                    return;
+                }
+            }
+        });
 
-		alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
 
-			public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which) {
 				return;   
 			}
 		});
 		alert.show();
 	}
-	
-	//RASTREO
-	private void setupButtonText() {
+
+    //RASTREO
+    private void setupButtonText() {
 		Log.v("=== En setupButtonText");
-		if(corriendo){
+		if(running){
 			Log.v("=== SetupButtonText");
 			//showtrackingOptions(true);
 			btnTracking.setText(getString(R.string.stop_tracking));
@@ -410,7 +408,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
         Log.v("=== Mensaje para traza: " + message);
 		share.putExtra(Intent.EXTRA_TEXT, message);
-		startActivity(Intent.createChooser(share, getString(R.string.hancel_track_window_title)));
+        startActivity(Intent.createChooser(share, getString(R.string.hancel_track_window_title)));
 	}
 	
 
@@ -428,13 +426,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
                 PendingIntent.FLAG_CANCEL_CURRENT);
 		return pendingIntent;
 	}
-	
-
-	public boolean isTracking(){
-
-		return corriendo;
-	}
-	
 
 	private void showtrackingOptions(boolean showTrackInfo){
 		Log.v("=== ShowTrackInfo " + showTrackInfo);
@@ -472,7 +463,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		}
 		//corriendo siempre ser� "true" por que al presionar el bot�n de p�nico
 		// se inizializa el servicio
-		corriendo = true;
+		running = true;
 		setupButtonText();		
 	}
 }

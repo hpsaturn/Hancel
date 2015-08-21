@@ -21,7 +21,11 @@ import java.io.IOException;
 // Warning ! Do not rename the service !
 public class GCMService extends IntentService {
 
-	public GCMService(String name) {
+	public GCMService(){
+        super("org.linphone.gcm.GCMService");
+    }
+
+    public GCMService(String name) {
 		super(name);
 	}
 

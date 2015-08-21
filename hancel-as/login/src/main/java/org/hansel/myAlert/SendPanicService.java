@@ -56,7 +56,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class SendPanicService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
-    private ejecutaPanico mTask;
+    private EjecutaPanico mTask;
     private String result;
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
@@ -70,6 +70,7 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
     public void onCreate() {
         super.onCreate();
         startLocationService();
+        resumeLocationService();
     }
 
     /* (non-Javadoc)
@@ -83,6 +84,7 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
 
     @Override
     public IBinder onBind(Intent intent) {
+
         return null;
     }
 
@@ -118,11 +120,6 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
 
             if (i < providersList.size())
                 loc = locationManager.getLastKnownLocation(providersList.get(i));
-
-            if (loc != null) {
-                Log.v("=== LAT: " + loc.getLatitude());
-                Log.v("=== LON: " + loc.getLongitude());
-            }
         }
         return loc;
     }
@@ -134,160 +131,26 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
 
     }
 
-    public class ejecutaPanico extends AsyncTask<Void, Void, Void> {
-        Contacts con = new Contacts(getApplicationContext());
-
-        @Override
-        protected void onCancelled() {
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            Location loc = getLocation();
-            Log.v( "=== Ingresando al proceso en Background");
-            double Lat = 0;
-            double Long = 0;
-            String mapa = "";
-
-            if (loc != null) {
-                Lat = loc.getLatitude();
-                Long = loc.getLongitude();
-                mapa = getString(R.string.tracking_loc_aprox) + "http://maps.google.com/?q=" + Lat + "," + Long + "\n";
-
-            }
-            RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
-                    .getContext());
-            FlipDAO flipDao = new FlipDAO(LinphoneManager.getInstance()
-                    .getContext());
-
-            List<String> numbers = new ArrayList<String>();
-            flipDao.open();
-            Cursor fc = flipDao.getSettingsValueByKey(getResources().getString(
-                    R.string.contacts_flip));
-
-            if (fc != null && fc.getCount() > 0) {
-                fc.moveToFirst();
-                String nums = fc.getString(1);
-                if (nums != null && nums.length() > 0) {
-                    String[] s = nums.split(",");
-                    for (int i = 0; i < s.length; i++) {
-                        numbers.add(s[i].replace('"', ' ').trim());
-                    }
-                }
-            }
-            flipDao.close();
-            ringDao.open();
-            Cursor c = ringDao.getNotificationContactsId();
-
-            if (c != null && c.getCount() > 0) {
-                c.moveToFirst();
-                for (int i = 0; i < c.getCount(); i++) {
-                    List<String> contactNumbers = Compatibility
-                            .extractContactNumbers(c.getString(0),
-                                    getContentResolver());
-                    if (contactNumbers != null && contactNumbers.size() > 0)
-                        numbers.addAll(contactNumbers);
-                    c.moveToNext();
-                }
-            }
-
-            if (numbers.size() == 0) {
-                result = getString(R.string.no_configured_rings);
-            }
-            else {
-                Log.v("=== Numero de mensajes a enviar: " + numbers.size());
-                String message = getString(R.string.tracking_SMS_message) ;
-                int fails = 0;
-                message = message.replace("%map", mapa);
-                message = message.replace("%battery", getString(R.string.tracking_battery_level) +
-                                                        getNivelBateria() +"%");
-                for (int i = 0; i < numbers.size(); i++) {
-                    try {
-
-                        String number = numbers.get(i).replaceAll("\\D+", "");
-                        Log.v("=== Numero : " + number);
-                        if (number != null && number.length() > 0) {
-                            enviarSMS(number, message);
-                        }
-                    } catch (Exception ex) {
-                        Log.v("Ocurrio un Error al enviar SMS. Excepcion: " +
-                                ex.getMessage());
-                        fails += 1;
-                    }
-                }
-                if (fails == numbers.size()) {
-                    result = getString(R.string.tracking_invalid_contac_numbers);
-                } else {
-                    result = "OK";
-                }
-            }
-            try {
-                HttpUtils.sendPanic(PreferenciasHancel.getDeviceId(getApplicationContext()),
-                        String.valueOf(PreferenciasHancel.getUserId(getApplicationContext())),
-                        String.valueOf(loc.getLatitude()),
-                        String.valueOf(loc.getLongitude()),
-                        String.valueOf(getNivelBateria()),
-                        "", "");
-            } catch (Exception ex) {
-                Log.v("Error al Enviar el track: " + ex.getMessage());
-            }
-
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(Void r) {
-            super.onPostExecute(r);
-            // Cancelamos alarma
-            cancelAlarms();
-            if (!Util.isMyServiceRunning(getApplicationContext())) {
-                Util.inicarServicio(getApplicationContext());
-            }
-            // Muestra la fecha de la ultima vez que se corrio el panico y
-            // guarda la nueva fecha si el resultado del envio de SMS fue OK
-            if (result.equalsIgnoreCase("OK")) {
-                String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar
-                        .getInstance());
-                PreferenciasHancel.setLastPanicAlert(getApplicationContext(),
-                        currentDateandTime);
-                Toast.makeText(getApplicationContext(), getString(R.string.tracking_launched),
-                        Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-            }
-            stopSelf();
-        }
-    }
-
     private void cancelAlarms() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(Util
-                .getReminderPendingIntennt(getApplicationContext()));
-        alarmManager
-                .cancel(Util
-                        .getStopSchedulePendingIntentWithExtra(getApplicationContext()));
-
+        alarmManager.cancel(Util.getReminderPendingIntennt(getApplicationContext()));
+        alarmManager.cancel(Util.getStopSchedulePendingIntentWithExtra(getApplicationContext()));
     }
 
     /**
-     * envia un SMS si es muy largo envia varios
-     *
-     * @param telefono (telefono al que se le enviara el SMS)
-     * @param mensaje  (mensaje de panico)
+     * Sends an SMS
+     * @param mobileNumber (telefono al que se le enviara el SMS)
+     * @param message  (mensaje de panico)
      */
-    public void enviarSMS(String telefono, String mensaje) {
+    public void sendSMS(String mobileNumber, String message) {
         SmsManager sms = SmsManager.getDefault();
-        String sent = "android.telephony.SmsManager.STATUS_ON_ICC_SENT";
-        PendingIntent piSent = PendingIntent.getBroadcast(SendPanicService.this, 0, new Intent(sent), 0);
         try {
-            ArrayList<String> parts = sms.divideMessage(mensaje);
-            sms.sendMultipartTextMessage(telefono, null, parts, null, null);
-            Log.v("=== Mensaje " + mensaje + " enviado a " + telefono);
+            ArrayList<String> parts = sms.divideMessage(message);
+            sms.sendMultipartTextMessage(mobileNumber, null, parts, null, null);
+            Log.v("=== Mensaje " + message + " enviado a " + mobileNumber);
         } catch (Exception e) {
             Log.v("=== Error enviando mensaje: " + e.getMessage());
         }
-
     }
 
     @Override
@@ -297,20 +160,15 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
 
     @Override
     public void onConnected(Bundle arg0) {
-
-        if (mTask == null) {
-            mTask = new ejecutaPanico();
-            mTask.execute();
-        }
-
-        Log.v("[Home] LocationService: onConnected");
-
         mLocationRequest = LocationRequest.create();
         setupLocationForMap();
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                mLocationRequest, this);
 
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-//		mLocationClient.requestLocationUpdates(mLocationRequest, this);
-
+        if (mTask == null) {
+            mTask = new EjecutaPanico();
+            mTask.execute();
+        }
     }
 
     @Override
@@ -318,14 +176,17 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
 
     }
 
-    private void startLocationService() {
+    @Override
+    public void onDestroy(){
+        stopLocationService();
+    }
 
+    private void startLocationService() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
     }
 
     private void resumeLocationService() {
@@ -337,10 +198,7 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
     }
 
     private void setupLocationForMap() {
-        Log.v("LocationService: setup for map");
-
-        long fastUpdate = Config.DEFAULT_INTERVAL - (60 * 1000); // actualiza el fast a la mitad de tiempo
-        //new google PLay service api
+        long fastUpdate = Config.DEFAULT_INTERVAL_FASTER;
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         mLocationRequest.setInterval(Config.DEFAULT_INTERVAL);
@@ -357,5 +215,137 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
         Intent i = new ContextWrapper(this).registerReceiver(null,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         return i.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+    }
+
+
+    public class EjecutaPanico extends AsyncTask<Void, Void, Void> {
+        Contacts con = new Contacts(getApplicationContext());
+
+        @Override
+        protected void onCancelled() {
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            double latitude = 0, longitude = 0;
+            ArrayList<String> numbers = new ArrayList<String>();
+            String mapa = "";
+
+            Location loc = getLocation();
+            if (loc != null) {
+                latitude = loc.getLatitude();
+                longitude = loc.getLongitude();
+                mapa = getString(R.string.map_provider) + latitude + "," + longitude + "\n";
+            }
+
+            numbers.addAll(contactsRingNumbers());
+            numbers.addAll(getFlipContactNumbers());
+
+            if (numbers.size() == 0) {
+                result = getString(R.string.no_configured_rings);
+            }
+            else {
+                String message = getString(R.string.tracking_SMS_message) ;
+                int fails = 0;
+                message = message.replace("%map", mapa).replace("%battery", getNivelBateria() +"%");
+
+                for (int i = 0; i < numbers.size(); i++) {
+                    try {
+                        String number = numbers.get(i).replaceAll("\\D+", "");
+                        Log.v("=== Numero : " + number);
+                        if (number != null && number.length() > 0)
+                            sendSMS(number, message);
+                    } catch (Exception ex) {
+                        Log.v("Ocurrio un Error al enviar SMS. Excepcion: " + ex.getMessage());
+                        fails += 1;
+                    }
+                }
+                if (fails == numbers.size())
+                    result = getString(R.string.tracking_invalid_contac_numbers);
+                else
+                    result = "OK";
+            }
+            /*try {
+                HttpUtils.sendPanic(PreferenciasHancel.getDeviceId(getApplicationContext()),
+                        String.valueOf(PreferenciasHancel.getUserId(getApplicationContext())),
+                        String.valueOf(loc.getLatitude()),
+                        String.valueOf(loc.getLongitude()),
+                        String.valueOf(getNivelBateria()),
+                        "", "");
+            } catch (Exception ex) {
+                Log.v("Error al Enviar el track: " + ex.getMessage());
+            }*/
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void r) {
+            super.onPostExecute(r);
+            // Cancel alarm
+            cancelAlarms();
+            if (!Util.isMyServiceRunning(getApplicationContext())) {
+                Util.inicarServicio(getApplicationContext());
+            }
+            // Muestra la fecha de la ultima vez que se corrio el panico y
+            // guarda la nueva fecha si el resultado del envio de SMS fue OK
+            if (result.equalsIgnoreCase("OK")) {
+                String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar
+                        .getInstance());
+                PreferenciasHancel.setLastPanicAlert(getApplicationContext(),
+                        currentDateandTime);
+                Toast.makeText(getApplicationContext(), getString(R.string.tracking_launched),
+                        Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            }
+
+            stopSelf();
+        }
+
+        private ArrayList<String> getFlipContactNumbers(){
+            ArrayList<String> numbers = new ArrayList<String>();
+            FlipDAO flipDao = new FlipDAO(LinphoneManager.getInstance()
+                    .getContext());
+
+            flipDao.open();
+            Cursor fc = flipDao.getSettingsValueByKey(getResources().getString(
+                    R.string.contacts_flip));
+
+            if (fc != null && fc.getCount() > 0) {
+                fc.moveToFirst();
+                String nums = fc.getString(1);
+                if (nums != null && nums.length() > 0) {
+                    String[] s = nums.split(",");
+                    for (int i = 0; i < s.length; i++) {
+                        numbers.add(s[i].replace('"', ' ').trim());
+                    }
+                }
+            }
+            flipDao.close();
+            return numbers;
+        }
+
+        private ArrayList contactsRingNumbers(){
+            ArrayList<String> numbers = new ArrayList<String>();
+            RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
+                    .getContext());
+
+            ringDao.open();
+            Cursor c = ringDao.getNotificationContactsId();
+
+            if (c != null && c.getCount() > 0) {
+                c.moveToFirst();
+                for (int i = 0; i < c.getCount(); i++) {
+                    List<String> contactNumbers = Compatibility
+                            .extractContactNumbers(c.getString(0),
+                                    getContentResolver());
+                    if (contactNumbers != null && contactNumbers.size() > 0)
+                        numbers.addAll(contactNumbers);
+                    c.moveToNext();
+                }
+            }
+            return numbers;
+        }
     }
 }
