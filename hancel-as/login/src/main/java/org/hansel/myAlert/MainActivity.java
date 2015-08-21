@@ -839,8 +839,10 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 						missedCalls.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.bounce));
 					}
 				} else {
-					missedCalls.clearAnimation();
-					missedCalls.setVisibility(View.GONE);
+					if(missedCalls!=null){
+						missedCalls.clearAnimation();
+						missedCalls.setVisibility(View.GONE);
+					}
 				}
 			}
 		});

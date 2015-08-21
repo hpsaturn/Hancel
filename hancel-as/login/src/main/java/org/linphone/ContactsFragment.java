@@ -157,7 +157,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		} 
 		else if (id == R.id.newContact) {
 			editConsumed = true;
-			MainActivity.instance().addContact(null, sipAddressToAdd);
+			((MainActivity)getActivity()).addContact(null, sipAddressToAdd);
 		} 
 		else if (id == R.id.clearSearchField) {
 			searchField.setText("");
@@ -198,8 +198,8 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			searchCursor.close();
 		}
 		
-		Cursor allContactsCursor = MainActivity.instance().getAllContactsCursor();
-		Cursor sipContactsCursor = MainActivity.instance().getSIPContactsCursor();
+		Cursor allContactsCursor = ((MainActivity)getActivity()).getAllContactsCursor();
+		Cursor sipContactsCursor = ((MainActivity)getActivity()).getSIPContactsCursor();
 
 		noSipContact.setVisibility(View.GONE);
 		noContact.setVisibility(View.GONE);
@@ -211,7 +211,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 				contactsList.setVisibility(View.GONE);
 			} else {
 				indexer = new AlphabetIndexer(sipContactsCursor, Compatibility.getCursorDisplayNameColumnIndex(sipContactsCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-				contactsList.setAdapter(new ContactsListAdapter(MainActivity.instance().getSIPContacts(), sipContactsCursor));
+				contactsList.setAdapter(new ContactsListAdapter(((MainActivity)getActivity()).getSIPContacts(), sipContactsCursor));
 			}
 		} else {
 			if (allContactsCursor!=null&&allContactsCursor.getCount() == 0) {
@@ -219,10 +219,10 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 				contactsList.setVisibility(View.GONE);
 			} else {
 				indexer = new AlphabetIndexer(allContactsCursor, Compatibility.getCursorDisplayNameColumnIndex(allContactsCursor), " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-				contactsList.setAdapter(new ContactsListAdapter(MainActivity.instance().getAllContacts(), allContactsCursor));
+				contactsList.setAdapter(new ContactsListAdapter(((MainActivity)getActivity()).getAllContacts(), allContactsCursor));
 			}
 		}
-		MainActivity.instance().setLinphoneContactsPrefered(onlyDisplayLinphoneContacts);
+		((MainActivity)getActivity()).setLinphoneContactsPrefered(onlyDisplayLinphoneContacts);
 	}
 	
 	private void changeContactsToggle() {
@@ -240,11 +240,11 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		Contact contact = (Contact) adapter.getItemAtPosition(position);
 		if (editOnClick) {
 			editConsumed = true;
-			MainActivity.instance().editContact(contact, sipAddressToAdd);
+			((MainActivity)getActivity()).editContact(contact, sipAddressToAdd);
 		} 
 		else {
 			lastKnownPosition = contactsList.getFirstVisiblePosition();
-			MainActivity.instance().displayContact(contact, onlyDisplayChatAddress);
+			((MainActivity)getActivity()).displayContact(contact, onlyDisplayChatAddress);
 		}
 	}
 	
@@ -259,11 +259,11 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		}
 		
 		if (MainActivity.isInstanciated()) {
-			MainActivity.instance().selectMenu(FragmentsAvailable.CONTACTS);
-			onlyDisplayLinphoneContacts = MainActivity.instance().isLinphoneContactsPrefered();
+			((MainActivity)getActivity()).selectMenu(FragmentsAvailable.CONTACTS);
+			onlyDisplayLinphoneContacts = ((MainActivity)getActivity()).isLinphoneContactsPrefered();
 			
 			if (getResources().getBoolean(R.bool.show_statusbar_only_on_dialer)) {
-				MainActivity.instance().hideStatusBar();
+				((MainActivity)getActivity()).hideStatusBar();
 			}
 		}
 		
@@ -361,7 +361,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			
 			ImageView friendStatus = (ImageView) view.findViewById(R.id.friendStatus);
 			LinphoneFriend friend = contact.getFriend();
-			if (!MainActivity.instance().isContactPresenceDisabled() && friend != null) {
+			if (!((MainActivity)getActivity()).isContactPresenceDisabled() && friend != null) {
 				friendStatus.setVisibility(View.VISIBLE);
 				PresenceActivityType presenceActivity = friend.getPresenceModel().getActivity().getType();
 				if (presenceActivity == PresenceActivityType.Online) {
