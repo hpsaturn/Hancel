@@ -30,6 +30,7 @@ import org.linphone.LinphoneManager;
 import org.linphone.compatibility.Compatibility;
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -147,7 +148,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 				Lat = loc.getLatitude();
 				Long = loc.getLongitude();
 				mapa = getString(R.string.tracking_loc_aprox) + "http://maps.google.com/?q=" + Lat+ "," + Long + "\n";
-
+				Log.v(mapa);
 			}
 			RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
 					.getContext());			
@@ -199,7 +200,7 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 					try{
 						
 						String number =  numbers.get(i).replaceAll("\\D+", "");
-						Log.v("=== Numero : " + number);
+						Log.v("=== Numero : -" + number + "-");
 						if(number != null && number.length() > 0){
 							Log.v("=== Enviando SMS a : " + number);
 							enviarSMS(number, message + mapa + getString(R.string.tracking_battery_level) + 
@@ -279,12 +280,18 @@ public class SendPanicService extends Service implements GooglePlayServicesClien
 	 */
 	public void enviarSMS(String telefono, String mensaje) {
 		SmsManager sms = SmsManager.getDefault();
+		String sent = "android.telephony.SmsManager.STATUS_ON_ICC_SENT";
+		PendingIntent piSent = PendingIntent.getBroadcast(SendPanicService.this, 0,new Intent(sent), 0);
+			
 		try {
-			sms.sendTextMessage(telefono, null, mensaje, null, null);
-			Log.v("=== Mensaje enviado a " + telefono);
+			//sms.sendTextMessage(telefono, null, "Hola. Testing de SMS", piSent, null);
+			Log.v("=== Mensaje enviado a " + telefono + ": " + mensaje);
+			ArrayList<String> parts = sms.divideMessage(mensaje);
+			sms.sendMultipartTextMessage(telefono, null, parts, null, null);
+			
 		} 
 		catch (Exception e) {
-				Log.v(e.getMessage());
+				Log.v("=== Error en envio del mensaje. Se intenta por partes." + e.getMessage());
 			try {
 				ArrayList<String> parts = sms.divideMessage(mensaje);
 				sms.sendMultipartTextMessage(telefono, null, parts, null, null);

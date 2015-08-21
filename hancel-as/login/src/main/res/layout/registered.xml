@@ -48,6 +48,7 @@
 				android:padding="25dp">
 
 				<Button
+					android:id="@+id/newRing"
 					android:layout_width="150dp"
 					android:layout_height="wrap_content"
 					android:background="@drawable/rings_add_ring"
@@ -64,7 +65,16 @@
 					android:layout_width="match_parent"
 					android:layout_height="15dp" />
 
-				<Button
+				<TextView
+					android:id="@+id/later"
+					style="@style/linkText"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingTop="15dp"
+					android:text="@string/do_it_later" />
+
+				<!--Button
+					android:id="@+id/newContact"
 					android:layout_width="150dp"
 					android:layout_height="wrap_content"
 					android:background="@drawable/contacts_add_contact"
@@ -81,14 +91,9 @@
 
 				<Space
 					android:layout_width="match_parent"
-					android:layout_height="15dp" />
+					android:layout_height="15dp" /-->
 
-				<TextView
-					style="@style/linkText"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:paddingTop="15dp"
-					android:text="@string/do_it_later" />
+
 			</LinearLayout>
 
 		</LinearLayout>

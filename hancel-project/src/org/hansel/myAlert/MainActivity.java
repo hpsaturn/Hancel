@@ -241,14 +241,14 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		contacts.setOnClickListener(this);
 		dialer = (ImageView) findViewById(R.id.dialer);
 		dialer.setOnClickListener(this);
-		/*settings = (RelativeLayout) findViewById(R.id.settings);
-		settings.setOnClickListener(this);*/
+		settings = (RelativeLayout) findViewById(R.id.settings);
+		settings.setOnClickListener(this);
 		rings = (RelativeLayout) findViewById(R.id.rings);
 		rings.setOnClickListener(this);
 		chat = (RelativeLayout) findViewById(R.id.chat);
 		chat.setOnClickListener(this);
-		/*about = (RelativeLayout) findViewById(R.id.about);
-		about.setOnClickListener(this);	*/	
+		about = (RelativeLayout) findViewById(R.id.about);
+		about.setOnClickListener(this);	
 		missedCalls = (TextView) findViewById(R.id.missedCalls);
 		missedChats = (TextView) findViewById(R.id.missedChats);
 	}
@@ -637,22 +637,22 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			changeCurrentFragment(FragmentsAvailable.PANIC, null);
 			dialer.setSelected(true);
 		}
-		/*else if (id == R.id.settings) {
+		else if (id == R.id.settings) {
 			changeCurrentFragment(FragmentsAvailable.SETTINGS, null);
 			settings.setSelected(true);
 			Log.v("Click en settings");
-		} */
+		} 
 		else if (id == R.id.rings) {
 			changeCurrentFragment(FragmentsAvailable.RINGS, null);
 			rings.setSelected(true);
 			Log.v("Click en rings");
 		} 
-		/*else if (id == R.id.about) {
+		else if (id == R.id.about) {
 			Bundle b = new Bundle();
 			b.putSerializable("About", FragmentsAvailable.ABOUT);//_INSTEAD_OF_CHAT);
 			changeCurrentFragment(FragmentsAvailable.ABOUT, null);//_INSTEAD_OF_CHAT, b);
 			about.setSelected(true);
-		} */		
+		} 		
 		else if (id == R.id.chat) {
 			changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
 			chat.setSelected(true);
@@ -663,10 +663,10 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		history.setSelected(false);
 		contacts.setSelected(false);
 		dialer.setSelected(false);
-		//settings.setSelected(false);
+		settings.setSelected(false);
 		rings.setSelected(false);
 		chat.setSelected(false);
-		//about.setSelected(false);		
+		about.setSelected(false);		
 	}
 
 	@SuppressWarnings("incomplete-switch")

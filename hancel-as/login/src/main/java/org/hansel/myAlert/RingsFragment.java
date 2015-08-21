@@ -100,6 +100,7 @@ private Handler mHandler = new Handler();
 		} 	
 		if(id == R.id.ok){
 			updateRings();
+            invalidate();
 		}
 	}
 	
@@ -141,7 +142,6 @@ private Handler mHandler = new Handler();
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		Log.d("RingsFragment","onItemClick: pos"+position);
 		Ring ring = (Ring) adapter.getItemAtPosition(position);
 		MainActivity.instance().editRing(ring);
 	}
@@ -327,6 +327,7 @@ private Handler mHandler = new Handler();
 													.getContext());
 											ringDao.open();
 											ringDao.deleteRing(idDelete);
+                                            invalidate();
 											Toast.makeText(getActivity(), getResources().getString(R.string.ring_delete_ok),
 													Toast.LENGTH_SHORT).show();
 										}

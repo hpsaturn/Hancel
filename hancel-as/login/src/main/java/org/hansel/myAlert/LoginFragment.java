@@ -7,6 +7,7 @@ import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.SimpleCrypto;
 import org.hansel.myAlert.Utils.Util;
+import org.hansel.myAlert.dataBase.RingDAO;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
 import org.linphone.LinphoneManager;
 import org.linphone.LinphonePreferences;
@@ -26,6 +27,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,26 +80,36 @@ public class LoginFragment extends Fragment implements OnClickListener{
 						.instance().getApplicationContext());
 				
 				usuarioDAO.open();
-				usuarioDAO.Insertar(mUser,crypto,"");
+				String user = usuarioDAO.getUser();
+				usuarioDAO.Insertar(mUser, crypto, "");
 				usuarioDAO.close();
-				
+
+
 				Util.setLoginOkInPreferences(getActivity().getApplicationContext(), true);			
 				
-				PreferenciasHancel.setUserId(getActivity().getApplicationContext(), 
-						(int)Calendar.getInstance().getTimeInMillis());
+				PreferenciasHancel.setUserId(getActivity().getApplicationContext(),
+						(int) Calendar.getInstance().getTimeInMillis());
 				
 				Util.insertNewTrackId(getActivity().getApplicationContext(), 0);
 				
 				progressBar.setVisibility(View.INVISIBLE);
+
+				if(user.length() == 0) {
+                    RegisteredFragment registered = new RegisteredFragment();
+					FragmentTransaction fragmentTransaction = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					fragmentTransaction.replace(R.id.activityContainer, registered);
+					fragmentTransaction.commit();
+				}
 				
 				MainActivity.instance().showMainFragment();							
 			}
 			else{
-				errores.setText(mErrores);
+					errores.setText(mErrores);
 				errores.setVisibility(View.VISIBLE);
 				progressBar.setVisibility(View.INVISIBLE);
 				Util.setLoginOkInPreferences(getActivity().getApplicationContext(), false);
-				passwd.setText("");
+					passwd.setText("");
 			}
 			showProgress(false);
 			break;

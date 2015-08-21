@@ -46,12 +46,20 @@
             android:textSize="14sp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/text_contrast" />
-        
+
         <TextView
-            android:id="@+id/ringId"
-            android:layout_width="match_parent"
+            android:id="@+id/iconDelete"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"/>
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="60dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:text="idRing"
+            android:textSize="5dp"
+            android:textColor="@color/white"
+            android:background="@drawable/delete_row_inner" />
 
        <CheckBox
             android:id="@+id/chooseRing"

@@ -57,7 +57,8 @@
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
             android:text="idRing"
-            android:textColor="@drawable/list_selector"
+            android:textSize="5dp"
+            android:textColor="@color/white"
             android:background="@drawable/delete_row_inner" />
 
        <CheckBox

@@ -552,7 +552,7 @@
     <string name="sendAlert">Enviar Alerta</string>
     <string name="panic_sent"><b>¡Alerta activada!</b> Enviaremos tu ubicación como mensaje de texto a tus anillos configurados</string>
     <string name="tracking_started"><b>Rastreo iniciado.</b> Atiende la notificación en la barra de tareas para indicar que todo esta bien</string>
-    <string name="panic_tracking_description">Envía una <b>Alerta</b> a tus anillos si te encuentras en peligro ó Inicia un <b>Rastreo</b> cuando visites zonas peligrosas y <b>Comparte</b> tu ubicación</string>
+    <string name="panic_tracking_description"><b>Envía una Alerta</b> a tus anillos si te encuentras en peligro.  <b>Programa un rastreo</b> cuando visites zonas peligrosas</string>
     <string name="forgotPss"><u>Olvidé la contraseña</u></string>
     <string name="select_rings_notify">Notificar</string>
     <string name="bienvenido">Bienvenido</string>

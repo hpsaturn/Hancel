@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/ringsView"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@drawable/background"
@@ -76,7 +77,8 @@
 			android:divider="@android:color/darker_gray"
 			android:fastScrollAlwaysVisible="true"
 			android:fastScrollEnabled="true"
-			android:cacheColorHint="#FFDAFF7F"
+			android:cacheColorHint="@color/blue_hancel"
+			android:layout_marginRight="15dp"
 			android:dividerHeight="1dp" />
 
 		<TextView

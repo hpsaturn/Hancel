@@ -195,11 +195,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			ex.printStackTrace();
 		}
 		Bundle datos = getArguments();
-		/*if(datos !=null){
-			if(datos.getBoolean("panico")){
-				//getActivity().moveTaskToBack(true);
-			}
-		}*/
+
 	}
 
 	private void ActivaRadios(){	
@@ -392,10 +388,11 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		}
 		else{
 			btnTracking.setText(getString(R.string.start_tracking));
-			showtrackingOptions(false);
+			//showtrackingOptions(false);
 			//trackInfo.setVisibility(View.GONE);
 			//trackingOptions.setVisibility(View.GONE);
 		}
+        trackingOptions.invalidate();
 	}
 	
 

@@ -1,112 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/panicScreenRoot"
-    android:layout_width="fill_parent"
-    android:orientation="vertical" 
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     android:background="@color/background_app">
-    
-    <!-- LinearLayout
-        android:id="@+id/headerBar"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_top"
-        android:orientation="vertical" >
-       
-        <TextView
-            android:id="@+id/textView2"
-            style="@style/title"
-            android:layout_marginTop="5dp"
-            android:text="@string/ultima"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/datePanic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="5dp" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginRight="10dp">
 
-            <TextView
-                android:id="@+id/txtLastPanic"
-                style="@style/headerBarText"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="15 - Abril - 08:30"                
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <LinearLayout
+                android:id="@+id/statusTrack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone" >
 
-        </LinearLayout>               
-    </LinearLayout-->
-    <LinearLayout
-	       android:id="@+id/statusTrack"
-	       android:layout_width="wrap_content"
-	       android:layout_height="wrap_content"
-	       android:layout_gravity="center"	
-	       android:paddingTop="10dp" 
-	       android:paddingBottom="10dp"      
-	       android:orientation="horizontal"
-	       android:visibility="visible" >
-     	   
-           <TextView
-				android:id="@+id/txtTrackStatus"
-				style="@style/TextoInstruccion"				
-				android:layout_marginRight="5dp"
-				android:layout_gravity="center_vertical"
-				android:text="Rastreando..."
-				android:textColor="@color/background_header"/>
-				       
-	       <ProgressBar
-	         android:id="@+id/traking_status"
-	         style="@style/ProgressBar.Horizontal.Indeterminate"         
-	         android:layout_gravity="center"
-	         android:layout_weight="1"
-	         android:layout_width="0dp"
-	         android:max="200"
-	         android:paddingBottom="1dp"
-	         android:paddingLeft="10dp"
-	         android:paddingRight="10dp"
-	         android:paddingTop="1dp" />       
-		                    		
-		</LinearLayout>
-        
-    
+                <TextView
+                    android:id="@+id/txtTrackStatus"
+                    style="@style/TextoInstruccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Rastreando..."
+                    android:textColor="@color/background_header"/>
 
-    <LinearLayout
-        android:id="@+id/trakingRelativePanel"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center_vertical" 
-        android:gravity="center"
-        android:orientation="vertical" >
-		
-         <ImageView
-             android:layout_width="200dp"
-             android:layout_height="115dp"
-             android:layout_gravity="center_horizontal"
-             android:paddingTop="5dp"
-             android:contentDescription="@string/app_name"
-             android:src="@drawable/alert" />
-         
-        <Button
-			android:id="@+id/btnAlert"
-			style="@style/inner_back_app_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:layout_marginTop="-10dp" 
-			android:layout_marginBottom="10dp" 
-			android:visibility="visible"	           
-			android:text="@string/sendAlert"/>
-        
-        <TextView
-			android:id="@+id/actionDescription"
-			style="@style/TextoInstruccion"				
-			android:layout_gravity="fill_horizontal"			
-			android:text="@string/tracking_description"
-			android:textColor="@color/background_header"/>
-        
-         <include layout="@layout/fragment_rastreo" />
-    </LinearLayout>    
-   
+                <ProgressBar
+                    android:id="@+id/trakingBar"
+                    style="@style/ProgressBar.Horizontal.Indeterminate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    android:max="70"/>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="5dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/alert" />
+
+            <Button
+                android:id="@+id/btnAlert"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="-17dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="visible"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/sendAlert"/>
+
+            <!-- TextView
+                android:id="@+id/actionDescription"
+                style="@style/TextoInstruccion"
+                android:layout_gravity="fill_horizontal"
+                android:text="@string/panic_tracking_description"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/background_header"
+                android:visibility="visible"/-->
+
+            <Button
+                android:id="@+id/iniciaTrackId"
+                style="@style/button_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="25dp"
+                android:padding="5dp"
+                android:visibility="visible"
+                android:drawableLeft="@drawable/clock"
+                android:text="@string/program_tracking"/>
+
+            <include layout="@layout/fragment_rastreo" />
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
