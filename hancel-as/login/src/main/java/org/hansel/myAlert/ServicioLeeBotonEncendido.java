@@ -84,13 +84,12 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
         }
         try {
             resultReceiver = intent.getParcelableExtra("receiver");
-            //sending SMS message
-            if (countStart >= 4) {
-                Log.i(TAG, "4 Intents");
+            //Check for the number of times the button was pressed
+            if (countStart >= 5) {
+                Log.i(TAG, "5 Intents");
                 countStart = -1;
                 countTimer = true;
-                startSMSTask();
-                vibrate(5000);
+                startLocationService();
             }
             else {
                 //restarting counters after 5 seconds
@@ -111,7 +110,6 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
     * Starts the API for location service if its not activated
     */
     private void startLocationService() {
-
         if( mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
             Log.i(TAG,"=== Iniciando servicio de geolocalizacion: NO CONECTADO -> CONECTADO");
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -119,17 +117,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
-            try {
-                int intents = 0;
-                while (intents < 5 && !mGoogleApiClient.isConnected()) {
-                    mGoogleApiClient.connect();
-                    Thread.sleep(2000);
-                    ++ intents;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            mGoogleApiClient.connect();
         }
         else
             Log.i(TAG,"=== Iniciando servicio de geolocalizacion: ESTABA CONECTADO");
@@ -140,7 +128,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
      * Stops the location service if its activated
      */
     private void stopLocationService() {
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient != null || mGoogleApiClient.isConnected()){
             mGoogleApiClient.disconnect();
             Log.i(TAG, "=== Deteniendo servicio de geolocalizacion: CONECTADO -> NO CONECTADO");
         }
@@ -164,7 +152,6 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
      * Starts the asyncronous task to send the sms messages
      */
     private void startSMSTask(){
-        startLocationService();
         if (smsTask == null) {
             smsTask = new SendSMSMessage();
             smsTask.execute();
@@ -216,14 +203,19 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             this.lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
-        else
-            locationActivted = false;
+
+        if(countTimer) {
+            startSMSTask();
+            vibrate(5000);
+            stopLocationService();
+        }
     }
 
 
     @Override
     public void onConnectionSuspended(int i) {
         locationActivted = false;
+
     }
 
     @Override
@@ -264,7 +256,6 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
             ArrayList<String> numbers = new ArrayList<String>();
             String mapa = "";
 
-            Log.i(TAG,"=== Obteniendo Localizacion");
             if (lastLocation != null) {
                mapa = getString(R.string.map_provider) + lastLocation.getLatitude() + ","
                        + lastLocation.getLongitude() + "\n";
@@ -309,18 +300,17 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
             super.onPostExecute(r);
 
             isSendMesagge = false;
-            stopLocationService();
 
-            if (!Util.isMyServiceRunning(getApplicationContext())) {
+            /*if (!Util.isMyServiceRunning(getApplicationContext())) {
                 Util.inicarServicio(getApplicationContext());
-            }
+            }*/
 
             if (result.equalsIgnoreCase("OK")) {
                 String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar
                         .getInstance());
                 PreferenciasHancel.setLastPanicAlert(getApplicationContext(),
                         currentDateandTime);
-                Toast.makeText(getApplicationContext(), getString(R.string.tracking_launched),
+                Toast.makeText(getApplicationContext(), getString(R.string.alert_sent),
                         Toast.LENGTH_LONG).show();
             }
             else {
