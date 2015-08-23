@@ -44,6 +44,7 @@ import org.hansel.myAlert.ContactInfo;
 import org.hansel.myAlert.LocationManagement;
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.ReminderService;
+import org.hansel.myAlert.ServicioLeeBotonEncendido;
 import org.hansel.myAlert.StopScheduleActivity;
 import org.hansel.myAlert.dataBase.TrackDAO;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
@@ -215,9 +216,11 @@ public class Util {
 	 public static boolean isMyServiceRunning(Context context) {
 		    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 		    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-		        if (LocationManagement.class.getName().equals(service.service.getClassName())) {
+		        if(ServicioLeeBotonEncendido.class.getName().equals(service.service.getClassName()))
+					return true;
+		        /*if (LocationManagement.class.getName().equals(service.service.getClassName())) {
 		            return true;
-		        }
+		        }*/
 		    }
 		    return false;
 		}
@@ -266,11 +269,11 @@ public class Util {
 			int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 			return status;
 	 }
-	 public static void inicarServicio(Context context)
-	 {
+	 public static void inicarServicio(Context context){
 		
 			context.startService(getIntentForService(context));
 	 }
+
 	 private static Intent getIntentForService(Context context)
 	 {
 		 int trackId=  Util.getLastTrackId(context);

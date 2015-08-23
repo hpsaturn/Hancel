@@ -1,80 +1,193 @@
 package org.hansel.myAlert;
 
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Timer;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
+import android.database.Cursor;
 
+import android.os.AsyncTask;
+import android.os.BatteryManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.os.Vibrator;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import org.hansel.myAlert.Utils.PreferenciasHancel;
+import org.hansel.myAlert.Utils.Util;
+import org.hansel.myAlert.dataBase.FlipDAO;
+import org.hansel.myAlert.dataBase.RingDAO;
+import org.linphone.LinphoneManager;
+import org.linphone.compatibility.Compatibility;
 
 
 /**
  * @author mikesaurio
  */
-public class ServicioLeeBotonEncendido extends Service {
-
+public class ServicioLeeBotonEncendido extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private String TAG = "ServicioGeolocalizacion";
-    private boolean isFirstTime = true;
-    private boolean isSendMesagge = false;
+    private String result;
+    private boolean isFirstTime, isSendMesagge, locationActivted;
     private Timer timer;
-    public static boolean serviceIsIniciado = false;
-    public static boolean countTimer = true;
-    private static int countStart = -1;
+    public static boolean serviceIsIniciado, countTimer;
+    private static int countStart;
     private BroadcastReceiver mReceiver;
-    private Handler handler_time = new Handler();
+    private Handler handler_time;
     private ResultReceiver resultReceiver;
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+    private Location lastLocation;
+    private SendSMSMessage smsTask;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
         timer = new Timer();
+        serviceIsIniciado = locationActivted = false;
+        countTimer = true;
+        countStart = -1;
+        handler_time = new Handler();
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         mReceiver = new MyReceiver();
         registerReceiver(mReceiver, filter);
+        lastLocation = null;
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (isFirstTime) {
             isFirstTime = false;
             serviceIsIniciado = true;
+            locationActivted = false;
         }
         try {
             resultReceiver = intent.getParcelableExtra("receiver");
+            //sending SMS message
             if (countStart >= 4) {
-                Log.i(TAG, "mas de 4");
+                Log.i(TAG, "4 Intents");
                 countStart = -1;
                 countTimer = true;
-
-                // activamos el mensaje de auxilio
-                isSendMesagge = true;
-                getApplicationContext().startService(new Intent(getApplicationContext(), SendPanicService.class));
+                startSMSTask();
                 vibrate(5000);
             }
             else {
+                //restarting counters after 5 seconds
                 countStart += 1;
-                // contamos 5 segundos si no reiniciamos los contadores
                 if (countTimer) {
                     countTimer = false;
                     handler_time.postDelayed(runnable, 5000);
                 }
             }
         } catch (Exception e) {
-            Log.d(TAG, "vino null");
+            Log.d(TAG, "No result available." + e);
         }
 
         return super.onStartCommand(intent,flags, startId);
+    }
+
+    /*
+    * Starts the API for location service if its not activated
+    */
+    private void startLocationService() {
+
+        if( mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
+            Log.i(TAG,"=== Iniciando servicio de geolocalizacion: NO CONECTADO -> CONECTADO");
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+            try {
+                int intents = 0;
+                while (intents < 5 && !mGoogleApiClient.isConnected()) {
+                    mGoogleApiClient.connect();
+                    Thread.sleep(2000);
+                    ++ intents;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        else
+            Log.i(TAG,"=== Iniciando servicio de geolocalizacion: ESTABA CONECTADO");
+        locationActivted = true;
+    }
+
+    /**
+     * Stops the location service if its activated
+     */
+    private void stopLocationService() {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()){
+            mGoogleApiClient.disconnect();
+            Log.i(TAG, "=== Deteniendo servicio de geolocalizacion: CONECTADO -> NO CONECTADO");
+        }
+        else
+            Log.i(TAG,"=== Deteniendo servicio de geolocalizacion: ESTABA DETENIDO");
+        locationActivted = false;
+    }
+
+    /*
+     * Setting the service quality
+     */
+    private void setupLocationForMap() {
+        long fastUpdate = Config.DEFAULT_INTERVAL_FASTER;
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setInterval(Config.DEFAULT_INTERVAL);
+        mLocationRequest.setFastestInterval(fastUpdate);
+    }
+
+    /*
+     * Starts the asyncronous task to send the sms messages
+     */
+    private void startSMSTask(){
+        startLocationService();
+        if (smsTask == null) {
+            smsTask = new SendSMSMessage();
+            smsTask.execute();
+        }
+    }
+
+    /**
+     * Phone vibration
+     * @param time time for vibration
+     */
+    public void vibrate(long time) {
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(time);
+    }
+
+    /**
+     * Gets the battery level
+     * @return battery level
+     */
+    public int getBatteryLevel() {
+        Intent i = new ContextWrapper(this).registerReceiver(null,
+                new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        return i.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
     }
 
     @Override
@@ -86,13 +199,44 @@ public class ServicioLeeBotonEncendido extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intencion) {
+    public IBinder onBind(Intent intent) {
 
         return null;
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        locationActivted = true;
+        mLocationRequest = LocationRequest.create();
+        setupLocationForMap();
+        LocationServices.FusedLocationApi
+                .requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
-    /**
+
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            this.lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+        else
+            locationActivted = false;
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        locationActivted = false;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        this.lastLocation = location;
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        locationActivted = false;
+    }
+
+    /*
      * thread for restarting values
      */
     private Runnable runnable = new Runnable() {
@@ -104,11 +248,142 @@ public class ServicioLeeBotonEncendido extends Service {
         }
     };
 
+    /*
+     * Inner class to handle SMS mesaages for help. The task is started when AlertButton
+     * is activated or the power button is pressed 4 or more times.
+     */
+    public class SendSMSMessage extends AsyncTask<Void, Void, Void> {
+        Contacts con = new Contacts(getApplicationContext());
 
-    public void vibrate(long time) {
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(time);
+        @Override
+        protected void onCancelled() {
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ArrayList<String> numbers = new ArrayList<String>();
+            String mapa = "";
+
+            Log.i(TAG,"=== Obteniendo Localizacion");
+            if (lastLocation != null) {
+               mapa = getString(R.string.map_provider) + lastLocation.getLatitude() + ","
+                       + lastLocation.getLongitude() + "\n";
+            }
+
+            Log.i(TAG,"=== Localizacion : " + mapa);
+
+            numbers.addAll(contactsRingNumbers());
+            numbers.addAll(getFlipContactNumbers());
+
+            Log.i(TAG, "=== Numero de contactos a notificar : " + numbers.size());
+
+            if (numbers.size() == 0)
+                result = getString(R.string.no_configured_rings);
+            else {
+                isSendMesagge = true;
+                String message = getString(R.string.tracking_SMS_message);
+                int fails = 0;
+                message = message.replace("%map", mapa).replace("%battery", getBatteryLevel() +"%");
+
+                for (int i = 0; i < numbers.size(); i++) {
+                    try {
+                        String number = numbers.get(i).replaceAll("\\D+", "");
+                        if (number != null && number.length() > 0)
+                            sendSMS(number, message);
+                    }catch (Exception ex) {
+                        Log.i(TAG, "=== Error sending SMS to: " + ex.getMessage());
+                        fails += 1;
+                    }
+                }
+
+                if (fails == numbers.size())
+                    result = getString(R.string.tracking_invalid_contac_numbers);
+                else
+                    result = "OK";
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void r) {
+            super.onPostExecute(r);
+
+            isSendMesagge = false;
+            stopLocationService();
+
+            if (!Util.isMyServiceRunning(getApplicationContext())) {
+                Util.inicarServicio(getApplicationContext());
+            }
+
+            if (result.equalsIgnoreCase("OK")) {
+                String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar
+                        .getInstance());
+                PreferenciasHancel.setLastPanicAlert(getApplicationContext(),
+                        currentDateandTime);
+                Toast.makeText(getApplicationContext(), getString(R.string.tracking_launched),
+                        Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            }
+
+            stopSelf();
+        }
+
+        private void sendSMS(String mobileNumber, String message) {
+            SmsManager sms = SmsManager.getDefault();
+            try {
+                ArrayList<String> parts = sms.divideMessage(message);
+                sms.sendMultipartTextMessage(mobileNumber, null, parts, null, null);
+                org.hansel.myAlert.Log.Log.v("=== Message  " + message + " sent to " + mobileNumber);
+            } catch (Exception e) {
+                org.hansel.myAlert.Log.Log.v("=== Error sending message: " + e.getMessage());
+            }
+        }
+
+        private ArrayList<String> getFlipContactNumbers(){
+            ArrayList<String> numbers = new ArrayList<String>();
+            FlipDAO flipDao = new FlipDAO(LinphoneManager.getInstance()
+                    .getContext());
+
+            flipDao.open();
+            Cursor fc = flipDao.getSettingsValueByKey(getResources().getString(
+                    R.string.contacts_flip));
+
+            if (fc != null && fc.getCount() > 0) {
+                fc.moveToFirst();
+                String nums = fc.getString(1);
+                if (nums != null && nums.length() > 0) {
+                    String[] s = nums.split(",");
+                    for (int i = 0; i < s.length; i++) {
+                        numbers.add(s[i].replace('"', ' ').trim());
+                    }
+                }
+            }
+            flipDao.close();
+            return numbers;
+        }
+
+        private ArrayList contactsRingNumbers(){
+            ArrayList<String> numbers = new ArrayList<String>();
+            RingDAO ringDao = new RingDAO(getApplication().getApplicationContext());
+
+            ringDao.open();
+            Cursor c = ringDao.getNotificationContactsId();
+
+            if (c != null && c.getCount() > 0) {
+                c.moveToFirst();
+                for (int i = 0; i < c.getCount(); i++) {
+                    List<String> contactNumbers = Compatibility
+                            .extractContactNumbers(c.getString(0),
+                                    getContentResolver());
+                    if (contactNumbers != null && contactNumbers.size() > 0)
+                        numbers.addAll(contactNumbers);
+                    c.moveToNext();
+                }
+            }
+            Log.i(TAG,"=== Contactos en anillos a notificar: " + numbers.size());
+            return numbers;
+        }
     }
-
-
 }

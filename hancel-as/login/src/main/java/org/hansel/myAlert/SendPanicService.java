@@ -17,13 +17,11 @@ package org.hansel.myAlert;
  */
 
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Criteria;
 import android.location.Location;
@@ -32,7 +30,6 @@ import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import android.widget.Toast;
 
