@@ -44,6 +44,7 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.github.paolorotolo:appintro:3.2.0'
     compile files('libs/aXMLRPC_v1.7.2.jar')
     compile files('libs/liblinphone.jar')
     compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {

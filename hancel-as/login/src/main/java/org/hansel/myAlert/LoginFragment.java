@@ -50,7 +50,7 @@ public class LoginFragment extends Fragment implements OnClickListener{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 			
-		View loginView = inflater.inflate(R.layout.login_layout, container, false);
+		View loginView = inflater.inflate(R.layout.login_layout_md, container, false);
 		
 		user = (EditText)loginView.findViewById(R.id.txtUser);
 		passwd = (EditText)loginView.findViewById(R.id.txtPassword);

@@ -60,7 +60,11 @@
         android:theme="@style/AppTheme"
 
         >
-   		
+   		<activity
+            android:name=".WelcomeInfo.DefaultIntro"
+            android:label="@string/title_activity_default_intro"
+            >
+        </activity>
         <!-- Activities -->
         <activity
             android:name=".Login"

@@ -57,6 +57,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
+import org.hansel.myAlert.WelcomeInfo.DefaultIntro;
 import org.hansel.myAlert.WelcomeInfo.StartFragment;
 import org.linphone.AboutFragment;
 import org.linphone.AccountPreferencesFragment;
@@ -174,10 +175,11 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		instance = this;
 				
 		if(!PreferenciasHancel.getLoginOk(getApplicationContext())){
-			showStartFragment();			
-		}
-		else
-			showMainFragment();
+			showLoginFragment();
+			showStartFragment();
+		}else
+		    showMainFragment();
+
 	}
 
     private void initActionBar() {
@@ -190,14 +192,26 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
     /*
      * Shows the welcome fragment to register or login
      */
-	private void showStartFragment(){				
-		StartFragment start = new StartFragment();	
-		currentFragment = FragmentsAvailable.START;
-		
-		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();				
-		fragmentTransaction.replace(R.id.activityContainer, start);		
+
+	private void showLoginFragment(){
+		LoginFragment start = new LoginFragment();
+		currentFragment = FragmentsAvailable.LOGIN;
+
+		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		fragmentTransaction.replace(R.id.activityContainer, start);
 		fragmentTransaction.addToBackStack("");
-		fragmentTransaction.commit();		
+		fragmentTransaction.commit();
+	}
+
+	private void showStartFragment(){
+//		StartFragment start = new StartFragment();
+//		currentFragment = FragmentsAvailable.START;
+//
+//		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//		fragmentTransaction.replace(R.id.activityContainer, start);
+//		fragmentTransaction.addToBackStack("");
+//		fragmentTransaction.commit();
+		startActivity(new Intent(this, DefaultIntro.class));
 	}
 	
 
@@ -292,7 +306,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 	@SuppressWarnings("incomplete-switch")
 	public void changeCurrentFragment(FragmentsAvailable newFragmentType, Bundle extras, boolean withoutAnimation) {
-		Log.v("=== Current Fragment: " + currentFragment.name()); 
+		Log.v("=== Current Fragment: " + currentFragment.name());
 		if (newFragmentType == currentFragment && newFragmentType != FragmentsAvailable.CHAT) {
 			return;
 		}
