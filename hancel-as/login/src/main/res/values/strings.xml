@@ -570,7 +570,7 @@
     <string name="hancel_track_title">[Traza Hancel]</string>
     <string name="hancel_track_window_title">¡Compartir traza!</string>
     <string name="alert_confirmation_title">Confirmación de alerta</string>
-    <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %mapa y mi nivel de batería %battery Avisa a los demás o a las autoridades.\n Vía Hancel APP, aplicación de seguridad</string>
+    <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %map y mi nivel de batería %battery Avisa a los demás o a las autoridades.\n Vía Hancel APP, aplicación de seguridad</string>
     <string name="share_trace_message">[ALERTA] Me dirijo hacia un lugar o zona peligrosa. Rastréame en este link %map. Vía Hancel APP, aplicación de seguridad</string>
     <string name="tracking_map_url">http://hancel.flip.org.co/hansel/?f=trace&amp;hash=</string>
     <string name="ring_delete_ok">Anillo eliminado</string>

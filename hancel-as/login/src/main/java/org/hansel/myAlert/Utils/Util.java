@@ -216,14 +216,20 @@ public class Util {
 	 public static boolean isMyServiceRunning(Context context) {
 		    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 		    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-		        if(ServicioLeeBotonEncendido.class.getName().equals(service.service.getClassName()))
-					return true;
-		        /*if (LocationManagement.class.getName().equals(service.service.getClassName())) {
+		        if (LocationManagement.class.getName().equals(service.service.getClassName())) {
 		            return true;
-		        }*/
+		        }
 		    }
 		    return false;
 		}
+	public static boolean isHardwareAlarmServiceRunning(Context context) {
+		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+			if(ServicioLeeBotonEncendido.class.getName().equals(service.service.getClassName()))
+				return true;
+		}
+		return false;
+	}
 	 public static String getTelephoneNumber(Context context)
 	 {
 		 TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -276,7 +282,7 @@ public class Util {
 
 	 private static Intent getIntentForService(Context context)
 	 {
-		 int trackId=  Util.getLastTrackId(context);
+		 long trackId=  Util.getLastTrackId(context);
 		 int minutos = Util.getTrackingMinutes(context);
 		 
 		 UsuarioDAO usuarioDao = new UsuarioDAO(context);
@@ -318,15 +324,14 @@ public class Util {
 		   track.InsertaNewId(null,id);
 		   track.close();
 	   }
-	   public static int getLastTrackId(Context context)
-	   {
+
+	   public static long getLastTrackId(Context context){
 		   TrackDAO track;
 		   track = new TrackDAO(context.getApplicationContext());
 		   track.open();
-		   int trackID=(int) track.Insertar("algo");
+		   long trackID = (long) track.getTrackId();
 		   track.close();
 		   return trackID;
-			
 	   }
 	   
 	   /**

@@ -72,5 +72,15 @@ public class TrackDAO extends SQLiteHelper{
 		newValues.put(DBConstants.ANDROID_ID,id);
 		newValues.put(DBConstants.FECHA, fecha);
 		return super.mDb.insert(DBConstants.TABLE_TRACK, null, newValues);
-	}	
+	}
+
+	public long getTrackId(){
+		long id = 0;
+		Cursor c = super.mDb.rawQuery("select * from " + DBConstants.TABLE_TRACK, null );
+
+		if(c.moveToFirst()){
+			id = c.getLong(0);
+		}
+		return id;
+	}
 }

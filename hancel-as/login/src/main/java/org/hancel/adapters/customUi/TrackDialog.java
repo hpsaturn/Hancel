@@ -36,6 +36,7 @@ import org.hancel.customclass.TrackDate;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.R;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
+import org.hansel.myAlert.Utils.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -224,8 +225,11 @@ public class TrackDialog extends FragmentActivity implements OnClickListener, On
                     return;
                 }
                 int trackId = (int) (Math.random() * 99999 + 1);
-                PreferenciasHancel.setUserId(getApplicationContext(), trackId);
-                Log.v("=== userID en TrackDialog " + PreferenciasHancel.getUserId(getApplicationContext()));
+                //PreferenciasHancel.setUserId(getApplicationContext(), trackId);
+                //Log.v("=== userID en TrackDialog " + PreferenciasHancel.getUserId(getApplicationContext()));
+
+                Util.insertNewTrackId(getApplicationContext(), trackId);
+                Log.v("=== Track en el Location: " + trackId);
 
                 setupResult();
                 break;

@@ -86,12 +86,7 @@ public class LoginFragment extends Fragment implements OnClickListener{
 
 
 				Util.setLoginOkInPreferences(getActivity().getApplicationContext(), true);			
-				
-				PreferenciasHancel.setUserId(getActivity().getApplicationContext(),
-						(int) Calendar.getInstance().getTimeInMillis());
-				
-				Util.insertNewTrackId(getActivity().getApplicationContext(), 0);
-				
+                /////
 				progressBar.setVisibility(View.INVISIBLE);
 
 				if(user.length() == 0) {

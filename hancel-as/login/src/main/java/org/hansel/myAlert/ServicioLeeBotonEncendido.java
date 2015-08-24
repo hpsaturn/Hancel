@@ -33,6 +33,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.FlipDAO;
@@ -44,15 +45,16 @@ import org.linphone.compatibility.Compatibility;
 /**
  * @author mikesaurio
  */
-public class ServicioLeeBotonEncendido extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class ServicioLeeBotonEncendido extends Service implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private String TAG = "ServicioGeolocalizacion";
     private String result;
     private boolean isFirstTime, isSendMesagge, locationActivted;
-    private Timer timer;
     public static boolean serviceIsIniciado, countTimer;
     private static int countStart;
+    private Timer timer;
     private BroadcastReceiver mReceiver;
-    private Handler handler_time;
+    private Handler handlerTime;
     private ResultReceiver resultReceiver;
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
@@ -67,7 +69,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
         serviceIsIniciado = locationActivted = false;
         countTimer = true;
         countStart = -1;
-        handler_time = new Handler();
+        handlerTime = new Handler();
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         mReceiver = new MyReceiver();
@@ -96,7 +98,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
                 countStart += 1;
                 if (countTimer) {
                     countTimer = false;
-                    handler_time.postDelayed(runnable, 5000);
+                    handlerTime.postDelayed(runnable, 5000);
                 }
             }
         } catch (Exception e) {
@@ -211,11 +213,9 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
         }
     }
 
-
     @Override
     public void onConnectionSuspended(int i) {
         locationActivted = false;
-
     }
 
     @Override
@@ -376,4 +376,5 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
             return numbers;
         }
     }
+
 }
