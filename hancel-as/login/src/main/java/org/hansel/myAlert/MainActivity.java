@@ -196,10 +196,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	private void showLoginFragment(){
 		LoginFragment start = new LoginFragment();
 		currentFragment = FragmentsAvailable.LOGIN;
-
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 		fragmentTransaction.replace(R.id.activityContainer, start);
-		fragmentTransaction.addToBackStack("");
 		fragmentTransaction.commit();
 	}
 

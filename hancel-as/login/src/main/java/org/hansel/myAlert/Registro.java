@@ -61,7 +61,7 @@ public class Registro extends AppCompatActivity{
 		super.onCreate(savedInstanceState);
 		Util.setLoginOkInPreferences(getApplicationContext(), false);
 		setContentView(R.layout.registro_layout);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+//		getActionBar().setDisplayHomeAsUpEnabled(true);
 		vUsuario = (EditText) findViewById(R.id.reg_fullname);
 		vPassword = (EditText) findViewById(R.id.reg_password2);
 		vPasswordConfirm = (EditText) findViewById(R.id.reg_password);
