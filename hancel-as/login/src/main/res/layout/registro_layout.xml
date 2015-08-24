@@ -50,7 +50,7 @@
 			<!-- Full Name Label -->
 
 			<TextView
-				android:id="@+id/textView1"
+				android:id="@+id/tv_welcome_desc"
 				style="@style/title"
 				android:text="@string/registro1" />
 

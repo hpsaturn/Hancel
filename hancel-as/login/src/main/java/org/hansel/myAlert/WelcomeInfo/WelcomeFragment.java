@@ -39,8 +39,8 @@ public class WelcomeFragment extends Fragment {
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
                 org.hansel.myAlert.R.layout.welcome, container, false);			
 		
-		TextView texto = (TextView) rootView.findViewById(R.id.textView1);	
-		RelativeLayout layout = (RelativeLayout)rootView.findViewById(R.id.bigImage);
+		TextView texto = (TextView) rootView.findViewById(R.id.tv_welcome_desc);
+		RelativeLayout layout = (RelativeLayout)rootView.findViewById(R.id.rl_welcome_bigimage);
 		switch (number) {
 		case 0:			
 			texto.setText(getResources().getString(R.string.slide0));

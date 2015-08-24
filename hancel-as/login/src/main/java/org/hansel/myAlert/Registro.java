@@ -37,6 +37,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +47,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-public class Registro extends FragmentActivity{
+public class Registro extends AppCompatActivity{
 
 	private EditText vUsuario, vPassword, vPasswordConfirm, vEmail, vEmailConfirm;
 	private String mUsuario, mPassword, mPasswordConfirm, mEmail, mEmailConfirm, mErrores;
@@ -60,7 +61,7 @@ public class Registro extends FragmentActivity{
 		super.onCreate(savedInstanceState);
 		Util.setLoginOkInPreferences(getApplicationContext(), false);
 		setContentView(R.layout.registro_layout);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+//		getActionBar().setDisplayHomeAsUpEnabled(true);
 		vUsuario = (EditText) findViewById(R.id.reg_fullname);
 		vPassword = (EditText) findViewById(R.id.reg_password2);
 		vPasswordConfirm = (EditText) findViewById(R.id.reg_password);
