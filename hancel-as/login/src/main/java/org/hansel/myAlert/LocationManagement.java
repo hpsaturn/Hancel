@@ -66,14 +66,18 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     @Override
     public void onCreate(){
         handlerTime = new Handler();
-        ws = new conexionWS();
+        trackId = Util.getLastTrackId(getApplicationContext());
+        Log.v("=== Valor del trackID en LocationManagement onCreate: " + trackId);
         interval = 3;
     }
 
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId){
         trackId = Util.getLastTrackId(getApplicationContext());
+        Log.v("=== Valor del trackID en LocationManagement onStartCommand: " + trackId);
         startLocationService();
+        getDataFrame();
+        handlerTime.postDelayed(getData, Config.DEFAULT_INTERVAL);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -81,10 +85,14 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        trackId = Util.getLastTrackId(getApplicationContext());
+        Log.v("=== Valor del trackID en LocationManagement onBind: " + trackId);
         return null;
+
     }
 
     public void onDestroy(){
+
         stopLocationService();
     }
 
@@ -104,7 +112,18 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
 
     private void getDataFrame() {
         Log.v("=== Inicia Handler de Rastreo");
-        ws.execute();
+        //ws.execute();
+
+        try {
+            HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
+                    , String.valueOf(trackId)
+                    , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
+                    , String.valueOf(location.getLatitude())
+                    , String.valueOf(location.getLongitude())
+                    , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setupLocationForMap() {
@@ -136,27 +155,36 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         LocationServices.FusedLocationApi
                 .requestLocationUpdates(mGoogleApiClient, locationRequest, this);
 
-
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             this.location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
-        ws.execute();
-        handlerTime.postDelayed(getData, 1000 * 60 * interval);
+
+        Log.v("=== Se conectó: Latitud: " + this.location.getLatitude() + " Longitud: " + this.location.getLongitude());
+
+        //startLocationService();
+        //handlerTime.postDelayed(getData, Config.DEFAULT_INTERVAL);
+        //getDataFrame();
+        /*if (ws == null) {
+            ws = new conexionWS();
+            ws.execute();
+        }*/
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.v("=== Conexion suspendidaaaaaaaaaaaaaaaaaaaaaa");
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.v("=== Cambió Location.  Anterior: " + this.location.getLatitude() + ", " + this.location.getLongitude() +
+        " Nueva: " + location.getLatitude() + ", " + location.getLongitude());
         this.location = location;
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        Log.v("=== Fallo la conexion");
     }
 
 
@@ -165,6 +193,8 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         @Override
         protected Void doInBackground(Void... params) {
             //TODO: Aqui leer el lastLocation del servicio ServicioLeeBotonEncendido
+            System.out.println("=== Latitud: " + location.getLatitude());
+            System.out.println("=== Longitud: " + location.getLongitude());
             try {
                 Log.v("=== userID en Location: " + trackId);
                 HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())

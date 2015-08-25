@@ -248,8 +248,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			PreferenciasHancel.setAlarmStartDate(getActivity(), trackDate.getEndTimeTrack().getTimeInMillis());
 			Log.v("=== OnActivityResult");
 			showtrackingOptions(true);
-			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(trackDate.getStartTimeTrack()) );
-
+			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(trackDate.getStartTimeTrack()));
 		}
 		else{
 			super.onActivityResult(requestCode, resultCode, data);
@@ -286,6 +285,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			createPasswordDialog((Button) v);	
 			break;
 		case R.id.btnShareCurrentTrack:
+            Log.v("=== Click en compartir Traza!!!");
 			shareTrace();
 			break;
 		case R.id.iniciaTrackId:
@@ -356,6 +356,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				}
 				else if(isOK && btnPanico.getId()==R.id.btnModifyCurrentTrack){
 					startActivityForResult(new Intent(getActivity(), TrackDialog.class),REQUEST_CODE );
+
 				}
 				else{
 					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_wrong_password), 

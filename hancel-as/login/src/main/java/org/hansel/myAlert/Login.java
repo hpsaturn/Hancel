@@ -101,7 +101,7 @@ public class Login extends FragmentActivity {
 					Util.setLoginOkInPreferences(getApplicationContext(), true);					
 					PreferenciasHancel.setUserId(getApplicationContext(), 
 							(int)Calendar.getInstance().getTimeInMillis());
-					Util.insertNewTrackId(getApplicationContext(), 0);	
+					//Util.insertNewTrackId(getApplicationContext(), 0);
 					//launchMainActivity();	
 					//finish();
 				}

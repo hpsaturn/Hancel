@@ -33,6 +33,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.hancel.customclass.TrackDate;
+import org.hansel.myAlert.LocationManagement;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.R;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
@@ -224,13 +225,15 @@ public class TrackDialog extends FragmentActivity implements OnClickListener, On
                     Toast.makeText(getApplicationContext(), "La hora para detener debe  ser mayor a los minutos configurados", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                int trackId = (int) (Math.random() * 99999 + 1);
+
+                int trackId = (int) (new Date()).getTime();
                 //PreferenciasHancel.setUserId(getApplicationContext(), trackId);
                 //Log.v("=== userID en TrackDialog " + PreferenciasHancel.getUserId(getApplicationContext()));
 
                 Util.insertNewTrackId(getApplicationContext(), trackId);
                 Log.v("=== Track en el Location: " + trackId);
-
+                getApplication().startService(new Intent(getApplicationContext(), LocationManagement.class));
+                Log.v("=== Iniciando Actividad LocationManagement");
                 setupResult();
                 break;
             case R.id.btnCancelDateTrack:
