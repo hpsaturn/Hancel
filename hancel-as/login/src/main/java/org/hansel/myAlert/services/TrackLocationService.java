@@ -49,6 +49,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     public void onCreate(){
         handlerTime = new Handler();
         trackId = String.valueOf(Util.getLastTrackId(getApplicationContext()));
+        startLocationService();
     }
 
     @Override
@@ -72,7 +73,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     public void stopLocationService() {
         Log.i(TAG,"=== stopLocationService");
-        if (mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient!=null&&mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -115,8 +116,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     public void onConnected(Bundle bundle) {
         locationRequest = LocationRequest.create();
         setupLocationForMap();
-        LocationServices.FusedLocationApi
-                .requestLocationUpdates(mGoogleApiClient, locationRequest, this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
 
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             this.location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -134,6 +134,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     @Override
     public void onLocationChanged(Location location) {
         this.location = location;
+        Log.i(TAG,"=== onLocationChanged: Latitude: " + this.location.getLatitude() + " Longitude: " + this.location.getLongitude());
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
