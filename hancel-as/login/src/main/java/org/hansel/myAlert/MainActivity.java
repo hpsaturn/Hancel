@@ -985,6 +985,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
         toolbar.setVisibility(View.GONE);
     }
 
+
     private class LocalOrientationEventListener extends OrientationEventListener {
 		public LocalOrientationEventListener(Context context) {
 			super(context);
@@ -1578,7 +1579,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
         return super.onOptionsItemSelected(item);
     }
 
-    private HardwareButtonService mService;
+    private HardwareButtonService mHardwareButtonService;
     private boolean mBound;
 
     private void startHardwareButtonService(){
@@ -1596,7 +1597,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
         public void onServiceConnected(ComponentName className, IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
             HardwareButtonService.HardwareButtonServiceBinder binder = (HardwareButtonService.HardwareButtonServiceBinder) service;
-            mService = binder.getService();
+            mHardwareButtonService = binder.getService();
             mBound = true;
             if(DEBUG)Log.v("[MainActivity] HardwareButtonService onServiceConnected");
 
@@ -1625,6 +1626,10 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
             unbindService(mConnection);
             mBound = false;
         }
+    }
+
+    public HardwareButtonService getHardwareButtonService() {
+        return mHardwareButtonService;
     }
 	
 }

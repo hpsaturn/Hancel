@@ -62,6 +62,10 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
     private final IBinder mBinder = new HardwareButtonServiceBinder();
 
+    public void sendAlertSMS() {
+
+    }
+
     public class HardwareButtonServiceBinder extends Binder {
         public HardwareButtonService getService() {
             return HardwareButtonService.this;
