@@ -354,6 +354,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					//cancelamos alarma para iniciar servicio
 					//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
 					cancelAlarms();
+                    stopTrackLocationService();
 					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_stopped), 
 							Toast.LENGTH_SHORT).show();
 					showtrackingOptions(false);
