@@ -79,11 +79,12 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
 				alt_bld.setMessage(getResources().getString(R.string.tracking_send_alert))
 				.setCancelable(false)
-				.setPositiveButton(getResources().getString(R.string.tracking_send_alert_yes), 
-						new DialogInterface.OnClickListener() {
+				.setPositiveButton(getResources().getString(R.string.tracking_send_alert_yes), new DialogInterface.OnClickListener() {
+
 					public void onClick(DialogInterface dialog, int id) {
-                        getActivity().startService(new Intent(getActivity(), SendPanicService.class));
-						
+
+//                        getActivity().startService(new Intent(getActivity(), SendPanicService.class));
+
 						btnTracking.setText(getString(R.string.stop_tracking));
 						btnTracking.setVisibility(View.VISIBLE);
 

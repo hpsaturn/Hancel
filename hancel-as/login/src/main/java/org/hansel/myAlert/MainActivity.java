@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.Fragment.SavedState;
@@ -59,6 +61,7 @@ import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.WelcomeInfo.DefaultIntro;
 import org.hansel.myAlert.WelcomeInfo.StartFragment;
+import org.hansel.myAlert.services.StatusScheduleReceiver;
 import org.linphone.AboutFragment;
 import org.linphone.AccountPreferencesFragment;
 import org.linphone.ChatFragment;
@@ -116,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements
 OnClickListener, ContactPicked, LinphoneOnCallStateChangedListener,
 LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
-	ViewPager mViewPager;
+    private static final boolean DEBUG = Config.DEBUG;
+    ViewPager mViewPager;
 
 	/** flag for panic button pressing**/
 	private boolean panicPressed;	
@@ -179,6 +183,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			showStartFragment();
 		}else
 		    showMainFragment();
+
+        startHardwareButtonService();
 
 	}
 
@@ -1570,6 +1576,55 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private HardwareButtonService mService;
+    private boolean mBound;
+
+    private void startHardwareButtonService(){
+        if(DEBUG)Log.v("[MainActivity] startHardwareButtonService");
+        startService(new Intent(this, HardwareButtonService.class));
+        StatusScheduleReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
+    }
+
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            HardwareButtonService.HardwareButtonServiceBinder binder = (HardwareButtonService.HardwareButtonServiceBinder) service;
+            mService = binder.getService();
+            mBound = true;
+            if(DEBUG)Log.v("[MainActivity] HardwareButtonService onServiceConnected");
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            if(DEBUG)Log.v("[MainActivity] HardwareButtonService onServiceDisconnected");
+            mBound = false;
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+        Intent intent = new Intent(this, HardwareButtonService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
     }
 	
 }
