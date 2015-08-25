@@ -163,9 +163,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
         setContentView(R.layout.tabs);
 
 		prepareContactsInBackground();
-		startService(new Intent(MainActivity.this, ServicioLeeBotonEncendido.class));
+		startService(new Intent(MainActivity.this, HardwareButtonService.class));
 		startService(new Intent(ACTION_MAIN).setClass(this,
-				LinphoneService.class));
+                LinphoneService.class));
 
         initActionBar();
 		

@@ -252,7 +252,7 @@
         <!-- Services -->
         <service android:name=".ReminderService"/>
         <service android:name="org.hansel.myAlert.SendPanicService"/>        
-        <service android:name="org.hansel.myAlert.ServicioLeeBotonEncendido"/>
+        <service android:name=".HardwareButtonService"/>
 
         <!-- Tracking services -->
         <service android:name=".services.TrackLocationService"/>
