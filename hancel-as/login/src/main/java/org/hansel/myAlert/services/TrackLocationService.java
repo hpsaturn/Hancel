@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,16 +33,13 @@ import com.google.android.gms.location.LocationServices;
 
 import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.Config;
-import org.hansel.myAlert.Log.Log;
-import org.hansel.myAlert.Utils.PreferenciasHancel;
-import org.hansel.myAlert.Utils.SimpleCrypto;
 import org.hansel.myAlert.Utils.Util;
 
 
 public class TrackLocationService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
     public static final String TAG = TrackLocationService.class.getSimpleName();
-    private long trackId;
+    private String trackId;
     private Handler handlerTime;
     private int interval;
     private GoogleApiClient mGoogleApiClient;
@@ -51,13 +49,13 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     @Override
     public void onCreate(){
         handlerTime = new Handler();
-        trackId = Util.getLastTrackId(getApplicationContext());
+        trackId = String.valueOf(Util.getLastTrackId(getApplicationContext()));
         interval = 3;
     }
 
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId){
-        Log.v("=== Valor del trackID en LocationManagement onStartCommand: " + trackId);
+        Log.i(TAG, "=== OnStartCommand. Track ID: " + trackId);
         startLocationService();
         return Service.START_STICKY;
     }
@@ -71,29 +69,20 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     public void onDestroy(){
         stopLocationService();
-        Log.v("=== En el onDestroy");
+        Log.i(TAG,"=== onDestroy");
     }
 
     public void stopLocationService() {
-        Log.v("=== stopLocationService");
+        Log.i(TAG,"=== stopLocationService");
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
 
     private void sendDataFrame() {
-
-        String track = Long.toString(trackId);
-        Log.v("=== Inicia Handler de Rastreo: " + track);
+        Log.i(TAG,"=== Tracking Handler started. ID: " + trackId);
         try {
-
-               /* HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
-                        , String.valueOf(trackId)
-                        , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
-                        , String.valueOf(location.getLatitude())
-                        , String.valueOf(location.getLongitude())
-                        , String.valueOf(Util.getBatteryLevel(getApplicationContext())));*/
-            HttpUtils.sendTrack(track,track,track
+            HttpUtils.sendTrack(trackId,trackId,trackId
                     , String.valueOf(location.getLatitude())
                     , String.valueOf(location.getLongitude())
                     , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
@@ -113,7 +102,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     private void startLocationService() {
         if( mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
-            android.util.Log.i(TAG, "=== Iniciando servicio de geolocalizacion: NO CONECTADO -> CONECTADO");
+            android.util.Log.i(TAG, "=== Starting GPS service: NON CONECTED -> CONECTED");
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
@@ -122,7 +111,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
             mGoogleApiClient.connect();
         }
         else
-            android.util.Log.i(TAG, "=== Iniciando servicio de geolocalizacion: ESTABA CONECTADO");
+            Log.i(TAG, "=== GPS service started: CONECTED");
     }
 
     @Override
@@ -136,22 +125,18 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
             this.location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
 
-        Log.v("=== Se conectó: Latitud: " + this.location.getLatitude() + " Longitud: " + this.location.getLongitude());
+        Log.i(TAG,"=== Connected: Latitude: " + this.location.getLatitude() + " Longitude: " + this.location.getLongitude());
 
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.v("=== Conexion suspendida");
+        Log.i(TAG,"=== Connection suspended");
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.v("=== Cambió Location.  Anterior: " + this.location.getLatitude() + ", " + this.location.getLongitude() +
-        " Nueva: " + location.getLatitude() + ", " + location.getLongitude());
-        Log.v("=== Distancia entre puntos: " + this.location.distanceTo(location));
         this.location = location;
-
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -164,7 +149,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.v("=== Fallo la conexion");
+        Log.i(TAG,"=== Connection Fail");
     }
 
 
