@@ -334,7 +334,8 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                 ArrayList<String> parts = sms.divideMessage(message);
                 sms.sendMultipartTextMessage(mobileNumber, null, parts, null, null);
                 org.hansel.myAlert.Log.Log.v("=== Message  " + message + " sent to " + mobileNumber);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 org.hansel.myAlert.Log.Log.v("=== Error sending message: " + e.getMessage());
             }
         }

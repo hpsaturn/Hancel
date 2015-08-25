@@ -71,7 +71,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 		View v = inflater.inflate(R.layout.fragment_panic, container,false);
 		Button btnPanico = (Button)v.findViewById(R.id.btnAlert);
-		//txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);		
+		//txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);
 		
 		btnPanico.setOnClickListener(new View.OnClickListener() {						
 			@Override
@@ -163,7 +163,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	public void onResume() {
 		super.onResume();
 		//txtLastPanic.setText(PreferenciasHancel.getLastPanicAlert(getActivity().getApplicationContext()));
-		
+		txttrackingOptions.setText(PreferenciasHancel.getLastPanicAlert(getActivity().getApplicationContext()));
 		//tracking
 		long time = PreferenciasHancel.getAlarmStartDate(getActivity());
 		if(time != 0){
@@ -177,8 +177,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(alarmTime) );
 		}
 		running = Util.isTrackLocationServiceRunning(getActivity().getApplicationContext());
-		//setupButtonText();
-		//tracking
 	}
 
 	@Override
@@ -220,7 +218,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		Log.v("Activamos WIFI");
 		//WifiManager wifiManager = (WifiManager)getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		//wifiManager.setWifiEnabled(true);
-
 	}
 
 	@SuppressWarnings("rawtypes")
