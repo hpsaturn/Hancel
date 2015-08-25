@@ -33,11 +33,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,12 +57,17 @@ public class Registro extends AppCompatActivity{
 	private View mLoginFormView, mLoginStatusView;
 	private TextView mLoginStatusMessageView, errores;
 	private UsuarioDAO usuarioDAO;
+	private Toolbar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Util.setLoginOkInPreferences(getApplicationContext(), false);
 		setContentView(R.layout.registro_layout);
+		toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle(R.string.app_name);
+		setSupportActionBar(toolbar);
 //		getActionBar().setDisplayHomeAsUpEnabled(true);
 		vUsuario = (EditText) findViewById(R.id.reg_fullname);
 		vPassword = (EditText) findViewById(R.id.reg_password2);
