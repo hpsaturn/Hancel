@@ -129,7 +129,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
             cancel = true;
         }
         if (TextUtils.isEmpty(mPasswd)) {
-            passwd.setError(getString(R.string.error_passw_required);
+            passwd.setError(getString(R.string.error_passw_required));
             focusView = passwd;
             cancel = true;
         }
