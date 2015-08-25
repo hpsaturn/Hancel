@@ -56,13 +56,17 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     public static final String TAG = LocationManagement.class.getSimpleName();
     private long trackId;
     private Handler handlerTime;
-    private conexionWS ws;
     private int interval;
     private GoogleApiClient mGoogleApiClient;
     private Location location;
-    private LocationRequest locationRequest;
-    private boolean running;
+    private final Runnable getData =
+            new Runnable() {
+        public void run() {
 
+            getDataFrame();
+        }
+    };
+    private LocationRequest locationRequest;
 
     @Override
     public void onCreate(){
@@ -70,7 +74,6 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         trackId = Util.getLastTrackId(getApplicationContext());
         Log.v("=== Valor del trackID en LocationManagement onCreate: " + trackId);
         interval = 3;
-        running = false;
     }
 
     @Override
@@ -78,9 +81,9 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         trackId = Util.getLastTrackId(getApplicationContext());
         Log.v("=== Valor del trackID en LocationManagement onStartCommand: " + trackId);
         startLocationService();
+        handlerTime.postDelayed(getData, 1000);
         return super.onStartCommand(intent, flags, startId);
     }
-
 
     @Nullable
     @Override
@@ -91,9 +94,8 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     }
 
     public void onDestroy(){
-        if(running)
-            ws.cancel(true);
         stopLocationService();
+        handlerTime.removeCallbacks(getData);
         Log.v("=== En el Ondestroy");
     }
 
@@ -104,18 +106,8 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         handlerTime.removeCallbacks(getData);
     }
 
-    private final Runnable getData =
-            new Runnable() {
-        public void run() {
-
-            getDataFrame();
-        }
-    };
-
     private void getDataFrame() {
         Log.v("=== Inicia Handler de Rastreo");
-        //ws.execute();
-
         try {
 
                 HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
@@ -166,14 +158,11 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
 
         Log.v("=== Se conectó: Latitud: " + this.location.getLatitude() + " Longitud: " + this.location.getLongitude());
 
-        getDataFrame();
-        handlerTime.postDelayed(getData, 1000);
-
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.v("=== Conexion suspendidaaaaaaaaaaaaaaaaaaaaaa");
+        Log.v("=== Conexion suspendida");
     }
 
     @Override
@@ -190,30 +179,5 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     }
 
 
-    private class conexionWS extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            //TODO: Aqui leer el lastLocation del servicio ServicioLeeBotonEncendido
-            System.out.println("=== Latitud: " + location.getLatitude());
-            System.out.println("=== Longitud: " + location.getLongitude());
-            running =  true;
-            try {
-                while(true) {
-                    Log.v("=== TrackID en el WS: " + trackId);
-                    HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
-                            , String.valueOf(trackId)
-                            , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
-                            , String.valueOf(location.getLatitude())
-                            , String.valueOf(location.getLongitude())
-                            , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
-                    Thread.sleep(Config.DEFAULT_INTERVAL);
-                }
-            } catch (Exception e) {
-                running = false;
-            }
-            return null;
-        }
-    }
 }
 
