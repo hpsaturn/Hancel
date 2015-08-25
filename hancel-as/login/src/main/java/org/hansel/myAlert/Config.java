@@ -18,4 +18,6 @@ public class Config {
 	public static final long    LOCATION_ROUTE_INTERVAL = 1000 * 60;
 	public static final long    LOCATION_MAP_INTERVAL = 1000 * 120;
 
+	public static final int		VIBRATION_TIME_SMS = 2000;
+
 }

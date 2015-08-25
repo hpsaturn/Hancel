@@ -227,7 +227,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
         this.lastLocation = location;
         if (countTimer) {
             startSMSTask();
-            vibrate(5000);
+            vibrate(Config.VIBRATION_TIME_SMS);
             stopLocationService();
         }
     }
@@ -341,8 +341,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
         private ArrayList<String> getFlipContactNumbers() {
             ArrayList<String> numbers = new ArrayList<String>();
-            FlipDAO flipDao = new FlipDAO(LinphoneManager.getInstance()
-                    .getContext());
+            FlipDAO flipDao = new FlipDAO(HardwareButtonService.this);
 
             flipDao.open();
             Cursor fc = flipDao.getSettingsValueByKey(getResources().getString(
@@ -364,7 +363,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
         private ArrayList contactsRingNumbers() {
             ArrayList<String> numbers = new ArrayList<String>();
-            RingDAO ringDao = new RingDAO(getApplication().getApplicationContext());
+            RingDAO ringDao = new RingDAO(HardwareButtonService.this);
 
             ringDao.open();
             Cursor c = ringDao.getNotificationContactsId();

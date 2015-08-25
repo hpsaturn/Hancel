@@ -527,7 +527,7 @@
     <string name="alarm_accept">Aceptar</string>
     <string name="ring_contacts_error">El anillo debe tener al menos un contacto</string>
     <string name="no_configured_rings">No se encontraron anillos configurados</string>
-    <string name="stop_tracking">Detener rastreo</string>
+    <!--string name="stop_tracking">Detener rastreo</string-->
     <string name="start_tracking">Programar rastreo</string>
     <string name="tracking_launched">Contactos notificados. Inicia función de rastreo</string>
     <string name="tracking_invalid_contac_numbers">Los números de contacto a notificar no son válidos</string>

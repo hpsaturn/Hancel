@@ -86,8 +86,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 //                        getActivity().startService(new Intent(getActivity(), SendPanicService.class));
                         ((MainActivity)getActivity()).getHardwareButtonService().sendAlertSMS();
 
-						btnTracking.setText(getString(R.string.stop_tracking));
-						btnTracking.setVisibility(View.VISIBLE);
+						/*btnTracking.setText(getString(R.string.stop_tracking));
+						btnTracking.setVisibility(View.VISIBLE);*/
 
 						actionDescription.setText(getResources().getString(R.string.panic_sent));
 
@@ -141,7 +141,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			running = savedInstanceState.getBoolean("run");
 			if(running){
 				Log.v("=== Traking esta corriendo");
-				btnTracking.setText(getString(R.string.stop_tracking));
+				//btnTracking.setText(getString(R.string.stop_tracking));
 				trackInfo.setVisibility(View.VISIBLE);
 				trackingOptions.setVisibility(View.GONE);
 				statusTrack.setVisibility(View.VISIBLE);
@@ -177,7 +177,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(alarmTime) );
 		}
 		running = Util.isTrackLocationServiceRunning(getActivity().getApplicationContext());
-		setupButtonText();
+		//setupButtonText();
 		//tracking
 	}
 
@@ -279,10 +279,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 	@Override //RASTREO
 	public void onClick(View v) {
-		/*if (btnTracking.getText() == getString(R.string.stop_tracking)) {
-			createPasswordDialog(btnTracking);
-			return;
-		}*/
 		switch (v.getId()) {
 		case R.id.btnCancelCurrentTrack:			
 		case R.id.btnModifyCurrentTrack:
@@ -339,7 +335,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					trackInfo.setVisibility(View.GONE);
 					trackingOptions.setVisibility(View.GONE);
 					Util.setRunningService(getActivity().getApplicationContext(), false);
-//					getActivity().stopService(new Intent(getActivity().getApplicationContext(),LocationManagement.class));
 				    stopTrackLocationService();
 					alarmManager.cancel(Util.getPendingAlarmPanicButton(getActivity().getApplicationContext()));
 					running = false;
@@ -387,26 +382,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
         StatusScheduleReceiver.stopSheduleService(getActivity());
         getActivity().stopService(new Intent(getActivity(), TrackLocationService.class));
     }
-
-    //RASTREO
-    private void setupButtonText() {
-		Log.v("=== En setupButtonText");
-		if(running){
-			Log.v("=== SetupButtonText");
-			//showtrackingOptions(true);
-			btnTracking.setText(getString(R.string.stop_tracking));
-			//trackInfo.setVisibility(View.VISIBLE);
-			//trackingOptions.setVisibility(View.GONE);
-		}
-		else{
-			btnTracking.setText(getString(R.string.start_tracking));
-			//showtrackingOptions(false);
-			//trackInfo.setVisibility(View.GONE);
-			//trackingOptions.setVisibility(View.GONE);
-		}
-        trackingOptions.invalidate();
-	}
-	
 
 	private void shareTrace() {
 		Intent share = new Intent(android.content.Intent.ACTION_SEND);
@@ -463,20 +438,5 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			btnTracking.setVisibility(View.VISIBLE);
             actionDescription.setText(getString(R.string.panic_tracking_description));
 		}
-	}
-
-
-	public void panicButtonPressed(){
-		//se presiona boton de panico, cancelamos "servicio" si aun no esta corriendo y cancelamos la alarma
-		//showtrackingOptions(false);
-		//cancelamos la alarma antes de ejecutar el servicio por el bot�n de p�nico
-		//si esta corriendo es que corri� por causa de la alarma
-		if(!Util.isTrackLocationServiceRunning(getActivity())){
-			alarmManager.cancel(Util.getServicePendingIntent(getActivity()));
-		}
-		//corriendo siempre ser� "true" por que al presionar el bot�n de p�nico
-		// se inizializa el servicio
-		running = true;
-		setupButtonText();		
 	}
 }
