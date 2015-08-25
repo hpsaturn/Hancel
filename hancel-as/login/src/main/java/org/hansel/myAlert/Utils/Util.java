@@ -41,7 +41,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import org.hansel.myAlert.ContactInfo;
-import org.hansel.myAlert.LocationManagement;
+import org.hansel.myAlert.services.TrackLocationService;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.ReminderService;
@@ -214,10 +214,10 @@ public class Util {
 		  return pendingIntent;
 	  }
 	  
-	 public static boolean isMyServiceRunning(Context context) {
+	 public static boolean isTrackLocationServiceRunning(Context context) {
 		    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 		    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-		        if (LocationManagement.class.getName().equals(service.service.getClassName())) {
+		        if (TrackLocationService.class.getName().equals(service.service.getClassName())) {
 		            return true;
 		        }
 		    }
@@ -292,7 +292,7 @@ public class Util {
 			//obtenemos ultimo track y lo insertamos
 		
 		 Intent i = new Intent(context
-					,LocationManagement.class);
+					,TrackLocationService.class);
 		 i.putExtra("track", trackId);
 			i.putExtra("minutos", minutos);
 			i.putExtra("userName", usuarioDao.getUser());

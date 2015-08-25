@@ -33,21 +33,22 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.hancel.customclass.TrackDate;
-import org.hansel.myAlert.LocationManagement;
+import org.hansel.myAlert.Config;
+import org.hansel.myAlert.services.TrackLocationService;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.R;
-import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
+import org.hansel.myAlert.services.StatusScheduleReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class TrackDialog extends FragmentActivity implements OnClickListener, OnDateSetListener,
-        OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickListener {
+public class TrackDialog extends FragmentActivity implements OnClickListener, OnDateSetListener, OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickListener {
 
     private static final long ONE_MINUTE_IN_MILLIS = 60000;
+    private static final boolean DEBUG = Config.DEBUG&&Config.DEBUG_LOCATION;
     private Button btnStartTrackingDate;
     private Button btnEndTrackingDate;
     private Button btnStartTrackingHour;
@@ -232,7 +233,8 @@ public class TrackDialog extends FragmentActivity implements OnClickListener, On
 
                 Util.insertNewTrackId(getApplicationContext(), trackId);
                 Log.v("=== Track en el Location: " + trackId);
-                getApplication().startService(new Intent(getApplicationContext(), LocationManagement.class));
+//                getApplication().startService(new Intent(getApplicationContext(), LocationManagement.class));
+                startTrackLocationService();
                 Log.v("=== Iniciando Actividad LocationManagement");
                 setupResult();
                 break;
@@ -244,6 +246,17 @@ public class TrackDialog extends FragmentActivity implements OnClickListener, On
         }
     }
 
+    private void startTrackLocationService(){
+        if(DEBUG) Log.v("[TrackerDialog] startMainService");
+        startService(new Intent(this, TrackLocationService.class));
+        StatusScheduleReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
+    }
+
+    private void stopTrackLocationService() {
+        if(DEBUG)Log.v("[MainActivity] stopTrackLocationService");
+        StatusScheduleReceiver.stopSheduleService(this);
+        stopService(new Intent(this, TrackLocationService.class));
+    }
 
     private void setupResult() {
         Intent result = new Intent();

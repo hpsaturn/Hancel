@@ -1,4 +1,4 @@
-package org.hansel.myAlert;
+package org.hansel.myAlert.services;
 /*This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -15,27 +15,14 @@ Created by Javier Mejia @zenyagami
 zenyagami@gmail.com
 	*/
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.telephony.TelephonyManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,28 +31,19 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import org.hancel.http.HttpUtils;
+import org.hansel.myAlert.Config;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
 
-import java.util.Calendar;
+public class TrackLocationService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
-public class LocationManagement extends Service implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener{
-
-    public static final String TAG = LocationManagement.class.getSimpleName();
+    public static final String TAG = TrackLocationService.class.getSimpleName();
     private long trackId;
     private Handler handlerTime;
     private int interval;
     private GoogleApiClient mGoogleApiClient;
     private Location location;
-    private final Runnable getData =
-            new Runnable() {
-        public void run() {
-
-            getDataFrame();
-        }
-    };
     private LocationRequest locationRequest;
 
     @Override
@@ -81,8 +59,7 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         trackId = Util.getLastTrackId(getApplicationContext());
         Log.v("=== Valor del trackID en LocationManagement onStartCommand: " + trackId);
         startLocationService();
-        handlerTime.postDelayed(getData, 1000);
-        return super.onStartCommand(intent, flags, startId);
+        return Service.START_STICKY;
     }
 
     @Nullable
@@ -95,18 +72,17 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
 
     public void onDestroy(){
         stopLocationService();
-        handlerTime.removeCallbacks(getData);
-        Log.v("=== En el Ondestroy");
+        Log.v("=== En el onDestroy");
     }
 
     public void stopLocationService() {
+        Log.v("=== stopLocationService");
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
-        handlerTime.removeCallbacks(getData);
     }
 
-    private void getDataFrame() {
+    private void sendDataFrame() {
         Log.v("=== Inicia Handler de Rastreo");
         try {
 
@@ -171,7 +147,16 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         " Nueva: " + location.getLatitude() + ", " + location.getLongitude());
         Log.v("=== Distancia entre puntos: " + this.location.distanceTo(location));
         this.location = location;
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                sendDataFrame();
+                return null;
+            }
+        }.execute();
     }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {

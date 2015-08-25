@@ -301,7 +301,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
 
             isSendMesagge = false;
 
-            /*if (!Util.isMyServiceRunning(getApplicationContext())) {
+            /*if (!Util.isTrackLocationServiceRunning(getApplicationContext())) {
                 Util.inicarServicio(getApplicationContext());
             }*/
 

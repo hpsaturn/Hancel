@@ -39,7 +39,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
@@ -280,7 +279,7 @@ public class SendPanicService extends Service implements GoogleApiClient.Connect
             super.onPostExecute(r);
             // Cancel alarm
             cancelAlarms();
-            if (!Util.isMyServiceRunning(getApplicationContext())) {
+            if (!Util.isTrackLocationServiceRunning(getApplicationContext())) {
                 Util.inicarServicio(getApplicationContext());
             }
             // Muestra la fecha de la ultima vez que se corrio el panico y
