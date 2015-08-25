@@ -13,9 +13,9 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		android:layout_gravity="center_horizontal"
-		android:visibility="visible" >
+		android:visibility="visible">
 
-		<ImageView
+		<!--ImageView
 			android:contentDescription="@string/content_description_contact_picture"
 			android:id="@+id/iconTrack"
 			android:layout_width="wrap_content"
@@ -24,7 +24,19 @@
 			android:gravity="center"
 			android:adjustViewBounds="true"
 			android:scaleType="centerInside"
-			android:src="@drawable/tracking" />
+			android:layout_rowSpan="2"
+			android:src="@drawable/tracking" /-->
+
+		<TextView
+			android:id="@+id/title"
+			style="@style/TextoInstruccion"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+			android:gravity="center"
+			android:textStyle="bold"
+			android:text="@string/ultima"
+			android:textColor="@color/background_header"
+			android:textAppearance="?android:attr/textAppearanceMedium" />
 
 		<TextView
 			android:id="@+id/txtUltimaAlerta"
@@ -32,7 +44,7 @@
 			android:layout_marginLeft="5dp"
 			android:layout_marginRight="5dp"
 			android:gravity="center"
-			android:text="15 - Abril - 08:30"
+			android:text="15 Abril 2015"
 			android:textColor="@color/background_header"
 			android:textAppearance="?android:attr/textAppearanceMedium" />
 	</GridLayout>

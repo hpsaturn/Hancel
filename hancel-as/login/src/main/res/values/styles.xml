@@ -110,8 +110,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/orange_hancel</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">5dp</item>
 
     </style>
 
@@ -132,7 +132,7 @@
     <style name="inner_app_button">
         <item name="android:background">#C0C0C0</item>
         <item name="android:textColor">@color/background_header</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:padding">5dp</item>
         <item name="android:minHeight">25dp</item>
     </style>

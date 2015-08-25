@@ -217,6 +217,7 @@ private Handler mHandler = new Handler();
 		private Bitmap bitmapUnknown;
 		private List<Ring> rings;
 		String idDelete;
+		int position;
 				
 		public RingsListAdapter(List<Ring> ringsLst) {
 			rings = ringsLst;			
@@ -265,7 +266,6 @@ private Handler mHandler = new Handler();
 			else {
 				view = mInflater.inflate(R.layout.ring_cell, parent, false);
 				ring = rings.get(position);
-
 				holder.selected = (CheckBox) view.findViewById(R.id.chooseRing);
 				holder.selected.setTag(ring);
 				holder.ringName = (TextView) view.findViewById(R.id.name);
@@ -276,7 +276,7 @@ private Handler mHandler = new Handler();
 				holder.iconEdit = (TextView) view.findViewById(R.id.iconEdit);
 				holder.iconEdit.setText(ring.getId());
                 holder.position = position;
-				addListeners(holder);
+				addListeners(holder, ring);
 			}
 
 			ring = rings.get(position);
@@ -304,8 +304,8 @@ private Handler mHandler = new Handler();
 			return view;
 		}
 
-		private void addListeners(final ViewHolder holder){
-            int position = holder.position;
+		private void addListeners(final ViewHolder holder, Ring ring){
+            this.position = holder.position;
 			holder.selected.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					CheckBox cb = (CheckBox) v;
@@ -351,16 +351,11 @@ private Handler mHandler = new Handler();
 
             holder.iconEdit.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    /*RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
-                            .getContext());
-                    ringDao.open();
-                    ringDao.getRing(idDelete);
-                    itemClick(this, position);*/
-                    //((MainActivity)getActivity()).editRing(ring);
+					((MainActivity)getActivity()).editRing((Ring) getItem(position));
                 }
             });
 		}
-				
+
 		@Override
 		public int getPositionForSection(int section) {
 			return indexer.getPositionForSection(section);
@@ -375,7 +370,9 @@ private Handler mHandler = new Handler();
 		public Object[] getSections() {
 			return indexer.getSections();
 		}
-		
+
+
+
 		private class ViewHolder {
 			CheckBox selected;
 			ImageView icon;

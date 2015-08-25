@@ -34,8 +34,8 @@ public class StopScheduleActivity extends Activity{
 		 AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 		 am.cancel(Util.getReminderPendingIntennt(getApplicationContext()));
 		 PreferenciasHancel.setAlarmStartDate(getApplicationContext(), 0);
-			//ya se termino el tiempo de la programaci�n cancelamos alarma y salimos
-			Log.v("Fin de la programaci�n");
+			//ya se termino el tiempo de la programacion cancelamos alarma y salimos
+			Log.v("Fin de la programacion");
 			 NotificationCompat.Builder mBuilder =
 					    new NotificationCompat.Builder(this)
 					    .setSmallIcon(R.drawable.ic_launcher)
@@ -47,6 +47,8 @@ public class StopScheduleActivity extends Activity{
 				NotificationManager notificationManager = (NotificationManager) 
 						  getSystemService(NOTIFICATION_SERVICE); 
 			notificationManager.notify(0, notif);
+            //Detener el rastreo AQUI
+            //Pintar Frame del PanicButonFragment
 			finish();
 			return;
 	}

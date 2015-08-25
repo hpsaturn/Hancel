@@ -48,6 +48,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	private TextView txttrackingOptions, actionDescription;//, txtLastPanic;
 	private TrackDate trackDate;
 	private Button btnTracking, btnCancelCurrentTrack, btnModifyCurrentTrack, btnShareCurrentTrack;
+    private LinearLayout panicScreenRoot;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +73,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 		View v = inflater.inflate(R.layout.fragment_panic, container,false);
 		Button btnPanico = (Button)v.findViewById(R.id.btnAlert);
-		//txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);		
+		//txtLastPanic =(TextView)v.findViewById(R.id.txtLastPanic);
 		
 		btnPanico.setOnClickListener(new View.OnClickListener() {						
 			@Override
@@ -107,6 +109,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				alert.show();				
 			}
 		});
+
+		panicScreenRoot = (LinearLayout)v.findViewById(R.id.panicScreenRoot);
 		
 		//layout for tracking status show (Progress bar)
 		statusTrack = v.findViewById(R.id.statusTrack);
@@ -163,7 +167,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	public void onResume() {
 		super.onResume();
 		//txtLastPanic.setText(PreferenciasHancel.getLastPanicAlert(getActivity().getApplicationContext()));
-		
+		txttrackingOptions.setText(PreferenciasHancel.getLastPanicAlert(getActivity().getApplicationContext()));
 		//tracking
 		long time = PreferenciasHancel.getAlarmStartDate(getActivity());
 		if(time != 0){
@@ -177,8 +181,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(alarmTime) );
 		}
 		running = Util.isTrackLocationServiceRunning(getActivity().getApplicationContext());
-		//setupButtonText();
-		//tracking
 	}
 
 	@Override
@@ -220,7 +222,6 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		Log.v("Activamos WIFI");
 		//WifiManager wifiManager = (WifiManager)getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		//wifiManager.setWifiEnabled(true);
-
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -248,13 +249,14 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			PreferenciasHancel.setReminderCount(getActivity(), 0);
 			trackDate = (TrackDate) data.getExtras().get(TrackDialog.TRACK_EXTRA);
 			alarmManager.set(AlarmManager.RTC_WAKEUP, trackDate.getStartTimeTrack().getTimeInMillis(), Util.getReminderPendingIntennt(getActivity()));
-			Log.v("Finalizando en: "+ new Date(trackDate.getEndTimeTrack().getTimeInMillis()) );
+			Log.v("Finalizando en: " + new Date(trackDate.getEndTimeTrack().getTimeInMillis()));
 			alarmManager.set(AlarmManager.RTC_WAKEUP, trackDate.getEndTimeTrack().getTimeInMillis(), Util.getStopSchedulePendingIntentWithExtra(getActivity()));
 			//guardamos inicio de alarma
 			PreferenciasHancel.setAlarmStartDate(getActivity(), trackDate.getEndTimeTrack().getTimeInMillis());
 			Log.v("=== OnActivityResult");
-			showtrackingOptions(true);
+			showtrackingOptions(false); //TRUE
 			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(trackDate.getStartTimeTrack()));
+            panicScreenRoot.postInvalidate();
 		}
 		else{
 			super.onActivityResult(requestCode, resultCode, data);
