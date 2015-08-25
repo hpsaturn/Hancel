@@ -18,10 +18,7 @@ zenyagami@gmail.com
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
-<<<<<<< HEAD:hancel-as/login/src/main/java/org/hansel/myAlert/LocationManagement.java
-=======
 import android.os.AsyncTask;
->>>>>>> a57021d79e0756eae9329c7f1932184c26fa271c:hancel-as/login/src/main/java/org/hansel/myAlert/services/TrackLocationService.java
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -39,10 +36,8 @@ import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
 
-<<<<<<< HEAD:hancel-as/login/src/main/java/org/hansel/myAlert/LocationManagement.java
-=======
+
 public class TrackLocationService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
->>>>>>> a57021d79e0756eae9329c7f1932184c26fa271c:hancel-as/login/src/main/java/org/hansel/myAlert/services/TrackLocationService.java
 
     public static final String TAG = TrackLocationService.class.getSimpleName();
     private long trackId;
