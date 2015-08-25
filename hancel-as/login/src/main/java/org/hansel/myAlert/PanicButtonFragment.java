@@ -28,6 +28,8 @@ import org.hansel.myAlert.Utils.SimpleCrypto;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.TrackDAO;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
+import org.hansel.myAlert.services.TrackLocationService;
+import org.hansel.myAlert.services.StatusScheduleReceiver;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -51,6 +53,7 @@ import android.widget.Toast;
 
 public class PanicButtonFragment extends Fragment implements OnClickListener{	
 	private static final int RQS_1 = 12;
+	private static final boolean DEBUG = Config.DEBUG;
 	private final int REQUEST_CODE = 0;
 	private boolean running=false;
 	private int range;
@@ -172,7 +175,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			}
 			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(alarmTime) );
 		}
-		running = Util.isMyServiceRunning(getActivity().getApplicationContext());
+		running = Util.isTrackLocationServiceRunning(getActivity().getApplicationContext());
 		setupButtonText();
 		//tracking
 	}
@@ -335,8 +338,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					trackInfo.setVisibility(View.GONE);
 					trackingOptions.setVisibility(View.GONE);
 					Util.setRunningService(getActivity().getApplicationContext(), false);
-					getActivity().stopService(new Intent(getActivity().getApplicationContext()
-							,LocationManagement.class));
+//					getActivity().stopService(new Intent(getActivity().getApplicationContext(),LocationManagement.class));
+				    stopTrackLocationService();
 					alarmManager.cancel(Util.getPendingAlarmPanicButton(getActivity().getApplicationContext()));
 					running = false;
 
@@ -376,6 +379,12 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		alert.show();
 
 	}
+
+	private void stopTrackLocationService() {
+        if(DEBUG)Log.v("[MainActivity] stopTrackLocationService");
+        StatusScheduleReceiver.stopSheduleService(getActivity());
+        getActivity().stopService(new Intent(getActivity(), TrackLocationService.class));
+    }
 
     //RASTREO
     private void setupButtonText() {
@@ -461,7 +470,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		//showtrackingOptions(false);
 		//cancelamos la alarma antes de ejecutar el servicio por el bot�n de p�nico
 		//si esta corriendo es que corri� por causa de la alarma
-		if(!Util.isMyServiceRunning(getActivity())){
+		if(!Util.isTrackLocationServiceRunning(getActivity())){
 			alarmManager.cancel(Util.getServicePendingIntent(getActivity()));
 		}
 		//corriendo siempre ser� "true" por que al presionar el bot�n de p�nico

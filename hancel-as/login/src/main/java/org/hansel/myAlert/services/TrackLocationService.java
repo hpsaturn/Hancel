@@ -1,4 +1,4 @@
-package org.hansel.myAlert;
+package org.hansel.myAlert.services;
 /*This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -18,6 +18,10 @@ zenyagami@gmail.com
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
+<<<<<<< HEAD:hancel-as/login/src/main/java/org/hansel/myAlert/LocationManagement.java
+=======
+import android.os.AsyncTask;
+>>>>>>> a57021d79e0756eae9329c7f1932184c26fa271c:hancel-as/login/src/main/java/org/hansel/myAlert/services/TrackLocationService.java
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -30,27 +34,22 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import org.hancel.http.HttpUtils;
+import org.hansel.myAlert.Config;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
 
+<<<<<<< HEAD:hancel-as/login/src/main/java/org/hansel/myAlert/LocationManagement.java
+=======
+public class TrackLocationService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
+>>>>>>> a57021d79e0756eae9329c7f1932184c26fa271c:hancel-as/login/src/main/java/org/hansel/myAlert/services/TrackLocationService.java
 
-public class LocationManagement extends Service implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener{
-
-    public static final String TAG = LocationManagement.class.getSimpleName();
+    public static final String TAG = TrackLocationService.class.getSimpleName();
     private long trackId;
     private Handler handlerTime;
     private int interval;
     private GoogleApiClient mGoogleApiClient;
     private Location location;
-    private final Runnable getData =
-            new Runnable() {
-        public void run() {
-
-            getDataFrame();
-        }
-    };
     private LocationRequest locationRequest;
 
     @Override
@@ -66,8 +65,7 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         trackId = Util.getLastTrackId(getApplicationContext());
         Log.v("=== Valor del trackID en LocationManagement onStartCommand: " + trackId);
         startLocationService();
-        handlerTime.postDelayed(getData, 1000);
-        return super.onStartCommand(intent, flags, startId);
+        return Service.START_STICKY;
     }
 
     @Nullable
@@ -80,18 +78,17 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
 
     public void onDestroy(){
         stopLocationService();
-        handlerTime.removeCallbacks(getData);
-        Log.v("=== En el Ondestroy");
+        Log.v("=== En el onDestroy");
     }
 
     public void stopLocationService() {
+        Log.v("=== stopLocationService");
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
-        handlerTime.removeCallbacks(getData);
     }
 
-    private void getDataFrame() {
+    private void sendDataFrame() {
         Log.v("=== Inicia Handler de Rastreo");
         try {
 
@@ -156,7 +153,16 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         " Nueva: " + location.getLatitude() + ", " + location.getLongitude());
         Log.v("=== Distancia entre puntos: " + this.location.distanceTo(location));
         this.location = location;
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                sendDataFrame();
+                return null;
+            }
+        }.execute();
     }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {

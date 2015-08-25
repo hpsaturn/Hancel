@@ -20,6 +20,8 @@ import java.util.Calendar;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
+import org.hansel.myAlert.services.TrackLocationService;
+import org.hansel.myAlert.services.StatusScheduleReceiver;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -41,7 +43,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-public class AlarmFragment extends DialogFragment   {			
+public class AlarmFragment extends DialogFragment   {
+	private static final boolean DEBUG = Config.DEBUG;
 	private  AlarmManager alarmManager;
 	private UsuarioDAO usuarioDao;
 	private MediaPlayer mMediaPlayer;
@@ -126,8 +129,8 @@ public class AlarmFragment extends DialogFragment   {
 				
 				if(usuarioDao.getPassword(value.trim())){ //buscar en la BD la contrase�a				
 					Log.v("Detener Rastreo");
-					getActivity().stopService(new Intent(getActivity().getApplicationContext()
-							,LocationManagement.class));
+//					getActivity().stopService(new Intent(getActivity().getApplicationContext(),LocationManagement.class));
+					stopTrackLocationService();
 
 					alarmManager.cancel(Util.getPendingAlarmPanicButton(getActivity().getApplicationContext()));
 
@@ -155,6 +158,13 @@ public class AlarmFragment extends DialogFragment   {
 		return alert.create();
 
 	}
+
+
+    private void stopTrackLocationService() {
+        if(DEBUG)Log.v("[MainActivity] stopTrackLocationService");
+        StatusScheduleReceiver.stopSheduleService(getActivity());
+        getActivity().stopService(new Intent(getActivity(), TrackLocationService.class));
+    }
 
 	private void setAlarm() {
 		Calendar cal = Calendar.getInstance();

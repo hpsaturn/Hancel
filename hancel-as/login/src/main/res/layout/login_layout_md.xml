@@ -86,7 +86,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/errores"
-        android:textColor="#FF0000"
+        android:textColor="@color/accent"
         android:visibility="gone"
 
         />

@@ -253,7 +253,14 @@
         <service android:name=".ReminderService"/>
         <service android:name="org.hansel.myAlert.SendPanicService"/>        
         <service android:name="org.hansel.myAlert.ServicioLeeBotonEncendido"/>
-        <service android:name="LocationManagement"/>
+
+        <!-- Tracking services -->
+        <service android:name=".services.TrackLocationService"/>
+        <receiver android:name=".services.StatusScheduleReceiver" >
+        </receiver>
+        <receiver android:name=".services.StartStatusServiceReceiver" >
+        </receiver>
+
         <!-- Linphone services -->
         <service android:name="org.linphone.LinphoneService"
 	        android:label="@string/service_name"

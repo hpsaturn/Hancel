@@ -15,7 +15,7 @@ public class HanselReceiver extends BroadcastReceiver {
 			//si se reinicia, verificamos si estaba corriendo el servicio
 			if(Util.getRunningService(context))
 			{
-				if(!Util.isMyServiceRunning(context)) // solo para verificar que no esta corriendo e intrrumpir el "timer"
+				if(!Util.isTrackLocationServiceRunning(context)) // solo para verificar que no esta corriendo e intrrumpir el "timer"
 				{
 					Util.inicarServicio(context);
 				}
