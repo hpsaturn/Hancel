@@ -412,11 +412,9 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 		share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.hancel_track_title));
 
-		Log.v(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
+		String h = getString(R.string.tracking_map_url) +
+                SimpleCrypto.md5(String.valueOf(Util.getLastTrackId(getActivity().getApplicationContext())));
 
-		String h = getString(R.string.tracking_map_url) + Long
-                .toString(Util.getLastTrack(getActivity().getApplicationContext()));
-                //.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
 		String message = getString(R.string.share_trace_message).replace("%map", h);
 
         Log.v("=== Mensaje para traza: " + message);
