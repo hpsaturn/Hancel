@@ -225,8 +225,10 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 	@SuppressWarnings("rawtypes")
 	private void setMobileDataEnabled(Context context, boolean enabled)
-			throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException,
+
+            throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException,
 					NoSuchMethodException, NoSuchFieldException, InvocationTargetException {
+        
         final ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         final Class<?> conmanClass = Class.forName(conman.getClass().getName());
         final Field iConnectivityManagerField = conmanClass.getDeclaredField("mService");
@@ -339,8 +341,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					alarmManager.cancel(Util.getPendingAlarmPanicButton(getActivity().getApplicationContext()));
 					running = false;
 
-					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_stopped), 
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_stopped), Toast.LENGTH_SHORT).show();
 					PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
 
 					return;                  
@@ -349,8 +350,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					//cancelamos alarma para iniciar servicio
 					//alarmManager.cancel(Util.getServicePendingIntent (getActivity()));
 					cancelAlarms();
-                    stopTrackLocationService();
-					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_stopped), 
+					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_stopped),
 							Toast.LENGTH_SHORT).show();
 					showtrackingOptions(false);
 					PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
@@ -360,8 +360,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 				}
 				else{
-					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_wrong_password), 
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_wrong_password), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -389,9 +388,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 		share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.hancel_track_title));
 
-		String h = getString(R.string.tracking_map_url) +
-                SimpleCrypto.md5(String.valueOf(Util.getLastTrackId(getActivity().getApplicationContext())));
-
+		String h = getString(R.string.tracking_map_url) + SimpleCrypto.md5(String.valueOf(Util.getLastTrackId(getActivity().getApplicationContext())));
 		String message = getString(R.string.share_trace_message).replace("%map", h);
 
         Log.v("=== Mensaje para traza: " + message);
@@ -404,14 +401,13 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		alarmManager.cancel(Util.getReminderPendingIntennt(getActivity()));
 		alarmManager.cancel(Util.getStopSchedulePendingIntentWithExtra(getActivity()));
 		showtrackingOptions(false);
+        stopTrackLocationService();
 	}
 	
 
 	private PendingIntent getPendingAlarm()	{
-		Intent intent = new Intent(getActivity().getApplicationContext()
-				, AlarmReceiver.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), RQS_1, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+		Intent intent = new Intent(getActivity().getApplicationContext(), AlarmReceiver.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), RQS_1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		return pendingIntent;
 	}
 
