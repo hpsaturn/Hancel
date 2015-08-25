@@ -291,8 +291,7 @@ public class Util {
 		
 			//obtenemos ultimo track y lo insertamos
 		
-		 Intent i = new Intent(context
-					,TrackLocationService.class);
+		 Intent i = new Intent(context,TrackLocationService.class);
 		 i.putExtra("track", trackId);
 			i.putExtra("minutos", minutos);
 			i.putExtra("userName", usuarioDao.getUser());

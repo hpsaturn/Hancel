@@ -258,8 +258,6 @@
         <service android:name=".services.TrackLocationService"/>
         <receiver android:name=".services.StatusScheduleReceiver" >
         </receiver>
-        <receiver android:name=".services.StartStatusServiceReceiver" >
-        </receiver>
 
         <!-- Linphone services -->
         <service android:name="org.linphone.LinphoneService"
