@@ -44,7 +44,7 @@ import org.linphone.compatibility.Compatibility;
 /**
  * @author mikesaurio
  */
-public class HardwareButtonService extends Service implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class HardwareButtonService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private String TAG = "ServicioGeolocalizacion";
     private String result;
@@ -315,17 +315,14 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             }*/
 
             if (result.equalsIgnoreCase("OK")) {
-                String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar
-                        .getInstance());
-                PreferenciasHancel.setLastPanicAlert(getApplicationContext(),
-                        currentDateandTime);
-                Toast.makeText(getApplicationContext(), getString(R.string.alert_sent),
-                        Toast.LENGTH_LONG).show();
+                String currentDateandTime = Util.getSimpleDateFormatTrack(Calendar.getInstance());
+                PreferenciasHancel.setLastPanicAlert(getApplicationContext(), currentDateandTime);
+                Toast.makeText(getApplicationContext(), getString(R.string.alert_sent), Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             }
 
-            stopSelf();
+            //stopSelf();
         }
 
         private void sendSMS(String mobileNumber, String message) {
@@ -345,8 +342,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             FlipDAO flipDao = new FlipDAO(HardwareButtonService.this);
 
             flipDao.open();
-            Cursor fc = flipDao.getSettingsValueByKey(getResources().getString(
-                    R.string.contacts_flip));
+            Cursor fc = flipDao.getSettingsValueByKey(getResources().getString(R.string.contacts_flip));
 
             if (fc != null && fc.getCount() > 0) {
                 fc.moveToFirst();
@@ -372,9 +368,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             if (c != null && c.getCount() > 0) {
                 c.moveToFirst();
                 for (int i = 0; i < c.getCount(); i++) {
-                    List<String> contactNumbers = Compatibility
-                            .extractContactNumbers(c.getString(0),
-                                    getContentResolver());
+                    List<String> contactNumbers = Compatibility.extractContactNumbers(c.getString(0), getContentResolver());
                     if (contactNumbers != null && contactNumbers.size() > 0)
                         numbers.addAll(contactNumbers);
                     c.moveToNext();
