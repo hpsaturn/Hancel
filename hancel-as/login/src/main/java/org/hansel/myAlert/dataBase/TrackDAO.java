@@ -18,6 +18,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import org.hansel.myAlert.Log.Log;
+
 public class TrackDAO extends SQLiteHelper{
 	
 	/*public static final String DATABASE_NAME ="t_Track";
@@ -66,10 +68,12 @@ public class TrackDAO extends SQLiteHelper{
 		mDb.delete(DBConstants.TABLE_TRACK, null, null);
 	}
 	
-	public long InsertaNewId(String fecha,int id) {
+	public long InsertaNewId(String fecha,long id) {
 		borraTabla();
-		ContentValues newValues = new ContentValues();		
-		newValues.put(DBConstants.ANDROID_ID,id);
+		ContentValues newValues = new ContentValues();
+        Log.v("=== Guardando TrackID en la tabla " + id);
+		newValues.put(DBConstants.KEY_ID, id);
+        newValues.put(DBConstants.ANDROID_ID,id);
 		newValues.put(DBConstants.FECHA, fecha);
 		return super.mDb.insert(DBConstants.TABLE_TRACK, null, newValues);
 	}
@@ -80,6 +84,7 @@ public class TrackDAO extends SQLiteHelper{
 
 		if(c.moveToFirst()){
 			id = c.getLong(0);
+			Log.v("=== Obteniendo TrackID de la tabla " + id);
 		}
 		return id;
 	}

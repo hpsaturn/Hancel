@@ -226,7 +226,7 @@ public class TrackDialog extends FragmentActivity implements OnClickListener, On
                     return;
                 }
 
-                int trackId = (int) (new Date()).getTime();
+                long trackId = (long) (new Date()).getTime();
                 //PreferenciasHancel.setUserId(getApplicationContext(), trackId);
                 //Log.v("=== userID en TrackDialog " + PreferenciasHancel.getUserId(getApplicationContext()));
 

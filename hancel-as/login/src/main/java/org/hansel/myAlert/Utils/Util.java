@@ -42,6 +42,7 @@ import android.content.res.Resources;
 
 import org.hansel.myAlert.ContactInfo;
 import org.hansel.myAlert.LocationManagement;
+import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.ReminderService;
 import org.hansel.myAlert.ServicioLeeBotonEncendido;
@@ -317,12 +318,13 @@ public class Util {
 	   {
 		   return PendingIntent.getService(context, 0, getIntentForService(context), 0);
 	   }
-	   public static void insertNewTrackId(Context context,int id)
+	   public static void insertNewTrackId(Context context, long id)
 	   {
 		   TrackDAO track = new TrackDAO(context);
 		   track.open();
-		   track.InsertaNewId(null,id);
+		   long result = track.InsertaNewId(null,id);
 		   track.close();
+		   Log.v("=== Resultado de la insercion " + result);
 	   }
 
 	   public static long getLastTrackId(Context context){

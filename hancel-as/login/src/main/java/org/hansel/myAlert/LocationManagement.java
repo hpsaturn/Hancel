@@ -61,6 +61,7 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     private GoogleApiClient mGoogleApiClient;
     private Location location;
     private LocationRequest locationRequest;
+    private boolean running;
 
 
     @Override
@@ -69,6 +70,7 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         trackId = Util.getLastTrackId(getApplicationContext());
         Log.v("=== Valor del trackID en LocationManagement onCreate: " + trackId);
         interval = 3;
+        running = false;
     }
 
     @Override
@@ -76,8 +78,11 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         trackId = Util.getLastTrackId(getApplicationContext());
         Log.v("=== Valor del trackID en LocationManagement onStartCommand: " + trackId);
         startLocationService();
-        getDataFrame();
-        handlerTime.postDelayed(getData, Config.DEFAULT_INTERVAL);
+        setupLocationForMap();
+        if(!running){
+            ws = new conexionWS();
+            ws.execute();
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -92,8 +97,10 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     }
 
     public void onDestroy(){
-
+        if(running)
+            ws.cancel(true);
         stopLocationService();
+        Log.v("=== En el Ondestroy");
     }
 
     public void stopLocationService() {
@@ -103,7 +110,8 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         handlerTime.removeCallbacks(getData);
     }
 
-    private final Runnable getData = new Runnable() {
+    private final Runnable getData =
+            new Runnable() {
         public void run() {
 
             getDataFrame();
@@ -115,12 +123,15 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         //ws.execute();
 
         try {
-            HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
-                    , String.valueOf(trackId)
-                    , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
-                    , String.valueOf(location.getLatitude())
-                    , String.valueOf(location.getLongitude())
-                    , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
+
+                HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
+                        , String.valueOf(trackId)
+                        , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
+                        , String.valueOf(location.getLatitude())
+                        , String.valueOf(location.getLongitude())
+                        , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
+
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -168,6 +179,7 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
             ws = new conexionWS();
             ws.execute();
         }*/
+
     }
 
     @Override
@@ -179,6 +191,7 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     public void onLocationChanged(Location location) {
         Log.v("=== Cambió Location.  Anterior: " + this.location.getLatitude() + ", " + this.location.getLongitude() +
         " Nueva: " + location.getLatitude() + ", " + location.getLongitude());
+        Log.v("=== Distancia entre puntos: " + this.location.distanceTo(location));
         this.location = location;
     }
 
@@ -195,15 +208,20 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
             //TODO: Aqui leer el lastLocation del servicio ServicioLeeBotonEncendido
             System.out.println("=== Latitud: " + location.getLatitude());
             System.out.println("=== Longitud: " + location.getLongitude());
+            running =  true;
             try {
-                Log.v("=== userID en Location: " + trackId);
-                HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
-                        , String.valueOf(trackId)
-                        , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
-                        , String.valueOf(location.getLatitude())
-                        , String.valueOf(location.getLongitude())
-                        , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
+                while(true) {
+                    Log.v("=== TrackID en el WS: " + trackId);
+                    HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
+                            , String.valueOf(trackId)
+                            , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
+                            , String.valueOf(location.getLatitude())
+                            , String.valueOf(location.getLongitude())
+                            , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
+                    Thread.sleep(Config.DEFAULT_INTERVAL);
+                }
             } catch (Exception e) {
+                running = false;
             }
             return null;
         }
