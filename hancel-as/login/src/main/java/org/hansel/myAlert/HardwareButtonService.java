@@ -17,6 +17,7 @@ import android.database.Cursor;
 
 import android.os.AsyncTask;
 import android.os.BatteryManager;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -31,9 +32,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.common.api.GoogleApiClient;
 
-import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.FlipDAO;
@@ -45,8 +44,8 @@ import org.linphone.compatibility.Compatibility;
 /**
  * @author mikesaurio
  */
-public class ServicioLeeBotonEncendido extends Service implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class HardwareButtonService extends Service implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
     private String TAG = "ServicioGeolocalizacion";
     private String result;
     private boolean isFirstTime, isSendMesagge, locationActivted;
@@ -61,6 +60,13 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
     private Location lastLocation;
     private SendSMSMessage smsTask;
 
+    private final IBinder mBinder = new HardwareButtonServiceBinder();
+
+    public class HardwareButtonServiceBinder extends Binder {
+        public HardwareButtonService getService() {
+            return HardwareButtonService.this;
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -92,8 +98,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
                 countStart = -1;
                 countTimer = true;
                 startLocationService();
-            }
-            else {
+            } else {
                 //restarting counters after 5 seconds
                 countStart += 1;
                 if (countTimer) {
@@ -105,24 +110,23 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
             Log.d(TAG, "No result available." + e);
         }
 
-        return super.onStartCommand(intent,flags, startId);
+        return super.onStartCommand(intent, flags, startId);
     }
 
     /*
     * Starts the API for location service if its not activated
     */
     private void startLocationService() {
-        if( mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
-            Log.i(TAG,"=== Iniciando servicio de geolocalizacion: NO CONECTADO -> CONECTADO");
+        if (mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
+            Log.i(TAG, "=== Iniciando servicio de geolocalizacion: NO CONECTADO -> CONECTADO");
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
             mGoogleApiClient.connect();
-        }
-        else
-            Log.i(TAG,"=== Iniciando servicio de geolocalizacion: ESTABA CONECTADO");
+        } else
+            Log.i(TAG, "=== Iniciando servicio de geolocalizacion: ESTABA CONECTADO");
         locationActivted = true;
     }
 
@@ -130,12 +134,11 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
      * Stops the location service if its activated
      */
     private void stopLocationService() {
-        if (mGoogleApiClient != null || mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient != null || mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
             Log.i(TAG, "=== Deteniendo servicio de geolocalizacion: CONECTADO -> NO CONECTADO");
-        }
-        else
-            Log.i(TAG,"=== Deteniendo servicio de geolocalizacion: ESTABA DETENIDO");
+        } else
+            Log.i(TAG, "=== Deteniendo servicio de geolocalizacion: ESTABA DETENIDO");
         locationActivted = false;
     }
 
@@ -153,7 +156,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
     /*
      * Starts the asyncronous task to send the sms messages
      */
-    private void startSMSTask(){
+    private void startSMSTask() {
         if (smsTask == null) {
             smsTask = new SendSMSMessage();
             smsTask.execute();
@@ -162,6 +165,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
 
     /**
      * Phone vibration
+     *
      * @param time time for vibration
      */
     public void vibrate(long time) {
@@ -171,6 +175,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
 
     /**
      * Gets the battery level
+     *
      * @return battery level
      */
     public int getBatteryLevel() {
@@ -190,7 +195,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
     @Override
     public IBinder onBind(Intent intent) {
 
-        return null;
+        return mBinder;
     }
 
     @Override
@@ -206,7 +211,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
             this.lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
 
-        if(countTimer) {
+        if (countTimer) {
             startSMSTask();
             vibrate(5000);
             stopLocationService();
@@ -257,11 +262,11 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
             String mapa = "";
 
             if (lastLocation != null) {
-               mapa = getString(R.string.map_provider) + lastLocation.getLatitude() + ","
-                       + lastLocation.getLongitude() + "\n";
+                mapa = getString(R.string.map_provider) + lastLocation.getLatitude() + ","
+                        + lastLocation.getLongitude() + "\n";
             }
 
-            Log.i(TAG,"=== Localizacion : " + mapa);
+            Log.i(TAG, "=== Localizacion : " + mapa);
 
             numbers.addAll(contactsRingNumbers());
             numbers.addAll(getFlipContactNumbers());
@@ -274,14 +279,14 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
                 isSendMesagge = true;
                 String message = getString(R.string.tracking_SMS_message);
                 int fails = 0;
-                message = message.replace("%map", mapa).replace("%battery", getBatteryLevel() +"%");
+                message = message.replace("%map", mapa).replace("%battery", getBatteryLevel() + "%");
 
                 for (int i = 0; i < numbers.size(); i++) {
                     try {
                         String number = numbers.get(i).replaceAll("\\D+", "");
                         if (number != null && number.length() > 0)
                             sendSMS(number, message);
-                    }catch (Exception ex) {
+                    } catch (Exception ex) {
                         Log.i(TAG, "=== Error sending SMS to: " + ex.getMessage());
                         fails += 1;
                     }
@@ -312,8 +317,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
                         currentDateandTime);
                 Toast.makeText(getApplicationContext(), getString(R.string.alert_sent),
                         Toast.LENGTH_LONG).show();
-            }
-            else {
+            } else {
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             }
 
@@ -331,7 +335,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
             }
         }
 
-        private ArrayList<String> getFlipContactNumbers(){
+        private ArrayList<String> getFlipContactNumbers() {
             ArrayList<String> numbers = new ArrayList<String>();
             FlipDAO flipDao = new FlipDAO(LinphoneManager.getInstance()
                     .getContext());
@@ -354,7 +358,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
             return numbers;
         }
 
-        private ArrayList contactsRingNumbers(){
+        private ArrayList contactsRingNumbers() {
             ArrayList<String> numbers = new ArrayList<String>();
             RingDAO ringDao = new RingDAO(getApplication().getApplicationContext());
 
@@ -372,7 +376,7 @@ public class ServicioLeeBotonEncendido extends Service implements GoogleApiClien
                     c.moveToNext();
                 }
             }
-            Log.i(TAG,"=== Contactos en anillos a notificar: " + numbers.size());
+            Log.i(TAG, "=== Contactos en anillos a notificar: " + numbers.size());
             return numbers;
         }
     }

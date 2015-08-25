@@ -45,7 +45,7 @@ import org.hansel.myAlert.services.TrackLocationService;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.ReminderService;
-import org.hansel.myAlert.ServicioLeeBotonEncendido;
+import org.hansel.myAlert.HardwareButtonService;
 import org.hansel.myAlert.StopScheduleActivity;
 import org.hansel.myAlert.dataBase.TrackDAO;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
@@ -226,7 +226,7 @@ public class Util {
 	public static boolean isHardwareAlarmServiceRunning(Context context) {
 		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 		for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-			if(ServicioLeeBotonEncendido.class.getName().equals(service.service.getClassName()))
+			if(HardwareButtonService.class.getName().equals(service.service.getClassName()))
 				return true;
 		}
 		return false;

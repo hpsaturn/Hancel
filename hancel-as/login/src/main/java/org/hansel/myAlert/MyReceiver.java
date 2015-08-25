@@ -18,7 +18,7 @@ public class MyReceiver extends BroadcastReceiver {
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
             screenOff = false;
         }
-        Intent i = new Intent(context, ServicioLeeBotonEncendido.class);
+        Intent i = new Intent(context, HardwareButtonService.class);
         i.putExtra("screen_state", screenOff);
         context.startService(i);
     }
