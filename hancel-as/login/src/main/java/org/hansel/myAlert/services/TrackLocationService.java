@@ -55,7 +55,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId){
         Log.i(TAG, "=== OnStartCommand. Track ID: " + trackId);
-        startLocationService();
         return Service.START_STICKY;
     }
 
