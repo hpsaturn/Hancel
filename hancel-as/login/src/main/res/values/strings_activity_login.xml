@@ -10,7 +10,8 @@
     <string name="error_invalid_email">Correo no válido</string>
     <string name="error_invalid_password">La contraseña es muy corta</string>
     <string name="error_incorrect_password">Contraseña incorrecta</string>
-    <string name="error_field_required">Ingrese un valor</string>
+    <string name="error_field_required">Ingrese tú usuario</string>
+    <string name="error_passw_required">Ingrese tú contraseña</string>
     <string name="error_password_confirm">La contraseña no concuerda</string>
     <string name="error_email_confirm">El correo no concuerda</string>
     <string name="invalid_email">Correo no válido</string>

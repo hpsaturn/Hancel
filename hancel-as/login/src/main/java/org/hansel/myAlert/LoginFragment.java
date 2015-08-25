@@ -1,26 +1,6 @@
 package org.hansel.myAlert;
 
 
-import java.util.Calendar;
-
-import org.hansel.myAlert.Log.Log;
-import org.hansel.myAlert.Utils.PreferenciasHancel;
-import org.hansel.myAlert.Utils.SimpleCrypto;
-import org.hansel.myAlert.Utils.Util;
-import org.hansel.myAlert.dataBase.RingDAO;
-import org.hansel.myAlert.dataBase.UsuarioDAO;
-import org.linphone.LinphoneManager;
-import org.linphone.LinphonePreferences;
-import org.linphone.LinphoneService;
-import org.linphone.core.LinphoneAddress;
-import org.linphone.core.LinphoneAddress.TransportType;
-import org.linphone.core.LinphoneAuthInfo;
-import org.linphone.core.LinphoneCore;
-import org.linphone.core.LinphoneCore.RegistrationState;
-import org.linphone.core.LinphoneCoreException;
-import org.linphone.core.LinphoneCoreFactory;
-import org.linphone.core.LinphoneProxyConfig;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +18,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.hansel.myAlert.Log.Log;
+import org.hansel.myAlert.Utils.SimpleCrypto;
+import org.hansel.myAlert.Utils.Util;
+import org.hansel.myAlert.dataBase.UsuarioDAO;
+import org.linphone.LinphoneManager;
+import org.linphone.LinphonePreferences;
+import org.linphone.LinphoneService;
+import org.linphone.core.LinphoneAddress;
+import org.linphone.core.LinphoneAddress.TransportType;
+import org.linphone.core.LinphoneAuthInfo;
+import org.linphone.core.LinphoneCore;
+import org.linphone.core.LinphoneCore.RegistrationState;
+import org.linphone.core.LinphoneCoreException;
+import org.linphone.core.LinphoneCoreFactory;
+import org.linphone.core.LinphoneProxyConfig;
 
 public class LoginFragment extends Fragment implements OnClickListener {
     private String mUser, mPasswd, mErrores;
@@ -133,7 +129,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
             cancel = true;
         }
         if (TextUtils.isEmpty(mPasswd)) {
-            passwd.setError(getString(R.string.error_field_required));
+            passwd.setError(getString(R.string.error_passw_required));
             focusView = passwd;
             cancel = true;
         }
@@ -222,6 +218,12 @@ public class LoginFragment extends Fragment implements OnClickListener {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(progressBar!=null)progressBar.setVisibility(View.GONE);
     }
 
     /**
