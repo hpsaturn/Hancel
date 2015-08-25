@@ -127,7 +127,7 @@ public class AlarmFragment extends DialogFragment   {
 			public void onClick(DialogInterface dialog, int whichButton) {  
 				String value = input.getText().toString();
 				
-				if(usuarioDao.getPassword(value.trim())){ //buscar en la BD la contrase�a				
+				if(usuarioDao.getPassword(value.trim())){ //buscar en la BD la contraseña
 					Log.v("Detener Rastreo");
 //					getActivity().stopService(new Intent(getActivity().getApplicationContext(),LocationManagement.class));
 					stopTrackLocationService();
