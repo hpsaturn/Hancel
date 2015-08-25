@@ -277,10 +277,10 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 	@Override //RASTREO
 	public void onClick(View v) {
-		if (btnTracking.getText() == getString(R.string.stop_tracking)) {
+		/*if (btnTracking.getText() == getString(R.string.stop_tracking)) {
 			createPasswordDialog(btnTracking);
 			return;
-		}
+		}*/
 		switch (v.getId()) {
 		case R.id.btnCancelCurrentTrack:			
 		case R.id.btnModifyCurrentTrack:
@@ -413,8 +413,9 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 		Log.v(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
 
-		String h = getString(R.string.tracking_map_url) + SimpleCrypto.md5(Integer
-                .toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
+		String h = getString(R.string.tracking_map_url) + Long
+                .toString(Util.getLastTrack(getActivity().getApplicationContext()));
+                //.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
 		String message = getString(R.string.share_trace_message).replace("%map", h);
 
         Log.v("=== Mensaje para traza: " + message);

@@ -34,6 +34,7 @@ import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.Config;
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
+import org.hansel.myAlert.Utils.SimpleCrypto;
 import org.hansel.myAlert.Utils.Util;
 
 
@@ -51,13 +52,11 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     public void onCreate(){
         handlerTime = new Handler();
         trackId = Util.getLastTrackId(getApplicationContext());
-        Log.v("=== Valor del trackID en LocationManagement onCreate: " + trackId);
         interval = 3;
     }
 
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId){
-        trackId = Util.getLastTrackId(getApplicationContext());
         Log.v("=== Valor del trackID en LocationManagement onStartCommand: " + trackId);
         startLocationService();
         return Service.START_STICKY;
@@ -66,7 +65,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        trackId = Util.getLastTrackId(getApplicationContext());
         return null;
 
     }
@@ -84,16 +82,21 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     }
 
     private void sendDataFrame() {
-        Log.v("=== Inicia Handler de Rastreo");
+
+        String track = Long.toString(trackId);
+        Log.v("=== Inicia Handler de Rastreo: " + track);
         try {
 
-                HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
+               /* HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
                         , String.valueOf(trackId)
                         , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
                         , String.valueOf(location.getLatitude())
                         , String.valueOf(location.getLongitude())
-                        , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
-
+                        , String.valueOf(Util.getBatteryLevel(getApplicationContext())));*/
+            HttpUtils.sendTrack(track,track,track
+                    , String.valueOf(location.getLatitude())
+                    , String.valueOf(location.getLongitude())
+                    , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
 
         }catch(Exception e){
             e.printStackTrace();
