@@ -78,11 +78,6 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
         trackId = Util.getLastTrackId(getApplicationContext());
         Log.v("=== Valor del trackID en LocationManagement onStartCommand: " + trackId);
         startLocationService();
-        setupLocationForMap();
-        if(!running){
-            ws = new conexionWS();
-            ws.execute();
-        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -91,7 +86,6 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
     @Override
     public IBinder onBind(Intent intent) {
         trackId = Util.getLastTrackId(getApplicationContext());
-        Log.v("=== Valor del trackID en LocationManagement onBind: " + trackId);
         return null;
 
     }
@@ -172,13 +166,8 @@ public class LocationManagement extends Service implements GoogleApiClient.Conne
 
         Log.v("=== Se conectó: Latitud: " + this.location.getLatitude() + " Longitud: " + this.location.getLongitude());
 
-        //startLocationService();
-        //handlerTime.postDelayed(getData, Config.DEFAULT_INTERVAL);
-        //getDataFrame();
-        /*if (ws == null) {
-            ws = new conexionWS();
-            ws.execute();
-        }*/
+        getDataFrame();
+        handlerTime.postDelayed(getData, 1000);
 
     }
 

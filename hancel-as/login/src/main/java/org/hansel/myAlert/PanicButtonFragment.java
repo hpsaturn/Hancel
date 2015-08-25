@@ -343,6 +343,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 					Toast.makeText(getActivity(), getResources().getString(R.string.tracking_stopped), 
 							Toast.LENGTH_SHORT).show();
 					PreferenciasHancel.setAlarmStartDate(getActivity(), 0);
+
 					return;                  
 				}
 				else if(isOK && btnPanico.getId() == R.id.btnCancelCurrentTrack ){
@@ -373,6 +374,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			}
 		});
 		alert.show();
+
 	}
 
     //RASTREO
