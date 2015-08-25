@@ -134,8 +134,16 @@ public class EditRingFragment extends Fragment {
 						createRing();
 					}
 				} 
-				else 
-					updateRing();											        	        		     
+				else {
+					updateRing();
+				}
+                //TODO: Remove this. This delay is necesary for update time in order to avoid the
+                // null pinter exception while the frame is updating the list of rings.
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				getFragmentManager().popBackStackImmediate();
 			}
 		});
@@ -178,7 +186,7 @@ public class EditRingFragment extends Fragment {
 		addContacts.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Log.d("=== Contactos actuales: " + idContacts.toString());
+				Log.i("EditRing","=== Current contacts: " + idContacts.toString());
 				searchNotIncludedContacts();					
 			}
 		} );
@@ -213,7 +221,7 @@ public class EditRingFragment extends Fragment {
 		contactsList.setOnItemClickListener(new OnItemClickListener() {
 			 public void onItemClick(AdapterView<?> adapter, View view,
 					  int position, long id) {
-				 Log.d("=== Selecciono/deselecciono Contacto");
+				 Log.i("EditRing","=== Selected/unselected Contact");
 				 Contact contactRing = (Contact) adapter.getItemAtPosition(position);
 				 				
 				 if(contactRing.isSelected())
@@ -272,6 +280,9 @@ public class EditRingFragment extends Fragment {
 			if(result == -1)
 				 Toast.makeText(getActivity(), getResources().getString(
 						 R.string.ring_not_modified),Toast.LENGTH_SHORT).show();
+			else
+				Toast.makeText(getActivity(), getResources().getString(
+						R.string.ring_modified),Toast.LENGTH_SHORT).show();
 		}
 		else
 			Toast.makeText(getActivity(), getResources().getString(
@@ -421,7 +432,7 @@ public class EditRingFragment extends Fragment {
 				
 				final float scale = getResources().getDisplayMetrics().density;
 				if(scale <= 1.5f){
-					Log.d("=== Density : " + scale);
+					Log.i("EditRing","=== Density : " + scale);
 					holder.selected.setPadding(holder.selected.getPaddingLeft() + 
 							(int)(26.0f * scale),
 							holder.selected.getPaddingTop(),
@@ -433,7 +444,7 @@ public class EditRingFragment extends Fragment {
 			   
 				holder.selected.setOnClickListener(new View.OnClickListener() { 
 					public void onClick(View v) {
-						Log.d("=== Seleccionado/Deseleccionado Objeto ===");
+						Log.i("EditRing","=== Selected/unselected Object ===");
 						CheckBox cb = (CheckBox) v ; 
 						Contact cr = (Contact)cb.getTag(); 
 						cr.setSelected(cb.isChecked());						
@@ -442,7 +453,7 @@ public class EditRingFragment extends Fragment {
 				        else{
 				        	idContacts.remove(cr.getID());
 				        }
-				        Log.d("=== Estado de idContacts: " + idContacts.toString());
+				        Log.i("EditRing","=== idContacts status: " + idContacts.toString());
 					}    
 				});
 			}
@@ -502,7 +513,7 @@ public class EditRingFragment extends Fragment {
 			while(it.hasNext() && it.next().isSelected()){
 				selected.add(it.next().getID());
 			}
-			Log.d("=== Contacsts Selected : " + selected.toString());
+			Log.i("EditRing","=== Contacsts Selected : " + selected.toString());
 			return selected;
 		}
 

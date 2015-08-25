@@ -495,6 +495,7 @@
     <string name="setup_title_assistant">Asistente de configuración de la cuenta</string>
     <string name="no_contacts_ring">Los anillos deben tener al menos un contacto</string>
     <string name="ring_not_modified">El anillo no fue modificado</string>
+    <string name="ring_modified">Anillo modificado correctamente</string>
     <string name="ring_without_name">El anillo debe tener un nombre</string>
     <string name="pref_journalists">Periodistas</string>
     <string name="pref_journalists_summary">Función para periodisas</string>

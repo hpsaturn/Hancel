@@ -280,6 +280,7 @@ private Handler mHandler = new Handler();
 			}
 
 			ring = rings.get(position);
+			Log.i("RingsFragment", "=== Position " + position);
 			TextView name = (TextView) view.findViewById(R.id.name);
 			name.setText(ring.getName());
 			
