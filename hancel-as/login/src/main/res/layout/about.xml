@@ -9,7 +9,8 @@
         android:id="@+id/sv_about"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="5dp"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -122,7 +123,7 @@
                 android:text="@string/about_survey_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/text_default"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -131,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:gravity="center"
+                android:textSize="12sp"
                 android:text="@string/about_survey_link"
                 android:textColor="@color/text_contrast"
                 android:textStyle="bold" />
@@ -139,7 +141,7 @@
                 android:id="@+id/image_credits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="5dp"
                 android:text="@string/image_credits"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/text_default"
