@@ -82,8 +82,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				.setPositiveButton(getResources().getString(R.string.tracking_send_alert_yes), 
 						new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-                        getActivity().startService(new Intent(getActivity(),
-								SendPanicService.class));
+                        getActivity().startService(new Intent(getActivity(), SendPanicService.class));
 						
 						btnTracking.setText(getString(R.string.stop_tracking));
 						btnTracking.setVisibility(View.VISIBLE);
