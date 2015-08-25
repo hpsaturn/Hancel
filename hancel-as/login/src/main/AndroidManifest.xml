@@ -168,46 +168,6 @@
             </intent-filter>
         </activity>
 
-        <!--<activity android:name="org.linphone.setup.SetupActivity"-->
-        <!--android:theme="@style/NoTitle"-->
-        <!--android:screenOrientation="nosensor">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--</intent-filter>-->
-        <!--</activity>    -->
-        <!-- -->
-        <!--<activity android:name="org.linphone.setup.RemoteProvisioningLoginActivity"-->
-        <!--android:theme="@style/NoTitle"-->
-        <!--android:screenOrientation="nosensor">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-        <!-- -->
-        <!--<activity android:name="org.linphone.setup.RemoteProvisioningActivity"-->
-        <!--android:theme="@style/NoTitle"-->
-        <!--android:screenOrientation="nosensor">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--</intent-filter>-->
-        <!-- -->
-        <!--<intent-filter>-->
-        <!--<data android:scheme="linphone-config" /> &lt;!&ndash; Change if needed &ndash;&gt;-->
-        <!--<action android:name="android.intent.action.VIEW" />-->
-        <!--<category android:name="android.intent.category.BROWSABLE" />-->
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
-        <!-- -->
-        <!--<activity android:name="org.linphone.tutorials.TutorialLauncherActivity"-->
-        <!--android:theme="@style/NoTitle">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--</intent-filter>-->
-        <!--</activity>		-->
-        <!-- End Linphone activities -->
-        <!-- End Activities -->
-
         <!-- Services -->
         <service android:name=".ReminderService" />
         <service android:name="org.hansel.myAlert.SendPanicService" />
@@ -276,15 +236,12 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="org.linphone.BluetoothManager" />
 
         <receiver android:name="org.linphone.PhoneStateChangedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name="KeepAliveHandler" />
 
         <receiver
             android:name="org.linphone.gcm.GCMReceiver"

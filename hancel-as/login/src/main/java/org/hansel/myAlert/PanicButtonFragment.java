@@ -37,6 +37,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.internal.view.ContextThemeWrapper;
 import android.view.View.OnClickListener;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -78,7 +79,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 		btnPanico.setOnClickListener(new View.OnClickListener() {						
 			@Override
 			public void onClick(View v) {
-				AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
+				AlertDialog.Builder alt_bld = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom));
 				alt_bld.setMessage(getResources().getString(R.string.tracking_send_alert))
 				.setCancelable(false)
 				.setPositiveButton(getResources().getString(R.string.tracking_send_alert_yes), new DialogInterface.OnClickListener() {
@@ -316,7 +317,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 	//tracking
 	protected void createPasswordDialog(final Button btnPanico) {
-		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());                 
+		AlertDialog.Builder alert = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom));
 		alert.setTitle(getResources().getString(R.string.tracking_cancel_password));  
 		alert.setMessage(getResources().getString(R.string.tracking_password));                
 
