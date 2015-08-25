@@ -21,7 +21,7 @@
     <string name="ingreseContactos">Es necesario seleccionar al menos un usuario (o más) al que se le enviarán alertas</string>
     <string name="finRegistro"> Ha concluido su registro en Hancel. Pulse Continuar para empezar a utilizar Hancel</string>
     <string name="welcomeHancel">Bienvenido a Hancel</string>
-    <string name="ultima">Última alerta</string>
+    <string name="ultima">ÚLTIMA ALERTA:</string>
     <string name="programarrastreo">Programar rastreo</string>
     <string name="current_track_info">Rastreo programado para:</string>
     <string name="track">Rastreo</string>

@@ -48,6 +48,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 	private TextView txttrackingOptions, actionDescription;//, txtLastPanic;
 	private TrackDate trackDate;
 	private Button btnTracking, btnCancelCurrentTrack, btnModifyCurrentTrack, btnShareCurrentTrack;
+    private LinearLayout panicScreenRoot;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,6 +109,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 				alert.show();				
 			}
 		});
+
+		panicScreenRoot = (LinearLayout)v.findViewById(R.id.panicScreenRoot);
 		
 		//layout for tracking status show (Progress bar)
 		statusTrack = v.findViewById(R.id.statusTrack);
@@ -243,13 +247,14 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 			PreferenciasHancel.setReminderCount(getActivity(), 0);
 			trackDate = (TrackDate) data.getExtras().get(TrackDialog.TRACK_EXTRA);
 			alarmManager.set(AlarmManager.RTC_WAKEUP, trackDate.getStartTimeTrack().getTimeInMillis(), Util.getReminderPendingIntennt(getActivity()));
-			Log.v("Finalizando en: "+ new Date(trackDate.getEndTimeTrack().getTimeInMillis()) );
+			Log.v("Finalizando en: " + new Date(trackDate.getEndTimeTrack().getTimeInMillis()));
 			alarmManager.set(AlarmManager.RTC_WAKEUP, trackDate.getEndTimeTrack().getTimeInMillis(), Util.getStopSchedulePendingIntentWithExtra(getActivity()));
 			//guardamos inicio de alarma
 			PreferenciasHancel.setAlarmStartDate(getActivity(), trackDate.getEndTimeTrack().getTimeInMillis());
 			Log.v("=== OnActivityResult");
-			showtrackingOptions(true);
+			showtrackingOptions(false); //TRUE
 			txttrackingOptions.setText(Util.getSimpleDateFormatTrack(trackDate.getStartTimeTrack()));
+            panicScreenRoot.postInvalidate();
 		}
 		else{
 			super.onActivityResult(requestCode, resultCode, data);
