@@ -48,6 +48,20 @@
             android:textColor="@color/text_contrast" />
 
         <TextView
+            android:id="@+id/iconEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="110dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:text="idRing"
+            android:textSize="5dp"
+            android:textColor="@color/white"
+            android:background="@drawable/edit_row" />
+
+        <TextView
             android:id="@+id/iconDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

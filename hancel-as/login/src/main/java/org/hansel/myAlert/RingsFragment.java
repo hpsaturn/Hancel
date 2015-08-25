@@ -43,7 +43,7 @@ import android.app.AlertDialog;
  * @author izel
  */
 
-public class RingsFragment extends Fragment implements OnClickListener, OnItemClickListener {
+public class RingsFragment extends Fragment implements OnClickListener{//, OnItemClickListener {
 
 private Handler mHandler = new Handler();
 	
@@ -83,7 +83,7 @@ private Handler mHandler = new Handler();
         save.setOnClickListener(this);
                 
         ringsList = (ListView) view.findViewById(R.id.ringsList);
-		ringsList.setOnItemClickListener(this);
+		//ringsList.setOnItemClickListener(this);
         newRing.setOnClickListener(this);
 
         changeRingsAdapter();
@@ -140,8 +140,8 @@ private Handler mHandler = new Handler();
 		} 
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+	//@Override
+	public void itemClick(AdapterView<?> adapter, View view, int position){//}, long id) {
 		Ring ring = (Ring) adapter.getItemAtPosition(position);
 		MainActivity.instance().editRing(ring);
 	}
@@ -273,6 +273,9 @@ private Handler mHandler = new Handler();
 				holder.icon.setImageBitmap(bitmapUnknown);
 				holder.iconDelete = (TextView) view.findViewById(R.id.iconDelete);
 				holder.iconDelete.setText(ring.getId());
+				holder.iconEdit = (TextView) view.findViewById(R.id.iconEdit);
+				holder.iconEdit.setText(ring.getId());
+                holder.position = position;
 				addListeners(holder);
 			}
 
@@ -301,7 +304,8 @@ private Handler mHandler = new Handler();
 			return view;
 		}
 
-		private void addListeners(ViewHolder holder){
+		private void addListeners(final ViewHolder holder){
+            int position = holder.position;
 			holder.selected.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					CheckBox cb = (CheckBox) v;
@@ -344,6 +348,17 @@ private Handler mHandler = new Handler();
 					alert.show();
 				}
 			});
+
+            holder.iconEdit.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    /*RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
+                            .getContext());
+                    ringDao.open();
+                    ringDao.getRing(idDelete);
+                    itemClick(this, position);*/
+                    //((MainActivity)getActivity()).editRing(ring);
+                }
+            });
 		}
 				
 		@Override
@@ -366,7 +381,8 @@ private Handler mHandler = new Handler();
 			ImageView icon;
 			TextView ringName;
 			TextView iconDelete;
-			   
+			TextView iconEdit;
+            int position;
 		}
 	}
 }
