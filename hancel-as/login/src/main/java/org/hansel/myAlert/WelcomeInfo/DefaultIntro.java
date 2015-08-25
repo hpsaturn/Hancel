@@ -18,20 +18,20 @@ public class DefaultIntro extends AppIntro2 {
     @Override
     public void init(Bundle savedInstanceState) {
 
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name), getString(R.string.slide0), R.drawable.slide0, Color.parseColor("#2196F3")));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide1), R.drawable.slide1,Color.parseColor("#222222")));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide2), R.drawable.slide2,Color.parseColor("#00BCD4")));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide3), R.drawable.slide3,Color.parseColor("#5C6BC0")));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide4), R.drawable.slide4,Color.parseColor("#4CAF50")));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide5), R.drawable.slide5,Color.parseColor("#452356")));
+//        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name), getString(R.string.slide0), R.drawable.slide0, Color.parseColor("#2196F3")));
+//        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide1), R.drawable.slide1,Color.parseColor("#222222")));
+//        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide2), R.drawable.slide2,Color.parseColor("#00BCD4")));
+//        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide3), R.drawable.slide3,Color.parseColor("#5C6BC0")));
+//        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide4), R.drawable.slide4,Color.parseColor("#4CAF50")));
+//        addSlide(AppIntroFragment.newInstance(getString(R.string.app_name),getString(R.string.slide5), R.drawable.slide5,Color.parseColor("#452356")));
 
 
-//        addSlide(SlideItem.newInstance(R.string.slide0, R.drawable.slide0));
-//        addSlide(SlideItem.newInstance(R.string.slide1, R.drawable.slide1));
-//        addSlide(SlideItem.newInstance(R.string.slide2, R.drawable.slide2));
-//        addSlide(SlideItem.newInstance(R.string.slide3, R.drawable.slide3));
-//        addSlide(SlideItem.newInstance(R.string.slide4, R.drawable.slide4));
-//        addSlide(SlideItem.newInstance(R.string.slide5, R.drawable.slide5));
+        addSlide(SlideItem.newInstance(R.string.slide0, R.drawable.slide0));
+        addSlide(SlideItem.newInstance(R.string.slide1, R.drawable.slide1));
+        addSlide(SlideItem.newInstance(R.string.slide2, R.drawable.slide2));
+        addSlide(SlideItem.newInstance(R.string.slide3, R.drawable.slide3));
+        addSlide(SlideItem.newInstance(R.string.slide4, R.drawable.slide4));
+        addSlide(SlideItem.newInstance(R.string.slide5, R.drawable.slide5));
 
         // OPTIONAL METHODS
         // Override bar/separator color
