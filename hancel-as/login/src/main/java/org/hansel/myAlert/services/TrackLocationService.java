@@ -85,15 +85,21 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     private void sendDataFrame() {
         Log.v("=== Inicia Handler de Rastreo");
+        long trackId = Util.getLastTrack(getApplicationContext());
         try {
 
-                HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
+               /* HttpUtils.sendTrack(PreferenciasHancel.getDeviceId(getApplicationContext())
                         , String.valueOf(trackId)
                         , String.valueOf(PreferenciasHancel.getUserId(getApplicationContext()))
                         , String.valueOf(location.getLatitude())
                         , String.valueOf(location.getLongitude())
-                        , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
-
+                        , String.valueOf(Util.getBatteryLevel(getApplicationContext())));*/
+            HttpUtils.sendTrack(String.valueOf(trackId)
+                    , String.valueOf(trackId)
+                    , String.valueOf(trackId)
+                    , String.valueOf(location.getLatitude())
+                    , String.valueOf(location.getLongitude())
+                    , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
 
         }catch(Exception e){
             e.printStackTrace();
