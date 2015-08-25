@@ -41,7 +41,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     public static final String TAG = TrackLocationService.class.getSimpleName();
     private String trackId;
     private Handler handlerTime;
-    private int interval;
     private GoogleApiClient mGoogleApiClient;
     private Location location;
     private LocationRequest locationRequest;
@@ -50,7 +49,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     public void onCreate(){
         handlerTime = new Handler();
         trackId = String.valueOf(Util.getLastTrackId(getApplicationContext()));
-        interval = 3;
     }
 
     @Override
@@ -80,12 +78,11 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     }
 
     private void sendDataFrame() {
-        Log.i(TAG,"=== Tracking Handler started. ID: " + trackId);
+        Log.i(TAG,"=== Sending Tracking to server. Track ID: " + trackId);
         try {
-            HttpUtils.sendTrack(trackId,trackId,trackId
-                    , String.valueOf(location.getLatitude())
-                    , String.valueOf(location.getLongitude())
-                    , String.valueOf(Util.getBatteryLevel(getApplicationContext())));
+            HttpUtils.sendTrack(trackId,trackId,trackId, String.valueOf(location.getLatitude()),
+                    String.valueOf(location.getLongitude()),
+                    String.valueOf(Util.getBatteryLevel(getApplicationContext())));
 
         }catch(Exception e){
             e.printStackTrace();

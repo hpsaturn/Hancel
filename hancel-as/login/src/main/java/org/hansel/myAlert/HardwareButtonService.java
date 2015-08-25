@@ -63,7 +63,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     private final IBinder mBinder = new HardwareButtonServiceBinder();
 
     public void sendAlertSMS() {
-
+        startLocationService();
     }
 
     public class HardwareButtonServiceBinder extends Binder {
@@ -215,11 +215,6 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             this.lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
 
-        if (countTimer) {
-            startSMSTask();
-            vibrate(5000);
-            stopLocationService();
-        }
     }
 
     @Override
@@ -230,6 +225,11 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     @Override
     public void onLocationChanged(Location location) {
         this.lastLocation = location;
+        if (countTimer) {
+            startSMSTask();
+            vibrate(5000);
+            stopLocationService();
+        }
     }
 
     @Override
