@@ -414,8 +414,8 @@ public class PanicButtonFragment extends Fragment implements OnClickListener{
 
 		Log.v(Integer.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
 
-		String h = getString(R.string.tracking_map_url) + SimpleCrypto.md5(Long
-                .toString(Util.getLastTrack(getActivity().getApplicationContext())));
+		String h = getString(R.string.tracking_map_url) + Long
+                .toString(Util.getLastTrack(getActivity().getApplicationContext()));
                 //.toString(PreferenciasHancel.getUserId(getActivity().getApplicationContext())));
 		String message = getString(R.string.share_trace_message).replace("%map", h);
 
