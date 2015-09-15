@@ -588,7 +588,6 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		changeCurrentFragment(FragmentsAvailable.ABOUT, null);
 	}
 
-	
 	public void displayChat(String sipUri) {
 		if (getResources().getBoolean(R.bool.disable_chat)) {
 			return;
