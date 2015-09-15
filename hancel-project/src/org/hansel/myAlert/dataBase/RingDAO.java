@@ -1,5 +1,10 @@
 package org.hansel.myAlert.dataBase;
+<<<<<<< HEAD
 import org.linphone.mediastream.Log;
+=======
+import java.util.Iterator;
+import java.util.List;
+>>>>>>> second_stage
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -63,6 +68,7 @@ public class RingDAO extends SQLiteHelper {
 				whereArgs) > 0;
 	}
 	
+<<<<<<< HEAD
 	public long addRing(String name, boolean always){
 		int alwaysNotify = always==true?1:0;
 		ContentValues newValues = new ContentValues();
@@ -85,5 +91,90 @@ public class RingDAO extends SQLiteHelper {
 		String whereClause = "_ID_RING = ?1";
 		return super.mDb.delete(DBConstants.TABLE_CONTACS_RINGS, whereClause,
 				new String[] {idRing}) > 0;
+=======
+	public long addRing(String name, boolean notify){
+		int ringNotify = notify==true?1:0;
+		ContentValues newValues = new ContentValues();
+		newValues.put("name", name);
+		newValues.put("notify", String.valueOf(ringNotify));		
+		return super.mDb.insert(DBConstants.TABLE_RINGS, null, newValues);		
+	}
+	
+	public long updateRing(String id, String name, boolean notify, List<String> contacts){
+		int result = -1;
+		ContentValues values = new ContentValues();
+		values.put("NAME", name);
+		values.put("NOTIFY",notify==true?1:0);
+		
+		String whereClause = "_ID = " + id;
+		super.mDb.beginTransaction();
+		try{
+			result = super.mDb.update(DBConstants.TABLE_RINGS, values, whereClause, 
+				null);
+			
+			whereClause = "_ID_RING = " + id;
+			super.mDb.delete(DBConstants.TABLE_CONTACS_RINGS, whereClause, null);
+		
+			ContentValues insertValues = new ContentValues();
+			insertValues.put("_ID_RING", id);
+			Iterator <String> it = contacts.iterator();
+		
+			while(it.hasNext()){
+				insertValues.put("_ID_CONTACT", it.next());
+				super.mDb.insert(DBConstants.TABLE_CONTACS_RINGS, null, insertValues);
+			}
+			
+			mDb.setTransactionSuccessful();
+		}
+		finally {
+			mDb.endTransaction();			
+		}
+		return result;
+	}
+	
+	public long updateNotification(String id, boolean notify){
+		int result = -1;
+		ContentValues values = new ContentValues();
+		values.put("NOTIFY",notify==true?1:0);
+		
+		String whereClause = "_ID = " + id;
+		super.mDb.beginTransaction();
+		try{
+			result = super.mDb.update(DBConstants.TABLE_RINGS, values, whereClause, 
+				null);
+								
+			mDb.setTransactionSuccessful();
+		}
+		finally {
+			mDb.endTransaction();			
+		}
+		return result;
+	}
+	
+	public long deleteRing(String idRing){
+		String whereClause1 = "_ID_RING = " + idRing;
+		String whereClause2 = "_id = " + idRing;
+		long result = 0;
+		
+		super.mDb.beginTransaction();			
+		try{
+			result = super.mDb.delete(DBConstants.TABLE_CONTACS_RINGS, 
+				whereClause1, null);
+			result += super.mDb.delete(DBConstants.TABLE_RINGS, 
+						whereClause2, null);		
+			super.mDb.setTransactionSuccessful();
+		}
+		finally {
+			super.mDb.endTransaction();				
+		}
+		return result;
+	}
+	
+	public Cursor getNotificationContactsId(){		
+		Cursor c = super.mDb.rawQuery("select _ID_CONTACT from " + 
+				DBConstants.TABLE_RINGS + "," + DBConstants.TABLE_CONTACS_RINGS 
+				+ " where notify = 1 and _ID_RING = _ID", null);
+		return c;				
+>>>>>>> second_stage
 	}
 }

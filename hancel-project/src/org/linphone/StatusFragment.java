@@ -66,7 +66,10 @@ public class StatusFragment extends Fragment {
 	private ListView sliderContentAccounts;
 	private TableLayout callStats;
 	private SlidingDrawer drawer;
+<<<<<<< HEAD
 //	private LinearLayout allAccountsLed;
+=======
+>>>>>>> second_stage
 	private Runnable mCallQualityUpdater;
 	private boolean isInCall, isAttached = false;
 	private Timer mTimer;
@@ -82,7 +85,10 @@ public class StatusFragment extends Fragment {
 		callQuality = (ImageView) view.findViewById(R.id.callQuality);
 		encryption = (ImageView) view.findViewById(R.id.encryption);
 		background = (ImageView) view.findViewById(R.id.background);
+<<<<<<< HEAD
 //		allAccountsLed = (LinearLayout) view.findViewById(R.id.moreStatusLed);
+=======
+>>>>>>> second_stage
 		callStats = (TableLayout) view.findViewById(R.id.callStats);
 		
 		drawer = (SlidingDrawer) view.findViewById(R.id.statusBar);
@@ -171,7 +177,12 @@ public class StatusFragment extends Fragment {
 				callStats.setVisibility(View.VISIBLE);
 				LinphoneCall call = LinphoneManager.getLc().getCurrentCall();
 				initCallStatsRefresher(call, callStats);
+<<<<<<< HEAD
 			} else if (!isInCall) {
+=======
+			} 
+			else if (!isInCall) {
+>>>>>>> second_stage
 				sliderContentAccounts.setVisibility(View.VISIBLE);
 				AccountsListAdapter adapter = new AccountsListAdapter();
 				sliderContentAccounts.setAdapter(adapter);
@@ -207,6 +218,7 @@ public class StatusFragment extends Fragment {
 			}
 		});
 	}
+<<<<<<< HEAD
 	
 //	private void setMiniLedsForEachAccount() {
 //		if (allAccountsLed == null)
@@ -229,6 +241,15 @@ public class StatusFragment extends Fragment {
 		try {
 			LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
 			boolean defaultAccountConnected = (isDefaultAccount && lc != null && lc.getDefaultProxyConfig() != null && lc.getDefaultProxyConfig().isRegistered()) || !isDefaultAccount;
+=======
+
+	private int getStatusIconResource(LinphoneCore.RegistrationState state, boolean isDefaultAccount) {
+		try {
+			LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
+			boolean defaultAccountConnected = (isDefaultAccount && lc != null &&
+					lc.getDefaultProxyConfig() != null && 
+					lc.getDefaultProxyConfig().isRegistered()) || !isDefaultAccount;
+>>>>>>> second_stage
 			if (state == RegistrationState.RegistrationOk && defaultAccountConnected) {
 				return R.drawable.led_connected;
 			} else if (state == RegistrationState.RegistrationProgress) {
@@ -369,15 +390,28 @@ public class StatusFragment extends Fragment {
 
 			if (isVideoEnabled) {
 				background.setVisibility(View.GONE);
+<<<<<<< HEAD
 			} else {
+=======
+			} 
+			else {
+>>>>>>> second_stage
 				background.setVisibility(View.VISIBLE);
 			}
 			
 			if (mediaEncryption == MediaEncryption.SRTP || (mediaEncryption == MediaEncryption.ZRTP && call.isAuthenticationTokenVerified())) {
 				encryption.setImageResource(R.drawable.security_ok);
+<<<<<<< HEAD
 			} else if (mediaEncryption == MediaEncryption.ZRTP && !call.isAuthenticationTokenVerified()) {
 				encryption.setImageResource(R.drawable.security_pending);
 			} else {
+=======
+			} 
+			else if (mediaEncryption == MediaEncryption.ZRTP && !call.isAuthenticationTokenVerified()) {
+				encryption.setImageResource(R.drawable.security_pending);
+			} 
+			else {
+>>>>>>> second_stage
 				encryption.setImageResource(R.drawable.security_ko);
 			}
 			
@@ -494,7 +528,11 @@ public class StatusFragment extends Fragment {
 		};
 		mTimer.scheduleAtFixedRate(mTask, 0, 1000);
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> second_stage
 	class AccountsListAdapter extends BaseAdapter {
 		private List<CheckBox> checkboxes;
 		
@@ -564,7 +602,12 @@ public class StatusFragment extends Fragment {
 			View view = null;			
 			if (convertView != null) {
 				view = convertView;
+<<<<<<< HEAD
 			} else {
+=======
+			} 
+			else {
+>>>>>>> second_stage
 				view = LayoutInflater.from(getActivity()).inflate(R.layout.accounts, parent, false);
 			}
 
@@ -605,12 +648,22 @@ public class StatusFragment extends Fragment {
 			// Force led if account is disabled
 			if (!LinphonePreferences.instance().isAccountEnabled(accountIndex)) {
 				status.setImageResource(getStatusIconResource(RegistrationState.RegistrationNone, false));
+<<<<<<< HEAD
 			} else {
+=======
+			} 
+			else {
+>>>>>>> second_stage
 				if (LinphonePreferences.instance().getDefaultAccountIndex() == accountIndex) {
 					isDefault.setChecked(true);
 					isDefault.setEnabled(false);
 					status.setImageResource(getStatusIconResource(lpc.getState(), true));
+<<<<<<< HEAD
 				} else {
+=======
+				} 
+				else {
+>>>>>>> second_stage
 					status.setImageResource(getStatusIconResource(lpc.getState(), false));
 				}
 			}

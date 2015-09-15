@@ -110,8 +110,12 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
         allContacts.setEnabled(onlyDisplayLinphoneContacts);
         linphoneContacts.setEnabled(!allContacts.isEnabled());
 		
+<<<<<<< HEAD
         
 		clearSearchField = (ImageView) view.findViewById(R.id.clearSearchField);
+=======
+        clearSearchField = (ImageView) view.findViewById(R.id.clearSearchField);
+>>>>>>> second_stage
 		clearSearchField.setOnClickListener(this);
 		
 		searchField = (EditText) view.findViewById(R.id.searchField);
@@ -242,7 +246,12 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		if (editOnClick) {
 			editConsumed = true;
 			MainActivity.instance().editContact(contact, sipAddressToAdd);
+<<<<<<< HEAD
 		} else {
+=======
+		} 
+		else {
+>>>>>>> second_stage
 			lastKnownPosition = contactsList.getFirstVisiblePosition();
 			MainActivity.instance().displayContact(contact, onlyDisplayChatAddress);
 		}

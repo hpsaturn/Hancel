@@ -36,7 +36,11 @@ import android.widget.TextView;
  * @author Sylvain Berfini
  */
 public class AboutFragment extends Fragment implements OnClickListener {
+<<<<<<< HEAD
 	private FragmentsAvailable about = FragmentsAvailable.ABOUT_INSTEAD_OF_CHAT;
+=======
+	private FragmentsAvailable about = FragmentsAvailable.ABOUT;//_INSTEAD_OF_CHAT;
+>>>>>>> second_stage
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class AboutFragment extends Fragment implements OnClickListener {
 		
 		TextView aboutText = (TextView) view.findViewById(R.id.AboutText);
 		try {
+<<<<<<< HEAD
 			aboutText.setText(String.format(getString(R.string.about_text), getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
 		} catch (NameNotFoundException e) {
 			Log.e(e, "cannot get version name");
@@ -56,6 +61,17 @@ public class AboutFragment extends Fragment implements OnClickListener {
 		View issue = view.findViewById(R.id.exit);
 		issue.setOnClickListener(this);
 		issue.setVisibility(View.VISIBLE);
+=======
+			aboutText.setText(String.format(getString(R.string.about_licence), getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
+		} 
+		catch (NameNotFoundException e) {
+			Log.e(e, "cannot get version name");
+		}
+
+		/*View issue = view.findViewById(R.id.exit);
+		issue.setOnClickListener(this);
+		issue.setVisibility(View.VISIBLE);*/
+>>>>>>> second_stage
 		
 		return view;
 	}
@@ -75,13 +91,21 @@ public class AboutFragment extends Fragment implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
+<<<<<<< HEAD
 		if (MainActivity.isInstanciated()) {
+=======
+		/*if (MainActivity.isInstanciated()) {
+>>>>>>> second_stage
 
 			if (getResources().getBoolean(R.bool.enable_log_collect)) {
 				LinphoneUtils.collectLogs(MainActivity.instance(), getString(R.string.about_bugreport_email));
 			} else {
 				MainActivity.instance().exit();
 			}
+<<<<<<< HEAD
 		}
+=======
+		}*/
+>>>>>>> second_stage
 	}
 }

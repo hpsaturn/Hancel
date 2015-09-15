@@ -20,7 +20,11 @@ import static android.content.Intent.ACTION_MAIN;
 import org.linphone.LinphonePreferences;
 import org.linphone.LinphoneService;
 import org.linphone.mediastream.Log;
+<<<<<<< HEAD
 import org.linphone.setup.RemoteProvisioningActivity;
+=======
+//import org.linphone.setup.RemoteProvisioningActivity;
+>>>>>>> second_stage
 
 import android.app.Activity;
 import android.content.Intent;
@@ -77,13 +81,22 @@ public class HancelLauncherActivity  extends Activity {
 	protected void onServiceReady() {
 		final Class<? extends Activity> classToStart;
 		//TODO: Revisar!!!!
+<<<<<<< HEAD
 		if (getResources().getBoolean(R.bool.display_sms_remote_provisioning_activity) && LinphonePreferences.instance().isFirstRemoteProvisioning()) {
+=======
+		/*if (getResources().getBoolean(R.bool.display_sms_remote_provisioning_activity) && LinphonePreferences.instance().isFirstRemoteProvisioning()) {
+>>>>>>> second_stage
 			classToStart = RemoteProvisioningActivity.class;
 		} 
 		else {
 			//classToStart = MainActivity.class;
 			classToStart = Login.class;
+<<<<<<< HEAD
 		}
+=======
+		}*/
+		classToStart = MainActivity.class;
+>>>>>>> second_stage
 		
 		LinphoneService.instance().setActivityToLaunchOnIncomingReceived(classToStart);
 		mHandler.postDelayed(new Runnable() {

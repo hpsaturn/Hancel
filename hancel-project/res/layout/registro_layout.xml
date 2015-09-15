@@ -3,7 +3,6 @@
     tools:context=".Login" >
 
     
-<!-- Login progress -->
 <LinearLayout
 	android:id="@+id/reg_status"
 	android:layout_width="wrap_content"
@@ -29,7 +28,6 @@
 	
 </LinearLayout>
 
-<!-- Login form -->
 
 <LinearLayout
 	android:id="@+id/reg1"
@@ -53,16 +51,14 @@
 				
 				<TextView
 					android:id="@+id/textView1"
-					style="@style/TextoCabecera"
-					android:text="@string/registro1"
-					android:textColor="#FF7B1E"
-					android:textAppearance="?android:attr/textAppearanceLarge" />
+					style="@style/title"
+					android:text="@string/registro1" />
 				
-				<TextView
+				<!-- TextView
 					android:id="@+id/textView2"
 					style="@style/TextoInstruccion"
 					android:textColor="#FFFFFF"
-					android:text="@string/ingreseDatos" />
+					android:text="@string/ingreseDatos" /-->
 				
 			</LinearLayout>
 	
@@ -75,8 +71,7 @@
 		
 	
 		<RelativeLayout
-			android:layout_width="fill_parent"
-			android:background="#F5F5F5"
+			android:layout_width="fill_parent"			
 			android:layout_height="wrap_content" >
 			
 			<LinearLayout
@@ -88,22 +83,24 @@
 				android:paddingLeft="10dp"
 				android:paddingRight="10dp"
 				android:paddingTop="10dp"
+				android:scrollbars="vertical"
             	>	
 				
 				<TextView
-					style="@style/labelText"
+					style="@style/labelText" 
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:textColor="#000000"
 					android:text="@string/Usuario" />
 				
 				<EditText
-					android:id="@+id/reg_fullname"
-					style="@style/inputText"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="10dp"
-					android:singleLine="true" />
+				    android:id="@+id/reg_fullname"
+				    style="@style/inputText"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
+				    android:layout_marginBottom="5dp"
+				    android:singleLine="true" />
 				
 				<!-- Password Label -->
 				
@@ -111,7 +108,6 @@
 					style="@style/labelText"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:textColor="#000000"
 					android:text="@string/Contrasenia" />
 				
 				<EditText
@@ -120,7 +116,28 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="0dp"
+					android:layout_marginBottom="5dp"
+					android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
 					android:password="true"
+					android:singleLine="true" />
+				
+				<TextView
+					style="@style/labelText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/Contrasenia2" />
+				
+				<EditText
+					android:id="@+id/reg_password2"
+					style="@style/inputText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="0dp"
+					android:layout_marginBottom="5dp"
+					android:password="true"
+					android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
 					android:singleLine="true" />
 				
 				<!-- Email Label -->
@@ -129,7 +146,6 @@
 					style="@style/labelText"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:textColor="#000000"
 					android:text="@string/Email" />
 				
 				<EditText
@@ -138,6 +154,26 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="10dp"
+					android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
+					android:singleLine="true" />
+				
+				<!-- Confirm Email Label -->
+				
+				<TextView
+					style="@style/labelText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/EmailConfirm" />
+				
+				<EditText
+					android:id="@+id/reg_email_confirm"
+					style="@style/inputText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="10dp"
+					android:textCursorDrawable="@null"                     
+                    android:imeOptions="actionDone"
 					android:singleLine="true" />
 				
 				<!-- Register Button -->
@@ -160,23 +196,23 @@
 
 	<LinearLayout
 		android:id="@+id/actions1"
-		style="@style/panelAcciones"
-		android:background="#F5F5F5"
+		style="@style/panelAcciones"		
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" >
 		
 		<Button
 			android:id="@+id/btnCancelar"
-			style="@style/button"
-			android:layout_width="wrap_content"
+			style="@style/backButton"	
 			android:layout_height="wrap_content"
+			android:layout_width="110dp"		
 			android:layout_weight="1"
 			android:text="@android:string/cancel" />
+		
 		<Button
 			android:id="@+id/btnRegister"
-			style="@style/button"
-			android:layout_width="wrap_content"
+			style="@style/button"	
 			android:layout_height="wrap_content"
+			android:layout_width="110dp"		
 			android:layout_weight="1"
 			android:text="@string/Continuar" />
 	</LinearLayout>

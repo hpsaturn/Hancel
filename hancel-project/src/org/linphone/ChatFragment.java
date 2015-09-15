@@ -173,8 +173,14 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 					pickImage();
 				}
 			});
+<<<<<<< HEAD
         } else {
         	sendImage.setEnabled(false);
+=======
+        } 
+        else {
+        	sendImage.setVisibility(View.INVISIBLE);
+>>>>>>> second_stage
         }
   
         cancelUpload = (ImageView) view.findViewById(R.id.cancelUpload);
@@ -371,11 +377,27 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 	}
 
 	private void displayChatHeader(String displayName, String pictureUri) {
+<<<<<<< HEAD
 		if (displayName == null && getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
         	contactName.setText(LinphoneUtils.getUsernameFromAddress(sipUri));
 		} else if (displayName == null) {
 			contactName.setText(sipUri);
 		} else {
+=======
+		String hancelName = sipUri/*.replace(getResources().getString(R.string
+				.default_account_prefix),"")*/.replace("@","").replace
+				(getResources().getString(R.string.default_domain),"").replace("sip","");
+		
+		if (displayName == null && getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
+			contactName.setText(hancelName);
+			//contactName.setText(LinphoneUtils.getUsernameFromAddress(sipUri));
+		} 
+		else if (displayName == null) {
+			contactName.setText(hancelName);
+			//contactName.setText(sipUri);
+		} 
+		else {
+>>>>>>> second_stage
 			contactName.setText(displayName);
 		}
 
@@ -609,8 +631,14 @@ public class ChatFragment extends Fragment implements OnClickListener, LinphoneC
 		boolean isNetworkReachable = lc == null ? false : lc.isNetworkReachable();
 		
 		if (chatRoom != null && messageToSend != null && messageToSend.length() > 0 
+<<<<<<< HEAD
 				&& isNetworkReachable) {			
 			LinphoneChatMessage chatMessage = chatRoom.createLinphoneChatMessage(messageToSend,sipUri,State.Delivered, 300,false,false);
+=======
+				&& isNetworkReachable) {	
+			Log.i("=== URI que enviara el mensaje de chat: " + sipUri);
+			LinphoneChatMessage chatMessage = chatRoom.createLinphoneChatMessage(messageToSend,sipUri,State.InProgress, 300,false,false);
+>>>>>>> second_stage
 			Log.i("==textMessage: " + chatMessage.getText());
 			chatRoom.sendMessage(messageToSend);//chatMessage, this);
 			

@@ -41,6 +41,11 @@ public class Contact implements Serializable {
 	private List<String> numerosOrAddresses;
 	private LinphoneFriend friend;
 	
+<<<<<<< HEAD
+=======
+	private boolean selected;
+	
+>>>>>>> second_stage
 
 	public Contact(String id, String name) {
 		super();
@@ -88,6 +93,17 @@ public class Contact implements Serializable {
 	public Bitmap getPhoto() {
 		return photo;
 	}
+<<<<<<< HEAD
+=======
+	
+	public boolean isSelected(){
+		return selected;
+	}
+	
+	public void setSelected(boolean selected){
+		this.selected = selected;
+	}
+>>>>>>> second_stage
 
 	public List<String> getNumerosOrAddresses() {
 		if (numerosOrAddresses == null)
@@ -95,8 +111,13 @@ public class Contact implements Serializable {
 		return numerosOrAddresses;
 	}
 		
+<<<<<<< HEAD
 	public void refresh(ContentResolver cr) {
 		this.numerosOrAddresses = Compatibility.extractContactNumbersAndAddresses(id, cr);
+=======
+	public void refresh(ContentResolver cr/*, String prefix*/) {
+		this.numerosOrAddresses = Compatibility.extractContactNumbersAndAddresses(id, cr);//, prefix);
+>>>>>>> second_stage
 		this.name = Compatibility.refreshContactName(cr, id);
 	}
 }

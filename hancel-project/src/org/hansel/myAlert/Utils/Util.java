@@ -64,7 +64,7 @@ public class Util {
 	
 	public static final int RQS_PANIC =10;
 	public static final String PHONE_NO_SIM ="SinRed";
-	//URL de rrastreo, se debe mejorar el método post
+	
 	public static final String URL_REGISTRO = "http://www.hanselapp.com/xmlrpc/registro.php?";
 	public static final String URL_LOGIN = "http://www.hanselapp.com/xmlrpc/login.php?";
 	public static final String URL_PANICO = "http://www.hanselapp.com/xmlrpc/panico.php?";
@@ -124,7 +124,7 @@ public class Util {
 	            if (addresses != null) {
 	                Address returnedAddress = addresses.get(0);
 	                StringBuilder strReturnedAddress = new StringBuilder(
-	                        "Dirección:\n");
+	                        "DirecciÃ³n:\n");
 	                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
 	                    strReturnedAddress
 	                            .append(returnedAddress.getAddressLine(i)).append(
@@ -136,7 +136,7 @@ public class Util {
 	            }
 	        } catch (IOException e) {
 	            e.printStackTrace();
-	            return "Sin localización Determinada";
+	            return "Sin localizaciÃ³n Determinada";
 	        }
 	    }
 	 public static Vector<String> splitVector(String original, String separator) {
@@ -185,7 +185,7 @@ public class Util {
 	 public static int getTrackingMinutes(Context context)
 	 {
 		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-	        String res =  prefs.getString("pref_key_intervalo","5");
+	        String res =  prefs.getString("pref_key_intervalo","3");
 	        int minutos;
 	        try
 			{
@@ -212,6 +212,7 @@ public class Util {
 				  , intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		  return pendingIntent;
 	  }
+	  
 	 public static boolean isMyServiceRunning(Context context) {
 		    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 		    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -311,27 +312,32 @@ public class Util {
 	   public static void insertNewTrackId(Context context,int id)
 	   {
 		   TrackDAO track = new TrackDAO(context);
-			  track.open();
-			 track.InsertaNewId(null,id);
-			  track.close();
+		   track.open();
+		   track.InsertaNewId(null,id);
+		   track.close();
 	   }
 	   public static int getLastTrackId(Context context)
 	   {
 		   TrackDAO track;
-			 track = new TrackDAO(context.getApplicationContext());
-			  track.open();
-			int trackID=(int) track.Insertar("algo");
-			track.close();
-			return trackID;
+		   track = new TrackDAO(context.getApplicationContext());
+		   track.open();
+		   int trackID=(int) track.Insertar("algo");
+		   track.close();
+		   return trackID;
 			
 	   }
-	   public static PendingIntent getReminderPendingIntennt(Context context)
-	   {
+	   
+	   /**
+	    * Recordatorio de notificacion de que todo esta bien
+	    * @param context
+	    * @return
+	    */
+	   public static PendingIntent getReminderPendingIntennt(Context context){
 		   Intent i = new Intent(context,ReminderService.class);
 		   PendingIntent pi =  PendingIntent.getService(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-		   return pi;
-		   
+		   return pi;		  
 	   }
+	   
 	   public static PendingIntent getStopSchedulePendingIntentWithExtra(Context context)
 	   {
 		   Intent i = new Intent(context,StopScheduleActivity.class);

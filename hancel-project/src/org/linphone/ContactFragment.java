@@ -18,6 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 import java.io.InputStream;
+<<<<<<< HEAD
+=======
+import org.hansel.myAlert.Log.Log;
+>>>>>>> second_stage
 
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
@@ -28,7 +32,11 @@ import org.linphone.ui.AvatarWithShadow;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+<<<<<<< HEAD
 import android.util.Log;
+=======
+
+>>>>>>> second_stage
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,8 +59,18 @@ public class ContactFragment extends Fragment implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			if (MainActivity.isInstanciated()) {
+<<<<<<< HEAD
 				MainActivity.instance().setAddresGoToDialerAndCall(v.getTag().toString(), contact.getName(), contact.getPhotoUri());
 			}
+=======
+				String callId = v.getTag().toString();
+				MainActivity.instance().setAddresGoToDialerAndCall(
+						callId, contact.getName(), 
+						contact.getPhotoUri());
+			}
+			else;
+				Log.v("=== NO INSTANCIADO");
+>>>>>>> second_stage
 		}
 	};
 	
@@ -82,7 +100,12 @@ public class ContactFragment extends Fragment implements OnClickListener {
 	
 	public void changeDisplayedContact(Contact newContact) {
 		contact = newContact;
+<<<<<<< HEAD
 		contact.refresh(getActivity().getContentResolver());
+=======
+		contact.refresh(getActivity().getContentResolver());/*, getResources()
+				.getString(R.string.default_account_prefix));*/
+>>>>>>> second_stage
 		displayContact(inflater, view);
 	}
 	
@@ -105,8 +128,21 @@ public class ContactFragment extends Fragment implements OnClickListener {
 			View v = inflater.inflate(R.layout.contact_control_row, null);
 			
 			String displayednumberOrAddress = numberOrAddress;
+<<<<<<< HEAD
 			if (numberOrAddress.startsWith("sip:")) {
 				displayednumberOrAddress = displayednumberOrAddress.replace("sip:", "");
+=======
+			Log.v("==== NumberOrAddress: " + numberOrAddress);
+			
+			if (numberOrAddress.startsWith("sip:")) {
+				//displayednumberOrAddress = displayednumberOrAddress.replace("sip:", "");
+				displayednumberOrAddress = displayednumberOrAddress.replace("sip:", "")
+						/*.replace(getResources().getString(
+								R.string.default_account_prefix),"")*/.replace(
+										getResources().getString(
+												R.string.default_domain),"").replace("@", ""); 
+				Log.v("=== NumberOrAddress a mostrar en Contacto: " + displayednumberOrAddress);			
+>>>>>>> second_stage
 			}
 			
 			TextView tv = (TextView) v.findViewById(R.id.numeroOrAddress);
@@ -114,15 +150,25 @@ public class ContactFragment extends Fragment implements OnClickListener {
 			tv.setSelected(true);
 			
 			if (!displayChatAddressOnly) {
+<<<<<<< HEAD
 				v.findViewById(R.id.dial).setOnClickListener(dialListener);
 				v.findViewById(R.id.dial).setTag(displayednumberOrAddress);
 			} 
+=======
+				Log.v("=== displayChatAddressOnly : " + displayChatAddressOnly);
+				v.findViewById(R.id.dial).setOnClickListener(dialListener);
+				//v.findViewById(R.id.dial).setTag(displayednumberOrAddress);
+				Log.v("=== displayChatAddressOnly + numberOrAddress: " + numberOrAddress);
+				v.findViewById(R.id.dial).setTag(numberOrAddress);
+			} 			
+>>>>>>> second_stage
 			else {
 				v.findViewById(R.id.dial).setVisibility(View.GONE);
 			}
 
 			v.findViewById(R.id.start_chat).setOnClickListener(chatListener);
 			LinphoneProxyConfig lpc = LinphoneManager.getLc().getDefaultProxyConfig();
+<<<<<<< HEAD
 			
 			Log.d("Hancel", "----- " + displayednumberOrAddress);
 			
@@ -138,10 +184,39 @@ public class ContactFragment extends Fragment implements OnClickListener {
 				v.findViewById(R.id.start_chat).setTag(tag);
 			} 
 			else {
+=======
+						
+			
+			if (lpc != null) {
+				Log.v("=== LPC no es NULL");
+				/*if (!displayednumberOrAddress.startsWith("sip:")) {
+					numberOrAddress = "sip:" + displayednumberOrAddress;
+				}*/
+				if (!numberOrAddress.startsWith("sip:" ))/*+ getResources().getString(R.string.default_account_prefix)))*/ {
+					numberOrAddress = "sip:" // + getResources().getString(R.string.default_account_prefix)
+							+ numberOrAddress;
+				}
+				Log.v("=== LPC numberOrAddress: " + numberOrAddress);
+				String tag = numberOrAddress;
+				if (!numberOrAddress.contains("@")) {
+					tag = numberOrAddress + "@" + lpc.getDomain();
+					Log.v("=== LPC + chat + tag1: " + tag);
+				}
+				Log.v("=== Iniciando chat con " + tag);
+				v.findViewById(R.id.start_chat).setTag(tag);
+				Log.v("=== LPC + chat + tag2: " + tag);
+			} 
+			else {				
+				Log.v("=== Iniciando chat con " + numberOrAddress);
+>>>>>>> second_stage
 				v.findViewById(R.id.start_chat).setTag(numberOrAddress);
 			}
 			
 			final String finalNumberOrAddress = numberOrAddress;
+<<<<<<< HEAD
+=======
+			Log.v("=== Valor de FinalNumberOrAddress: " + finalNumberOrAddress);
+>>>>>>> second_stage
 			ImageView friend = (ImageView) v.findViewById(R.id.addFriend);
 			if (getResources().getBoolean(R.bool.enable_linphone_friends) && !displayChatAddressOnly) {
 				friend.setVisibility(View.VISIBLE);
@@ -190,7 +265,12 @@ public class ContactFragment extends Fragment implements OnClickListener {
 			}
 		}
 		
+<<<<<<< HEAD
 		contact.refresh(getActivity().getContentResolver());
+=======
+		contact.refresh(getActivity().getContentResolver());/*, getResources().
+				getString(R.string.default_account_prefix)); */
+>>>>>>> second_stage
 		if (contact.getName() == null || contact.getName().equals("")) {
 			//Contact has been deleted, return
 			MainActivity.instance().displayContacts(false);

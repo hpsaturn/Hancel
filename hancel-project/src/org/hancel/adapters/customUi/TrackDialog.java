@@ -18,8 +18,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import org.hansel.myAlert.R;
+import org.hansel.myAlert.Log.Log;
+import org.hansel.myAlert.Utils.PreferenciasHancel;
+import org.hansel.myAlert.Utils.SimpleCrypto;
+import org.hansel.myAlert.Utils.Util;
 
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
@@ -92,7 +97,7 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 	private void setCurrentDate()
 	{
 		Calendar cal = Calendar.getInstance();
-		//guardamos datos iniciales para usarlos después
+		//guardamos datos iniciales para usarlos despuï¿½s
 		trackDate.setStartDateTrack(cal);
 		trackDate.setStartTimeTrack(cal);
 		
@@ -151,12 +156,10 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 		}
 	}
 
-	private SimpleDateFormat getTimeSimpleFormat()
-	{
+	private SimpleDateFormat getTimeSimpleFormat(){
 		return new SimpleDateFormat("hh:mm aa");
 	}
-	private SimpleDateFormat getDateSimpleFormat()
-	{
+	private SimpleDateFormat getDateSimpleFormat(){
 		return new SimpleDateFormat("MMMM dd, yyyy",Locale.getDefault());
 	}
 	
@@ -168,19 +171,17 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 			Calendar cal = (Calendar)data.getExtras().get("DATE");
 			Calendar end =Calendar.getInstance();
 			end.setTimeInMillis(cal.getTimeInMillis());
-			if(isDateStart)
-			{
+			if(isDateStart){
 				v= btnStartTrackingDate;
 				trackDate.setStartDateTrack(cal);
 				end.set(Calendar.MINUTE,   trackDate.getStartTimeTrack().get(Calendar.MINUTE));
 				end.set(Calendar.HOUR, trackDate.getStartTimeTrack().get(Calendar.HOUR));
 				end.set(Calendar.SECOND, trackDate.getStartTimeTrack().get(Calendar.SECOND));
 				
-				trackDate.setStartTimeTrack(end);
-				
-			}else
-			{
-				v=btnEndTrackingDate;
+				trackDate.setStartTimeTrack(end);				
+			}
+			else{
+				v = btnEndTrackingDate;
 				trackDate.setEndDateTrack(cal);
 				end.set(Calendar.MINUTE,   trackDate.getEndTimeTrack().get(Calendar.MINUTE));
 				end.set(Calendar.HOUR, trackDate.getEndTimeTrack().get(Calendar.HOUR));
@@ -219,12 +220,16 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 		case R.id.btnAceptDateTrack:
 			long timeMilis  = trackDate.getStartTimeTrack().getTimeInMillis() + (ONE_MINUTE_IN_MILLIS * 10);
 			Calendar stop = Calendar.getInstance();
-			stop.setTimeInMillis(timeMilis);
-			
+			stop.setTimeInMillis(timeMilis);			
+						
 		   if(trackDate.getEndTimeTrack().compareTo(stop)!=1  || trackDate.getEndDateTrack().compareTo(stop) !=1 ){
 			   Toast.makeText(getApplicationContext(), "La hora para detener debe  ser mayor a los minutos configurados", Toast.LENGTH_SHORT).show();
 			   return;
 		   }
+		   int trackId = (int )(Math.random() * 99999 + 1);
+		   PreferenciasHancel.setUserId(getApplicationContext(),trackId);
+		   Log.v("=== userID en TrackDialog " + PreferenciasHancel.getUserId(getApplicationContext()));
+		   
 			setupResult();
 			break;
 		case R.id.btnCancelDateTrack:
@@ -252,21 +257,19 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 		cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 		Calendar end =Calendar.getInstance();
 		end.setTimeInMillis(cal.getTimeInMillis());
+				
+		Button v;
 		
-		
-		Button v ;
-		if(isDateStart)
-		{
+		if(isDateStart){
 			v= btnStartTrackingDate;
 			trackDate.setStartDateTrack(cal);
 			end.set(Calendar.MINUTE,   trackDate.getStartTimeTrack().get(Calendar.MINUTE));
 			end.set(Calendar.HOUR, trackDate.getStartTimeTrack().get(Calendar.HOUR));
 			end.set(Calendar.SECOND, trackDate.getStartTimeTrack().get(Calendar.SECOND));
 			
-			trackDate.setStartTimeTrack(end);
-			
-		}else
-		{
+			trackDate.setStartTimeTrack(end);			
+		}
+		else{
 			v=btnEndTrackingDate;
 			trackDate.setEndDateTrack(cal);
 			end.set(Calendar.MINUTE,   trackDate.getEndTimeTrack().get(Calendar.MINUTE));
@@ -275,8 +278,7 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 			trackDate.setEndTimeTrack(end);
 		}
 		SimpleDateFormat sdf = getDateSimpleFormat();
-		v.setText(sdf.format(cal.getTime()));
-		
+		v.setText(sdf.format(cal.getTime()));		
 	}
 
 	@Override
@@ -289,18 +291,15 @@ OnTimeSetListener, OnCancelListener, android.content.DialogInterface.OnClickList
 		
 		SimpleDateFormat sdf = getTimeSimpleFormat();
 		Button v;
-		if(isTimeStart)
-		{
+		if(isTimeStart){
 			v= btnStartTrackingHour;
-			trackDate.setStartDateTrack(cal);
-			
-		}else
-		{
+			trackDate.setStartDateTrack(cal);		
+		}
+		else{
 			v=btnEndTrackingHour;
 			trackDate.setEndTimeTrack(cal);
 		}
-		v.setText(sdf.format(cal.getTime()));
-		
+		v.setText(sdf.format(cal.getTime()));		
 	}
 
 	@Override

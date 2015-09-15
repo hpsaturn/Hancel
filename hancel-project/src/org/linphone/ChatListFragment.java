@@ -230,19 +230,40 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			hideAndDisplayMessageIfNoChat();
 		}
 		else if (id == R.id.newDiscussion) {
+<<<<<<< HEAD
 			String sipUri = fastNewChat.getText().toString();
 			if (sipUri.equals("")) {
 				MainActivity.instance().displayContacts(true);
 			} else {
+=======
+			Log.d("=== New Discussion");
+			String sipUri = fastNewChat.getText().toString();
+			if (sipUri.equals("")) {
+				MainActivity.instance().displayContacts(true);
+			} 
+			else {
+>>>>>>> second_stage
 				if (!LinphoneUtils.isSipAddress(sipUri)) {
 					if (LinphoneManager.getLc().getDefaultProxyConfig() == null) {
 						return;
 					}
+<<<<<<< HEAD
 					sipUri = sipUri + "@" + LinphoneManager.getLc().getDefaultProxyConfig().getDomain();
+=======
+					//TODO test					
+					sipUri = /*getResources().getString(R.string.default_account_prefix) + */
+							sipUri + "@" + LinphoneManager.getLc()
+							.getDefaultProxyConfig().getDomain();
+					Log.d("=== SipUri " + sipUri);
+>>>>>>> second_stage
 				}
 				if (!LinphoneUtils.isStrictSipAddress(sipUri)) {
 					sipUri = "sip:" + sipUri;
 				}
+<<<<<<< HEAD
+=======
+				Log.d("=== Antes de DisplayChat " +  sipUri);
+>>>>>>> second_stage
 				MainActivity.instance().displayChat(sipUri);
 			}
 		}
@@ -252,9 +273,18 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		String sipUri = (String) view.getTag();
 		
+<<<<<<< HEAD
 		if (MainActivity.isInstanciated() && !isEditMode) {
 			MainActivity.instance().displayChat(sipUri);
 		} else if (MainActivity.isInstanciated()) {
+=======
+		Log.d("=== SIPURI" + sipUri);
+		
+		if (MainActivity.isInstanciated() && !isEditMode) {
+			MainActivity.instance().displayChat(sipUri);
+		} 
+		else if (MainActivity.isInstanciated()) {
+>>>>>>> second_stage
 			MainActivity.instance().removeFromChatList(sipUri);
 			MainActivity.instance().removeFromDrafts(sipUri);
 			
@@ -344,15 +374,28 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			
 			if (convertView != null) {
 				view = convertView;
+<<<<<<< HEAD
 			} else {
+=======
+			} 
+			else {
+>>>>>>> second_stage
 				view = mInflater.inflate(R.layout.chatlist_cell, parent, false);
 				
 			}
 			String contact;
 			boolean isDraft = false;
+<<<<<<< HEAD
 			if (position >= mDrafts.size()) {
 				contact = mConversations.get(position - mDrafts.size());
 			} else {
+=======
+			
+			if (position >= mDrafts.size()) {
+				contact = mConversations.get(position - mDrafts.size());
+			} 
+			else {
+>>>>>>> second_stage
 				contact = mDrafts.get(position);
 				isDraft = true;
 			}
@@ -360,9 +403,17 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			int unreadMessagesCount = MainActivity.instance().getChatStorage().getUnreadMessageCount(contact);
 			
 			LinphoneAddress address;
+<<<<<<< HEAD
 			try {
 				address = LinphoneCoreFactory.instance().createLinphoneAddress(contact);
 			} catch (LinphoneCoreException e) {
+=======
+			
+			try {
+				address = LinphoneCoreFactory.instance().createLinphoneAddress(contact);
+			} 
+			catch (LinphoneCoreException e) {
+>>>>>>> second_stage
 				Log.e("Chat view cannot parse address",e);
 				return view;
 			}
@@ -372,6 +423,10 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			if (useNativeAPI) {
 				LinphoneChatRoom chatRoom = LinphoneManager.getLc().getOrCreateChatRoom(contact);
 				LinphoneChatMessage[] history = chatRoom.getHistory(20);
+<<<<<<< HEAD
+=======
+				
+>>>>>>> second_stage
 				if (history != null && history.length > 0) {
 					for (int i = history.length - 1; i >= 0; i--) {
 						LinphoneChatMessage msg = history[i];
@@ -381,7 +436,12 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 						}
 					}
 				}
+<<<<<<< HEAD
 			} else {
+=======
+			} 
+			else {
+>>>>>>> second_stage
 				List<ChatMessage> messages = MainActivity.instance().getChatMessages(contact);
 				if (messages != null && messages.size() > 0) {
 					int iterator = messages.size() - 1;
@@ -409,9 +469,20 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 			} 
 			else if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(contact)) {
 				contact = LinphoneUtils.getUsernameFromAddress(contact);
+<<<<<<< HEAD
 			} 
 			
 			sipUri.setText(address.getDisplayName() == null ? contact : address.getDisplayName());
+=======
+				contact = contact/*.replace(getResources()
+						.getString(R.string.default_account_prefix),"")
+						*/.replace("@","").replace(getResources().getString(R.string.default_domain), "");
+				Log.d("=== CONTACT: " + contact);
+			} 
+			
+			sipUri.setText(address.getDisplayName() == null ? contact : address.getDisplayName());
+			
+>>>>>>> second_stage
 			if (isDraft) {
 				view.findViewById(R.id.draft).setVisibility(View.VISIBLE);
 			}

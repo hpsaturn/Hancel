@@ -15,8 +15,12 @@
 
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:windowBackground">@drawable/background</item>
+		<item name="android:textSize">16sp</item>        
+		<item name="android:textColor">#ff0000</item>       
+		
     </style>
-
+    
+		    
     <style name="MyTabPageIndicator" parent="Widget.TabPageIndicator">
 
         <!-- <item name="android:gravity">center</item> -->
@@ -30,22 +34,28 @@
         <item name="android:maxLines">1</item>
         -->
     </style>
+    
+    <style name="ProgressBar.Horizontal.Indeterminate" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal">
+         <item name="android:layout_width">wrap_content</item>
+         <item name="android:layout_height">wrap_content</item>
+      </style>
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/header</item>
-        <item name="background">@drawable/header</item>
+        <item name="android:background">#CCCCCC</item>
+        <!-- item name="background">@drawable/header</item-->
+        <item name="background">#CCCCCC</item>
         <item name="android:height">50dp</item>
         <item name="titleTextStyle">@style/myTheme.ActionBar.TitleTextStyle</item>
     </style>
 
     <style name="myTheme.ActionBar.TitleTextStyle" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">#000000</item>
         <item name="android:textSize">30sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textStyle">bold</item>        
     </style>
 
     <style name="AppBaseTheme" parent="android:Theme.Light">
@@ -92,11 +102,54 @@
     </style>
 
     <style name="button">
-        <item name="android:background">@drawable/button</item>
+        <item name="android:background">@drawable/hancel_button</item>
+        <item name="android:layout_width">110dp</item>
+		<item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">15sp</item>        
+        <item name="android:padding">10dp</item>        
+        
+    </style>
+    
+    <style name="button_link">
+        <item name="android:background">@color/background_app</item>
+        <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/orange_hancel</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>        
+        <item name="android:padding">10dp</item>        
+        
+    </style>
+    
+    <style name="backButton">
+        <item name="android:background">@drawable/hancel_secondary_button</item>
+        <item name="android:layout_width">110dp</item>
+		<item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">10dp</item>        
+    </style>
+    
+    <style name="myTheme.Preference" parent="@style/Holo.Theme">        
+        <item name="android:textColor">@color/background_header</item>        
+    </style>
+    
+    
+    <style name="inner_app_button">
+        <item name="android:background">#C0C0C0</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:padding">5dp</item>
-        <item name="android:minHeight">48dp</item>
+        <item name="android:minHeight">25dp</item>
+    </style>
+    
+    <style name="inner_back_app_button">
+        <item name="android:background">@drawable/secondary</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:minHeight">25dp</item>
     </style>
 
     <style name="linkText">
@@ -105,18 +158,28 @@
     </style>
 
     <style name="labelText">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tittle_color</item>
+    </style>
+    
+    <style name="descriptionText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/tittle_color</item>
+    </style>
+    
+    <style name="headerBarText">
         <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tittle_color</item>
     </style>
 
     <style name="inputText">
         <item name="android:textColor">@color/blue_hancel</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>        
-        <item name="android:textCursorDrawable">@color/blue_hancel</item>
-        <item name="android:background">@drawable/input</item>       
-        <item name="android:height">48dp</item>
+        <item name="android:textSize">18sp</item>
+		<item name="android:ems">8</item>      
+		<item name="android:gravity">center</item>
+        <item name="android:background">#BFCCCCCC</item>  
     </style>
 
     <style name="listas">
@@ -135,25 +198,74 @@
         <item name="android:background">#FF0000</item>
     </style>
 
-    <style name="TextoCabecera">
+    <style name="title">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tittle_color</item>
+        <item name="android:textAppearance">@style/TextAppearance.Sherlock.Widget.ActionMode.Title</item>
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
     <style name="TextoInstruccion">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">#999999</item>
+        <item name="android:gravity">center</item> 
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#CCCCCC</item>
+    </style>    
+    
+     <style name="HancelInstruccion">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>             
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+    
+    <style name="registeredTittle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>             
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tittle_color</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+    </style>
+    
+    <style name="registeredTxt">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>             
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+    
+    <style name="link">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">right</item>             
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColorLink">@color/blue_hancel</item>
+        <item name="android:background">@drawable/background</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_marginTop">20dp</item>
     </style>
 
     <style name="panelAcciones">
         <item name="android:padding">10dp</item>
-        <item name="android:background">@drawable/bgpanelacciones</item>
+        <item name="android:background">@color/background_app</item>        
     </style>
 
     <style name="panelScroll">
@@ -161,13 +273,24 @@
         <item name="android:layout_marginTop">10dp</item>
     </style>
     <style name="iconoBienvenida">
-        <item name="android:layout_width">180dp</item>
-        <item name="android:layout_height">180dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">fill_vertical</item>
+    </style>
+    
+    <style name="logoBienvenida">
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">110dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="logoLogin">        
         <item name="android:gravity">center</item>
     </style>
     
     <style name="myCirclePageIndicator">
-    	<item name="fillColor">@color/orange_hancel</item>
+    	<item name="fillColor">@color/white</item>
+    	<item name="radius">7dp</item>
 	</style>
 
 	<!--Linphone styles -->

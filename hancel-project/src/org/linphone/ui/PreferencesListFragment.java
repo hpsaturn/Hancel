@@ -20,7 +20,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+<<<<<<< HEAD
 import org.hansel.myAlert.R;
+=======
+import org.hansel.myAlert.MainActivity;
+import org.hansel.myAlert.R;
+import org.linphone.LinphoneService;
+>>>>>>> second_stage
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -65,7 +71,11 @@ public class PreferencesListFragment extends ListFragment {
     private int xmlResID;
     
     public PreferencesListFragment(int xmlId) {
+<<<<<<< HEAD
         this.xmlResID = xmlId;
+=======
+        this.xmlResID = xmlId;        
+>>>>>>> second_stage
     }
     
     // Must be provided

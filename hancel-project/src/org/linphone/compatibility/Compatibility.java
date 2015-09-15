@@ -72,11 +72,29 @@ public class Compatibility {
 		}
 	}
 	
+<<<<<<< HEAD
 	public static List<String> extractContactNumbersAndAddresses(String id, ContentResolver cr) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			return ApiNinePlus.extractContactNumbersAndAddresses(id, cr);
 		} else {
 			return ApiFivePlus.extractContactNumbersAndAddresses(id, cr);
+=======
+	public static List<String> extractContactNumbersAndAddresses(String id, ContentResolver cr){//, String prefix) {
+		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
+			return ApiNinePlus.extractContactNumbersAndAddresses(id, cr);//, prefix);
+		} 
+		else {
+			return ApiFivePlus.extractContactNumbersAndAddresses(id, cr);//, prefix);
+		}
+	}
+	
+	public static List<String> extractContactNumbers(String id, ContentResolver cr){//, String prefix) {
+		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
+			return ApiNinePlus.extractContactNumbers(id, cr);//, prefix);
+		} 
+		else {
+			return ApiFivePlus.extractContactNumbers(id, cr);//, prefix);
+>>>>>>> second_stage
 		}
 	}
 	
@@ -101,7 +119,20 @@ public class Compatibility {
 			return ApiNinePlus.getContactsInCursor(cr, in);
 		} 
 		else {
+<<<<<<< HEAD
 			return ApiFivePlus.getContactsCursor(cr);
+=======
+			return ApiFivePlus.getContactsInCursor(cr, in);
+		}
+	}
+		
+	public static Cursor getContactsNotInCursor(ContentResolver cr, String in) {
+		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
+			return ApiNinePlus.getContactsNotInCursor(cr, in);
+		} 
+		else {
+			return ApiFivePlus.getContactsNotInCursor(cr, in);
+>>>>>>> second_stage
 		}
 	}
 	
@@ -261,7 +292,12 @@ public class Compatibility {
 	public static void updateSipAddressForContact(ArrayList<ContentProviderOperation> ops, String oldSipAddress, String newSipAddress, String contactID) {
 		if (Version.sdkAboveOrEqual(Version.API09_GINGERBREAD_23)) {
 			ApiNinePlus.updateSipAddressForContact(ops, oldSipAddress, newSipAddress, contactID);
+<<<<<<< HEAD
 		} else {
+=======
+		} 
+		else {
+>>>>>>> second_stage
 			ApiFivePlus.updateSipAddressForContact(ops, oldSipAddress, newSipAddress, contactID);
 		}
 	}

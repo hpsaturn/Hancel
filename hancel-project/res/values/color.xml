@@ -8,8 +8,16 @@
     <color name="white">#FFffffff</color>       
     <color name="blue_hancel">#FF008186</color>   
     <color name="orange_hancel">#FFff7B1E</color>
+<<<<<<< HEAD
     <color name="background_app">#FFf5f5f5</color>
   	<color name="background_header">#FF454d4d</color>  	  	
+=======
+    <color name="background_app">#FFEFF5F8</color>
+  	<color name="background_header">#454d4d</color> 
+  	
+  	<color name="text_color">#454d4d</color> 
+  	<color name="tittle_color">#2C3131</color>   	
+>>>>>>> second_stage
         
     <!-- Linphone values -->
     <color name="main_app_color">#FF008186</color>    

@@ -25,6 +25,10 @@ import org.hansel.myAlert.R;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneCoreException;
 import org.linphone.core.LinphoneCoreFactory;
+<<<<<<< HEAD
+=======
+import org.linphone.mediastream.Log;
+>>>>>>> second_stage
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
@@ -44,6 +48,7 @@ public class HistoryDetailFragment extends Fragment implements OnClickListener {
 	private ImageView dialBack, chat, addToContacts;
 	private View view;
 	private TextView contactName, contactAddress, callDirection, time, date;
+<<<<<<< HEAD
 	private String sipUri, displayName, pictureUri;
 	
 	@Override
@@ -52,6 +57,19 @@ public class HistoryDetailFragment extends Fragment implements OnClickListener {
 		sipUri = getArguments().getString("SipUri");
 		displayName = getArguments().getString("DisplayName");
 		pictureUri = getArguments().getString("PictureUri");
+=======
+	private String sipUri, displayName, pictureUri, hancelName;
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {		
+		sipUri = getArguments().getString("SipUri");
+		displayName = getArguments().getString("DisplayName");
+		pictureUri = getArguments().getString("PictureUri");
+		hancelName = sipUri/*.replace(getResources().getString(R.string
+				.default_account_prefix),"")*/.replace("@","").replace
+				(getResources().getString(R.string.default_domain),"").replace("sip:", "hancel:");
+>>>>>>> second_stage
 		String status = getArguments().getString("CallStatus");
 		String callTime = getArguments().getString("CallTime");
 		String callDate = getArguments().getString("CallDate");
@@ -86,12 +104,31 @@ public class HistoryDetailFragment extends Fragment implements OnClickListener {
 		return view;
 	}
 	
+<<<<<<< HEAD
 	private void displayHistory(String status, String callTime, String callDate) {
 		contactName.setText(displayName == null ? sipUri : displayName);
 		if (getResources().getBoolean(R.bool.never_display_sip_addresses)) {
 			contactAddress.setText(LinphoneUtils.getUsernameFromAddress(sipUri));
 		} else {
 			contactAddress.setText(sipUri);
+=======
+	private void displayHistory(String status, String callTime, String callDate) {		
+		//contactName.setText(displayName == null ? hancelName : displayName);
+		
+		if(displayName != null /*&& !displayName.contains(getResources().getString(
+				R.string.default_account_prefix))*/){
+			contactName.setText(displayName);
+		}
+		else{
+			contactName.setText(hancelName.replace("hancel:", ""));//setText(sipUri);
+		}
+		
+		if (getResources().getBoolean(R.bool.never_display_sip_addresses)) {
+			contactAddress.setText(LinphoneUtils.getUsernameFromAddress(sipUri));
+		} 
+		else {			
+			contactAddress.setText(hancelName);//setText(sipUri);
+>>>>>>> second_stage
 		}
 		
 		if (status.equals("Missed")) {
@@ -112,6 +149,10 @@ public class HistoryDetailFragment extends Fragment implements OnClickListener {
 			lAddress = LinphoneCoreFactory.instance().createLinphoneAddress(sipUri);
 			LinphoneUtils.findUriPictureOfContactAndSetDisplayName(lAddress, view.getContext().getContentResolver());
 			String displayName = lAddress.getDisplayName();
+<<<<<<< HEAD
+=======
+			Log.d("=== displayName: " + displayName);
+>>>>>>> second_stage
 			if (displayName != null) {
 				view.findViewById(R.id.addContactRow).setVisibility(View.GONE);
 			}
@@ -120,14 +161,27 @@ public class HistoryDetailFragment extends Fragment implements OnClickListener {
 		}
 	}
 	
+<<<<<<< HEAD
 	public void changeDisplayedHistory(String sipUri, String displayName, String pictureUri, String status, String callTime, String callDate) {		
 		if (displayName == null && getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
 			displayName = LinphoneUtils.getUsernameFromAddress(sipUri);
+=======
+	public void changeDisplayedHistory(String sipUri, String displayName, String pictureUri, String status, String callTime, String callDate) {
+		
+		if (displayName == null && getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
+			displayName = LinphoneUtils.getUsernameFromAddress(sipUri);
+			/*displayName = displayName.replace(getResources().getString(
+					R.string.default_account_prefix),""); */
+>>>>>>> second_stage
 		}
 
 		this.sipUri = sipUri;
 		this.displayName = displayName;
 		this.pictureUri = pictureUri;
+<<<<<<< HEAD
+=======
+			
+>>>>>>> second_stage
 		displayHistory(status, callTime, callDate);
 	}
 	

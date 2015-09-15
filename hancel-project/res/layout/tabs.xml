@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<<<<<<< HEAD
     <!-- Hack to adjust perfectly on every screen the bottom of the fragment with the curved menu -->
     <LinearLayout
 	    android:id="@+id/mark"
@@ -65,6 +66,70 @@
         
     </LinearLayout>
     
+=======
+    
+
+    <!--LinearLayout
+        android:id="@+id/mark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:orientation="horizontal" >
+    
+		<ImageView
+		    android:contentDescription="@string/content_description_mark"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.2"
+		    android:adjustViewBounds="true"
+		    android:scaleType="fitXY"
+		    android:src="@drawable/mark"
+		    android:visibility="invisible" />
+		
+		<ImageView
+		    android:contentDescription="@string/content_description_mark"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.2"
+		    android:adjustViewBounds="true"
+		    android:scaleType="fitXY"
+		    android:src="@drawable/mark"
+		    android:visibility="invisible" />
+		
+		<ImageView
+		    android:contentDescription="@string/content_description_mark"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.2"
+		    android:adjustViewBounds="true"
+		    android:scaleType="fitXY"
+		    android:src="@drawable/mark"
+		    android:visibility="invisible" />
+		
+		<ImageView
+		    android:contentDescription="@string/content_description_mark"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.2"
+		    android:adjustViewBounds="true"
+		    android:scaleType="fitXY"
+		    android:src="@drawable/mark"
+		    android:visibility="invisible" />
+		
+		<ImageView
+		    android:contentDescription="@string/content_description_mark"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.2"
+		    android:adjustViewBounds="true"
+		    android:scaleType="fitXY"
+		    android:src="@drawable/mark"
+		    android:visibility="invisible" />
+        
+    </LinearLayout-->
+    
+>>>>>>> second_stage
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -72,6 +137,7 @@
         android:layout_alignParentTop="true">
 
         <LinearLayout
+<<<<<<< HEAD
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -79,11 +145,24 @@
             android:paddingTop="40dp" />
 
         <fragment
+=======
+            android:id="@+id/activityContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"/>
+
+        <!-- fragment
+>>>>>>> second_stage
             android:id="@+id/status"
             android:name="org.linphone.StatusFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             tools:layout="@layout/status" />
+=======
+            android:visibility="invisible"
+            tools:layout="@layout/status"/-->
+>>>>>>> second_stage
         
     </FrameLayout>
 
@@ -92,13 +171,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+<<<<<<< HEAD
         android:orientation="horizontal">
 
+=======
+        android:visibility="invisible"
+        android:orientation="horizontal">
+		
+        
+>>>>>>> second_stage
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+<<<<<<< HEAD
 			android:adjustViewBounds="true">
+=======
+			android:adjustViewBounds="true">			            
+>>>>>>> second_stage
 
             <include layout="@layout/menu_history_button" />
 
@@ -113,9 +203,16 @@
                 android:textSize="20sp"
                 android:visibility="gone" />
         </RelativeLayout>
+<<<<<<< HEAD
 
         <include layout="@layout/menu_contact_button" />
         
+=======
+		<include layout="@layout/menu_about_button" />
+        <include layout="@layout/menu_contact_button" />
+        
+        
+>>>>>>> second_stage
         <ImageView
             android:id="@+id/dialer"
             android:layout_width="0dp"
@@ -126,7 +223,11 @@
             android:contentDescription="@string/content_description_dialer"
             android:src="@drawable/dialer" />
         
+<<<<<<< HEAD
         <include layout="@layout/menu_about_chat_button" />
+=======
+       
+>>>>>>> second_stage
 
         <RelativeLayout
             android:id="@+id/completeChat"
@@ -152,19 +253,33 @@
         
         <include layout="@layout/menu_rings_button" />
 
+<<<<<<< HEAD
         <include layout="@layout/menu_settings_button" />
         
         <include layout="@layout/menu_about_settings_button" />
+=======
+        <include layout="@layout/menu_settings_button" /> 
+        
+        <include layout="@layout/menu_about_settings_button"/>
+>>>>>>> second_stage
         
     </LinearLayout>
     
     <LinearLayout
+<<<<<<< HEAD
         android:id="@+id/fragmentContainer2"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         
+=======
+        android:id="@+id/activityContainer2"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">        
+>>>>>>> second_stage
     </LinearLayout>
 
 </RelativeLayout>

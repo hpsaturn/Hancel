@@ -4,15 +4,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+<<<<<<< HEAD
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
 import org.hansel.myAlert.Utils.ContactRing;
+=======
+//import org.hansel.myAlert.Utils.ContactRing;
+>>>>>>> second_stage
 import org.hansel.myAlert.dataBase.RingDAO;
 import org.linphone.Contact;
 import org.linphone.LinphoneManager;
 import org.linphone.LinphoneService;
 import org.linphone.LinphoneUtils;
 import org.linphone.compatibility.Compatibility;
+<<<<<<< HEAD
 import org.linphone.core.LinphoneFriend;
 import org.linphone.core.PresenceActivityType;
 import org.linphone.mediastream.Log;
@@ -20,16 +25,26 @@ import org.linphone.mediastream.Version;
 import org.linphone.ui.AvatarWithShadow;
 
 import android.content.ContentProviderOperation;
+=======
+import org.linphone.mediastream.Log;
+import org.linphone.mediastream.Version;
+
+>>>>>>> second_stage
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.RawContacts;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
+=======
+import android.support.v4.app.Fragment;
+import android.text.Editable;
+>>>>>>> second_stage
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +52,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+<<<<<<< HEAD
+=======
+import android.widget.AdapterView.OnItemClickListener;
+>>>>>>> second_stage
 import android.widget.AlphabetIndexer;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -46,6 +65,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+<<<<<<< HEAD
 import android.widget.AdapterView.OnItemClickListener;
 
 public class EditRingFragment extends Fragment {
@@ -61,6 +81,24 @@ public class EditRingFragment extends Fragment {
 	private Ring ring;
 	private long ringID;
 	private RingDAO ringDao;
+=======
+import android.widget.Toast;
+
+/**
+ * Fragment to create or edit a ring 
+ * @author izel
+ */
+public class EditRingFragment extends Fragment {
+	private View view;
+	private TextView ok,addContacts, deleteRing;
+	private EditText ringName;
+	private CheckBox ringNotify;
+	private LayoutInflater inflater;
+	private ListView contactsList;
+	private boolean isNewRing = true;
+	private Ring ring;
+	private long ringID;	
+>>>>>>> second_stage
 	private Cursor searchCursor;
 	private AlphabetIndexer indexer;
 	private List<String> idContacts;
@@ -85,10 +123,17 @@ public class EditRingFragment extends Fragment {
 				
 				if(c != null && c.getCount() > 0){
 					c.moveToFirst();
+<<<<<<< HEAD
 					do{
 						idContacts.add(c.getString(0));
 						c.moveToNext();
 					}while(!c.isLast());
+=======
+					for(int i =0; i< c.getCount(); i++){
+						idContacts.add(c.getString(0));
+						c.moveToNext();
+					}
+>>>>>>> second_stage
 				}
 								
 				Log.d("=== Cantidad de contactos en el anillo: " + idContacts.size());
@@ -107,7 +152,20 @@ public class EditRingFragment extends Fragment {
 		});
 		
 		ringName = (EditText) view.findViewById(R.id.ringName);
+<<<<<<< HEAD
 		ringDefault = (CheckBox) view.findViewById(R.id.ringDefault);
+=======
+		ringNotify = (CheckBox) view.findViewById(R.id.ringNotify);
+		
+		final float scale = getResources().getDisplayMetrics().density;
+		if(scale <= 1.5f){			
+			ringNotify.setPadding(ringNotify.getPaddingLeft() + 
+					(int)(24.0f * scale),
+					ringNotify.getPaddingTop(),
+					ringNotify.getPaddingRight(),
+					ringNotify.getPaddingBottom());
+		}
+>>>>>>> second_stage
 		
 		contactsList = (ListView) view.findViewById(R.id.ringContactsList);        
                               		
@@ -117,6 +175,7 @@ public class EditRingFragment extends Fragment {
 			public void onClick(View v) {
 				if (isNewRing) {
 					boolean areAllFielsEmpty = true;
+<<<<<<< HEAD
 					if (ringName != null && ringDefault !=null && !ringName.equals("")) {
 						areAllFielsEmpty = false;
 					}
@@ -130,6 +189,26 @@ public class EditRingFragment extends Fragment {
 					updateRing();
 									
 		        //MainActivity.instance().prepareRingsInBackground();		        		       
+=======
+					if (ringName != null && ringNotify !=null && !ringName.equals("")) {
+						areAllFielsEmpty = false;
+					}
+					if(idContacts == null || idContacts.size() == 0){
+						areAllFielsEmpty = true;
+					}
+						
+					if (areAllFielsEmpty) {
+						Toast.makeText(getActivity(), R.string.ring_contacts_error, 
+								Toast.LENGTH_SHORT).show();
+						return;					
+					}
+					else{
+						createRing();
+					}
+				} 
+				else 
+					updateRing();											        	        		     
+>>>>>>> second_stage
 				getFragmentManager().popBackStackImmediate();
 			}
 		});
@@ -167,15 +246,32 @@ public class EditRingFragment extends Fragment {
 			public void afterTextChanged(Editable s) {
 			}
 		});
+<<<<<<< HEAD
 			
 		if (!isNewRing) {
 			String rn = ring.getName();			
 			Long rd = ring.getAlways();
+=======
+		
+		addContacts = (TextView) view.findViewById(R.id.searchContacts);
+		addContacts.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Log.d("=== Contactos actuales: " + idContacts.toString());
+				searchNotIncludedContacts();					
+			}
+		} );
+			
+		if (!isNewRing) {
+			String rn = ring.getName();			
+			Long rd = ring.getNotify();
+>>>>>>> second_stage
 			
 			if (rn != null) 
 				ringName.setText(rn);
 			
 			if (rd != null && rd == 1)
+<<<<<<< HEAD
 				ringDefault.setChecked(true);
 			else 
 				ringDefault.setChecked(false);
@@ -195,11 +291,18 @@ public class EditRingFragment extends Fragment {
 					Log.d("=== Adicionar contactos seleccionados");
 				}
 			} );
+=======
+				ringNotify.setChecked(true);
+			else 
+				ringNotify.setChecked(false);
+							
+>>>>>>> second_stage
 			deleteRing = (TextView) view.findViewById(R.id.deleteRing);
 			deleteRing.setVisibility(View.VISIBLE);
 			deleteRing.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v) {
+<<<<<<< HEAD
 					Log.d("=== Eliminando anillo");
 				}
 			} );
@@ -241,6 +344,31 @@ public class EditRingFragment extends Fragment {
 				}
 			 });
 		
+=======
+					Log.d("=== Eliminando anillo " + ring.getName());
+					deleteRing();
+					getFragmentManager().popBackStackImmediate();
+				}
+			} );
+			searchContacts("");
+		}
+		else{ 
+			MainActivity.instance().prepareContactsInBackground();						
+		}	
+				
+		contactsList.setOnItemClickListener(new OnItemClickListener() {
+			 public void onItemClick(AdapterView<?> adapter, View view,
+					  int position, long id) {
+				 Log.d("=== Selecciono/deselecciono Contacto");
+				 Contact contactRing = (Contact) adapter.getItemAtPosition(position);
+				 				
+				 if(contactRing.isSelected())
+					idContacts.add(contactRing.getID());
+				else
+					idContacts.remove(contactRing.getID());				 			
+			}
+		});
+>>>>>>> second_stage
 		ringName.requestFocus();
 		
 		return view;
@@ -260,10 +388,17 @@ public class EditRingFragment extends Fragment {
 	
 	private void createRing() {
         ringID = 0;
+<<<<<<< HEAD
         ringDao = new RingDAO(LinphoneService.instance()
         		.getApplicationContext());  
         ringDao.open();
         ringID = ringDao.addRing(ringName.getText().toString(),ringDefault
+=======
+        RingDAO ringDao = new RingDAO(LinphoneService.instance()
+        		.getApplicationContext());  
+        ringDao.open();
+        ringID = ringDao.addRing(ringName.getText().toString(),ringNotify
+>>>>>>> second_stage
         		.isChecked());
         Iterator<String> it = idContacts.iterator();        
         while( it.hasNext() ){        	
@@ -274,6 +409,7 @@ public class EditRingFragment extends Fragment {
 	
 	private void updateRing() {
 		if (ringName.getText().length() > 0) {
+<<<<<<< HEAD
 			ringDao = new RingDAO(LinphoneManager.getInstance()
 					.getContext());
 			ringDao.open();
@@ -299,6 +435,38 @@ public class EditRingFragment extends Fragment {
         } catch (Exception e) {
         	e.printStackTrace();
         }*/
+=======
+			
+			if(idContacts != null && idContacts.size() == 0){
+				 Toast.makeText(getActivity(), getResources().getString(
+						 R.string.no_contacts_ring),Toast.LENGTH_SHORT).show();
+				 return;
+			}
+			
+			RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
+					.getContext());
+			ringDao.open();
+			long result = ringDao.updateRing(String.valueOf(ring.getId()), 
+				ringName.getText().toString(),ringNotify.isChecked(),idContacts);
+			ringDao.close();
+			
+			if(result == -1)
+				 Toast.makeText(getActivity(), getResources().getString(
+						 R.string.ring_not_modified),Toast.LENGTH_SHORT).show();
+		}
+		else
+			Toast.makeText(getActivity(), getResources().getString(
+					 R.string.ring_without_name), Toast.LENGTH_SHORT).show();			
+	}
+	
+	private void deleteRing() {
+		RingDAO ringDao = new RingDAO(LinphoneManager.getInstance()
+				.getContext());
+		ringDao.open();
+		
+		ringDao.deleteRing(ring.getId());
+		ringDao.close();
+>>>>>>> second_stage
 	}
 
 	
@@ -307,6 +475,7 @@ public class EditRingFragment extends Fragment {
 		if(searchCursor != null)
 			searchCursor.close();
 			
+<<<<<<< HEAD
 		List<ContactRing> contactsRing = new ArrayList<ContactRing>();
 		
 		if(isNewRing){
@@ -314,6 +483,14 @@ public class EditRingFragment extends Fragment {
 					.getContentResolver(), search);			
 		}
 		else{
+=======
+		List<Contact> contactsRing = new ArrayList<Contact>();
+		
+		if(isNewRing){ //Gets all contacts
+			searchCursor = MainActivity.instance().getAllContactsCursor();
+		}
+		else{ //Gets the ring contacts
+>>>>>>> second_stage
 			String in = "";
 			if(idContacts.size() > 1){	
 				Iterator<String> it = idContacts.iterator();
@@ -322,6 +499,12 @@ public class EditRingFragment extends Fragment {
 				}			
 				in = in.substring(0,in.length()-1);				
 			}
+<<<<<<< HEAD
+=======
+			else{
+				in = idContacts.get(0);
+			}
+>>>>>>> second_stage
 			searchCursor = Compatibility.getContactsInCursor(getActivity()
 					.getContentResolver(), in);
 		}
@@ -329,14 +512,19 @@ public class EditRingFragment extends Fragment {
 		indexer = new AlphabetIndexer(searchCursor, Compatibility
 				.getCursorDisplayNameColumnIndex(searchCursor), 
 				" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+<<<<<<< HEAD
 		ringDao = new RingDAO(LinphoneManager.getInstance()
 					.getContext());
 		ringDao.open();		
+=======
+		
+>>>>>>> second_stage
 		searchCursor.moveToFirst();		
 			
 		for(int i= 0; i<searchCursor.getCount(); i++){
 			Contact c = Compatibility.getContact(getActivity()
 				.getContentResolver(), searchCursor, i);
+<<<<<<< HEAD
 			contactsRing.add(new ContactRing(c.getID(), c.getName(), 
 					c.getPhotoUri(), c.getPhoto(), !isNewRing));				
 		}
@@ -344,14 +532,71 @@ public class EditRingFragment extends Fragment {
 		contactsList.setAdapter(new RingsContactsListAdapter(contactsRing));
 	}
 	
+=======
+			c.setSelected(!isNewRing);
+			contactsRing.add(c);					
+		}
+				
+		contactsList.setAdapter(new RingsContactsListAdapter(contactsRing));
+	}
+	
+	private void searchNotIncludedContacts(){
+		String notIn = "";
+		List<Contact> contactsRing = new ArrayList<Contact>(); 
+		
+		if(idContacts.size() > 1){	
+			Iterator<String> it = idContacts.iterator();
+			while(it.hasNext()){
+				notIn += it.next() + ",";
+			}			
+			notIn = notIn.substring(0,notIn.length()-1);
+			
+			searchCursor = Compatibility.getContactsNotInCursor(getActivity()
+					.getContentResolver(), notIn);
+			
+			searchCursor.moveToFirst();		
+			
+			for(int i= 0; i<searchCursor.getCount(); i++){
+				Contact c = Compatibility.getContact(getActivity()
+						.getContentResolver(), searchCursor, i);
+				c.setSelected(false);
+				contactsRing.add(c);
+				/*contactsRing.add(new ContactRing(c.getID(), c.getName(), 
+					c.getPhotoUri(), c.getPhoto(), false));	*/			
+			}
+			
+		}
+		else{
+			searchCursor = MainActivity.instance().getAllContactsCursor();
+			contactsRing = MainActivity.instance().getAllContacts();
+		}
+		
+								
+		if(searchCursor != null && searchCursor.getCount() > 0){
+			indexer = new AlphabetIndexer(searchCursor, Compatibility
+					.getCursorDisplayNameColumnIndex(searchCursor), 
+					" ABCDEFGHIJKLMNOPQRSTUVWXYZ");						
+		}
+				
+		contactsList.setAdapter(new RingsContactsListAdapter(contactsRing));	
+	}
+	
+	
+>>>>>>> second_stage
 	
 	class RingsContactsListAdapter extends BaseAdapter implements SectionIndexer {
 		private int margin;
 		private Bitmap bitmapUnknown;
+<<<<<<< HEAD
 		private List<ContactRing> contactsRing;
 		//private Cursor cursor;
 		
 		RingsContactsListAdapter(List<ContactRing> contacts) {
+=======
+		private List<Contact> contactsRing;
+				
+		RingsContactsListAdapter(List<Contact> contacts) {
+>>>>>>> second_stage
 			this.contactsRing = contacts;				
 			margin = LinphoneUtils.pixelsToDpi(getResources(), 10);
 			bitmapUnknown = BitmapFactory.decodeResource(getResources(), R.drawable.unknown_small);
@@ -386,15 +631,34 @@ public class EditRingFragment extends Fragment {
 			} 
 			else {
 				convertView= inflater.inflate(R.layout.contact_ring_cell, parent, false);					
+<<<<<<< HEAD
 				holder = new ViewHolder();
 				holder.contactName = (TextView) convertView.findViewById(R.id.name);
 				holder.contactId = (TextView) convertView.findViewById(R.id.contactId);
 				holder.selected = (CheckBox) convertView.findViewById(R.id.chooseFriend);
+=======
+				holder = new ViewHolder();	
+				
+				holder.selected = (CheckBox) convertView.findViewById(R.id.chooseFriend);
+				holder.contactName = (TextView) convertView.findViewById(R.id.name);
+				holder.contactId = (TextView) convertView.findViewById(R.id.contactId);
+				
+				final float scale = getResources().getDisplayMetrics().density;
+				if(scale <= 1.5f){
+					Log.d("=== Density : " + scale);
+					holder.selected.setPadding(holder.selected.getPaddingLeft() + 
+							(int)(26.0f * scale),
+							holder.selected.getPaddingTop(),
+							holder.selected.getPaddingRight(),
+							holder.selected.getPaddingBottom());
+				}
+>>>>>>> second_stage
 				holder.icon = (ImageView) convertView.findViewById(R.id.icon);
 				convertView.setTag(holder);
 			   
 				holder.selected.setOnClickListener(new View.OnClickListener() { 
 					public void onClick(View v) {
+<<<<<<< HEAD
 						Log.d("=== Seleccionado/Deseleccionado Objeto");
 						CheckBox cb = (CheckBox) v ; 
 						ContactRing cr = (ContactRing)cb.getTag(); 
@@ -403,14 +667,33 @@ public class EditRingFragment extends Fragment {
 				        	idContacts.add(cr.getContactId());
 				        else
 				        	idContacts.remove(cr.getContactId());				        
+=======
+						Log.d("=== Seleccionado/Deseleccionado Objeto ===");
+						CheckBox cb = (CheckBox) v ; 
+						Contact cr = (Contact)cb.getTag(); 
+						cr.setSelected(cb.isChecked());						
+				        if(cr.isSelected())
+				        	idContacts.add(cr.getID());				        
+				        else{
+				        	idContacts.remove(cr.getID());
+				        }
+				        Log.d("=== Estado de idContacts: " + idContacts.toString());
+>>>>>>> second_stage
 					}    
 				});
 			}
 			
+<<<<<<< HEAD
 			ContactRing cr = contactsRing.get(position);			
 			
 			holder.contactId.setText(cr.getContactId());
 			holder.contactName.setText(cr.getContactName());
+=======
+			Contact cr = contactsRing.get(position);			
+			
+			holder.contactId.setText(cr.getID());
+			holder.contactName.setText(cr.getName());
+>>>>>>> second_stage
 			holder.selected.setChecked(cr.isSelected());
 			holder.selected.setTag(cr);
 			holder.icon.setImageBitmap(bitmapUnknown);
@@ -434,7 +717,11 @@ public class EditRingFragment extends Fragment {
 			} 
 			else {
 				separator.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
 				separator.setText(String.valueOf(cr.getContactName().charAt(0)));
+=======
+				separator.setText(String.valueOf(cr.getName().charAt(0)));
+>>>>>>> second_stage
 				layout.setPadding(0, 0, 0, margin);
 			}
 			
@@ -456,11 +743,31 @@ public class EditRingFragment extends Fragment {
 			return indexer.getSections();
 		}
 		
+<<<<<<< HEAD
 		private class ViewHolder {			   
 			   TextView contactId;
 			   TextView contactName;
 			   CheckBox selected;
 			   ImageView icon;
+=======
+		public List<String> getSelectedContacts() {
+			List<String> selected = new ArrayList<String>();
+			Iterator<Contact> it = contactsRing.iterator();
+			while(it.hasNext() && it.next().isSelected()){
+				selected.add(it.next().getID());
+			}
+			Log.d("=== Contacsts Selected : " + selected.toString());
+			return selected;
+		}
+
+		
+		private class ViewHolder {
+			CheckBox selected;
+			ImageView icon;
+			TextView contactName;
+			TextView contactId;
+			   
+>>>>>>> second_stage
 		}
 	}
 		

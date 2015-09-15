@@ -43,7 +43,11 @@ import org.linphone.LinphoneSimpleListener.LinphoneOnAudioChangedListener.AudioS
 import org.linphone.LinphoneSimpleListener.LinphoneOnComposingReceivedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnDTMFReceivedListener;
 import org.linphone.LinphoneSimpleListener.LinphoneOnMessageReceivedListener;
+<<<<<<< HEAD
 import org.linphone.LinphoneSimpleListener.LinphoneOnRemoteProvisioningListener;
+=======
+//import org.linphone.LinphoneSimpleListener.LinphoneOnRemoteProvisioningListener;
+>>>>>>> second_stage
 import org.linphone.LinphoneSimpleListener.LinphoneServiceListener;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.core.CallDirection;
@@ -79,7 +83,11 @@ import org.linphone.mediastream.Version;
 import org.linphone.mediastream.video.capture.hwconf.AndroidCameraConfiguration;
 import org.linphone.mediastream.video.capture.hwconf.AndroidCameraConfiguration.AndroidCamera;
 import org.linphone.mediastream.video.capture.hwconf.Hacks;
+<<<<<<< HEAD
 import org.linphone.setup.RemoteProvisioningActivity;
+=======
+//import org.linphone.setup.RemoteProvisioningActivity;
+>>>>>>> second_stage
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -279,7 +287,12 @@ public class LinphoneManager implements LinphoneCoreListener {
 	}
 
 	public static synchronized final LinphoneManager getInstance() {
+<<<<<<< HEAD
 		if (instance != null) return instance;
+=======
+		if (instance != null) 
+			return instance;
+>>>>>>> second_stage
 
 		if (sExited) {
 			throw new RuntimeException("Linphone Manager was already destroyed. "
@@ -315,7 +328,12 @@ public class LinphoneManager implements LinphoneCoreListener {
 			}
 			LinphoneProxyConfig lpc = mLc.getDefaultProxyConfig();
 
+<<<<<<< HEAD
 			if (mR.getBoolean(R.bool.forbid_self_call) && lpc!=null && lAddress.asStringUriOnly().equals(lpc.getIdentity())) {
+=======
+			if (mR.getBoolean(R.bool.forbid_self_call) && lpc!=null && 
+					lAddress.asStringUriOnly().equals(lpc.getIdentity())) {
+>>>>>>> second_stage
 				mListenerDispatcher.tryingNewOutgoingCallButWrongDestinationAddress();
 				return;
 			}
@@ -323,28 +341,56 @@ public class LinphoneManager implements LinphoneCoreListener {
 			mListenerDispatcher.tryingNewOutgoingCallButWrongDestinationAddress();
 			return;
 		}
+<<<<<<< HEAD
 		lAddress.setDisplayName(displayName);
 
 		boolean isLowBandwidthConnection = !LinphoneUtils.isHightBandwidthConnection(LinphoneService.instance().getApplicationContext());
+=======
+		
+		lAddress.setDisplayName(displayName);
+
+		boolean isLowBandwidthConnection = !LinphoneUtils.isHightBandwidthConnection
+				(LinphoneService.instance().getApplicationContext());
+>>>>>>> second_stage
 
 		if (mLc.isNetworkReachable()) {
 			try {
 				if (Version.isVideoCapable()) {
 					boolean prefVideoEnable = mPrefs.isVideoEnabled();
 					boolean prefInitiateWithVideo = mPrefs.shouldInitiateVideoCall();
+<<<<<<< HEAD
 					CallManager.getInstance().inviteAddress(lAddress, prefVideoEnable && prefInitiateWithVideo, isLowBandwidthConnection);
 				} else {
 					CallManager.getInstance().inviteAddress(lAddress, false, isLowBandwidthConnection);
 				}
 
 
+=======
+					CallManager.getInstance().inviteAddress(lAddress, 
+							prefVideoEnable && prefInitiateWithVideo, 
+							isLowBandwidthConnection);
+				} 
+				else {
+					CallManager.getInstance().inviteAddress(lAddress, false, 
+							isLowBandwidthConnection);
+				}
+>>>>>>> second_stage
 			} catch (LinphoneCoreException e) {
 				mListenerDispatcher.tryingNewOutgoingCallButCannotGetCallParameters();
 				return;
 			}
+<<<<<<< HEAD
 		} else if (MainActivity.isInstanciated()) {
 			MainActivity.instance().displayCustomToast(getString(R.string.error_network_unreachable), Toast.LENGTH_LONG);
 		} else {
+=======
+		} 
+		else if (MainActivity.isInstanciated()) {
+			MainActivity.instance().displayCustomToast(getString(R.string
+					.error_network_unreachable), Toast.LENGTH_LONG);
+		} 
+		else {
+>>>>>>> second_stage
 			Log.e("Error: " + getString(R.string.error_network_unreachable));
 		}
 	}
@@ -1391,7 +1437,11 @@ public class LinphoneManager implements LinphoneCoreListener {
 		}
 	}
 
+<<<<<<< HEAD
 	private LinphoneOnRemoteProvisioningListener remoteProvisioningListener;
+=======
+	/*private LinphoneOnRemoteProvisioningListener remoteProvisioningListener;
+>>>>>>> second_stage
 	public void setOnRemoteProvisioningListener(LinphoneOnRemoteProvisioningListener listener) {
 		remoteProvisioningListener = listener;
 	}
@@ -1418,7 +1468,11 @@ public class LinphoneManager implements LinphoneCoreListener {
 				}
 			}
 		}
+<<<<<<< HEAD
 	}
+=======
+	}*/
+>>>>>>> second_stage
 	@Override
 	public void fileTransferProgressIndication(LinphoneCore lc,
 			LinphoneChatMessage message, LinphoneContent content, int progress) {
@@ -1437,4 +1491,13 @@ public class LinphoneManager implements LinphoneCoreListener {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+<<<<<<< HEAD
+=======
+	@Override
+	public void configuringStatus(LinphoneCore lc,
+			RemoteProvisioningState state, String message) {
+		// TODO Auto-generated method stub
+		
+	}
+>>>>>>> second_stage
 }

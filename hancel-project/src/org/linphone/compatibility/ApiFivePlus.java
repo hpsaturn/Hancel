@@ -95,25 +95,38 @@ public class ApiFivePlus {
 		return intent;
 	}
 	
+<<<<<<< HEAD
 	public static List<String> extractContactNumbersAndAddresses(String id, ContentResolver cr) {
+=======
+	public static List<String> extractContactNumbersAndAddresses(String id, ContentResolver cr){//, String prefix) {
+>>>>>>> second_stage
 		List<String> list = new ArrayList<String>();
 
 		Uri uri = Data.CONTENT_URI;
 		String[] projection = {ContactsContract.CommonDataKinds.Im.DATA};
 
 		// Phone Numbers
+<<<<<<< HEAD
 		Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER}, Phone.CONTACT_ID + " = " + id, null, null);
 		
 		/*TODO: testing
 		Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER }, Phone.CONTACT_ID + " = " + id, null, null);
+=======
+		Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER}, Phone.CONTACT_ID + " = " + id, null, null);		
+		//Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER }, Phone.CONTACT_ID + " = " + id, null, null);
+>>>>>>> second_stage
 		if (c != null) {
 	        while (c.moveToNext()) {
 	            String number = c.getString(c.getColumnIndex(Phone.NUMBER));
 	            list.add(number); 
 	        }
 	        c.close();
+<<<<<<< HEAD
 		}*/
 		
+=======
+		}		
+>>>>>>> second_stage
 		// SIP addresses
 		String selection = new StringBuilder()
 			.append(Data.CONTACT_ID).append(" =  ? AND ")
@@ -128,6 +141,17 @@ public class ApiFivePlus {
 			int nbId = c.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA);
 			while (c.moveToNext()) {
 				list.add("sip:" + c.getString(nbId)); 
+<<<<<<< HEAD
+=======
+				/*String sip = "";
+				String[] sips = c.getString(nbId).split("@");
+				if(sips != null && sips.length != 0)
+					sip =  sips[0];
+				if (prefix != null && prefix.length() != 0)
+					sip =  sip.replace(prefix,"");
+				//list.add(c.getString(nbid));
+				list.add(sip);*/
+>>>>>>> second_stage
 			}
 			c.close();
 		}
@@ -135,6 +159,24 @@ public class ApiFivePlus {
 		return list;
 	}
 	
+<<<<<<< HEAD
+=======
+	
+	public static List<String> extractContactNumbers(String id, ContentResolver cr){//, String prefix) {
+		List<String> list = new ArrayList<String>();
+		Cursor c = cr.query(Phone.CONTENT_URI, new String[] { Phone.NUMBER}, Phone.CONTACT_ID + " = " + id, null, null);		
+		
+		if (c != null) {
+	        while (c.moveToNext()) {
+	            String number = c.getString(c.getColumnIndex(Phone.NUMBER));
+	            list.add(number); 
+	        }
+	        c.close();
+		}		
+		return list;
+	}
+	
+>>>>>>> second_stage
 	public static Cursor getContactsCursor(ContentResolver cr) {
 		String req = Data.MIMETYPE + " = '" + CommonDataKinds.Phone.CONTENT_ITEM_TYPE
                 + "' AND " + CommonDataKinds.Phone.NUMBER + " IS NOT NULL";
@@ -156,6 +198,21 @@ public class ApiFivePlus {
 		
 		return getGeneralContactCursor(cr, req, true);
 	}
+<<<<<<< HEAD
+=======
+	
+	public static Cursor getContactsNotInCursor(ContentResolver cr, String in) {
+		String req = Data.MIMETYPE + " = '" + CommonDataKinds.Phone.CONTENT_ITEM_TYPE
+                + "' AND " + CommonDataKinds.Phone.NUMBER + " IS NOT NULL";
+		
+    	req += " OR (" + Contacts.Data.MIMETYPE + " = '" + CommonDataKinds.Im.CONTENT_ITEM_TYPE 
+                + "' AND lower(" + CommonDataKinds.Im.CUSTOM_PROTOCOL + ") = 'sip')";
+    	
+    	req += " AND " + Data.CONTACT_ID + " NOT IN (" + in + ")";
+		
+		return getGeneralContactCursor(cr, req, true);
+	}
+>>>>>>> second_stage
 
 	public static Cursor getSIPContactsCursor(ContentResolver cr) {
 		String req = null;

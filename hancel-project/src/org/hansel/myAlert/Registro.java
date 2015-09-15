@@ -1,24 +1,25 @@
 package org.hansel.myAlert;
+
 /*This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-Created by Javier Mejia @zenyagami
-zenyagami@gmail.com
-	*/
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ Created by Javier Mejia @zenyagami
+ zenyagami@gmail.com
+ */
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 import org.hancel.http.HttpUtils;
 import org.hansel.myAlert.Log.Log;
-import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.SimpleCrypto;
 import org.hansel.myAlert.Utils.Util;
 import org.hansel.myAlert.dataBase.UsuarioDAO;
@@ -28,7 +29,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -40,74 +43,79 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.MenuItem;
 
-public class Registro extends org.holoeverywhere.app.Activity{
+public class Registro extends org.holoeverywhere.app.Activity {
 
-	private EditText vUsuario;
-	private EditText vPassword;
-	private EditText vEmail;
-	private String mUsuario;
-	private String mPassword;
-	private String mEmail;
-	private UserCreateTask mAuthTask;
-	private TextView errores;
-	private View mLoginFormView;
-	private View mLoginStatusView;
-	private String mErrores;
-	private TextView mLoginStatusMessageView;
+	private EditText vUsuario, vPassword, vPasswordConfirm, vEmail, vEmailConfirm;
+	private String mUsuario, mPassword, mPasswordConfirm, mEmail, mEmailConfirm, mErrores;
+	private RegistrationTask mAuthTask;
+	private View mLoginFormView, mLoginStatusView;
+	private TextView mLoginStatusMessageView, errores;
 	private UsuarioDAO usuarioDAO;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		Util.setLoginOkInPreferences(getApplicationContext(), false);
 		setContentView(R.layout.registro_layout);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		vUsuario =(EditText)findViewById(R.id.reg_fullname);
-		vPassword =(EditText)findViewById(R.id.reg_password);
-		vEmail = (EditText)findViewById(R.id.reg_email);
-		errores=(TextView)findViewById(R.id.err_registro);
-		Button btnCreate = (Button)findViewById(R.id.btnRegister);
+		vUsuario = (EditText) findViewById(R.id.reg_fullname);
+		vPassword = (EditText) findViewById(R.id.reg_password2);
+		vPasswordConfirm = (EditText) findViewById(R.id.reg_password);
+		vEmail = (EditText) findViewById(R.id.reg_email);
+		vEmailConfirm = (EditText) findViewById(R.id.reg_email_confirm);
+		errores = (TextView) findViewById(R.id.err_registro);
+		Button btnCreate = (Button) findViewById(R.id.btnRegister);
 		btnCreate.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+
+			public void onClick(View v) {		
 				AttempCreate();
 			}
 		});
-		Button btnCancelar = (Button)findViewById(R.id.btnCancelar);
+		
+		Button btnCancelar = (Button) findViewById(R.id.btnCancelar);
 		btnCancelar.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(Registro.this, Login.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				if(Util.isICS()) i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+						| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				if (Util.isICS())
+					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				finish();
 			}
 		});
-		usuarioDAO=new UsuarioDAO(this);
+		usuarioDAO = new UsuarioDAO(this);
 		usuarioDAO.open();
 		mLoginFormView = findViewById(R.id.reg_form);
 		mLoginStatusView = findViewById(R.id.reg_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.reg_status_message);
-		
+
 	}
 
 	protected void AttempCreate() {
-		if(mAuthTask!=null)
-		{
+		if (mAuthTask != null) {
 			return;
 		}
-		//obtenemos datos
-		mUsuario = vUsuario.getText().toString().trim();
-		mPassword = vPassword.getText().toString().trim();
-		mEmail = vEmail.getText().toString().trim();
-	//	mEmailContacto = vEmailContacto.getText().toString();
+		
 		boolean cancel = false;
 		View focusView = null;
+
+		try {
+			mUsuario = vUsuario.getText().toString().trim().toLowerCase();
+			mPassword = vPassword.getText().toString().trim();
+			mPasswordConfirm = vPasswordConfirm.getText().toString().trim();
+			mEmail = vEmail.getText().toString().trim();
+			mEmailConfirm = vEmailConfirm.getText().toString().trim();
+		} 
+		catch (NullPointerException e) {
+			vUsuario.setError(getString(R.string.invalid_empty));
+			focusView = vUsuario;
+			cancel = true;
+		}
+
 		// Check for a valid user.
 		if (TextUtils.isEmpty(mUsuario)) {
 			vUsuario.setError(getString(R.string.error_field_required));
@@ -119,55 +127,94 @@ public class Registro extends org.holoeverywhere.app.Activity{
 			focusView = vPassword;
 			cancel = true;
 		}
-		if (TextUtils.isEmpty(mEmail) ) {
+		if (TextUtils.isEmpty(mPasswordConfirm)) {
+			vPasswordConfirm.setError(getString(R.string.error_field_required));
+			focusView = vPassword;
+			cancel = true;
+		}
+
+		if (mPasswordConfirm.compareTo(mPassword) != 0) {
+			vPassword.setError(getString(R.string.error_password_confirm));
+			focusView = vPassword;
+			cancel = true;
+		}
+		
+		if (TextUtils.isEmpty(mEmail)) {
 			vEmail.setError(getString(R.string.error_field_required));
 			focusView = vEmail;
 			cancel = true;
-		}else if(!mEmail.contains("@"))
-		{
-			vEmail.setError("Correo no válido");
+		}else if (!mEmail.contains("@")) {
+			vEmail.setError(getString(R.string.invalid_email));
 			focusView = vEmail;
 			cancel = true;
 		}
-		/*if (TextUtils.isEmpty(mEmailContacto) ) {
-			vEmail.setError(getString(R.string.error_field_required));
-			focusView = vEmailContacto;
+		
+		if (TextUtils.isEmpty(mEmailConfirm)) {
+			vEmailConfirm.setError(getString(R.string.error_field_required));
+			focusView = vEmailConfirm;
 			cancel = true;
-		}else */
+		} else if (!mEmailConfirm.contains("@")) {
+			vEmailConfirm.setError(getString(R.string.invalid_email));
+			focusView = vEmailConfirm;
+			cancel = true;
+		}
+		
+		if (mEmailConfirm.compareTo(mEmail) != 0) {
+			vEmailConfirm.setError(getString(R.string.error_email_confirm));
+			focusView = vEmailConfirm;
+			cancel = true;
+		}
+
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
+			vPassword.setText("");
+			vPasswordConfirm.setText("");
+			vEmailConfirm.setText("");			
 			focusView.requestFocus();
-		} else {
-			//escondemos teclado
-			try
-			{
-				((InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE))
-				.hideSoftInputFromWindow(vPassword.getWindowToken(), 0);
-			}catch(Exception ex)
-			{
-				Log.v("Error al esconder teclado: "+ex.getMessage() );
+		} 
+		else {
+			// hidding keyboard
+			try {
+				((InputMethodManager) this
+					.getSystemService(Context.INPUT_METHOD_SERVICE))
+					.hideSoftInputFromWindow(vPassword.getWindowToken(), 0);
+			} 
+			catch (Exception ex) {
+				Log.v("Error al esconder teclado: " + ex.getMessage());
+			}			
+			mAuthTask  = new RegistrationTask();
+			try {
+				if(mAuthTask.execute().get()){	
+					AlertDialog.Builder alert = new AlertDialog.Builder(this);                 
+					alert.setTitle(getText(R.string.registration_confirm));  
+					alert.setMessage(getString(R.string.registration_confirm_msg));                
+					alert.setPositiveButton(getString(R.string.registration_accept), 
+							new DialogInterface.OnClickListener() {  
+					public void onClick(DialogInterface dialog, int whichButton) {
+						finish();
+					}});
+					alert.show();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
 			}
-			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-			
-			mAuthTask = new UserCreateTask();
-			mAuthTask.execute((Void) null);
-		}
-		
+		}			
 	}
+
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-	 switch (item.getItemId()) {
-        case android.R.id.home:
-            finish();
-            break;
-        }
-        return super.onOptionsItemSelected(item);
-	 
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+
 	}
-	
+
 	/**
 	 * Shows the progress UI and hides the login form.
 	 */
@@ -207,98 +254,93 @@ public class Registro extends org.holoeverywhere.app.Activity{
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
+			
 	}
-
-
+	
+	
+	/**
+	 * RegistrationTask
+	 * Task for SIP server (Linphone) registration
+	 * @author izel
+	 */
 	@SuppressLint("DefaultLocale")
-	public class UserCreateTask extends AsyncTask<Void, Void, Boolean> {
-
+	public class RegistrationTask extends AsyncTask<Void, Void, Boolean> {			
 		@Override
-		protected Boolean doInBackground(Void... arg0) {
-			//conexion a la BD para obtener Login.
+		protected Boolean doInBackground(Void...v) {		
+			JSONObject result = null;
+			String id = null, crypto = null;
 			
-			try
-			{
-				String IMEI = Util.getIMEI(getApplicationContext());
-				
-				String id = SimpleCrypto.md5(String.valueOf(Calendar.getInstance().getTimeInMillis()));
-				JSONObject result=  HttpUtils.Register(id, mUsuario, SimpleCrypto.md5(mPassword), mEmail,"", IMEI);
-				try {
-					 
-					 if(result.optString("resultado").equals("ok"))
-					 {
-						 //parseamos data del ID
-						 JSONObject jObject = result.getJSONObject("descripcion");
-						 int androidId = Integer.parseInt(jObject.getString("usr-id"));
-						 
-						 PreferenciasHancel.setDeviceId(getApplicationContext(), id);
-						 PreferenciasHancel.setUserId(getApplicationContext(), androidId);
-						 Util.insertNewTrackId(getApplicationContext(), 0);
-						  Util.setLoginOkInPreferences(getApplicationContext(), true);
-						  int idUsr=(int) usuarioDAO.Insertar( mUsuario, mPassword, mEmail);
-							if(idUsr!=0){
-								return true;
-							}
-					 }else if(result.optString("resultado").equals("error"))
-					 {
-						 JSONObject jObject = result.getJSONObject("descripcion");
-						 mErrores = jObject.getString("usuario");
-						 //buscamos el error:
-						 return false;
-					 }
-					 
-					
-				} catch (Exception e) {
-					Log.v("Error al parsear Json: "+ result);
-					mErrores= "Error al obtener los datos";
-					return false;
-				}
-			
+			//Sending request
+			try {								
+				id = SimpleCrypto.md5(String.valueOf(Calendar.getInstance()
+						.getTimeInMillis()));
+				crypto = SimpleCrypto.md5(mPassword);
+				result = HttpUtils.Register(mUsuario,crypto,mEmail);
+			} 
+			catch (Exception ex) {
+				mErrores = getString(R.string.registration_hancel_unavailable);
+				errores.setVisibility(View.VISIBLE);
+				Log.v("Error login: " + ex.getMessage());
 				return false;
-			}catch(Exception ex)
-			{
-				mErrores="Error al intentar la conexión";
-				Log.v("Error login: "+ex.getMessage());
-			}
-			return false;
+			}	
+			
+			//Handling response
+			try {				
+				if (result.optString("resultado").equals("ok")) {
+					JSONObject jObject = result.getJSONObject("descripcion");					
+					Util.setLoginOkInPreferences(getApplicationContext(),false);												
+					int idUsr = (int) usuarioDAO.Insertar(mUsuario,crypto, mEmail);
+					usuarioDAO.close();
+					if (idUsr != 0) {						
+						return true;
+					}
+				} 
+				else{
+					JSONObject jObject = result.getJSONObject("descripcion");
+					String msg = jObject.getString("msg");
+					if(msg.equalsIgnoreCase("duplicated")){
+						mErrores = getString(R.string.registration_username_used);
+					}
+					else{
+						mErrores = getString(R.string.registration_hancel_unavailable);
+					}					
+				}
+				return false;
+			} 
+			catch (Exception e) {
+				Log.v("Error al parsear JSON: " + result);
+				mErrores = getString(R.string.registration_hancel_data_error);
+				return false;
+			}							
 		}
+
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			showProgress(true);
 			findViewById(R.id.actions1).setVisibility(View.GONE);
-			mErrores ="";
+			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			mErrores = "";
 			errores.setVisibility(View.GONE);
 		}
+
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			showProgress(false);
-
-			if (success) {
-				//mostramos el Intent
-				//pasamos al siguiente paso
-				Intent i = new Intent(getApplicationContext(),ConfigContactsActivity.class);
-				i.putExtra("registro", true);
-				/*Intent i = new Intent(getApplicationContext(),MainActivity.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK 
-						| Intent.FLAG_ACTIVITY_CLEAR_TOP); */
-				startActivity(i);
-			} else {
+			if(!success){
+				errores.setText(mErrores);
 				errores.setVisibility(View.VISIBLE);
 				findViewById(R.id.actions1).setVisibility(View.VISIBLE);
-				errores.setText(mErrores);
-				Toast.makeText(getApplicationContext(), "Error en login:\n"+mErrores, Toast.LENGTH_SHORT).show();
 			}
 		}
+
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;
 			findViewById(R.id.actions1).setVisibility(View.VISIBLE);
 			showProgress(false);
-		}
-		
-	}
-	
-}
+		}		
+	}	
 
+}

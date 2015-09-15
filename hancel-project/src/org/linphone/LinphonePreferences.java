@@ -349,9 +349,17 @@ public class LinphonePreferences {
 
 				if (transport.equals(getString(R.string.pref_transport_udp_key))) {
 					proxyAddr.setTransport(TransportType.LinphoneTransportUdp);
+<<<<<<< HEAD
 				} else if (transport.equals(getString(R.string.pref_transport_tcp_key))) {
 					proxyAddr.setTransport(TransportType.LinphoneTransportTcp);
 				} else if (transport.equals(getString(R.string.pref_transport_tls_key))) {
+=======
+				} 
+				else if (transport.equals(getString(R.string.pref_transport_tcp_key))) {
+					proxyAddr.setTransport(TransportType.LinphoneTransportTcp);
+				} 
+				else if (transport.equals(getString(R.string.pref_transport_tls_key))) {
+>>>>>>> second_stage
 					proxyAddr.setTransport(TransportType.LinphoneTransportTls);
 				}
 
@@ -686,12 +694,23 @@ public class LinphonePreferences {
 
 		if (proxyCfg != null)
 			getLc().removeProxyConfig(proxyCfg);
+<<<<<<< HEAD
 		if (getLc().getProxyConfigList().length == 0) {
 			MainActivity.instance().getStatusFragment().registrationStateChanged(RegistrationState.RegistrationNone);
 		} else {
 			resetDefaultProxyConfig();
 			getLc().refreshRegisters();
 		}
+=======
+		
+		/*if (getLc().getProxyConfigList().length == 0 && MainActivity.isInstanciated()) {
+			MainActivity.instance().getStatusFragment().registrationStateChanged(RegistrationState.RegistrationNone);
+		} 
+		else {*/
+			resetDefaultProxyConfig();
+			getLc().refreshRegisters();
+		//}
+>>>>>>> second_stage
 	}
 	// End of accounts settings
 

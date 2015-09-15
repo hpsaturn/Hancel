@@ -1517,4 +1517,8 @@ public class InCallActivity extends FragmentActivity implements
         
         callsList.invalidate();
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> second_stage

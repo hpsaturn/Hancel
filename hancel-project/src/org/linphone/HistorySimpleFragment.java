@@ -29,6 +29,10 @@ import org.linphone.core.CallDirection;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneCallLog;
 import org.linphone.core.LinphoneCallLog.CallStatus;
+<<<<<<< HEAD
+=======
+import org.linphone.mediastream.Log;
+>>>>>>> second_stage
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -63,6 +67,10 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 	private TextView allCalls, missedCalls, edit, ok, deleteAll, noCallHistory, noMissedCallHistory;
 	private boolean onlyDisplayMissedCalls, isEditMode;
 	private List<LinphoneCallLog> mLogs; 
+<<<<<<< HEAD
+=======
+	//private String hancelName;
+>>>>>>> second_stage
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -95,7 +103,12 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
         
         ok = (TextView) view.findViewById(R.id.ok);
         ok.setOnClickListener(this);
+<<<<<<< HEAD
         
+=======
+
+        Log.d("HISTORY SIMPLE FRAGMENT");
+>>>>>>> second_stage
 		return view;
     }
 	
@@ -397,6 +410,7 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 			LinphoneUtils.findUriPictureOfContactAndSetDisplayName(address, view.getContext().getContentResolver());
 			String displayName = address.getDisplayName(); 
 			String sipUri = address.asStringUriOnly();
+<<<<<<< HEAD
 
 			if (displayName == null) {
 				if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
@@ -409,6 +423,36 @@ public class HistorySimpleFragment extends Fragment implements OnClickListener, 
 					contact.setText(LinphoneUtils.getUsernameFromAddress(address.getDisplayName()));
 				} else {
 					contact.setText(displayName);
+=======
+			String hancelName= "";
+			
+			if (displayName == null) {
+				if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
+					hancelName = LinphoneUtils.getUsernameFromAddress(sipUri)
+							/*.replace(getResources().getString(R.string.default_account_prefix),"")*/;
+					contact.setText(hancelName);
+				} 
+				else {
+					hancelName = sipUri/*.replace(getResources().getString(R.string
+							.default_account_prefix),"")*/.replace("@","").replace
+							(getResources().getString(R.string.default_domain),"");
+					contact.setText(hancelName);//setText(sipUri);					
+				}
+			} 
+			else {
+				if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(address.getDisplayName())) {
+					hancelName = LinphoneUtils.getUsernameFromAddress(address.getDisplayName()); 
+					hancelName = hancelName/*.replace(getResources().getString(R.string
+							.default_account_prefix),"")*/.replace("@","").replace
+							(getResources().getString(R.string.default_domain),"").replace("sip:", "hancel:");
+					contact.setText(hancelName);//LinphoneUtils.getUsernameFromAddress(address.getDisplayName()));					
+				} 
+				else {
+					hancelName = displayName/*.replace(getResources().getString(R.string
+							.default_account_prefix),"")*/.replace("@","").replace
+							(getResources().getString(R.string.default_domain),"").replace("sip:", "hancel:");
+					contact.setText(displayName);					
+>>>>>>> second_stage
 				}
 			}
 			view.setTag(sipUri);

@@ -67,7 +67,12 @@ public class LinphoneSliders extends View implements OnGestureListener {
 		
 		if (slidingLeftHandle && Math.abs(leftSliderX) >= mCoeff * getWidth()) {
 			mTriggerListener.onLeftHandleTriggered();
+<<<<<<< HEAD
 		} else if (slidingRightHandle && rightSliderX >= mCoeff * getWidth()) {
+=======
+		} 
+		else if (slidingRightHandle && rightSliderX >= mCoeff * getWidth()) {
+>>>>>>> second_stage
 			mTriggerListener.onRightHandleTriggered();
 		}
 	}

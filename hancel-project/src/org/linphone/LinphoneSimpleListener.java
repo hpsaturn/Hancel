@@ -82,7 +82,13 @@ public interface LinphoneSimpleListener {
 	public static interface LinphoneOnComposingReceivedListener extends LinphoneSimpleListener {
 		void onComposingReceived(LinphoneChatRoom room);
 	}
+<<<<<<< HEAD
 	public static interface LinphoneOnRemoteProvisioningListener extends LinphoneSimpleListener {
 		void onConfiguringStatus(RemoteProvisioningState state);
 	}
+=======
+	/*public static interface LinphoneOnRemoteProvisioningListener extends LinphoneSimpleListener {
+		void onConfiguringStatus(RemoteProvisioningState state);
+	}*/
+>>>>>>> second_stage
 }

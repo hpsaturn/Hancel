@@ -27,6 +27,10 @@ import org.linphone.core.CallDirection;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneCallLog;
 import org.linphone.core.LinphoneCallLog.CallStatus;
+<<<<<<< HEAD
+=======
+import org.linphone.mediastream.Log;
+>>>>>>> second_stage
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -94,6 +98,10 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
         ok = (TextView) view.findViewById(R.id.ok);
         ok.setOnClickListener(this);
         
+<<<<<<< HEAD
+=======
+        Log.d("AQUIIIIIIIIIIIII");
+>>>>>>> second_stage
 		return view;
     }
 	
@@ -183,7 +191,12 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 		LinphoneAddress address;
 		if (log.getDirection() == CallDirection.Incoming) {
 			address = log.getFrom();
+<<<<<<< HEAD
 		} else {
+=======
+		} 
+		else {
+>>>>>>> second_stage
 			address = log.getTo();
 		}
 		
@@ -193,11 +206,23 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 		if (displayName == null) {
 			if (getResources().getBoolean(R.bool.only_display_username_if_unknown) && LinphoneUtils.isSipAddress(sipUri)) {
 				displayName = LinphoneUtils.getUsernameFromAddress(sipUri);
+<<<<<<< HEAD
 			} else {
 				displayName = sipUri;
 			}
 		}
 		
+=======
+				
+			} 
+			else {
+				displayName = sipUri;
+			}			
+		}	
+		displayName = displayName/*.replace(getResources().getString(
+				R.string.default_account_prefix),"")*/.replace("@","").replace
+				(getResources().getString(R.string.default_domain),"");
+>>>>>>> second_stage
 		return displayName;
 	}
 
@@ -323,7 +348,12 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 		
 		if (MainActivity.instance().isAnimationDisabled()) {
 			deleteAll.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
 		} else {
+=======
+		} 
+		else {
+>>>>>>> second_stage
 			Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left_to_right);
 			animation.setAnimationListener(new AnimationListener() {
 				@Override
@@ -391,23 +421,43 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 				address = log.getFrom();
 				if (log.getStatus() == CallStatus.Missed) {
 					callDirection.setImageBitmap(missedCall);
+<<<<<<< HEAD
 				} else {
 					callDirection.setImageBitmap(incomingCall);
 				}
 			} else {
+=======
+				} 
+				else {
+					callDirection.setImageBitmap(incomingCall);
+				}
+			} 
+			else {
+>>>>>>> second_stage
 				address = log.getTo();
 				callDirection.setImageBitmap(outgoingCall);
 			}
 			
 			LinphoneUtils.findUriPictureOfContactAndSetDisplayName(address, view.getContext().getContentResolver());
+<<<<<<< HEAD
 			String sipUri = address.asStringUriOnly();
+=======
+			String sipUri = address.asStringUriOnly()/*.replace(getResources().getString(
+					R.string.default_account_prefix),"")*/.replace(getResources().getString(
+					R.string.default_domain),"").replace("@", "");
+>>>>>>> second_stage
 			dateAndTime.setText(log.getStartDate() + " " + log.getCallDuration());
 			view.setTag(sipUri);
 			
 			if (isEditMode) {
 				delete.setVisibility(View.VISIBLE);
 				detail.setVisibility(View.GONE);
+<<<<<<< HEAD
 			} else {
+=======
+			} 
+			else {
+>>>>>>> second_stage
 				delete.setVisibility(View.GONE);
 				detail.setVisibility(View.VISIBLE);
 				detail.setOnClickListener(new OnClickListener() {
@@ -419,7 +469,10 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 					}
 				});
 			}
+<<<<<<< HEAD
 
+=======
+>>>>>>> second_stage
 			return view;
 		}
 		
@@ -467,7 +520,13 @@ public class HistoryFragment extends Fragment implements OnClickListener, OnChil
 			
 			LinphoneUtils.findUriPictureOfContactAndSetDisplayName(address, view.getContext().getContentResolver());
 			String displayName = getCorrespondentDisplayName(log);
+<<<<<<< HEAD
 			String sipUri = address.asStringUriOnly();
+=======
+			String sipUri = address.asStringUriOnly()/*.replace(getResources().getString(
+					R.string.default_account_prefix),"")*/.replace(getResources().getString(
+					R.string.default_domain),"").replace("@", "");
+>>>>>>> second_stage
 			contact.setText(displayName + " (" + getChildrenCount(groupPosition) + ")");
 			view.setTag(sipUri);
 			

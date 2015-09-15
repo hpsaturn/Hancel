@@ -22,8 +22,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import org.hansel.myAlert.MainActivity;
 import org.hansel.myAlert.R;
+=======
+import org.hancel.exceptions.NoInternetException;
+import org.hancel.http.HttpUtils;
+import org.hansel.myAlert.MainActivity;
+import org.hansel.myAlert.R;
+import org.hansel.myAlert.Utils.Util;
+import org.hansel.myAlert.dataBase.FlipDAO;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.linphone.InCallActivity.AcceptCallUpdateDialog;
+>>>>>>> second_stage
 import org.linphone.LinphoneManager.EcCalibrationListener;
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneCore;
@@ -38,11 +51,20 @@ import org.linphone.core.TunnelConfig;
 import org.linphone.mediastream.Log;
 import org.linphone.mediastream.Version;
 import org.linphone.mediastream.video.capture.hwconf.AndroidCameraConfiguration;
+<<<<<<< HEAD
 import org.linphone.setup.SetupActivity;
 import org.linphone.ui.LedPreference;
 import org.linphone.ui.PreferencesListFragment;
 
 import android.content.Intent;
+=======
+import org.linphone.ui.LedPreference;
+import org.linphone.ui.PreferencesListFragment;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
+>>>>>>> second_stage
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.CheckBoxPreference;
@@ -53,34 +75,59 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+<<<<<<< HEAD
+=======
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.widget.Toast;
+>>>>>>> second_stage
 
 /**
  * @author Sylvain Berfini
  */
 public class SettingsFragment extends PreferencesListFragment implements EcCalibrationListener {
+<<<<<<< HEAD
 	private static final int WIZARD_INTENT = 1;
+=======
+	//private static final int WIZARD_INTENT = 1;
+>>>>>>> second_stage
 	private LinphonePreferences mPrefs;
 	private Handler mHandler = new Handler();
 	private TunnelConfig tunnelConfig;
 
+<<<<<<< HEAD
 	public SettingsFragment() {
 		super(R.xml.preferences);
+=======
+	public SettingsFragment() {		
+		super(R.xml.settings_preferences);		
+>>>>>>> second_stage
 		mPrefs = LinphonePreferences.instance();
 	}
 
 	@Override
 	public void onCreate(Bundle bundle) {
+<<<<<<< HEAD
 		super.onCreate(bundle);
 
 		// Init the settings page interface
 		initSettings();
 		setListeners();
 		hideSettings();
+=======
+		getActivity().setTheme(R.style.myTheme_Preference);			
+		super.onCreate(bundle);
+		// Init the settings page interface
+		initSettings();		
+		setListeners();
+		///hideSettings();		
+>>>>>>> second_stage
 	}
 
 	// Inits the values or the listener on some settings
 	private void initSettings() {
 		//Init accounts on Resume instead of on Create to update the account list when coming back from wizard
+<<<<<<< HEAD
 
 		initTunnelSettings();
 		initAudioSettings();
@@ -89,6 +136,16 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		initNetworkSettings();
 		initAdvancedSettings();
 
+=======
+		initFlipSettings();
+		//initTunnelSettings();
+		//initAudioSettings();		
+		//initVideoSettings();
+		//initCallSettings();
+		//initNetworkSettings();
+		//initAdvancedSettings();
+		
+>>>>>>> second_stage
 		// Add action on About button
 		findPreference(getString(R.string.menu_about_key)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
@@ -100,24 +157,57 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 				return false;
 			}
 		});
+<<<<<<< HEAD
 		findPreference(getString(R.string.setup_key)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+=======
+		
+		//Action for Hancel logout
+		findPreference(getString(R.string.pref_key_logout)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		@Override
+		public boolean onPreferenceClick(Preference preference) {
+			if (MainActivity.isInstanciated()) {
+				FragmentManager fm = MainActivity.instance().getSupportFragmentManager();
+				DialogFragment newFragment = LogoutDialogFragment.newInstance(
+			            R.string.logout_desc);
+			    newFragment.show(getFragmentManager(), "dialog");
+				return true;
+			}
+			return false;
+		}
+	});
+		/*findPreference(getString(R.string.setup_key)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+>>>>>>> second_stage
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				Intent intent = new Intent(LinphoneService.instance(), SetupActivity.class);
 	        	startActivityForResult(intent, WIZARD_INTENT);
 	        	return true;
 			}
+<<<<<<< HEAD
 		});
+=======
+		});*/
+>>>>>>> second_stage
 	}
 
 	// Sets listener for each preference to update the matching value in linphonecore
 	private void setListeners() {
+<<<<<<< HEAD
 		setTunnelPreferencesListener();
 		setAudioPreferencesListener();
 		setVideoPreferencesListener();
 		setCallPreferencesListener();
 		setNetworkPreferencesListener();
 		setAdvancedPreferencesListener();
+=======
+		//setTunnelPreferencesListener();
+		setFlipPreferencesListener();
+		//setAudioPreferencesListener();
+		//setVideoPreferencesListener();
+		//setCallPreferencesListener();
+		//setNetworkPreferencesListener();
+		//setAdvancedPreferencesListener();
+>>>>>>> second_stage
 	}
 
 	// Read the values set in resources and hides the settings accordingly
@@ -152,7 +242,12 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 		if (!Version.isVideoCapable() || !LinphoneManager.getLcIfManagerNotDestroyedOrNull().isVideoSupported()) {
 			uncheckAndHidePreference(R.string.pref_video_enable_key);
+<<<<<<< HEAD
 		} else {
+=======
+		} 
+		else {
+>>>>>>> second_stage
 			if (!AndroidCameraConfiguration.hasFrontCamera()) {
 				uncheckAndHidePreference(R.string.pref_video_use_front_camera_key);
 			}
@@ -225,8 +320,15 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 	private void setPreferenceDefaultValueAndSummary(int pref, String value) {
 		if(value != null) {
 			EditTextPreference etPref = (EditTextPreference) findPreference(getString(pref));
+<<<<<<< HEAD
 			etPref.setText(value);
 			etPref.setSummary(value);
+=======
+			if(etPref != null){
+				etPref.setText(value);
+				etPref.setSummary(value);
+			}
+>>>>>>> second_stage
 		}
 	}
 
@@ -235,10 +337,40 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		setPreferenceDefaultValueAndSummary(R.string.pref_tunnel_port_key, String.valueOf(mPrefs.getTunnelPort()));
 		ListPreference tunnelModePref = (ListPreference) findPreference(getString(R.string.pref_tunnel_mode_key));
 		String tunnelMode = mPrefs.getTunnelMode();
+<<<<<<< HEAD
 		tunnelModePref.setSummary(tunnelMode);
 		tunnelModePref.setValue(tunnelMode);
 	}
 
+=======
+		
+		if(tunnelModePref != null){
+			tunnelModePref.setSummary(tunnelMode);
+			tunnelModePref.setValue(tunnelMode);
+		}
+	}
+	
+	private void initFlipSettings() {
+		setPreferenceDefaultValueAndSummary(R.string.pref_journalists_code_key,"");	
+		/*setPreferenceDefaultValueAndSummary(R.string.pref_journalists_survey_key,
+				getString(R.string.pref_journalists_survey_value));	*/
+	}
+
+	private void setFlipPreferencesListener() {
+		findPreference(getString(R.string.pref_journalists_code_key))
+			.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				ActivationCodeTask activationTask = new ActivationCodeTask();
+				activationTask.execute(newValue.toString());				
+				return true;				
+			}
+		});
+	}
+	
+	
+
+>>>>>>> second_stage
 	private void setTunnelPreferencesListener() {
 		findPreference(getString(R.string.pref_tunnel_host_key)).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
@@ -289,7 +421,12 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 			if (username == null) {
 				account.setTitle(getString(R.string.pref_sipaccount));
+<<<<<<< HEAD
 			} else {
+=======
+			} 
+			else {
+>>>>>>> second_stage
 				account.setTitle(username + "@" + domain);
 			}
 
@@ -362,7 +499,12 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		boolean hasSrtp = lc.mediaEncryptionSupported(MediaEncryption.SRTP);
 		if (!hasSrtp && !hasZrtp) {
 			pref.setEnabled(false);
+<<<<<<< HEAD
 		} else {
+=======
+		} 
+		else {
+>>>>>>> second_stage
 			if (hasSrtp){
 				entries.add(getString(R.string.media_encryption_srtp));
 				values.add(getString(R.string.pref_media_encryption_key_srtp));
@@ -396,21 +538,43 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		setListPreferenceValues(pref, entries, values);
 
 		String value = mPrefs.getPreferredVideoSize();
+<<<<<<< HEAD
 		pref.setSummary(value);
 		pref.setValue(value);
+=======
+		if(pref != null){
+			pref.setSummary(value);
+			pref.setValue(value);
+		}
+>>>>>>> second_stage
 	}
 
 	private static void setListPreferenceValues(ListPreference pref, List<CharSequence> entries, List<CharSequence> values) {
 		CharSequence[] contents = new CharSequence[entries.size()];
 		entries.toArray(contents);
+<<<<<<< HEAD
 		pref.setEntries(contents);
 		contents = new CharSequence[values.size()];
 		values.toArray(contents);
 		pref.setEntryValues(contents);
+=======
+		if(pref != null){
+			pref.setEntries(contents);
+			contents = new CharSequence[values.size()];
+			values.toArray(contents);
+			pref.setEntryValues(contents);
+		}
+>>>>>>> second_stage
 	}
 
 	private void initAudioSettings() {
 		PreferenceCategory codecs = (PreferenceCategory) findPreference(getString(R.string.pref_codecs_key));
+<<<<<<< HEAD
+=======
+		if(codecs == null)
+			return;
+		
+>>>>>>> second_stage
 		codecs.removeAll();
 
 		LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
@@ -455,7 +619,12 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		bitrateLimit.setSummary(String.valueOf(mPrefs.getCodecBitrateLimit()));
 		bitrateLimit.setValue(String.valueOf(mPrefs.getCodecBitrateLimit()));
 	}
+<<<<<<< HEAD
 
+=======
+	
+	
+>>>>>>> second_stage
 	private void setAudioPreferencesListener() {
 		findPreference(getString(R.string.pref_echo_cancellation_key)).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
@@ -524,6 +693,13 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 		initializePreferredVideoSizePreferences((ListPreference) findPreference(getString(R.string.pref_preferred_video_size_key)));
 
 		PreferenceCategory codecs = (PreferenceCategory) findPreference(getString(R.string.pref_video_codecs_key));
+<<<<<<< HEAD
+=======
+		
+		if(codecs == null)
+			return;
+		
+>>>>>>> second_stage
 		codecs.removeAll();
 
 		LinphoneCore lc = LinphoneManager.getLcIfManagerNotDestroyedOrNull();
@@ -891,6 +1067,10 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onEcCalibrationStatus(final EcCalibratorStatus status, final int delayMs) {
+<<<<<<< HEAD
+=======
+		//getActivity().setTheme(R.style.Holo_Theme_Light);
+>>>>>>> second_stage
 		mHandler.post(new Runnable() {
 			public void run() {
 				CheckBoxPreference echoCancellation = (CheckBoxPreference) findPreference(getString(R.string.pref_echo_cancellation_key));
@@ -915,9 +1095,16 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 
 	@Override
 	public void onResume() {
+<<<<<<< HEAD
 		super.onResume();
 
 		initAccounts();
+=======
+		//getActivity().setTheme(R.style.Holo_Theme);
+		super.onResume();
+
+		//initAccounts();
+>>>>>>> second_stage
 
 		if (MainActivity.isInstanciated()) {
 			MainActivity.instance().selectMenu(FragmentsAvailable.SETTINGS);
@@ -927,4 +1114,126 @@ public class SettingsFragment extends PreferencesListFragment implements EcCalib
 			}
 		}
 	}
+<<<<<<< HEAD
+=======
+	
+	
+	public class ActivationCodeTask extends AsyncTask<String, String, String>{
+		@Override
+		protected String doInBackground(String... params) {
+			try{
+				JSONArray numbers = null;
+				JSONObject response = HttpUtils.sendActivationCode(params[0]);
+				String ok = (String)response.get("resultado");
+				
+				if(!ok.equalsIgnoreCase("OK")){
+					return getResources().getString(R.string.registration_fail);				
+				}
+				else{
+					JSONObject desc = (JSONObject)response.get("descripcion");
+					numbers = desc.getJSONArray("numbers");						
+					if(numbers == null || numbers.length() == 0){	
+						return getResources().getString(R.string.registration_empty);
+					}
+				}				
+				FlipDAO flipDao = new FlipDAO(getActivity().getApplicationContext());
+				flipDao.open();
+				flipDao.createOrUpdateKey(getResources().getString(
+					R.string.contacts_flip), numbers.join(","));
+				
+				return getResources().getString(R.string.registration_ok);				
+			}
+			catch(JSONException e){
+				return getResources().getString(R.string.registration_fail);
+			}
+			catch (NoInternetException e){
+				return getResources().getString(R.string.registration_fail);
+			}			
+		}
+		
+		@Override
+		protected void onPostExecute(String result){
+			Toast.makeText(getActivity().getApplicationContext(), result, 
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	public static class LogoutDialogFragment extends DialogFragment {
+
+		public static LogoutDialogFragment newInstance(int title) {
+			LogoutDialogFragment frag = new LogoutDialogFragment();
+	        Bundle args = new Bundle();
+	        args.putInt("title", title);
+	        frag.setArguments(args);
+	        return frag;
+	    }
+
+	    @Override
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        int title = getArguments().getInt("title");
+
+	        return new AlertDialog.Builder(getActivity())
+	                //.setIcon(R.drawable.alert_dialog_icon)
+	                .setTitle(title)
+	                .setPositiveButton(R.string.logout,
+	                    new DialogInterface.OnClickListener() {
+	                        public void onClick(DialogInterface dialog, int whichButton) {
+	                        	Log.d("Hancel sing out");
+	        			    	Util.setLoginOkInPreferences(MainActivity.instance()
+	        							.getApplicationContext(), false);											
+	        					getActivity().finish();
+	                        }
+	                    }
+	                )
+	                .setNegativeButton(R.string.cancel,
+	                    new DialogInterface.OnClickListener() {
+	                        public void onClick(DialogInterface dialog, int whichButton) {
+	                            
+	                        }
+	                    }
+	                )
+	                .create();
+	    }
+	}
+/*	
+	@SuppressLint("ValidFragment")
+	class AcceptLogoutDialog extends DialogFragment {
+
+	    public AcceptLogoutDialog() {
+	        // Empty constructor required for DialogFragment
+	    }
+
+	    @Override
+	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	        View view = inflater.inflate(R.layout.logout_dialog, container);
+
+	        getDialog().setTitle(R.string.logout_title);
+	        
+	        Button yes = (Button) view.findViewById(R.id.yes);
+	        yes.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+			    	Log.d("Hancel sing out");
+			    	Util.setLoginOkInPreferences(MainActivity.instance()
+							.getApplicationContext(), false);											
+					getActivity().finish();
+				}
+			});
+	        
+	        
+	        
+	        Button no = (Button) view.findViewById(R.id.no);
+	        no.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+			    	Log.d("No Hancel sing out");
+			    	this.dismiss();
+			    	
+				}
+			});
+	        
+	        return view;
+	    }
+	}*/
+>>>>>>> second_stage
 }
