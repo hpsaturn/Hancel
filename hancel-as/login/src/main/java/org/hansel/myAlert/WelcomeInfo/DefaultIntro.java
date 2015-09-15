@@ -46,7 +46,6 @@ public class DefaultIntro extends AppIntro2 {
 //    }
 
     private void loadMainActivity(){
-        MainActivity.instance().changeCurrentFragment(FragmentsAvailable.PANIC, null);
         finish();
     }
 

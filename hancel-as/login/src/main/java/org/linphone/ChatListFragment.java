@@ -141,7 +141,7 @@ public class ChatListFragment extends Fragment implements OnClickListener, OnIte
 		
 		//Check if the is the first time we show the chat view since we use liblinphone chat storage
 		useLinphoneStorage = getResources().getBoolean(R.bool.use_linphone_chat_storage);
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.instance());
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		boolean updateNeeded = prefs.getBoolean(getString(R.string.pref_first_time_linphone_chat_storage), true);
 		updateNeeded = updateNeeded && !isVersionUsingNewChatStorage();
 		if (useLinphoneStorage && updateNeeded) {
