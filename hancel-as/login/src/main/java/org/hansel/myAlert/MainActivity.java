@@ -1328,8 +1328,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		
 		Log.v("=== OnResume del MainActivity..................");			
 
-		if (!LinphoneService.isReady())
-			startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
+		if (!LinphoneService.isReady()) startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
 		
 		if(currentFragment == FragmentsAvailable.START || 
 				currentFragment == FragmentsAvailable.WELCOME){
@@ -1337,30 +1336,30 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 		
 		// Remove to avoid duplication of the listeners
-		LinphoneManager.removeListener(this);
-		LinphoneManager.addListener(this);
+//		LinphoneManager.removeListener(this);
+//		LinphoneManager.addListener(this);
 
-		updateMissedChatCount();
-		displayMissedCalls(LinphoneManager.getLc().getMissedCallsCount());
+//		updateMissedChatCount();
+//		displayMissedCalls(LinphoneManager.getLc().getMissedCallsCount());
 		
-		LinphoneManager.getInstance().changeStatusToOnline();
+//		LinphoneManager.getInstance().changeStatusToOnline();
 
-		if(getIntent().getIntExtra("PreviousActivity", 0) != CALL_ACTIVITY){
-			if (LinphoneManager.getLc().getCalls().length > 0) {
-				LinphoneCall call = LinphoneManager.getLc().getCalls()[0];
-				LinphoneCall.State callState = call.getState();
-				if (callState == State.IncomingReceived) {
-					startActivity(new Intent(this, IncomingCallActivity.class));
-				} else {
-
-					if (call.getCurrentParamsCopy().getVideoEnabled()) {
-						startVideoActivity(call);
-					} else {
-						startIncallActivity(call);
-					}
-				}
-			}
-		}
+//		if(getIntent().getIntExtra("PreviousActivity", 0) != CALL_ACTIVITY){
+//			if (LinphoneManager.getLc().getCalls().length > 0) {
+//				LinphoneCall call = LinphoneManager.getLc().getCalls()[0];
+//				LinphoneCall.State callState = call.getState();
+//				if (callState == State.IncomingReceived) {
+//					startActivity(new Intent(this, IncomingCallActivity.class));
+//				} else {
+//
+//					if (call.getCurrentParamsCopy().getVideoEnabled()) {
+//						startVideoActivity(call);
+//					} else {
+//						startIncallActivity(call);
+//					}
+//				}
+//			}
+//		}
 	}
 
 	@Override
