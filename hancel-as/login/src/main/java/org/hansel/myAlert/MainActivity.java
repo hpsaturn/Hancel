@@ -639,11 +639,19 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if (id == R.id.history) {
 			if(!PreferenciasHancel.getLoginOk(this)) {
 				showLoginFragment();
+				if(PreferenciasHancel.getLoginOk(this)){
+					changeCurrentFragment(FragmentsAvailable.HISTORY, null);
+					history.setSelected(true);
+					LinphoneManager.getLc().resetMissedCallsCount();
+					displayMissedCalls(0);
+				}
 			}
-			/*changeCurrentFragment(FragmentsAvailable.HISTORY, null);
-			history.setSelected(true);
-			LinphoneManager.getLc().resetMissedCallsCount();
-			displayMissedCalls(0);*/
+			else{
+				changeCurrentFragment(FragmentsAvailable.HISTORY, null);
+				history.setSelected(true);
+				LinphoneManager.getLc().resetMissedCallsCount();
+				displayMissedCalls(0);
+			}
 		} 
 		else if (id == R.id.contacts) {
 			changeCurrentFragment(FragmentsAvailable.CONTACTS, null);

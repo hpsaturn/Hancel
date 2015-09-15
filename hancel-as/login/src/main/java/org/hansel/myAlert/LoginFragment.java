@@ -79,19 +79,18 @@ public class LoginFragment extends Fragment implements OnClickListener {
                     usuarioDAO.Insertar(mUser, crypto, "");
                     usuarioDAO.close();
 
-
                     Util.setLoginOkInPreferences(getActivity().getApplicationContext(), true);
                     /////
                     progressBar.setVisibility(View.INVISIBLE);
 
-                    if (user.length() == 0) {
+                    /*if (user.length() == 0) {
                         RegisteredFragment registered = new RegisteredFragment();
                         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.activityContainer, registered);
                         fragmentTransaction.commit();
-                    }
+                    }*/
 
-                    MainActivity.instance().showMainFragment();
+                    ((MainActivity)getActivity()).showMainFragment();
                 } else {
                     errores.setText(mErrores);
                     errores.setVisibility(View.VISIBLE);
