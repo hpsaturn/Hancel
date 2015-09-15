@@ -35,6 +35,7 @@ import org.linphone.core.LinphoneCoreException;
 import org.linphone.core.LinphoneCoreFactory;
 import org.linphone.core.LinphoneProxyConfig;
 import static android.content.Intent.ACTION_MAIN;
+
 public class LoginFragment extends Fragment implements OnClickListener {
     private String mUser, mPasswd, mErrores;
     private EditText user, passwd;
@@ -223,7 +224,6 @@ public class LoginFragment extends Fragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().startService(new Intent(getActivity(), LinphoneService.class));
         if(progressBar!=null)progressBar.setVisibility(View.GONE);
     }
 
