@@ -175,9 +175,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		instance = this;
 				
 		/*if(!PreferenciasHancel.getLoginOk(this)){
-			showLoginFragment();
+			showLoginFragment();*/
 			showStartFragment();
-		}else*/
+		/*}else*/
 		    showMainFragment();
 
         startHardwareButtonService();
