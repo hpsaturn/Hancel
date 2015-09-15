@@ -1365,19 +1365,19 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 	@Override
 	protected void onDestroy() {
-		LinphoneManager.removeListener(this);		
+
+//		LinphoneManager.removeListener(this);
 
 		if (mOrientationHelper != null) {
 			mOrientationHelper.disable();
 			mOrientationHelper = null;
 		}
 		
-		LinphoneManager.getInstance().changeStatusToOffline();
+//		LinphoneManager.getInstance().changeStatusToOffline();
 
-		Intent lp = new Intent(MainActivity.instance()
-				.getApplicationContext(),LinphoneService.class);
-		LinphoneService.instance().	
-		stopService(lp);
+//		Intent lp = new Intent(MainActivity.instance().getApplicationContext(),LinphoneService.class);
+//		LinphoneService.instance().
+//		stopService(lp);
 		
 		instance = null;
 		
