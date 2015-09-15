@@ -133,6 +133,7 @@ public final class LinphoneService extends Service implements LinphoneServiceLis
 	public void onCreate() {
 		super.onCreate();
 
+        Log.d(LinphoneService.class.getSimpleName()+" starting..");
 		// In case restart after a crash. Main in LinphoneActivity
 		mNotificationTitle = getString(R.string.service_name);
 
