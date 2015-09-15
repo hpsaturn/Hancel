@@ -1328,7 +1328,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		
 		Log.v("=== OnResume del MainActivity..................");			
 
-		if (!LinphoneService.isReady()) startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
+//		if (!LinphoneService.isReady()) startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
 		
 		if(currentFragment == FragmentsAvailable.START || 
 				currentFragment == FragmentsAvailable.WELCOME){
