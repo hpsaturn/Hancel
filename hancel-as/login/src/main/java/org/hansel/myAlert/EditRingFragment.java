@@ -11,7 +11,6 @@ import org.linphone.LinphoneManager;
 import org.linphone.LinphoneService;
 import org.linphone.LinphoneUtils;
 import org.linphone.compatibility.Compatibility;
-import org.linphone.mediastream.Log;
 import org.linphone.mediastream.Version;
 
 import android.content.Context;
@@ -22,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -186,7 +186,7 @@ public class EditRingFragment extends Fragment {
 		addContacts.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Log.i("EditRing","=== Current contacts: " + idContacts.toString());
+				Log.i("EditRing", "=== Current contacts: " + idContacts.toString());
 				searchNotIncludedContacts();					
 			}
 		} );

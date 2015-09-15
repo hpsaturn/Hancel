@@ -128,7 +128,7 @@ public class TrackDialog extends FragmentActivity implements OnClickListener, On
 
         // Create and show the dialog.
         try {
-            DialogFragment newFragment = new TimePickerFragment(cal);
+            DialogFragment newFragment = new TimePickerFragment();
             newFragment.show(getSupportFragmentManager(), "timePicker");
         } catch (Exception e) {
             e.printStackTrace();
