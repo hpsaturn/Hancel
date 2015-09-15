@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="70dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/logo_57x57" />
 
@@ -19,11 +19,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:hint="@string/Usuario"
         android:textCursorDrawable="@null" />
 
@@ -32,8 +32,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtUser"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:layout_gravity="center"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
@@ -49,8 +49,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/accent"
-        android:layout_above="@+id/btnRegistration"
+        android:layout_below="@id/txtPassword"
         android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="5dp"
         android:text="@string/loginButtonText" />
@@ -59,9 +60,8 @@
         android:id="@+id/btnRegistration"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btnLogin"
         android:backgroundTint="@color/accent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:text="@string/registration" />
