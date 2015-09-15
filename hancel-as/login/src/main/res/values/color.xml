@@ -12,7 +12,8 @@
     <color name="accent">#ff6e40</color>
     <color name="orange_hancel">#FFff7B1E</color>
     <color name="background_app">#FFEFF5F8</color>
-  	<color name="background_header">#454d4d</color> 
+  	<color name="background_header">#454d4d</color>
+    <color name="black">#ff000000</color>
   	
   	<color name="text_color">#454d4d</color> 
   	<color name="tittle_color">#2C3131</color>   	
