@@ -637,7 +637,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		resetSelection();
 
 		if (id == R.id.history) {
-			if(!PreferenciasHancel.getLoginOk(this)) {
+			if(!PreferenciasHancel.getLoginOk(this) || !LinphoneManager.isInstanciated()) {
 				showLoginFragment();
 			}
 			else{
@@ -648,7 +648,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			}
 		} 
 		else if (id == R.id.contacts) {
-			if(!PreferenciasHancel.getLoginOk(this)) {
+			if(!PreferenciasHancel.getLoginOk(this) || !LinphoneManager.isInstanciated()) {
 				showLoginFragment();
 			}
 			else {
@@ -657,7 +657,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			}
 		}
 		else if (id == R.id.dialer) {
-			if(!PreferenciasHancel.getLoginOk(this)) {
+			if(!PreferenciasHancel.getLoginOk(this) || !LinphoneManager.isInstanciated()) {
 				showLoginFragment();
 			}
 			else {
