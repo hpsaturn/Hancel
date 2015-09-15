@@ -405,8 +405,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-				
-		
+
 		if (!withoutAnimation && !isAnimationDisabled && currentFragment.shouldAnimate()) {
 			if (newFragmentType.isRightOf(currentFragment)) {
 				transaction.setCustomAnimations(R.anim.slide_in_right_to_left,
@@ -422,7 +421,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			}
 		}
 		try {
-			getSupportFragmentManager().popBackStackImmediate(newFragmentType.toString(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			getSupportFragmentManager().popBackStackImmediate(newFragmentType.toString(),
+					FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		} 
 		catch (java.lang.IllegalStateException e) {
 			e.printStackTrace();
@@ -430,7 +430,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 		transaction.addToBackStack(newFragmentType.toString());
 		transaction.replace(R.id.activityContainer, newFragment, newFragmentType.toString());
-		Log.v("=== Cambiando a fragment " + newFragmentType.toString());
+
 		transaction.commitAllowingStateLoss();
 		getSupportFragmentManager().executePendingTransactions();
 
@@ -637,10 +637,13 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		resetSelection();
 
 		if (id == R.id.history) {
-			changeCurrentFragment(FragmentsAvailable.HISTORY, null);
+			if(!PreferenciasHancel.getLoginOk(this)) {
+				showLoginFragment();
+			}
+			/*changeCurrentFragment(FragmentsAvailable.HISTORY, null);
 			history.setSelected(true);
 			LinphoneManager.getLc().resetMissedCallsCount();
-			displayMissedCalls(0);
+			displayMissedCalls(0);*/
 		} 
 		else if (id == R.id.contacts) {
 			changeCurrentFragment(FragmentsAvailable.CONTACTS, null);
@@ -648,8 +651,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		}
 		else if (id == R.id.dialer) {
 			changeCurrentFragment(FragmentsAvailable.PANIC, null);
-			dialer.setSelected(true);
-		}
+				dialer.setSelected(true);
+			}
 		else if (id == R.id.rings) {
 			changeCurrentFragment(FragmentsAvailable.RINGS, null);
 			rings.setSelected(true);

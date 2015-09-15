@@ -34,18 +34,18 @@ import org.linphone.core.LinphoneCore.RegistrationState;
 import org.linphone.core.LinphoneCoreException;
 import org.linphone.core.LinphoneCoreFactory;
 import org.linphone.core.LinphoneProxyConfig;
-
+import static android.content.Intent.ACTION_MAIN;
 public class LoginFragment extends Fragment implements OnClickListener {
     private String mUser, mPasswd, mErrores;
     private EditText user, passwd;
     private TextView errores;
     private ProgressBar progressBar;
-    //private View mLoginStatusView;// mLoginFormView;
-    //private TextView mLoginStatusMessageView;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View loginView = inflater.inflate(R.layout.login_layout_md, container, false);
+
+        getActivity().startService(new Intent(getActivity(), LinphoneService.class));
 
         user = (EditText) loginView.findViewById(R.id.txtUser);
         passwd = (EditText) loginView.findViewById(R.id.txtPassword);
@@ -68,7 +68,6 @@ public class LoginFragment extends Fragment implements OnClickListener {
         progressBar.setVisibility(View.VISIBLE);
         switch (id) {
             case R.id.btnLogin:
-
                 if (AttempLogin() && isAuthenticated()) {
                     String crypto = SimpleCrypto.md5(mPasswd);
                     UsuarioDAO usuarioDAO = new UsuarioDAO(LinphoneService
@@ -167,6 +166,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
                     getResources().getString(R.string.default_domain);
             String proxy = "sip:" + getResources().getString(R.string.default_domain);
 
+
             LinphoneAddress proxyAddr = LinphoneCoreFactory.instance()
                     .createLinphoneAddress(proxy);
 
@@ -223,6 +223,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().startService(new Intent(getActivity(), LinphoneService.class));
         if(progressBar!=null)progressBar.setVisibility(View.GONE);
     }
 
@@ -264,12 +265,12 @@ public class LoginFragment extends Fragment implements OnClickListener {
 							: View.VISIBLE);
 				}
 			});*/
-        } else {
+        } //else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             //mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
             //mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+       // }
     }
 
     /*
