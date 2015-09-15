@@ -16,9 +16,9 @@ zenyagami@gmail.com
  */
 import android.content.Context;
 import android.database.SQLException;
-import org.linphone.mediastream.Log;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class SQLiteHelper{
 	private Context mCtx = null;
@@ -29,13 +29,13 @@ public class SQLiteHelper{
 		this.mCtx = ctx;
 	}
 	public SQLiteHelper open() throws SQLException{
-		Log.d("== Opening DataBase ");
+		Log.d(SQLiteHelper.class.getSimpleName(),"== Opening DataBase ");
 		mDBHelper = new DataBaseHelperInternal(mCtx);
 		mDb = mDBHelper.getWritableDatabase();
 		return this;
 	}
 	public void close(){
-		Log.d("== Closing Database ");
+		Log.d(SQLiteHelper.class.getSimpleName(),"== Closing Database ");
 		mDBHelper.close();
 	}
 	/** Clase privada para el control del SQLite **/
