@@ -657,13 +657,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			}
 		}
 		else if (id == R.id.dialer) {
-			if(!PreferenciasHancel.getLoginOk(this) || !LinphoneManager.isInstanciated()) {
-				showLoginFragment();
-			}
-			else {
-				changeCurrentFragment(FragmentsAvailable.PANIC, null);
-				dialer.setSelected(true);
-			}
+			changeCurrentFragment(FragmentsAvailable.PANIC, null);
+			dialer.setSelected(true);
 		}
 		else if (id == R.id.rings) {
 			showLoginFragment();
@@ -671,7 +666,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			rings.setSelected(true);
 		}
 		else if (id == R.id.chat) {
-			if(!PreferenciasHancel.getLoginOk(this)) {
+			if(!PreferenciasHancel.getLoginOk(this) || !LinphoneManager.isInstanciated()) {
 				showLoginFragment();
 			}
 			else {
