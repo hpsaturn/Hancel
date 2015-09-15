@@ -64,20 +64,23 @@ public class HancelLauncherActivity  extends Activity {
 		setContentView(R.layout.launcher_splash);
         
 		mHandler = new Handler();
-		
-		if(LinphoneService.isReady()){
-			onServiceReady();
-		} 
-		else {
-			// start linphone as background  
-			startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
-			mThread = new ServiceWaitThread();
-			mThread.start();
-		}
+//
+//		if(LinphoneService.isReady()){
+//			onServiceReady();
+//		}
+//		else {
+//			// start linphone as background
+//			startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
+//			mThread = new ServiceWaitThread();
+//			mThread.start();
+//		}
+
+
+        onServiceReady();
+
 	}
 
-	
-	protected void onServiceReady() {
+	private void onServiceReady() {
 		final Class<? extends Activity> classToStart;
 		//TODO: Revisar!!!!
 		/*if (getResources().getBoolean(R.bool.display_sms_remote_provisioning_activity) && LinphonePreferences.instance().isFirstRemoteProvisioning()) {
@@ -89,7 +92,7 @@ public class HancelLauncherActivity  extends Activity {
 		}*/
 		classToStart = MainActivity.class;
 		
-		LinphoneService.instance().setActivityToLaunchOnIncomingReceived(classToStart);
+//		LinphoneService.instance().setActivityToLaunchOnIncomingReceived(classToStart);
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
