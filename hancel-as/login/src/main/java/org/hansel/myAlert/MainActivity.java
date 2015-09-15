@@ -168,12 +168,9 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 		prepareContactsInBackground();
 		startService(new Intent(MainActivity.this, HardwareButtonService.class));
-		startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
+//		startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
 
-        initActionBar();
-		
-		if(!isGooglePlayServicesAvailable())
-			finish();
+		if(!isGooglePlayServicesAvailable()) finish();
 				
 		instance = this;
 				
@@ -186,16 +183,6 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
         startHardwareButtonService();
 
 	}
-
-    private void initActionBar() {
-//		toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
-//        toolbar.setTitleTextColor(Color.WHITE);
-//        toolbar.setTitle(R.string.app_name);
-////        toolbar.setNavigationIcon(R.drawable.logo_57x57);
-//		setSupportActionBar(toolbar);
-//        getSupportActionBar().show();
-
-    }
 
     /*
      * Shows the welcome fragment to register or login

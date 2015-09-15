@@ -182,6 +182,7 @@
             android:name="org.linphone.LinphoneService"
             android:label="@string/service_name"
             android:stopWithTask="false" />
+
         <service android:name="org.linphone.gcm.GCMService" />
         <!-- End Linphone services -->
         <!-- End Services -->
