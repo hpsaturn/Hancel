@@ -147,9 +147,10 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 	private Cursor contactCursor, sipContactCursor;
 	private OrientationEventListener mOrientationHelper;
 	private Toolbar toolbar;
+    private LoginFragment loginFragment;
 
 
-	public static final boolean isInstanciated() {
+    public static final boolean isInstanciated() {
 		return instance != null;
 	}
 
@@ -190,11 +191,19 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
      */
 
 	private void showLoginFragment(){
-		LoginFragment start = new LoginFragment();
-		currentFragment = FragmentsAvailable.LOGIN;
-		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-		fragmentTransaction.replace(R.id.activityContainer, start);
-		fragmentTransaction.commit();
+	    if(loginFragment==null){
+            loginFragment = new LoginFragment();
+            currentFragment = FragmentsAvailable.LOGIN;
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.activityContainer, loginFragment);
+            fragmentTransaction.commit();
+        }
+        else if(!loginFragment.isVisible()){
+            currentFragment = FragmentsAvailable.LOGIN;
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.show(loginFragment);
+            fragmentTransaction.commit();
+        }
 	}
 
 	private void showStartFragment(){
@@ -1351,11 +1360,13 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 //		if (!LinphoneService.isReady()) startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
 		
-		if(currentFragment == FragmentsAvailable.START || 
-				currentFragment == FragmentsAvailable.WELCOME){
-			return;
-		}
-		
+//		if(currentFragment == FragmentsAvailable.START ||
+//				currentFragment == FragmentsAvailable.WELCOME){
+//			return;
+//		}
+
+        changeCurrentFragment(FragmentsAvailable.PANIC, null);
+
 		// Remove to avoid duplication of the listeners
 //		LinphoneManager.removeListener(this);
 //		LinphoneManager.addListener(this);
