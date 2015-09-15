@@ -17,12 +17,14 @@ zenyagami@gmail.com
 import org.hansel.myAlert.Log.Log;
 import org.hansel.myAlert.Utils.PreferenciasHancel;
 import org.hansel.myAlert.Utils.Util;
+import org.hansel.myAlert.services.TrackLocationService;
 
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
@@ -47,8 +49,10 @@ public class StopScheduleActivity extends Activity{
 				NotificationManager notificationManager = (NotificationManager) 
 						  getSystemService(NOTIFICATION_SERVICE); 
 			notificationManager.notify(0, notif);
-            //Detener el rastreo AQUI
-            //Pintar Frame del PanicButonFragment
+			this.stopService(new Intent(this, TrackLocationService.class));
+
+			am.cancel(Util.getStopSchedulePendingIntentWithExtra(getApplicationContext()));
+
 			finish();
 			return;
 	}

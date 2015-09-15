@@ -168,7 +168,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 
 		prepareContactsInBackground();
 		startService(new Intent(MainActivity.this, HardwareButtonService.class));
-		startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
+		//startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
 
         initActionBar();
 		
@@ -177,10 +177,10 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				
 		instance = this;
 				
-		if(!PreferenciasHancel.getLoginOk(this)){
+		/*if(!PreferenciasHancel.getLoginOk(this)){
 			showLoginFragment();
 			showStartFragment();
-		}else
+		}else*/
 		    showMainFragment();
 
         startHardwareButtonService();
