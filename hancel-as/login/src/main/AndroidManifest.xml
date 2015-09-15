@@ -178,10 +178,10 @@
         <receiver android:name=".services.StatusScheduleReceiver"></receiver>
 
         <!-- Linphone services -->
-        <!--<service-->
-            <!--android:name="org.linphone.LinphoneService"-->
-            <!--android:label="@string/service_name"-->
-            <!--android:stopWithTask="false" />-->
+        <service
+            android:name="org.linphone.LinphoneService"
+            android:label="@string/service_name"
+            android:stopWithTask="false" />
 
         <service android:name="org.linphone.gcm.GCMService" />
         <!-- End Linphone services -->
