@@ -637,10 +637,11 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		resetSelection();
 
 		if (id == R.id.history) {
-			if(!PreferenciasHancel.getLoginOk(this) || !LinphoneManager.isInstanciated()) {
+			if(!PreferenciasHancel.getLoginOk(this)) {
 				showLoginFragment();
 			}
 			else{
+				startLinphone();
 				changeCurrentFragment(FragmentsAvailable.HISTORY, null);
 				history.setSelected(true);
 				LinphoneManager.getLc().resetMissedCallsCount();
@@ -648,10 +649,11 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			}
 		} 
 		else if (id == R.id.contacts) {
-			if(!PreferenciasHancel.getLoginOk(this) || !LinphoneManager.isInstanciated()) {
+			if(!PreferenciasHancel.getLoginOk(this) ) {
 				showLoginFragment();
 			}
 			else {
+				startLinphone();
 				changeCurrentFragment(FragmentsAvailable.CONTACTS, null);
 				contacts.setSelected(true);
 			}
@@ -670,6 +672,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				showLoginFragment();
 			}
 			else {
+				startLinphone();
 				changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
 				chat.setSelected(true);
 			}
@@ -1633,6 +1636,12 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
     public HardwareButtonService getHardwareButtonService() {
         return mHardwareButtonService;
     }
+
+	private void startLinphone(){
+		if(!LinphoneManager.isInstanciated()){
+			startService(new Intent(this, LinphoneService.class));
+		}
+	}
 	
 }
 
