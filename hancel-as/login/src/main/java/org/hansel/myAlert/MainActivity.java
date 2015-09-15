@@ -167,6 +167,8 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
         setContentView(R.layout.tabs);
 
 		prepareContactsInBackground();
+		startLinphone();
+
 //		startService(new Intent(MainActivity.this, HardwareButtonService.class));
 //		startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
 
@@ -240,7 +242,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		currentFragment = nextFragment = FragmentsAvailable.PANIC;
 		fragmentsHistory.add(currentFragment);	
 
-		//LinphonePreferences.instance().setMediaEncryption(MediaEncryption.SRTP);
+		LinphonePreferences.instance().setMediaEncryption(MediaEncryption.SRTP);
 	}
 
 
@@ -641,7 +643,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				showLoginFragment();
 			}
 			else{
-				startLinphone();
+				//startLinphone();
 				changeCurrentFragment(FragmentsAvailable.HISTORY, null);
 				history.setSelected(true);
 				LinphoneManager.getLc().resetMissedCallsCount();
@@ -653,7 +655,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				showLoginFragment();
 			}
 			else {
-				startLinphone();
+				//startLinphone();
 				changeCurrentFragment(FragmentsAvailable.CONTACTS, null);
 				contacts.setSelected(true);
 			}
@@ -672,7 +674,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 				showLoginFragment();
 			}
 			else {
-				startLinphone();
+				//startLinphone();
 				changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
 				chat.setSelected(true);
 			}

@@ -45,7 +45,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View loginView = inflater.inflate(R.layout.login_layout_md, container, false);
-
+        getActivity().startService(new Intent(getActivity(), LinphoneService.class));
 
         user = (EditText) loginView.findViewById(R.id.txtUser);
         passwd = (EditText) loginView.findViewById(R.id.txtPassword);
@@ -68,7 +68,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
         progressBar.setVisibility(View.VISIBLE);
         switch (id) {
             case R.id.btnLogin:
-                getActivity().startService(new Intent(getActivity(), LinphoneService.class));
+
                 if (AttempLogin() && isAuthenticated()) {
                     String crypto = SimpleCrypto.md5(mPasswd);
                     UsuarioDAO usuarioDAO = new UsuarioDAO(LinphoneService
