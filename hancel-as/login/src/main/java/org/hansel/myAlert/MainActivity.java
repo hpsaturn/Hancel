@@ -639,12 +639,6 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		if (id == R.id.history) {
 			if(!PreferenciasHancel.getLoginOk(this)) {
 				showLoginFragment();
-				if(PreferenciasHancel.getLoginOk(this)){
-					changeCurrentFragment(FragmentsAvailable.HISTORY, null);
-					history.setSelected(true);
-					LinphoneManager.getLc().resetMissedCallsCount();
-					displayMissedCalls(0);
-				}
 			}
 			else{
 				changeCurrentFragment(FragmentsAvailable.HISTORY, null);
@@ -654,20 +648,36 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 			}
 		} 
 		else if (id == R.id.contacts) {
-			changeCurrentFragment(FragmentsAvailable.CONTACTS, null);
-			contacts.setSelected(true);
+			if(!PreferenciasHancel.getLoginOk(this)) {
+				showLoginFragment();
+			}
+			else {
+				changeCurrentFragment(FragmentsAvailable.CONTACTS, null);
+				contacts.setSelected(true);
+			}
 		}
 		else if (id == R.id.dialer) {
-			changeCurrentFragment(FragmentsAvailable.PANIC, null);
+			if(!PreferenciasHancel.getLoginOk(this)) {
+				showLoginFragment();
+			}
+			else {
+				changeCurrentFragment(FragmentsAvailable.PANIC, null);
 				dialer.setSelected(true);
 			}
+		}
 		else if (id == R.id.rings) {
+			showLoginFragment();
 			changeCurrentFragment(FragmentsAvailable.RINGS, null);
 			rings.setSelected(true);
 		}
 		else if (id == R.id.chat) {
-			changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
-			chat.setSelected(true);
+			if(!PreferenciasHancel.getLoginOk(this)) {
+				showLoginFragment();
+			}
+			else {
+				changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
+				chat.setSelected(true);
+			}
 		}
 	}
 
