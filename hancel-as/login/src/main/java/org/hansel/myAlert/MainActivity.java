@@ -167,21 +167,20 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
         setContentView(R.layout.tabs);
 
 		prepareContactsInBackground();
-		startService(new Intent(MainActivity.this, HardwareButtonService.class));
+//		startService(new Intent(MainActivity.this, HardwareButtonService.class));
 //		startService(new Intent(ACTION_MAIN).setClass(this, LinphoneService.class));
 
 		if(!isGooglePlayServicesAvailable()) finish();
 				
 		instance = this;
 				
-		if(!PreferenciasHancel.getLoginOk(this)){
+		/*if(!PreferenciasHancel.getLoginOk(this)){
 			showLoginFragment();
 			showStartFragment();
-		}else
+		}else*/
 		    showMainFragment();
 
         startHardwareButtonService();
-
 	}
 
     /*
@@ -241,7 +240,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		currentFragment = nextFragment = FragmentsAvailable.PANIC;
 		fragmentsHistory.add(currentFragment);	
 
-		LinphonePreferences.instance().setMediaEncryption(MediaEncryption.SRTP);
+		//LinphonePreferences.instance().setMediaEncryption(MediaEncryption.SRTP);
 	}
 
 
@@ -589,6 +588,7 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		changeCurrentFragment(FragmentsAvailable.ABOUT, null);
 	}
 
+	
 	public void displayChat(String sipUri) {
 		if (getResources().getBoolean(R.bool.disable_chat)) {
 			return;
@@ -654,7 +654,6 @@ LinphoneOnMessageReceivedListener,LinphoneOnRegistrationStateChangedListener{
 		else if (id == R.id.rings) {
 			changeCurrentFragment(FragmentsAvailable.RINGS, null);
 			rings.setSelected(true);
-			Log.v("Click en rings");
 		}
 		else if (id == R.id.chat) {
 			changeCurrentFragment(FragmentsAvailable.CHATLIST, null);
